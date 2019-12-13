@@ -13,6 +13,9 @@ const routes: Routes = [
   { path: 'edit-activity', loadChildren: './edit-activity/edit-activity.module#EditActivityPageModule' },
   { path: 'add-activity', loadChildren: './add-activity/add-activity.module#AddActivityPageModule' },
   { path: 'edit-goal', loadChildren: './edit-goal/edit-goal.module#EditGoalPageModule' },
+  { path: 'registration', loadChildren: './registration/registration.module#RegistrationPageModule' },
+  { path: 'log-in', loadChildren: './log-in/log-in.module#LogInPageModule' },
+  { path: 'terms-of-use', loadChildren: './terms-of-use/terms-of-use.module#TermsOfUsePageModule' },
 ];
 
 @NgModule({
