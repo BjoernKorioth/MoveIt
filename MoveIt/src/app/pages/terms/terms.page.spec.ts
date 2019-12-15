@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TermsOfUsePage } from './terms-of-use.page';
+import { TermsPage } from './terms.page';
 
-describe('TermsOfUsePage', () => {
-  let component: TermsOfUsePage;
-  let fixture: ComponentFixture<TermsOfUsePage>;
+describe('TermsPage', () => {
+  let component: TermsPage;
+  let fixture: ComponentFixture<TermsPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TermsOfUsePage ],
+      declarations: [ TermsPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TermsOfUsePage);
+    fixture = TestBed.createComponent(TermsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
