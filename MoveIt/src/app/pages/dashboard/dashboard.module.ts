@@ -9,10 +9,21 @@ import { DashboardPage } from './dashboard.page';
 
 const routes: Routes = [
   {
+    path: 'tabs',
+    component: DashboardPage,
+    children: [
+      { path: 'add', loadChildren: '../add-activity/add-activity.module#AddActivityPageModule' },
+      { path: 'progress', loadChildren: '../progress/progress.module#ProgressPageModule' },
+      { path: 'info', loadChildren: '../information/information.module#InformationPageModule' }
+
+    ]
+  },
+  {
     path: '',
-    component: DashboardPage
+    redirectTo: 'tabs',
+    pathMatch: 'full'
   }
-];
+  ];
 
 @NgModule({
   imports: [
