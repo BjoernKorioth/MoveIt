@@ -18,7 +18,9 @@ const routes: Routes = [
       { path: 'leaderboard', loadChildren: '../leaderboard/leaderboard.module#LeaderboardPageModule' },
       { path: 'rewards', loadChildren: '../rewards/rewards.module#RewardsPageModule' },
       { path: 'information', loadChildren: '../information/information.module#InformationPageModule' },
-      { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardPageModule' }
+      { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardPageModule' },    
+      { path: 'add-activity', loadChildren: './pages/add-activity/add-activity.module#AddActivityPageModule' },
+      { path: 'edit-activity', loadChildren: './pages/edit-activity/edit-activity.module#EditActivityPageModule' },
     ]
   }
 ];
