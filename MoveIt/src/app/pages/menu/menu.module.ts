@@ -19,8 +19,8 @@ const routes: Routes = [
       { path: 'rewards', loadChildren: '../rewards/rewards.module#RewardsPageModule' },
       { path: 'information', loadChildren: '../information/information.module#InformationPageModule' },
       { path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardPageModule' },    
-      { path: 'add-activity', loadChildren: './pages/add-activity/add-activity.module#AddActivityPageModule' },
-      { path: 'edit-activity', loadChildren: './pages/edit-activity/edit-activity.module#EditActivityPageModule' },
+      { path: 'add-activity', loadChildren: '../add-activity/add-activity.module#AddActivityPageModule' },
+      { path: 'edit-activity', loadChildren: '../edit-activity/edit-activity.module#EditActivityPageModule' },
     ]
   }
 ];
