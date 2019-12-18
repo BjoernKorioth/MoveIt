@@ -11,18 +11,18 @@
   
   </ion-content>
   <ion-tabs>
-      <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="progress">
-          <ion-icon name="sunny"></ion-icon>
-          <ion-label>Progress</ion-label>
-        </ion-tab-button>
-        <ion-tab-button tab="add">
-          <ion-icon name="sunny"></ion-icon>
-          <ion-label>Add Activity</ion-label>
-        </ion-tab-button>
-        <ion-tab-button tab="info">
-          <ion-icon name="sunny"></ion-icon>
-          <ion-label>Information</ion-label>
-        </ion-tab-button>
-      </ion-tab-bar>
-    </ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button routerLink="/menu/progress" routerDirection="root">
+        <ion-icon name="sunny"></ion-icon>
+        <ion-label>Progress</ion-label>
+      </ion-tab-button>
+      <ion-tab-button routerLink="/menu/add-activity" routerDirection="root">
+        <ion-icon name="sunny"></ion-icon>
+        <ion-label>Add Activity</ion-label>
+      </ion-tab-button>
+      <ion-tab-button routerLink="/menu/information" routerDirection="root">
+        <ion-icon name="sunny"></ion-icon>
+        <ion-label>Information</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
