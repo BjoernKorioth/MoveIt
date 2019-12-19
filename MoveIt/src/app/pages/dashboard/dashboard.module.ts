@@ -9,7 +9,7 @@ import { DashboardPage } from './dashboard.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: 'tabs1',
     component: DashboardPage,
     children: [
       
@@ -17,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'tabs',
+    redirectTo: 'tabs1',
     pathMatch: 'full'
   }
   ];
