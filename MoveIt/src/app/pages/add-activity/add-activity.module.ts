@@ -13,9 +13,9 @@ const routes: Routes = [
     component: AddActivityPage,
     children: [
       { 
-      path: 'detail',
-      loadChildren: '../add-activity-detail/add-activity-detail.module#AddActivityDetailPageModule' }
-
+        path: 'detail',
+        loadChildren: '../add-activity-detail/add-activity-detail.module#AddActivityDetailPageModule' 
+      }
     ]
   },
   {

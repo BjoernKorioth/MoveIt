@@ -5,23 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ProgressPage } from './progress.page';
+import { InformationDetailPage } from './information-detail.page';
 
 const routes: Routes = [
   {
-    path: 'progress',
-    component: ProgressPage,
-    children: [
-      { 
-       path: 'detail', 
-       loadChildren: '../progress-detail/progress-detail.module#ProgressDetailPageModule' }
-
-    ]
-  },
-  {
     path: '',
-    redirectTo: 'progress/detail',
-    pathMatch: 'full'
+    component: InformationDetailPage
   }
 ];
 
@@ -32,6 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ProgressPage]
+  declarations: [InformationDetailPage]
 })
-export class ProgressPageModule {}
+export class InformationDetailPageModule {}

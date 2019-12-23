@@ -9,8 +9,20 @@ import { InformationPage } from './information.page';
 
 const routes: Routes = [
   {
+    path: 'information',
+    component: InformationPage,
+    children: [  
+    { 
+      path: 'detail', 
+      loadChildren: '../information-detail/information-detail.module#InformationDetailPageModule' 
+    }
+
+    ]
+  },
+  {
     path: '',
-    component: InformationPage
+    redirectTo: 'information/detail',
+    pathMatch: 'full'
   }
 ];
 
