@@ -11,12 +11,16 @@ const routes: Routes = [
   {
     path: 'information',
     component: InformationPage,
-    children: [  
-    { 
-      path: 'detail', 
-      loadChildren: '../information-detail/information-detail.module#InformationDetailPageModule' 
-    }
-
+    children: 
+    [  
+      { 
+        path: 'detail', 
+        loadChildren: '../information-detail/information-detail.module#InformationDetailPageModule' 
+      },
+      { 
+        path: 'single', 
+        loadChildren: '../information-single/information-single.module#InformationSinglePageModule' 
+      }
     ]
   },
   {
