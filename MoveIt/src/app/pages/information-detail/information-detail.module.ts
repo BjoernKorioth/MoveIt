@@ -14,6 +14,14 @@ const routes: Routes = [
   }
 ];
 
+const INFORMATIONS= [
+  {title: 1, text:'Superman'},
+  {title: 2, text:'Batman'},
+  {title: 5, text:'BatGirl'},
+  {title: 3, text:'Robin'},
+  {title: 4, text:'Flash'}
+];
+
 @NgModule({
   imports: [
     CommonModule,
@@ -23,4 +31,6 @@ const routes: Routes = [
   ],
   declarations: [InformationDetailPage]
 })
+
+
 export class InformationDetailPageModule {}
