@@ -5,23 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { AddActivityPage } from './add-activity.page';
+import { AddActivityDetailPage } from './add-activity-detail.page';
 
 const routes: Routes = [
   {
-    path: 'add',
-    component: AddActivityPage,
-    children: [
-      { 
-      path: 'detail',
-      loadChildren: '../add-activity-detail/add-activity-detail.module#AddActivityDetailPageModule' }
-
-    ]
-  },
-  {
     path: '',
-    redirectTo: 'add/detail',
-    pathMatch: 'full'
+    component: AddActivityDetailPage
   }
 ];
 
@@ -32,6 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [AddActivityPage]
+  declarations: [AddActivityDetailPage]
 })
-export class AddActivityPageModule {}
+export class AddActivityDetailPageModule {}
