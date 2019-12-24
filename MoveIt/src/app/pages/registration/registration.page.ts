@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { AuthenticateService } from '../../services/authentication/authentication.service';
 import { NavController } from '@ionic/angular';
+
+import { AuthenticateService } from '../../services/authentication/authentication.service';
 
 @Component({
   selector: 'app-registration',
@@ -55,6 +56,8 @@ export class RegistrationPage implements OnInit {
        this.errorMessage = err.message;
        this.successMessage = "";
      })
+    
+     this.authService.registerOnDatabase();
   }
 
   goLoginPage(){

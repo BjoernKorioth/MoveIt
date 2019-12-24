@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import * as firebase from 'firebase/app';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @Injectable()
 export class AuthenticateService {
 
-  constructor(private fireStore: AngularFirestore){}
+  constructor(private fireDatabase: AngularFireDatabase){}
 
   registerUser(value){
     this.registerOnDatabase();
@@ -17,12 +17,10 @@ export class AuthenticateService {
    })
   }
 
-  private registerOnDatabase(){
-    return new Promise<any>((resolve, reject) => {
-      let record =  {challengesActive:"{}", challengesWon:"{}",group: 2, name: "testName", trophiesWon:"{}", type:"user"};
-      this.fireStore.collection('users').add(record).then(
-        res => resolve(res),
-        err => reject(err))});
+   registerOnDatabase(){
+      let record =  {challengesActive:"{}", challengesWon:"{}", group: 2, name: "testName", trophiesWon:"{}", type:"user" };
+      console.log(record);
+      return this.fireDatabase.list("/users").push(record);
   }
 
   loginUser(value){
