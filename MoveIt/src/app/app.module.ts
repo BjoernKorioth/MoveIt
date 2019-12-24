@@ -13,9 +13,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AuthenticateService } from './services/authentication/authentication.service';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { ReactiveFormsModule } from '@angular/forms';
+
+import { AuthenticateService } from './services/authentication/authentication.service';
 
 
 const firebaseConfig = {
@@ -35,12 +36,13 @@ const firebaseConfig = {
   entryComponents: [],
   imports: [BrowserModule, 
     ReactiveFormsModule, 
-    IonicModule.forRoot(), 
+    IonicModule.forRoot(),
+    AngularFireModule.initializeApp(firebaseConfig),
     AppRoutingModule, 
     AngularFireAuthModule, 
     AngularFirestoreModule,
-    AngularFireDatabaseModule, 
-    AngularFireModule.initializeApp(firebaseConfig)],
+    AngularFireDatabaseModule
+    ],
   providers: [
     StatusBar,
     SplashScreen,
