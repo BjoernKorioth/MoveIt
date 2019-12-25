@@ -1,26 +1,32 @@
 import { Injectable } from "@angular/core";
 import * as firebase from 'firebase/app';
-import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+
+
 
 @Injectable()
 export class AuthenticateService {
 
+  private user: AngularFireList<any[]>;
+
   constructor(private fireDatabase: AngularFireDatabase){}
 
   registerUser(value){
-    this.registerOnDatabase();
    return new Promise<any>((resolve, reject) => {
      firebase.auth().createUserWithEmailAndPassword(value.email, value.password)
      .then(  
        res => resolve(res),
-       err => reject(err))
+       err => reject(err),)
    })
   }
 
-   registerOnDatabase(){
-      let record =  {challengesActive:"{}", challengesWon:"{}", group: 2, name: "testName", trophiesWon:"{}", type:"user" };
+   registerOnDatabase(value){
+      let record =  {uid: firebase.auth().currentUser.uid , challengesActive:"{}", challengesWon:"{}", group: 2, name: value.surname+", " +value.firstname, trophiesWon:"{}", type:"user" };
       console.log(record);
-      return this.fireDatabase.list("/users").push(record);
+      console.log("Test "+ this.fireDatabase.list("/users"));
+      
+      this.fireDatabase.database.ref().child('users').child(firebase.auth().currentUser.uid).set(record);
+      
   }
 
   loginUser(value){
@@ -48,6 +54,12 @@ export class AuthenticateService {
 
   userDetails(){
     return firebase.auth().currentUser;
+  }
+
+  loggedUserDetails(){
+    this.user = this.fireDatabase.list('users', ref => console.log(ref));
+    console.log("This is a user" + this.user);
+    return this.user;
   }
 }
  

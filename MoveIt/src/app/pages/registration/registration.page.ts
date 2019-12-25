@@ -23,7 +23,10 @@ export class RegistrationPage implements OnInit {
    'password': [
      { type: 'required', message: 'Password is required.' },
      { type: 'minlength', message: 'Password must be at least 5 characters long.' }
-   ]
+   ],
+   'name':[
+     {type: 'required', message: 'Please enter a name'}
+   ],
  };
 
   constructor(
@@ -42,6 +45,8 @@ export class RegistrationPage implements OnInit {
         Validators.minLength(5),
         Validators.required
       ])),
+      firstname: new FormControl('', Validators.required),
+      surname: new FormControl('', Validators.required),
     });
   }
 
@@ -57,7 +62,7 @@ export class RegistrationPage implements OnInit {
        this.successMessage = "";
      })
     
-     this.authService.registerOnDatabase();
+    this.authService.registerOnDatabase(value);
   }
 
   goLoginPage(){
