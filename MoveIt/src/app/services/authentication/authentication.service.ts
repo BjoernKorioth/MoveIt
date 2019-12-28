@@ -1,13 +1,16 @@
 import { Injectable } from "@angular/core";
 import * as firebase from 'firebase/app';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import {User} from '../../model/user';
 
 
 
 @Injectable()
 export class AuthenticateService {
 
-  private user: AngularFireList<any[]>;
+  private user: User;
+
+  private list : AngularFireList<any>;
 
   constructor(private fireDatabase: AngularFireDatabase){}
 
@@ -57,8 +60,6 @@ export class AuthenticateService {
   }
 
   loggedUserDetails(){
-    this.user = this.fireDatabase.list('users', ref => console.log(ref));
-    console.log("This is a user" + this.user);
     return this.user;
   }
 }
