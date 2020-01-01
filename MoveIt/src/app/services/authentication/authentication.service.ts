@@ -18,11 +18,17 @@ export class AuthenticateService {
         return new Promise<any>((resolve, reject) => {
             firebase.auth().createUserWithEmailAndPassword(value.email, value.password)
                 .then(
+                    // If the auth service could create the new user, we'll enter this function
                     (userCredential) => {
+                        // We get a user credential returned, from which we extract the user
                         const user = userCredential.user;
+                        // Now, we can create a new user object with the provided information
                         this.user = new User(user.uid, value.firstname + ' ' + value.surname);
+                        // We try to create the user on the database
                         this.registerOnDatabase().then(
+                            // If this is successful, resolve the promies
                             res => resolve(res),
+                            // If it's not successful, the user was created with the auth service but not in the database
                             err => reject(err)
                         );
                     },
