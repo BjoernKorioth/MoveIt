@@ -10,13 +10,14 @@
 
 
 <ion-content padding>
-  <ion-card *ngFor="let information of informations">
+  <ion-card >
       <img src="img/nin-live.png"/>
     <ion-card-header>
-      <ion-card-title>{{information.title}}</ion-card-title>
+      <ion-card-title>Moderate vs. vigorous</ion-card-title>
     </ion-card-header>  
     <ion-card-content>
-      {{information.text}}
+      Intensity refers to the rate at which the activity is being performed or the magnitude of the effort required to perform an activity or exercise. It can be thought of "How hard a person works to do the activity".
+
        <ion-button fill="outline" slot="end" routerLink="/menu/information/information/single">View</ion-button>
     </ion-card-content>  
   </ion-card>
