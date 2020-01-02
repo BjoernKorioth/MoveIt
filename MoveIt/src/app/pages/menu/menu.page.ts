@@ -11,7 +11,7 @@ import {AuthenticateService} from '../../services/authentication/authentication.
 export class MenuPage implements OnInit {
     pages = [
         {
-            title: this.aService.loggedUserDetails().name
+            title: this.Auth.loggedUserDetails()
 
         },
         {
@@ -35,13 +35,18 @@ export class MenuPage implements OnInit {
 
     selectedPath = '';
 
-    constructor(private router: Router, private aService: AuthenticateService) {
+    constructor(private router: Router, private Auth: AuthenticateService) {
         this.router.events.subscribe((event: RouterEvent) => {
             if (event && event.url) {
                 this.selectedPath = event.url;
             }
         });
 
+    }
+
+    logout() {
+        this.Auth.logoutUser();
+        // TODO sent the user back to the login page
     }
 
     ngOnInit() {

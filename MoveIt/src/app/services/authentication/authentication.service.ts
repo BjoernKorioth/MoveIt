@@ -14,6 +14,13 @@ export class AuthenticateService {
     constructor(private fireDatabase: AngularFireDatabase) {
     }
 
+    /**
+     * registerUser
+     *
+     * creates a new user in the firebase authentication service and the database
+     *
+     * @param value contains the contents of the registration form
+     */
     registerUser(value) {
         return new Promise<any>((resolve, reject) => {
             firebase.auth().createUserWithEmailAndPassword(value.email, value.password)
@@ -68,7 +75,9 @@ export class AuthenticateService {
     }
 
     loggedUserDetails() {
-        return this.user;
+        // TODO this function is called in the menu page, it returns an error.
+        // this could be because the function is called before the user variable is set in this controller
+        return ''; // this.user.name || 'not found';
     }
 }
 
