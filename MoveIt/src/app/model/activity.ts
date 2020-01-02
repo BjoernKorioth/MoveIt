@@ -1,3 +1,12 @@
+interface FireBaseObject {
+    id: string;
+    distance: object;
+    endTime: string;
+    intensity: string;
+    startTime: string;
+    type: string;
+}
+
 export class Activity {
     id: string;
     distance: object;
@@ -30,8 +39,9 @@ export class Activity {
      * @param id id of the activity
      * @param firebaseObject result of the query
      */
-    static fromFireBaseObject(id: string, firebaseObject: object) {
-        // @ts-ignore
+
+    static fromFirebaseObject(id: string, firebaseObject: FireBaseObject) {
+        // @ts-ignore TS2339
         return new Activity(
             id || '',
             firebaseObject.distance || {},

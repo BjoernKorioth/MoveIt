@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import * as firebase from 'firebase/app';
 import {AngularFireDatabase} from '@angular/fire/database';
-import {User} from '../../model/user';
 import {Activity} from '../../model/activity';
 
 @Injectable({
@@ -58,7 +57,7 @@ export class ActivityService {
                 snapshot => {
                     const data = snapshot.val();
                     // Convert the data to an activity object and return it
-                    resolve(Activity.fromFireBaseObject(activityId, data));
+                    resolve(Activity.fromFirebaseObject(activityId, data));
                 },
                 err => reject(err)
             );
@@ -76,7 +75,7 @@ export class ActivityService {
                     const data = snapshot.val();
 
                     // Iterate over the object keys (= the activity ids) and reconstruct an activity object for each
-                    const array = Object.keys(data).map(key => Activity.fromFireBaseObject(key, data[key]));
+                    const array = Object.keys(data).map(key => Activity.fromFirebaseObject(key, data[key]));
                     resolve(array);
                 },
                 err => reject(err)
