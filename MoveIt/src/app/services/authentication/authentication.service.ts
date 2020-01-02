@@ -31,9 +31,9 @@ export class AuthenticateService {
                         const user = userCredential.user;
                         // Now, we can create a new user object with the provided information
                         this.user = new User(user.uid, value.firstname + ' ' + value.surname);
-                        // We try to create the user on the database
+                        // Try to create the user on the database
                         this.registerOnDatabase().then(
-                            // If this is successful, resolve the promies
+                            // If this is successful, resolve the promise
                             res => resolve(res),
                             // If it's not successful, the user was created with the auth service but not in the database
                             err => reject(err)

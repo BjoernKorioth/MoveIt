@@ -1,49 +1,88 @@
 import {Injectable} from '@angular/core';
 import * as firebase from 'firebase/app';
-import {AngularFireDatabase, AngularFireList} from '@angular/fire/database';
+import {AngularFireDatabase} from '@angular/fire/database';
+import {User} from '../../model/user';
+import {Activity} from '../../model/activity';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ActivityService {
 
-    private user: AngularFireList<any[]>;
+    private user: User;
 
     constructor(private fireDatabase: AngularFireDatabase) {
     }
 
-    createActivity(value) {
-        const record = {
-                distance: "{ unit: \"km\", value: 12 }",
-                endTime: JSON.stringify(new Date(2019, 0O5, 0O5, 17, 23, 42, 0)),
-                intensity: "moderate",
-                startTime: JSON.stringify(new Date(2019, 0O5, 0O5, 17, 55, 42, 0)),
-                type: "running"
-            };
+    /**
+     * Creates a new activity in firebase from an activity objects
+     *
+     * @param activity an existing activity object
+     */
+    createActivity(activity: Activity) {
+        return new Promise<any>((resolve, reject) => {
+            const id = firebase.database().ref().child('activities').child(firebase.auth().currentUser.uid).push().key;
+            activity.id = id;
 
-        const newPostKey = firebase.database().ref().child('activities').child(firebase.auth().currentUser.uid).push().key;
-
-        this.fireDatabase.database.ref().child('activities').child(firebase.auth().currentUser.uid).child(newPostKey).set(record);
+            this.fireDatabase.database.ref('/activities/' + firebase.auth().currentUser.uid).child(id)
+                .set(activity.toFirebaseObject()).then(
+                // Returns the activity with the new id
+                () => resolve(activity),
+                err => reject(err)
+            );
+        });
     }
 
-    editActivity(value) {
-        const record = {
-            distance: "{ unit: \"km\", value: 12 }",
-            endTime: JSON.stringify(new Date(2019, 0O5, 0O5, 17, 23, 42, 0)),
-            intensity: "moderate",
-            startTime: JSON.stringify(new Date(2019, 0O5, 0O5, 17, 55, 42, 0)),
-            type: "running"
-        };
-
-        this.fireDatabase.database.ref().child('activities').child(firebase.auth().currentUser.uid).set(record);
+    /**
+     * Updates an activity in firebase
+     *
+     * @param activityId the id of the activity to be edited
+     * @param activity the updated/new activity
+     */
+    editActivity(activityId, activity: Activity) {
+        return new Promise<any>((resolve, reject) => {
+            this.fireDatabase.database.ref('/activities/' + firebase.auth().currentUser.uid).child(activityId)
+                .set(activity.toFirebaseObject()).then(
+                res => resolve(res),
+                err => reject(err)
+            );
+        });
     }
 
-    getActivity(value) {
-        return firebase.database().ref('/activities/' + firebase.auth().currentUser.uid).child(value).once('value');
+    /**
+     * Retrieves an activity from firebase
+     *
+     * @param activityId id of the activity
+     */
+    getActivity(activityId) {
+        return new Promise<any>((resolve, reject) => {
+            firebase.database().ref('/activities/' + firebase.auth().currentUser.uid).child(activityId).once('value').then(
+                snapshot => {
+                    const data = snapshot.val();
+                    // Convert the data to an activity object and return it
+                    resolve(Activity.fromFireBaseObject(activityId, data));
+                },
+                err => reject(err)
+            );
+        });
     }
 
-    getAllUserActivities(value) {
-        return firebase.database().ref('/activities/' + firebase.auth().currentUser.uid).once('value');
-    }
+    /**
+     * Retrieve all activities of the current user
+     */
+    getAllUserActivities() {
+        return new Promise<any>((resolve, reject) => {
+            firebase.database().ref('/activities/' + firebase.auth().currentUser.uid).once('value').then(
+                snapshot => {
+                    // The data is an object which contains each activity as a key
+                    const data = snapshot.val();
 
+                    // Iterate over the object keys (= the activity ids) and reconstruct an activity object for each
+                    const array = Object.keys(data).map(key => Activity.fromFireBaseObject(key, data[key]));
+                    resolve(array);
+                },
+                err => reject(err)
+            );
+        });
+    }
 }

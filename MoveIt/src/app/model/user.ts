@@ -10,7 +10,7 @@ export class User {
     /**
      * Constructor to create User object
      *
-     * Each parameter is optinal. If it's not present, a default value is used
+     * Each parameter is optional. If it's not present, a default value is used
      *
      */
     constructor(id?: string, name?: string, challengesActive?: Array<any>, challengesWon?: Array<any>, group?: number,
