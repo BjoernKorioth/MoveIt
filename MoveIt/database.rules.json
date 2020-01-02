@@ -1,0 +1,68 @@
+{
+  "rules": {
+    "activities": {
+      "$user_id": {
+        ".read": "auth.uid == $user_id || auth.token.researcher == true",
+        ".write": "auth.uid == $user_id"
+      }
+    },
+    "challenges": {
+      ".read": "auth.uid != null",
+      ".write": "auth.token.researcher == true"
+    },
+    "goals": {
+      "$user_id": {
+        ".read": "auth.uid == $user_id || auth.token.researcher == true",
+        ".write": "auth.uid == $user_id"
+      }
+    },
+    "groups": {
+      ".read": "auth.uid != null",
+      ".write": "auth.token.researcher == true"
+    },
+    "notifications": {
+      ".read": "auth.uid != null",
+      ".write": "auth.token.researcher == true"
+    },
+    "posts": {
+      ".read": "false",
+      ".write": "false"
+    },
+    "records": {
+      "actionRecords": {
+        "$user_id": {
+          ".read": "auth.token.researcher == true",
+          ".write": "auth.uid != $user_id"
+        }
+      },
+      "viewRecords": {
+        "$user_id": {
+          ".read": "auth.token.researcher == true",
+          ".write": "auth.uid != $user_id"
+        }
+      },
+      "notifications": {
+        "$user_id": {
+          ".read": "auth.token.researcher == true",
+          ".write": "auth.uid != $user_id"
+        }
+      }
+    },
+    "stimuli": {
+      ".read": "auth.uid != null",
+      ".write": "auth.token.researcher == true"
+    },
+    "trophies": {
+      ".read": "auth.uid != null",
+      ".write": "auth.token.researcher == true"
+    },
+    "users": {
+      "$user_id": {
+        ".read": "auth.uid == $user_id || auth.token.researcher == true",
+        ".write": "auth.uid == $user_id"
+      }
+    },
+    ".read": true,
+    ".write": true
+  }
+}
