@@ -9,8 +9,19 @@ import { LeaderboardPage } from './leaderboard.page';
 
 const routes: Routes = [
   {
+    path: 'leaderboard',
+    component: LeaderboardPage,
+    children: [
+      {
+        path: 'detail',
+        loadChildren: '../leaderboard-detail/leaderboard-detail.module#LeaderboardDetailPageModule'
+      }
+      ]
+  },
+  {
     path: '',
-    component: LeaderboardPage
+    redirectTo: 'leaderboard/detail',
+    pathMatch: 'full'
   }
 ];
 

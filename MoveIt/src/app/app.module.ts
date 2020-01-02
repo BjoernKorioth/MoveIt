@@ -1,52 +1,55 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { RouteReuseStrategy } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {RouteReuseStrategy} from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
+import {SplashScreen} from '@ionic-native/splash-screen/ngx';
+import {StatusBar} from '@ionic-native/status-bar/ngx';
 
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
+import {AppComponent} from './app.component';
+import {AppRoutingModule} from './app-routing.module';
 
 
-import { AngularFireModule } from '@angular/fire';
-import { AngularFireDatabaseModule } from '@angular/fire/database';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AuthenticateService } from './services/authentication/authentication.service';
-import { AngularFireAuthModule } from '@angular/fire/auth';
-import { ReactiveFormsModule } from '@angular/forms';
+import {AngularFireModule} from '@angular/fire';
+import {AngularFireDatabaseModule} from '@angular/fire/database';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {ReactiveFormsModule} from '@angular/forms';
+
+import {AuthenticateService} from './services/authentication/authentication.service';
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAeeexHFSp2HevDoOi7MdzCLdgET6QtMg4",
-  authDomain: "moveit-2019.firebaseapp.com",
-  databaseURL: "https://moveit-2019.firebaseio.com",
-  projectId: "moveit-2019",
-  storageBucket: "moveit-2019.appspot.com",
-  messagingSenderId: "743283522973",
-  appId: "1:743283522973:web:43cd7c986b9811d8100374",
-  measurementId: "G-1N6YS1R28Y"
+    apiKey: 'AIzaSyAeeexHFSp2HevDoOi7MdzCLdgET6QtMg4',
+    authDomain: 'moveit-2019.firebaseapp.com',
+    databaseURL: 'https://moveit-2019.firebaseio.com',
+    projectId: 'moveit-2019',
+    storageBucket: 'moveit-2019.appspot.com',
+    messagingSenderId: '743283522973',
+    appId: '1:743283522973:web:43cd7c986b9811d8100374',
+    measurementId: 'G-1N6YS1R28Y'
 };
 
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [BrowserModule, 
-    ReactiveFormsModule, 
-    IonicModule.forRoot(), 
-    AppRoutingModule, 
-    AngularFireAuthModule, 
-    AngularFirestoreModule,
-    AngularFireDatabaseModule, 
-    AngularFireModule.initializeApp(firebaseConfig)],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    AuthenticateService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [AppComponent],
+    entryComponents: [],
+    imports: [BrowserModule,
+        ReactiveFormsModule,
+        IonicModule.forRoot(),
+        AngularFireModule.initializeApp(firebaseConfig),
+        AppRoutingModule,
+        AngularFireAuthModule,
+        AngularFirestoreModule,
+        AngularFireDatabaseModule
+    ],
+    providers: [
+        StatusBar,
+        SplashScreen,
+        AuthenticateService,
+        {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
+    ],
+    bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}

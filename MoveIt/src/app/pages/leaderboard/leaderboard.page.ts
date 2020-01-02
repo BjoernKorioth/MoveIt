@@ -6,8 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./leaderboard.page.scss'],
 })
 export class LeaderboardPage implements OnInit {
-
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
   }

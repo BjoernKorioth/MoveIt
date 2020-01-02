@@ -1,12 +1,17 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Progress</ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Progress</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  Progress
+    Progress
+
+    <ion-button type="button" (click)='createActivity()'>Create</ion-button>
+    <ion-button type="button" (click)='editActivity()'>Edit</ion-button>
+    <ion-button type="button" (click)='getActivity()'>Get</ion-button>
+    <ion-button type="button" (click)='getAllActivities()'>Get All</ion-button>
 </ion-content>
