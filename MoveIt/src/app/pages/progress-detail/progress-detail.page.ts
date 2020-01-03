@@ -8,11 +8,15 @@ import {Activity} from '../../model/activity';
     styleUrls: ['./progress-detail.page.scss'],
 })
 export class ProgressDetailPage implements OnInit {
-
+activities: any;
     constructor(private activityService: ActivityService) {
+
+        //this.activities = this.getAllActivities();
+        //console.log(this.activities); 
     }
 
     ngOnInit() {
+        
     }
 
     /**
@@ -64,5 +68,7 @@ export class ProgressDetailPage implements OnInit {
             res => console.log(res),
             err => console.log(err)
         );
+
+        //return this.activityService.getAllUserActivities();
     }
 }
