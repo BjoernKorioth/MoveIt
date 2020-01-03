@@ -12,29 +12,25 @@
   <ion-list>
     <ion-item>
       <ion-label>Kind of activity</ion-label>
-      <ion-select placeholder="Select One" disabled="false">
-        <ion-select-option value="running">running</ion-select-option>
-        <ion-select-option value="swimming">swimming</ion-select-option>
-        <ion-select-option value="walking">walking</ion-select-option>
+      <ion-select [(ngModel)]="activity.type" placeholder="Select One" disabled="false">
+        <ion-select-option *ngFor="let type of types">{{type}}</ion-select-option>
       </ion-select>
     </ion-item>
 
     <ion-item>
         <ion-label>Activity</ion-label>
-        <ion-select placeholder="Select One">
-          <ion-select-option value="moderate">moderate</ion-select-option>
-          <ion-select-option value="vigorous">vigorous</ion-select-option>
-          <ion-select-option value="weight training">weight training</ion-select-option>
+        <ion-select [(ngModel)]="activity.intensity" placeholder="Select One">
+          <ion-select-option *ngFor="let intensity of intensities">{{intensity}}</ion-select-option>
         </ion-select>
       </ion-item> 
 
     <ion-item>
-      <ion-input type="number" placeholder="Minutes"></ion-input>
+      <ion-input [(ngModel)]="minutes" type="number" placeholder="Minutes"></ion-input>
     </ion-item>
   </ion-list>
 
     <section>
-      <ion-button color="secondary" slot="end" float-right>Add activity</ion-button>
+      <ion-button (click)=addActivity() color="secondary" slot="end" float-right>Add activity</ion-button>
       <!--<ion-button expand="block">Add activity</ion-button>-->
     </section>
 
