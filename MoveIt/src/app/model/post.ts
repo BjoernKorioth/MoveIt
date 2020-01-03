@@ -12,14 +12,6 @@ interface FireBaseObject {
 }
 
 export class Post {
-    group: number;
-    id: string;
-    activity: string;
-    comments: Array<Comment>;
-    content: string;
-    createdAt: Date;
-    likes: Array<string>;
-    user: string;
 
     /**
      * Constructor to create Post
@@ -39,28 +31,74 @@ export class Post {
         this.likes = likes || [];
         this.user = user || '';
     }
+    group: number;
+    id: string;
+    activity: string;
+    comments: Array<Comment>;
+    content: string;
+    createdAt: Date;
+    likes: Array<string>;
+    user: string;
 
     /**
      * Creates a Post object from a firebase query
      *
      * This basically reconstructs the dates from the date strings
      *
+     * @param group user group the post belongs to
      * @param id id of the post
      * @param firebaseObject result of the query
      */
 
-    static fromFirebaseObject(id: string, firebaseObject: FireBaseObject) {
+    static fromFirebaseObject(group: number, id: string, firebaseObject: FireBaseObject) {
         // @ts-ignore TS2339
+        let comments = [];
+        if (firebaseObject.comments && typeof firebaseObject.comments === 'object') {
+            comments = Object.keys(firebaseObject.comments).map(key => Comment.fromFirebaseObject(id, key, firebaseObject.comments[key]));
+        }
         return new Post(
-            firebaseObject.group || 0,
+            group || 0,
             id || '',
             firebaseObject.activity || '',
-            firebaseObject.comments || [],
+            comments || [],
             firebaseObject.content || '',
             new Date(firebaseObject.createdAt) || new Date(),
             firebaseObject.likes || [],
             firebaseObject.user || ''
         );
+    }
+
+    /**
+     * Like a post
+     *
+     * the user id will be added to likes
+     *
+     * @param user id of the user who likes the post
+     */
+    like(user: string) {
+        if (!this.likes.includes(user)) {
+            this.likes.push(user);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Unlike a post
+     *
+     * remove the user id from likes
+     *
+     * @param user id of the user to be removed from the likes
+     */
+    unlike(user: string) {
+        const position = this.likes.indexOf(user);
+        if (position >= 0) {
+            this.likes.splice(position, 1);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

@@ -36,15 +36,16 @@ export class Comment {
      *
      * This basically reconstructs the dates from the date strings
      *
-     * @param id id of the comment
+     * @param postId id of the post
+     * @param commentId id of the comment
      * @param firebaseObject result of the query
      */
 
-    static fromFirebaseObject(id: string, firebaseObject: FireBaseObject) {
+    static fromFirebaseObject(postId: string, commentId: string, firebaseObject: FireBaseObject) {
         return new Comment(
-            firebaseObject.group || 0,
-            firebaseObject.post || '',
-            id || '',
+            firebaseObject.group || -1,
+            postId || '',
+            commentId || '',
             new Date(firebaseObject.createdAt) || new Date(),
             firebaseObject.text || '',
             firebaseObject.user || ''

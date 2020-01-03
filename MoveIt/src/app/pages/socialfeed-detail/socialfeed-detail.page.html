@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Socialfeed</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-button type="button" (click)='newPost()'>New Post</ion-button>
+  <ion-button type="button" (click)='editPost()'>Edit Post</ion-button>
+  <ion-button type="button" (click)='like()'>Like</ion-button>
+  <ion-button type="button" (click)='unlike()'>Unlike</ion-button>
+  <ion-button type="button" (click)='getPost()'>Get Post</ion-button>
+  <ion-button type="button" (click)='getAllPosts()'>Get All Posts</ion-button>
+  <ion-button type="button" (click)='newComment()'>New Comment</ion-button>
+  <ion-button type="button" (click)='editComment()'>Edit Comment</ion-button>
+  <ion-button type="button" (click)='getComment()'>Get Comment</ion-button>
+  <ion-button type="button" (click)='getAllComments()'>Get All Comments</ion-button>
+</ion-content>

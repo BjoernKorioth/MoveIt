@@ -11,7 +11,8 @@ import {AuthenticateService} from '../../services/authentication/authentication.
 export class MenuPage implements OnInit {
     pages = [
         {
-            title: this.Auth.loggedUserDetails()
+            // TODO add dynamic loading if the value comes in later
+            title: this.Auth.loggedUserDetails().name
 
         },
         {
@@ -19,8 +20,8 @@ export class MenuPage implements OnInit {
             url: '/menu/dashboard'
         },
         {
-            title: 'Newsfeed',
-            url: '/menu/newsfeed'
+            title: 'Socialfeed',
+            url: '/menu/socialfeed'
         },
         {
             title: 'Leaderboard',
