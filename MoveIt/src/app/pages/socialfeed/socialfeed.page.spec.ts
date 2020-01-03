@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewsfeedPage } from './newsfeed.page';
+import { SocialfeedPage } from './socialfeed.page';
 
-describe('NewsfeedPage', () => {
-  let component: NewsfeedPage;
-  let fixture: ComponentFixture<NewsfeedPage>;
+describe('SocialfeedPage', () => {
+  let component: SocialfeedPage;
+  let fixture: ComponentFixture<SocialfeedPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewsfeedPage ],
+      declarations: [ SocialfeedPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewsfeedPage);
+    fixture = TestBed.createComponent(SocialfeedPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

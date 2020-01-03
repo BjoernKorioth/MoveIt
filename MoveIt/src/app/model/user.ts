@@ -16,8 +16,8 @@ export class User {
     constructor(id?: string, name?: string, challengesActive?: Array<any>, challengesWon?: Array<any>, group?: number,
                 trophiesWon?: Array<any>, type?: string) {
         // Each parameter is optional, if it's not there, set the default value
-        this.id = id || '';
-        this.name = name || '';
+        this.id = id || '-1';
+        this.name = name || 'No username';
         this.challengesActive = challengesActive || [];
         this.challengesWon = challengesWon || [];
         this.group = group || -1;

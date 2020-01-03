@@ -14,7 +14,7 @@ const routes: Routes = [
         children:
             [
                 {path: 'progress', loadChildren: '../progress/progress.module#ProgressPageModule'},
-                {path: 'newsfeed', loadChildren: '../newsfeed/newsfeed.module#NewsfeedPageModule'},
+                {path: 'socialfeed', loadChildren: '../socialfeed/socialfeed.module#SocialfeedPageModule'},
                 {path: 'leaderboard', loadChildren: '../leaderboard/leaderboard.module#LeaderboardPageModule'},
                 {path: 'rewards', loadChildren: '../rewards/rewards.module#RewardsPageModule'},
                 {path: 'information', loadChildren: '../information/information.module#InformationPageModule'},
