@@ -1,3 +1,13 @@
+interface FireBaseObject {
+    id: string;
+    name: string;
+    challengesActive: Array<any>;
+    challengesWon: Array<any>;
+    group: number;
+    trophiesWon: Array<any>
+    type: string;
+}
+
 export class User {
     id: string;
     name: string;
@@ -44,5 +54,17 @@ export class User {
             trophiesWon: JSON.stringify(this.trophiesWon),
             type: this.type
         };
+    }
+
+    static fromFirebaseObject(id: String, firebaseObject: FireBaseObject){
+        return new User(
+            firebaseObject.id || '',
+            firebaseObject.name || 'Test Account',
+            firebaseObject.challengesActive || [],
+            firebaseObject.challengesWon || [],
+            firebaseObject.group || 2,
+            firebaseObject.trophiesWon || [],
+            firebaseObject.type || ''
+        );
     }
 }

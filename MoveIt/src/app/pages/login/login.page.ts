@@ -52,6 +52,9 @@ export class LoginPage implements OnInit {
                 console.log(res);
                 this.errorMessage = '';
                 this.successMessage = 'Login was successful';
+                this.authService.logUser();
+                console.log(this.authService.getUser());
+                this.navCtrl.navigateForward("/menu");
             }, err => {
                 console.log(err);
                 this.errorMessage = err.message;
@@ -60,6 +63,7 @@ export class LoginPage implements OnInit {
     }
 
     goToRegisterPage() {
+       
         this.navCtrl.navigateForward('/registration');
     }
 

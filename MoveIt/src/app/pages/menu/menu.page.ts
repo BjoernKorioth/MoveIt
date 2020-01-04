@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Router, RouterEvent} from '@angular/router';
 
 import {AuthenticateService} from '../../services/authentication/authentication.service';
+import {AppComponent as App} from '../../app.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-menu',
@@ -9,9 +11,10 @@ import {AuthenticateService} from '../../services/authentication/authentication.
     styleUrls: ['./menu.page.scss'],
 })
 export class MenuPage implements OnInit {
+    private title: string;
     pages = [
         {
-            title: this.Auth.loggedUserDetails()
+            title: this.title || 'Test'
 
         },
         {
@@ -35,7 +38,7 @@ export class MenuPage implements OnInit {
 
     selectedPath = '';
 
-    constructor(private router: Router, private Auth: AuthenticateService) {
+    constructor(private router: Router, private auth: AuthenticateService) {
         this.router.events.subscribe((event: RouterEvent) => {
             if (event && event.url) {
                 this.selectedPath = event.url;
@@ -45,11 +48,13 @@ export class MenuPage implements OnInit {
     }
 
     logout() {
-        this.Auth.logoutUser();
+        this.auth.logoutUser();
         // TODO sent the user back to the login page
     }
 
     ngOnInit() {
+        this.auth.logUser();
+        console.log(this.auth.getUser());
     }
 
 }

@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
 import * as firebase from 'firebase/app';
-import {AngularFireDatabase, AngularFireList} from '@angular/fire/database';
+import {AngularFireDatabase, AngularFireObject} from '@angular/fire/database';
+import {Observable, Subject} from "rxjs";
 import {User} from '../../model/user';
 
 
 @Injectable()
 export class AuthenticateService {
 
-    private user: User;
-
-    private list: AngularFireList<any>;
+    private requestUser: AngularFireObject<User>;
+    private user:User;
 
     constructor(private fireDatabase: AngularFireDatabase) {
     }
@@ -61,6 +61,7 @@ export class AuthenticateService {
             if (firebase.auth().currentUser) {
                 firebase.auth().signOut()
                     .then(() => {
+                        this.user = null;
                         console.log('LOG Out');
                         resolve();
                     }).catch((error) => {
@@ -74,10 +75,39 @@ export class AuthenticateService {
         return firebase.auth().currentUser;
     }
 
-    loggedUserDetails() {
-        // TODO this function is called in the menu page, it returns an error.
-        // this could be because the function is called before the user variable is set in this controller
-        return ''; // this.user.name || 'not found';
+    /*loggedUserDetails() {
+        return new Promise<any>((resolve, reject) => {
+            firebase.database().ref('/users/' + firebase.auth().currentUser.uid).once('value').then(
+                snapshot => {
+                    const data = snapshot.val();
+                    // Convert the data to an activity object and return it
+                    resolve(User.fromFirebaseObject(firebase.auth().currentUser.uid, data));
+                },
+                err => reject(err)
+            );
+        });
+    }*/
+
+    loggedUserDetails():AngularFireObject<User> {
+        this.requestUser = this.fireDatabase.object('/users/' + firebase.auth().currentUser.uid);
+        
+        return this.requestUser;
+    }
+
+    logUser(){
+        if(this.user == null){
+            this.loggedUserDetails().snapshotChanges().subscribe(snapshot => {
+                this.user = snapshot.payload.val();
+                console.log("TEST");
+                console.log(this.user);
+            })
+        }
+        
+    }
+
+    getUser(){
+        console.log(this.user);
+        return this.user;
     }
 }
 
