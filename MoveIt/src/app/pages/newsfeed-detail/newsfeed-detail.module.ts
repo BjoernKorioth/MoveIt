@@ -5,23 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { NewsfeedPage } from './newsfeed.page';
+import { NewsfeedDetailPage } from './newsfeed-detail.page';
 
 const routes: Routes = [
   {
-    path: 'newsfeed',
-    component: NewsfeedPage,
-    children: [
-      { 
-        path: 'detail',
-        loadChildren: '../newsfeed-detail/newsfeed-detail.module#NewsfeedDetailPageModule' 
-      }
-    ]
-  },
-  {
     path: '',
-    redirectTo: 'newsfeed/detail',
-    pathMatch: 'full'
+    component: NewsfeedDetailPage
   }
 ];
 
@@ -32,6 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [NewsfeedPage]
+  declarations: [NewsfeedDetailPage]
 })
-export class NewsfeedPageModule {}
+export class NewsfeedDetailPageModule {}
