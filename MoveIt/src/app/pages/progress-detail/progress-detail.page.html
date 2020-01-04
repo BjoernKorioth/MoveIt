@@ -29,10 +29,9 @@
         Activities      
       </ion-list-header>
   
-      <!--<ion-item *ngFor="let activity of (getAllActivities() | async)">-->
-      <ion-item> 
+      <ion-item *ngFor="let activity of (activities | async)">
         <ion-label>
-          <h2>20.10. 20 minutes running-vigorous</h2>
+          <h2>20.10. 20 minutes {{activity.type}}-{{activity.intensity}}</h2>
         </ion-label>
       </ion-item>
     </ion-list>
