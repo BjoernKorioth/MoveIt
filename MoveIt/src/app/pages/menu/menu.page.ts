@@ -2,8 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router, RouterEvent} from '@angular/router';
 
 import {AuthenticateService} from '../../services/authentication/authentication.service';
-import {AppComponent as App} from '../../app.component';
-import { Title } from '@angular/platform-browser';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'app-menu',
@@ -11,10 +10,10 @@ import { Title } from '@angular/platform-browser';
     styleUrls: ['./menu.page.scss'],
 })
 export class MenuPage implements OnInit {
-    private title: string;
     pages = [
         {
-            title: this.title || 'Test'
+            // The username will appear hear, this is filled in by this.updatePages() as soon as the value is available
+            title: ''
 
         },
         {
@@ -35,7 +34,7 @@ export class MenuPage implements OnInit {
         },
 
     ];
-
+    username: Observable<string>;
     selectedPath = '';
 
     constructor(private router: Router, private auth: AuthenticateService) {
@@ -45,16 +44,27 @@ export class MenuPage implements OnInit {
             }
         });
 
+        this.username = auth.getUsername(); // The username is just the observable
+        // If a new value is received, we have to manually update the pages object so that Angular notices the change
+        this.username.subscribe(username => this.updatePages(username));
     }
 
     logout() {
         this.auth.logoutUser();
-        // TODO sent the user back to the login page
     }
 
     ngOnInit() {
-        this.auth.logUser();
-        console.log(this.auth.getUser());
     }
 
+    /**
+     * Update the pages of the menu
+     *
+     * This method updates the whole pages array when there is a new username available. This is necessary, because
+     * Angular cannot detect changes in the elements of the array.
+     *
+     * @param username the new username
+     */
+    updatePages(username) {
+        this.pages = [{title: username}, ...this.pages.slice(1)];
+    }
 }

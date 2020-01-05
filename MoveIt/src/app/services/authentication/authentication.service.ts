@@ -1,17 +1,14 @@
 import {Injectable} from '@angular/core';
 import * as firebase from 'firebase/app';
-import {AngularFireDatabase, AngularFireObject} from '@angular/fire/database';
-import {Observable, Subject} from "rxjs";
+import {AngularFireDatabase} from '@angular/fire/database';
 import {User} from '../../model/user';
 
 
 @Injectable()
 export class AuthenticateService {
+    private user: User;
 
-    private requestUser: AngularFireObject<User>;
-    private user:User;
-
-    constructor(private fireDatabase: AngularFireDatabase) {
+    constructor(private db: AngularFireDatabase) {
     }
 
     /**
@@ -27,7 +24,7 @@ export class AuthenticateService {
                 .then(
                     // If the auth service could create the new user, we'll enter this function
                     (userCredential) => {
-                        // We get a user credential returned, from which we extract the user
+                        // A user credential is returned, from which we can extract the user
                         const user = userCredential.user;
                         // Now, we can create a new user object with the provided information
                         this.user = new User(user.uid, value.firstname + ' ' + value.surname);
@@ -44,7 +41,7 @@ export class AuthenticateService {
     }
 
     registerOnDatabase() {
-        return this.fireDatabase.database.ref().child('users').child(this.user.id).set(this.user.toFirebaseObject());
+        return this.db.object<User>('/users/' + this.user.id).set(this.user);
     }
 
     loginUser(value) {
@@ -71,43 +68,8 @@ export class AuthenticateService {
         });
     }
 
-    userDetails() {
-        return firebase.auth().currentUser;
-    }
-
-    /*loggedUserDetails() {
-        return new Promise<any>((resolve, reject) => {
-            firebase.database().ref('/users/' + firebase.auth().currentUser.uid).once('value').then(
-                snapshot => {
-                    const data = snapshot.val();
-                    // Convert the data to an activity object and return it
-                    resolve(User.fromFirebaseObject(firebase.auth().currentUser.uid, data));
-                },
-                err => reject(err)
-            );
-        });
-    }*/
-
-    loggedUserDetails():AngularFireObject<User> {
-        this.requestUser = this.fireDatabase.object('/users/' + firebase.auth().currentUser.uid);
-        
-        return this.requestUser;
-    }
-
-    logUser(){
-        if(this.user == null){
-            this.loggedUserDetails().snapshotChanges().subscribe(snapshot => {
-                this.user = snapshot.payload.val();
-                console.log("TEST");
-                console.log(this.user);
-            })
-        }
-        
-    }
-
-    getUser(){
-        console.log(this.user);
-        return this.user;
+    getUsername() {
+        return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/name').valueChanges();
     }
 }
 
