@@ -12,44 +12,44 @@
   <ion-card>
 
     <ion-item>
-      <ion-avatar item-start>
+      <ion-avatar slot="start">
         <img src="../assets/Profilbild.jpg">
       </ion-avatar>
-      <h2 item-end>Marty McFly</h2>
-      <p>November 5, 1955</p>
+      <ion-label>
+        <h3>Phil Doe</h3>
+        <p>Dec 10, 2019</p>
+      </ion-label>
     </ion-item>
-    
     <img src="../assets/Laufschuhe.jpg">
 
     <ion-card-content>
-      <p>Phil ran 10 km.</p>
+      Phil ran 10 km.
     </ion-card-content>
 
-    <ion-row>
-      <ion-col>
-       <button ion-button icon-start clear small>
-          <ion-icon name="thumbs-up"></ion-icon>
-          <div>12 Likes</div>
+    <ion-footer>
+      <ion-row>
+        <ion-col center text-center>
+          <button>
+            <ion-icon name="thumbs-up"></ion-icon>
+            <div>1.5k Likes</div>
           </button>
-      </ion-col>
-      <ion-col>
-        <!--<button ion-button icon-start clear small>-->
-          <ion-icon name="text"></ion-icon>
-          <div>4 Comments</div>
-      </ion-col>
-      <ion-col align-self-center text-center>
-        <ion-note>
-          11h ago
-        </ion-note>
-      </ion-col>
-    </ion-row>
+        </ion-col>
+        <ion-col center text-center>
+          <button>
+            <ion-icon name="text"></ion-icon>
+            <div>4 Comments</div>
+          </button>
+        </ion-col>
+        <ion-col center text-center>
+          <button>
+            <ion-icon name="time"></ion-icon>
+            <div>11h ago</div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-footer>
   
   </ion-card>
 
 </ion-content>
 
-<style>
-  .social-cards ion-col {
-    padding: 0;
-  }
-</style>
