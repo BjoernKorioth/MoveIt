@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController} from '@ionic/angular';
-import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 import {AuthenticateService} from '../../services/authentication/authentication.service';
 
@@ -52,9 +52,7 @@ export class LoginPage implements OnInit {
                 console.log(res);
                 this.errorMessage = '';
                 this.successMessage = 'Login was successful';
-                this.authService.logUser();
-                console.log(this.authService.getUser());
-                this.navCtrl.navigateForward("/menu");
+                this.navCtrl.navigateForward('/menu');
             }, err => {
                 console.log(err);
                 this.errorMessage = err.message;
@@ -63,7 +61,6 @@ export class LoginPage implements OnInit {
     }
 
     goToRegisterPage() {
-       
         this.navCtrl.navigateForward('/registration');
     }
 
