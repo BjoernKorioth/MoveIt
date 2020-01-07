@@ -7,6 +7,7 @@ import {Activity} from '../../model/activity';
     providedIn: 'root'
 })
 export class ActivityService {
+    activityLocation = '/activities/';
 
     constructor(private fireDatabase: AngularFireDatabase) {
     }
@@ -18,7 +19,7 @@ export class ActivityService {
      */
     createActivity(activity: Activity) {
         return new Promise<any>((resolve, reject) => {
-            const id = firebase.database().ref().child('activities').child(firebase.auth().currentUser.uid).push().key;
+            const id = firebase.database().ref(this.activityLocation + firebase.auth().currentUser.uid).push().key;
             activity.id = id;
 
             this.fireDatabase.database.ref('/activities/' + firebase.auth().currentUser.uid).child(id)
@@ -38,7 +39,7 @@ export class ActivityService {
      */
     editActivity(activityId, activity: Activity) {
         return new Promise<any>((resolve, reject) => {
-            this.fireDatabase.database.ref('/activities/' + firebase.auth().currentUser.uid).child(activityId)
+            this.fireDatabase.database.ref(this.activityLocation + firebase.auth().currentUser.uid).child(activityId)
                 .set(activity.toFirebaseObject()).then(
                 res => resolve(res),
                 err => reject(err)
@@ -53,7 +54,7 @@ export class ActivityService {
      */
     getActivity(activityId) {
         return new Promise<any>((resolve, reject) => {
-            firebase.database().ref('/activities/' + firebase.auth().currentUser.uid).child(activityId).once('value').then(
+            firebase.database().ref(this.activityLocation + firebase.auth().currentUser.uid).child(activityId).once('value').then(
                 snapshot => {
                     const data = snapshot.val();
                     // Convert the data to an activity object and return it
@@ -68,18 +69,6 @@ export class ActivityService {
      * Retrieve all activities of the current user
      */
     getAllUserActivities() {
-        return new Promise<any>((resolve, reject) => {
-            firebase.database().ref('/activities/' + firebase.auth().currentUser.uid).once('value').then(
-                snapshot => {
-                    // The data is an object which contains each activity as a key
-                    const data = snapshot.val();
-
-                    // Iterate over the object keys (= the activity ids) and reconstruct an activity object for each
-                    const array = Object.keys(data).map(key => Activity.fromFirebaseObject(key, data[key]));
-                    resolve(array);
-                },
-                err => reject(err)
-            );
-        });
+        return this.fireDatabase.list<Activity>(this.activityLocation + firebase.auth().currentUser.uid).valueChanges();
     }
 }

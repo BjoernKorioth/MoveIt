@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivityService} from '../../services/activity/activity.service';
 import {Activity} from '../../model/activity';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'app-progress-detail',
@@ -8,13 +9,13 @@ import {Activity} from '../../model/activity';
     styleUrls: ['./progress-detail.page.scss'],
 })
 export class ProgressDetailPage implements OnInit {
-activities: any;
+    activities: Observable<Activity[]>;
+
     constructor(private activityService: ActivityService) {
-       //console.log(this.activities); 
-        this.activities = this.getAllActivities();
+        this.activities = this.activityService.getAllUserActivities();
     }
 
-    ngOnInit() {     
+    ngOnInit() {
     }
 
     /**
@@ -62,11 +63,6 @@ activities: any;
      * Retrieves an array of all activities of a current user
      */
     getAllActivities() {
-       /* this.activityService.getAllUserActivities().then(
-            res => console.log(res),
-            err => console.log(err)
-        );*/
-
-      return this.activityService.getAllUserActivities();
+        return this.activityService.getAllUserActivities();
     }
 }
