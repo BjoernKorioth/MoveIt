@@ -6,8 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard-detail.page.scss'],
 })
 export class DashboardDetailPage implements OnInit {
+allservices: any;
+  constructor() { 
 
-  constructor() { }
+    this.allservices = [
+      [{label:'Newsfeed'}, {label:'Leaderboard'}],
+      [{label:'Rewards'}, {label:'Profile'}]
+    ];
+  }
 
   ngOnInit() {
   }

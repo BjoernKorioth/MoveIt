@@ -8,7 +8,8 @@
 </ion-header>
 
 <ion-content>
-  <div>
+
+ <!-- <div>
     <ion-row>
       <ion-col size="5" margin-top=80>
         <ion-card>
@@ -25,6 +26,18 @@
         </ion-card>
       </ion-col>
     </ion-row>
-  </div>
+  </div>-->
+
+  <ion-row *ngFor="let row of allservices">
+    <ng-container *ngFor="let item of row">
+      <ion-col style="padding:1px;" [attr.col-8]="item.col8">
+        <ion-card>
+          <ion-item>
+        <div href="../pages/newsfeed.page.html"  class="tile">{{item.label}}</div>
+      </ion-item>
+      </ion-card>
+      </ion-col>
+    </ng-container>
+  </ion-row>
 
 </ion-content>
