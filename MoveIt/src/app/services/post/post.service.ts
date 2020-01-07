@@ -128,19 +128,8 @@ export class PostService {
      * Retrieve all activities of the group
      */
     getAllPosts() {
-        return new Promise<any>((resolve, reject) => {
-            firebase.database().ref('/posts/' + this.user.group).once('value').then(
-                snapshot => {
-                    // The data is an object which contains each post as a key
-                    const data = snapshot.val();
-
-                    // Iterate over the object keys (= the post ids) and reconstruct an post object for each
-                    const array = Object.keys(data).map(key => Post.fromFirebaseObject(this.user.group, key, data[key]));
-                    resolve(array);
-                },
-                err => reject(err)
-            );
-        });
+        return this.fireDatabase.list<Post>('/posts/' + this.user.group).valueChanges();
+        // .pipe(map(array => array.map(post => Post.fromFirebaseObject(this.user.group, post.id, post))));
     }
 
     /**
@@ -209,11 +198,6 @@ export class PostService {
      * @param postId id of the post
      */
     getAllComments(postId: string) {
-        return new Promise<any>((resolve, reject) => {
-            this.getPost(postId).then(
-                post => resolve(post.comments),
-                err => reject(err)
-            );
-        });
+        return this.fireDatabase.list<Comment>('/posts/' + this.user.group + '/' + postId).valueChanges();
     }
 }

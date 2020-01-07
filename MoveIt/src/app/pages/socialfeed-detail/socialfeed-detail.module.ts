@@ -10,7 +10,7 @@ import { SocialfeedDetailPage } from './socialfeed-detail.page';
 const routes: Routes = [
   {
     path: '',
-    component: SocialfeedDetailPage
+    component: SocialfeedDetailPage,
   }
 ];
 

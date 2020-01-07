@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Post} from '../../model/post';
 import {Comment} from '../../model/comment';
 import {PostService} from '../../services/post/post.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-socialfeed-detail',
@@ -9,10 +10,20 @@ import {PostService} from '../../services/post/post.service';
   styleUrls: ['./socialfeed-detail.page.scss'],
 })
 export class SocialfeedDetailPage implements OnInit {
+  posts: Observable<Post[]>;
 
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService) {
+    this.posts = postService.getAllPosts();
+    this.posts.subscribe(res => {
+      console.log(res);
+    });
+  }
 
   ngOnInit() {
+  }
+
+  getTimeDifference(date) {
+    return new Date() - new Date(date);
   }
 
   newPost() {
@@ -26,63 +37,60 @@ export class SocialfeedDetailPage implements OnInit {
   }
 
   editPost() {
-    this.postService.editPost('-LxfEUMtVzWQATKAN_KG', new Post()).then(
+    this.postService.editPost('-LxfARsp_2al7-W3JYcf', new Post()).then(
         res => console.log(res),
         err => console.log(err)
     );
   }
 
   getPost() {
-    this.postService.getPost('-LxfEUMtVzWQATKAN_KG').then(
+    this.postService.getPost('-LxfARsp_2al7-W3JYcf').then(
         res => console.log(res),
         err => console.log(err)
     );
   }
 
   getAllPosts() {
-    this.postService.getAllPosts().then(
-        res => console.log(res),
-        err => console.log(err)
-    );
+    return this.postService.getAllPosts();
   }
 
   like() {
-    this.postService.likePost('-LxfEUMtVzWQATKAN_KG').then(
+    this.postService.likePost('-LxfARsp_2al7-W3JYcf').then(
         res => console.log(res),
         err => console.log(err)
     );
   }
 
   unlike() {
-    this.postService.unlikePost('-LxfEUMtVzWQATKAN_KG').then(
+    this.postService.unlikePost('-LxfARsp_2al7-W3JYcf').then(
         res => console.log(res),
         err => console.log(err)
     );
   }
 
   newComment() {
-    this.postService.createComment('-LxfEUMtVzWQATKAN_KG', new Comment()).then(
+    this.postService.createComment('-LxfARsp_2al7-W3JYcf', new Comment()).then(
         res => console.log(res),
         err => console.log(err)
     );
   }
 
   editComment() {
-    this.postService.editComment('-LxfEUMtVzWQATKAN_KG', '-LxfDHCgec1oZ268jioI', new Comment()).then(
+    this.postService.editComment('-LxfARsp_2al7-W3JYcf', '-LxfDHCgec1oZ268jioI', new Comment()).then(
         res => console.log(res),
         err => console.log(err)
     );
   }
 
   getComment() {
-    this.postService.getComment('-LxfEUMtVzWQATKAN_KG', '-LxfDHCgec1oZ268jioI').then(
+    this.postService.getComment('-LxfARsp_2al7-W3JYcf', '-LxfDHCgec1oZ268jioI').then(
         res => console.log(res),
         err => console.log(err)
     );
   }
 
   getAllComments() {
-    this.postService.getAllComments('-LxfEUMtVzWQATKAN_KG').then(
+    this.postService.getAllComments('-LxfARsp_2al7-W3JYcf').then(
         res => console.log(res),
         err => console.log(err)
     );
