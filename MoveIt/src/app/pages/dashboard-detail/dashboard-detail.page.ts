@@ -10,8 +10,8 @@ allservices: any;
   constructor() { 
 
     this.allservices = [
-      [{label:'Newsfeed'}, {label:'Leaderboard'}],
-      [{label:'Rewards'}, {label:'Profile'}]
+      [{label:'Newsfeed', routerLink:'/menu/newsfeed'}, {label:'Leaderboard', routerLink:'/menu/leaderboard'}],
+      [{label:'Rewards', routerLink:'/menu/rewards'}, {label:'Profile', routerLink:'/menu/rewards'}]
     ];
   }
 

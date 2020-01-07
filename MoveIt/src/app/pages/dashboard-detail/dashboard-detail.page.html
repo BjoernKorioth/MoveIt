@@ -31,9 +31,9 @@
   <ion-row *ngFor="let row of allservices">
     <ng-container *ngFor="let item of row">
       <ion-col style="padding:1px;" [attr.col-8]="item.col8">
-        <ion-card>
+        <ion-card [routerLink]='item.routerLink'>
           <ion-item>
-        <div href="../pages/newsfeed.page.html"  class="tile">{{item.label}}</div>
+        <div class="tile">{{item.label}}</div>
       </ion-item>
       </ion-card>
       </ion-col>
