@@ -10,10 +10,10 @@ import {AuthenticateService} from '../../services/authentication/authentication.
 })
 export class MenuPage implements OnInit {
     pages = [
-        {
-            title: this.Auth.loggedUserDetails()
+       // {
+         //   title: this.Auth.loggedUserDetails()
 
-        },
+        //},
         {
             title: 'Dashboard',
             url: '/menu/dashboard'
