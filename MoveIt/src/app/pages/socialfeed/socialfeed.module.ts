@@ -9,7 +9,7 @@ import {SocialfeedPage} from './socialfeed.page';
 
 const routes: Routes = [
     {
-        path: '',
+        path: 'socialfeed',
         component: SocialfeedPage,
         children: [
             {

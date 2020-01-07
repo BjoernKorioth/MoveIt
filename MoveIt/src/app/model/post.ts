@@ -51,7 +51,6 @@ export class Post {
      */
 
     static fromFirebaseObject(group: number, id: string, firebaseObject: FireBaseObject) {
-        // @ts-ignore TS2339
         let comments = [];
         if (firebaseObject.comments && typeof firebaseObject.comments === 'object') {
             comments = Object.keys(firebaseObject.comments).map(key => Comment.fromFirebaseObject(id, key, firebaseObject.comments[key]));

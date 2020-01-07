@@ -3,12 +3,12 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>Socialfeed</ion-title>
+    <ion-title>Newsfeed</ion-title>
   </ion-toolbar>
 </ion-header>
 
 
-<ion-content>
+<ion-content class="cards-bg social-cards">
   <ion-button type="button" (click)='newPost()'>New Post</ion-button>
   <ion-button type="button" (click)='editPost()'>Edit Post</ion-button>
   <ion-button type="button" (click)='like()'>Like</ion-button>
@@ -19,4 +19,49 @@
   <ion-button type="button" (click)='editComment()'>Edit Comment</ion-button>
   <ion-button type="button" (click)='getComment()'>Get Comment</ion-button>
   <ion-button type="button" (click)='getAllComments()'>Get All Comments</ion-button>
+
+  <ion-card *ngFor="let post of (posts | async)">
+
+    <ion-item>
+      <ion-avatar slot="start">
+        <img src="../../assets/Profilbild.jpg">
+        <!--img [src]="post.image"-->
+      </ion-avatar>
+      <ion-label>
+        <h3>{{post.user}}</h3>
+        <p>{{post.createdAt}}</p>
+      </ion-label>
+    </ion-item>
+    <!--<img src="../assets/Laufschuhe.jpg">-->
+
+    <ion-card-content>
+      {{post.content}}
+    </ion-card-content>
+
+
+    <ion-row>
+      <ion-col center text-center>
+        <button>
+          <ion-icon name="thumbs-up"></ion-icon>
+          <div>{{post.likes?.length || 0}} Likes</div>
+        </button>
+      </ion-col>
+      <ion-col center text-center>
+        <button>
+          <ion-icon name="text"></ion-icon>
+          <div>{{post.comments?.length || 0}} Comments</div>
+        </button>
+      </ion-col>
+      <ion-col center text-center>
+        <button>
+          <ion-icon name="time"></ion-icon>
+          <div>{{getTimeDifference(post.createdAt)}} ago</div>
+        </button>
+      </ion-col>
+    </ion-row>
+
+
+  </ion-card>
+
 </ion-content>
+
