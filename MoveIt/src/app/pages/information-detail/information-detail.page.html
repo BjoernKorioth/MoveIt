@@ -1,41 +1,46 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Information</ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Information</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 
-
 <ion-content padding>
-  <ion-card >
-      <img src="img/nin-live.png"/>
-    <ion-card-header>
-      <ion-card-title>Moderate vs. vigorous</ion-card-title>
-    </ion-card-header>  
-    <ion-card-content>
-      Intensity refers to the rate at which the activity is being performed or the magnitude of the effort required to perform an activity or exercise. It can be thought of "How hard a person works to do the activity".
+    <ion-button type="button" (click)='createInformation()'>Create</ion-button>
+    <ion-button type="button" (click)='editInformation()'>Edit</ion-button>
+    <ion-button type="button" (click)='getInformation()'>Get</ion-button>
+    <ion-button type="button" (click)='getAllInformation()'>Get All</ion-button>
 
-       <ion-button fill="outline" slot="end" routerLink="/menu/information/information/single">View</ion-button>
-    </ion-card-content>  
-  </ion-card>
-  
-  <ion-card >
-    <img src="img/nin-live.png"/>
-  <ion-card-header>
-    <ion-card-title>Moderate vs. vigorous</ion-card-title>
-  </ion-card-header>  
-  <ion-card-content>
-    Intensity refers to the rate at which the activity is being performed or the magnitude of the effort required to perform an activity or exercise. It can be thought of "How hard a person works to do the activity".
+    <ion-card>
+        <img src="img/nin-live.png"/>
+        <ion-card-header>
+            <ion-card-title>Moderate vs. vigorous</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            Intensity refers to the rate at which the activity is being performed or the magnitude of the effort
+            required to perform an activity or exercise. It can be thought of "How hard a person works to do the
+            activity".
 
-     <ion-button fill="outline" slot="end" routerLink="/menu/information/information/single">View</ion-button>
-  </ion-card-content>  
-</ion-card>
-  
+            <ion-button fill="outline" slot="end" routerLink="/menu/information/information/single">View</ion-button>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <img src="img/nin-live.png"/>
+        <ion-card-header>
+            <ion-card-title>Moderate vs. vigorous</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            Intensity refers to the rate at which the activity is being performed or the magnitude of the effort
+            required to perform an activity or exercise. It can be thought of "How hard a person works to do the
+            activity".
+
+            <ion-button fill="outline" slot="end" routerLink="/menu/information/information/single">View</ion-button>
+        </ion-card-content>
+    </ion-card>
+
 
 </ion-content>
