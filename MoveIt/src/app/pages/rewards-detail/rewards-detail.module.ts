@@ -5,23 +5,12 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { RewardsPage } from './rewards.page';
+import { RewardsDetailPage } from './rewards-detail.page';
 
 const routes: Routes = [
   {
-    path: 'rewards',
-    component: RewardsPage,
-    children: [
-      {
-        path: 'detail',
-        loadChildren: '../rewards-detail/rewards-detail.module#RewardsDetailPageModule'
-      }
-      ]
-  },
-  {
     path: '',
-    redirectTo: 'rewards/detail',
-    pathMatch: 'full'
+    component: RewardsDetailPage
   }
 ];
 
@@ -32,6 +21,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [RewardsPage]
+  declarations: [RewardsDetailPage],
+  exports: [RewardsDetailPage]
 })
-export class RewardsPageModule {}
+export class RewardsDetailPageModule {}
