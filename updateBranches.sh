@@ -2,41 +2,34 @@
 
 git fetch -a;
 
-git checkout account-management;
+git checkout origin/account-management;
 git merge origin/master;
 git push;
 
-git checkout add-activity;
+git checkout origin/admin-dashboard;
 git merge origin/master;
 git push;
 
-git checkout admin-dashboard;
+git checkout origin/information;
 git merge origin/master;
 git push;
 
-git checkout information;
+git checkout origin/leaderboard;
 git merge origin/master;
 git push;
 
-git checkout leaderboard;
+git checkout origin/socialfeed;
 git merge origin/master;
 git push;
 
-git checkout newsfeed;
+git checkout origin/progress;
 git merge origin/master;
 git push;
 
-git checkout progress;
+git checkout origin/rewards;
 git merge origin/master;
 git push;
 
-git checkout rewards;
+git checkout origin/dashboard;
 git merge origin/master;
 git push;
-
-git checkout socialfeed;
-git merge origin/master;
-git push;
-
-
-
