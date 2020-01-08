@@ -9,7 +9,7 @@
 
 
     <ion-item>
-      <ion-label  position="floating" color="primary">Firstname</ion-label>
+      <ion-label  position="floating">Firstname</ion-label>
       <ion-input type="text" formControlName="firstname"></ion-input>
     </ion-item>
     <div class="validation-errors">
@@ -21,7 +21,7 @@
     </div>
 
     <ion-item>
-      <ion-label  position="floating" color="primary">Surname</ion-label>
+      <ion-label  position="floating">Surname</ion-label>
       <ion-input type="text" formControlName="surname"></ion-input>
     </ion-item>
     <div class="validation-errors">
@@ -33,7 +33,7 @@
     </div>
 
     <ion-item>
-      <ion-label  position="floating" color="primary">Email</ion-label>
+      <ion-label  position="floating">Email</ion-label>
       <ion-input type="text" formControlName="email"></ion-input>
     </ion-item>
     <div class="validation-errors">
@@ -44,8 +44,44 @@
       </ng-container>
     </div>
 
+    <div input-wrapper></div>
     <ion-item>
-      <ion-label  position="floating" color="primary">Password</ion-label>
+      <ion-label>Birth Date</ion-label>
+      <ion-datetime placeholder="Select Date"></ion-datetime>
+    </ion-item>
+
+    <ion-radio-group>
+
+      <ion-list-header>
+        Gender
+      </ion-list-header>
+
+    <ion-row radio-group>
+      <ion-col>
+        <ion-item>
+          <ion-label>m</ion-label>
+          <ion-radio value="m"></ion-radio>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+         <ion-label>f</ion-label>
+          <ion-radio value="f"></ion-radio>
+        </ion-item>
+      </ion-col>
+      <ion-col>
+        <ion-item>
+         <ion-label>d</ion-label>
+          <ion-radio value="d"></ion-radio>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+  </ion-radio-group>
+
+
+    <ion-item>
+      <ion-label  position="floating">Password</ion-label>
       <ion-input type="password" formControlName="password" class="form-controll" required></ion-input>
     </ion-item>
     <div class="validation-errors">
