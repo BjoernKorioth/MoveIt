@@ -2,34 +2,34 @@
 
 git fetch -a;
 
-git checkout origin/account-management;
-git merge origin/master;
-git push;
+git checkout -B account-management --track origin/account-management;
+git merge --ff-only origin/master;
+git push origin account-management;
 
-git checkout origin/admin-dashboard;
-git merge origin/master;
-git push;
+git checkout -B admin-dashboard --track origin/admin-dashboard;
+git merge --ff-only origin/master;
+git push origin admin-dashboard;
 
-git checkout origin/information;
-git merge origin/master;
-git push;
+git checkout -B information --track origin/information;
+git merge --ff-only origin/master;
+git push origin information;
 
-git checkout origin/leaderboard;
-git merge origin/master;
-git push;
+git checkout -B leaderboard --track origin/leaderboard;
+git merge --ff-only origin/master;
+git push origin leaderboard;
 
-git checkout origin/socialfeed;
-git merge origin/master;
-git push;
+git checkout -B socialfeed --track origin/socialfeed;
+git merge --ff-only origin/master;
+git push origin socialfeed;
 
-git checkout origin/progress;
-git merge origin/master;
-git push;
+git checkout -B progress --track origin/progress;
+git merge --ff-only origin/master;
+git push origin progress;
 
-git checkout origin/rewards;
-git merge origin/master;
-git push;
+git checkout -B rewards --track origin/rewards;
+git merge --ff-only origin/master;
+git push origin rewards;
 
-git checkout origin/dashboard;
-git merge origin/master;
-git push;
+git checkout -B dashboard --track origin/dashboard;
+git merge --ff-only origin/master;
+git push origin dashboard;
