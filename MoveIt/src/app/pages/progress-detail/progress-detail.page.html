@@ -11,10 +11,32 @@
 </ion-header>
 
 <ion-content padding>
-    Progress
-
     <ion-button type="button" (click)='createActivity()'>Create</ion-button>
     <ion-button type="button" (click)='editActivity()'>Edit</ion-button>
     <ion-button type="button" (click)='getActivity()'>Get</ion-button>
     <ion-button type="button" (click)='getAllActivities()'>Get All</ion-button>
+
+    <ion-list>
+    <ion-list-header>
+      <ion-label>Goals</ion-label>
+    </ion-list-header>
+    <!-- Colorize Progressbar -->
+   <ion-item> <ion-progress-bar color="primary" value="0.9"></ion-progress-bar></ion-item>
+   <ion-item> <ion-progress-bar color="primary" value="0.58"></ion-progress-bar></ion-item>
+   <ion-item> <ion-progress-bar color="primary" value="0.27"></ion-progress-bar></ion-item>
+  </ion-list>
+
+
+    <ion-list>
+      <ion-list-header>
+        Activities      
+      </ion-list-header>
+  
+      <ion-item *ngFor="let activity of (activities | async)">
+        <ion-label>
+          <h2>20.10. 20 minutes {{activity.type}}-{{activity.intensity}}</h2>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
 </ion-content>

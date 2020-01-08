@@ -8,12 +8,6 @@ interface FireBaseObject {
 }
 
 export class Activity {
-    id: string;
-    distance: object;
-    endTime: Date;
-    intensity: string;
-    startTime: Date;
-    type: string;
 
     /**
      * Constructor to create Activity
@@ -30,6 +24,15 @@ export class Activity {
         this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
         this.type = type || 'running';
     }
+
+    static types = ['running', 'swimming', 'workout'];
+    static intensities = ['moderate', 'vigorous', 'weight training'];
+    id: string;
+    distance: object;
+    endTime: Date;
+    intensity: string;
+    startTime: Date;
+    type: string;
 
     /**
      * Creates an Activity object from a firebase query
