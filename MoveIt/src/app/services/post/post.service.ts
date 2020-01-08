@@ -13,7 +13,8 @@ export class PostService {
     private user: User;
 
     constructor(private fireDatabase: AngularFireDatabase, private authenticateService: AuthenticateService) {
-        this.user = authenticateService.loggedUserDetails();
+        // TODO get user
+        this.user = new User();
     }
 
     /**
