@@ -5,26 +5,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { DashboardPage } from './dashboard.page';
+import { DashboardDetailPage } from './dashboard-detail.page';
 
 const routes: Routes = [
   {
-    path: 'dashboard',
-    component: DashboardPage,
-    children: [
-      { 
-        path: 'detail',
-        loadChildren: '../dashboard-detail/dashboard-detail.module#DashboardDetailPageModule' 
-      }
-      
-    ]
-  },
-  {
     path: '',
-    redirectTo: 'dashboard/detail',
-    pathMatch: 'full'
+    component: DashboardDetailPage
   }
-  ];
+];
 
 @NgModule({
   imports: [
@@ -33,6 +21,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [DashboardPage]
+  declarations: [DashboardDetailPage]
 })
-export class DashboardPageModule {}
+export class DashboardDetailPageModule {}
