@@ -23,7 +23,7 @@ export class SocialfeedDetailPage implements OnInit {
   }
 
   getTimeDifference(date) {
-    return new Date() - new Date(date);
+    // return new Date() - new Date(date);
   }
 
   newPost() {
@@ -90,9 +90,6 @@ export class SocialfeedDetailPage implements OnInit {
   }
 
   getAllComments() {
-    this.postService.getAllComments('-LxfARsp_2al7-W3JYcf').then(
-        res => console.log(res),
-        err => console.log(err)
-    );
+    return this.postService.getAllComments('-LxfARsp_2al7-W3JYcf');
   }
 }
