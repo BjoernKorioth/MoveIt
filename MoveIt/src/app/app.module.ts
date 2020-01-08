@@ -17,6 +17,7 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 import {ReactiveFormsModule} from '@angular/forms';
 
 import {AuthenticateService} from './services/authentication/authentication.service';
+import {AngularFireAuthGuardModule} from '@angular/fire/auth-guard';
 
 
 const firebaseConfig = {
@@ -41,7 +42,8 @@ const firebaseConfig = {
         AppRoutingModule,
         AngularFireAuthModule,
         AngularFirestoreModule,
-        AngularFireDatabaseModule
+        AngularFireDatabaseModule,
+        AngularFireAuthGuardModule
     ],
     providers: [
         StatusBar,

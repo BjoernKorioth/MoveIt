@@ -6,11 +6,16 @@ import {RouterModule, Routes} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 
 import {MenuPage} from './menu.page';
+import {AngularFireAuthGuard, redirectUnauthorizedTo} from '@angular/fire/auth-guard';
+
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 
 const routes: Routes = [
     {
         path: '',
         component: MenuPage,
+        canActivate: [AngularFireAuthGuard],
+        data: {authGuardPipe: redirectUnauthorizedToLogin},
         children:
             [
                 {path: 'progress', loadChildren: '../progress/progress.module#ProgressPageModule'},
