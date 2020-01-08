@@ -29,12 +29,14 @@ Install Ionic with Cordova by running the following command in a console of your
 
 ```$ npm install -g ionic cordova```
 
+Note: You might need ```sudo``` rights to install those packages globally.
+
 ## Installation
 To get the project up and running, clone the repository first by running the following command in your console:
 
 ```$ git clone https://github.com/BjoernKorioth/MoveIt.git```
 
-Now, enter the project folder with ```cd MoveIt``` and run:
+Now, enter the project folder (the subfolder MoveIt) with ```cd MoveIt/MoveIt``` and run:
 
 ```$ npm install```
 

@@ -10,11 +10,11 @@ import {AuthenticateService} from '../../services/authentication/authentication.
 })
 export class MenuPage implements OnInit {
     pages = [
-        {
+        //{
             // TODO add dynamic loading if the value comes in later
-            title: this.Auth.loggedUserDetails().name
+           // title: this.Auth.loggedUserDetails().name
 
-        },
+        //},
         {
             title: 'Dashboard',
             url: '/menu/dashboard'

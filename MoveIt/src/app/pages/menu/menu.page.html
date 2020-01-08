@@ -1,5 +1,5 @@
 <ion-split-pane contentId="content">
-  <ion-menu contentId="content">
+  <ion-menu side="end" contentId="content">
 
     <ion-header>
       <ion-toolbar color="primary">
@@ -10,7 +10,8 @@
     <ion-content>
       <ion-list>
         
-        <ion-menu-toggle auto-hide="false" *ngFor="let p of pages">
+      
+        <ion-menu-toggle side="end" auto-hide="false" *ngFor="let p of pages" >
           <ion-item [routerLink]="p.url" routerDirection="root" [class.active-item]="selectedPath.startsWith(p.url)">
             <ion-label>
               {{ p.title}}
