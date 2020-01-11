@@ -3,6 +3,7 @@ import {Post} from '../../model/post';
 import {Comment} from '../../model/comment';
 import {PostService} from '../../services/post/post.service';
 import {Observable} from 'rxjs';
+import { Location } from  '@angular/common';
 
 @Component({
   selector: 'app-socialfeed-detail',
@@ -12,7 +13,8 @@ import {Observable} from 'rxjs';
 export class SocialfeedDetailPage implements OnInit {
   posts: Observable<Post[]>;
 
-  constructor(private postService: PostService) {
+  constructor(private postService: PostService, private location:Location) {
+    this.location = location;
     this.posts = postService.getAllPosts();
     this.posts.subscribe(res => {
       console.log(res);
@@ -20,6 +22,10 @@ export class SocialfeedDetailPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  goBack(){
+    this.location.back();
   }
 
   getTimeDifference(date) {

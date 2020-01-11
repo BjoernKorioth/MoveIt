@@ -24,7 +24,6 @@ export class AddActivityDetailPage implements OnInit {
 
   goBack(){
     this.location.back();
-    console.log("hello");
   }
 
   ngOnInit() {
