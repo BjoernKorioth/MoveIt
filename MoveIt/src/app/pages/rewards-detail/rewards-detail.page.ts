@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from  '@angular/common';
 
 import {Challenge} from '../../model/challenge';
 
@@ -18,7 +19,7 @@ export class RewardsDetailPage implements OnInit {
   challengesActiveObserve: Observable<Array<Challenge>>
   activeChallenges: Array<Challenge>;
 
-  constructor(private challService: ChallengeService) { 
+  constructor(private challService: ChallengeService, private location:Location) { 
 
     this.challengesObserve = this.challService.getAllAvailableChallenges();
 
@@ -31,8 +32,7 @@ export class RewardsDetailPage implements OnInit {
       this.identifyChallenge(this.activeChallenges[i]);
     }});
 
-
-
+    this.location = location;
     this.trophies = [
       {
         description: 'You get this trophy for winning 10 times a daily goal.',
@@ -127,6 +127,10 @@ export class RewardsDetailPage implements OnInit {
         this.activeChallenges.splice(i,i+1);
       }
     }
+  }
+
+  goBack(){
+    this.location.back();
   }
 
 }

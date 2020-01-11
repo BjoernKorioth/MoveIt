@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Activity} from '../../model/activity';
 import {ActivityService} from '../../services/activity/activity.service';
+import { Location } from  '@angular/common';
 
 @Component({
   selector: 'app-add-activity-detail',
@@ -13,10 +14,16 @@ export class AddActivityDetailPage implements OnInit {
   types: Array<string>;
   intensities: Array<string>;
 
-  constructor(private activityService: ActivityService) {
+  constructor(private activityService: ActivityService, private location: Location) {
     this.activity = new Activity();
+    this.location = location;
     this.types = Activity.types;
     this.intensities = Activity.intensities;
+
+  }
+
+  goBack(){
+    this.location.back();
   }
 
   ngOnInit() {
