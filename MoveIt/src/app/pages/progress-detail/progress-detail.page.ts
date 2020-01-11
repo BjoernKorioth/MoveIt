@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivityService} from '../../services/activity/activity.service';
 import {Activity} from '../../model/activity';
 import {Observable} from 'rxjs';
+import { Location } from  '@angular/common';
 
 @Component({
     selector: 'app-progress-detail',
@@ -11,12 +12,17 @@ import {Observable} from 'rxjs';
 export class ProgressDetailPage implements OnInit {
     activities: Observable<Activity[]>;
 
-    constructor(private activityService: ActivityService) {
+    constructor(private activityService: ActivityService, private location: Location) {
         this.activities = this.activityService.getAllUserActivities();
+        this.location = location;
     }
 
     ngOnInit() {
     }
+
+    goBack(){
+        this.location.back();
+      }
 
     /**
      * Create a new activity
