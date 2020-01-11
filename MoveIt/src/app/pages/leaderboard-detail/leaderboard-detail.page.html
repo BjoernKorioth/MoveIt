@@ -42,7 +42,8 @@
   </ion-list>
 
   <ion-list *ngSwitchCase="'actMinutes'">
-    <ion-item *ngFor="let person of persons">
+    <ion-item *ngFor="let person of persons; let counter = index" [attr.data-index]="counter">
+      <p slot="start">{{counter+1}}</p>
       <ion-avatar slot="start">
         <img [src]="person.image">
       </ion-avatar>
