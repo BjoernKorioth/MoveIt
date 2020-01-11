@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LeaderboardDetailPage implements OnInit {
   persons: any;
+  ranking: string = "actMinutes";
+
   constructor() {
   this.persons = [
     {
