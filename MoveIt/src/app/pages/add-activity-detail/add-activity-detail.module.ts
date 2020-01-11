@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { AddActivityDetailPage } from './add-activity-detail.page';
 
+
+
 const routes: Routes = [
   {
     path: '',

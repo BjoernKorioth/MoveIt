@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {InformationService} from '../../services/information/information.service';
 import {Information} from '../../model/information';
+import { Location } from  '@angular/common';
 
 @Component({
     selector: 'app-information-detail',
@@ -9,11 +10,17 @@ import {Information} from '../../model/information';
 })
 export class InformationDetailPage implements OnInit {
 
-    constructor(private informationService: InformationService) {
+    constructor(private informationService: InformationService, private location: Location) {
+        this.location = location;
+    
     }
 
     ngOnInit() {
     }
+
+    goBack(){
+        this.location.back();
+      }
 
     // TODO For testing purposes only, only reserachers can create activities
     createInformation() {
