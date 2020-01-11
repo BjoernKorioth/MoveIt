@@ -3,20 +3,38 @@ import {Post} from '../../model/post';
 import {Comment} from '../../model/comment';
 import {PostService} from '../../services/post/post.service';
 import {Observable} from 'rxjs';
+import { analytics } from 'firebase';
 
 @Component({
   selector: 'app-socialfeed-detail',
   templateUrl: './socialfeed-detail.page.html',
   styleUrls: ['./socialfeed-detail.page.scss'],
 })
+
 export class SocialfeedDetailPage implements OnInit {
+
   posts: Observable<Post[]>;
+  comments: any;
 
   constructor(private postService: PostService) {
     this.posts = postService.getAllPosts();
     this.posts.subscribe(res => {
       console.log(res);
     });
+    this.comments = [
+      {
+        name: 'Cindy',
+        comment:'Awesome!'
+      },
+      {
+        name: 'Mike',
+        comment:'Really good :)'
+      },
+      {
+        name: 'Alberto',
+        comment:'Fantastic'
+      }
+    ]
   }
 
   ngOnInit() {

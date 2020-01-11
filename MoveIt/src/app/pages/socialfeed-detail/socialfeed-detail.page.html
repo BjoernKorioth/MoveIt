@@ -3,6 +3,7 @@
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
+    <ion-title>Socialfeed</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -27,7 +28,7 @@
       </ion-avatar>
       <ion-label>
         <h3>{{post.user}}</h3>
-        <p>{{post.createdAt}}</p>
+        <p><ion-icon name="time"></ion-icon> 5 minutes {{getTimeDifference(post.createdAt)}} ago</p>
       </ion-label>
     </ion-item>
     <!--<img src="../assets/Laufschuhe.jpg">-->
@@ -39,25 +40,20 @@
 
     <ion-row>
       <ion-col center text-center>
-        <button>
-          <ion-icon name="thumbs-up"></ion-icon>
-          <div>{{post.likes?.length || 0}} Likes</div>
-        </button>
+          <ion-button type="button" (click)='like()'><ion-icon name="thumbs-up" style="margin-right: 5px"></ion-icon>{{post.likes?.length || 0}} Likes</ion-button>
       </ion-col>
       <ion-col center text-center>
-        <button>
-          <ion-icon name="text"></ion-icon>
+          <ion-button type="button" (click)='newComment()'><ion-icon name="text" style="margin-right: 5px"></ion-icon>Comment</ion-button>
           <div>{{post.comments?.length || 0}} Comments</div>
-        </button>
-      </ion-col>
-      <ion-col center text-center>
-        <button>
-          <ion-icon name="time"></ion-icon>
-          <div>{{getTimeDifference(post.createdAt)}} ago</div>
-        </button>
       </ion-col>
     </ion-row>
 
+    <div>
+      <ion-item lines="none" *ngFor="let c of comments; let i=index">
+        <ion-label *ngIf="i<1"><h3>{{c.name}}</h3> <p>{{c.comment}}</p></ion-label>
+        <ion-label *ngIf="i == 1"><p style="font-style:italic;">all comments</p></ion-label>
+      </ion-item>
+    </div>
 
   </ion-card>
 
