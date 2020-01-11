@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from  '@angular/common';
 
 @Component({
   selector: 'app-dashboard-detail',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardDetailPage implements OnInit {
 allservices: any;
-  constructor() { 
+  constructor(private location: Location) { 
+
+    this.location = location;
 
     this.allservices = [
       [{label:'Newsfeed', routerLink:'/menu/newsfeed'}, {label:'Leaderboard', routerLink:'/menu/leaderboard'}],
@@ -15,7 +18,13 @@ allservices: any;
     ];
   }
 
+
+
   ngOnInit() {
   }
 
+
+  goBack(){
+    this.location.back();
+  }
 }
