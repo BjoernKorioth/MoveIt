@@ -10,9 +10,28 @@ import {Observable} from 'rxjs';
 })
 export class ProgressDetailPage implements OnInit {
     activities: Observable<Activity[]>;
+    goals: any;
 
     constructor(private activityService: ActivityService) {
         this.activities = this.activityService.getAllUserActivities();
+
+        this.goals = [
+            {
+              name: 'Goal 1',
+              type: 'vigorous',
+              value: '0.4'
+            },
+            {
+              name: 'Goal 2',
+              type: 'moderate',
+              value:'0.6'
+            },
+            {
+              name: 'Goal 3',
+              type: 'weight training',
+              value: '0.8'
+            }
+        ]
     }
 
     ngOnInit() {
