@@ -32,6 +32,18 @@
       </ng-container>
     </div>
 
+ <!--   <ion-item>
+      <ion-label  position="floating">Surname</ion-label>
+      <ion-input type="text" formControlName="surname"></ion-input>
+    </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.name">
+        <div class="error-message" *ngIf="validationsForm.get('surname').hasError(validation.type) && (validationsForm.get('surname').dirty || validationsForm.get('surname').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div> -->
+
     <ion-item>
       <ion-label  position="floating">Email</ion-label>
       <ion-input type="text" formControlName="email"></ion-input>
@@ -44,13 +56,25 @@
       </ng-container>
     </div>
 
-    <div input-wrapper></div>
     <ion-item>
-      <ion-label>Birth Date</ion-label>
+      <ion-label position="floating">Birth Date</ion-label>
       <ion-datetime placeholder="Select Date"></ion-datetime>
     </ion-item>
 
-    <ion-radio-group>
+    <ion-item>
+      <ion-label position="floating">Gender</ion-label>
+      <ion-select class="gender" placeholder="Select One">
+        <ion-select-option value="f">Female</ion-select-option>
+        <ion-select-option value="m">Male</ion-select-option>
+        <ion-select-option value="d">Diverse</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-checkbox slot="end"></ion-checkbox>
+      <ion-label>Agree to terms of use</ion-label>
+    </ion-item>
+
+   <!-- <ion-radio-group>
 
       <ion-list-header>
         Gender
@@ -77,7 +101,7 @@
       </ion-col>
     </ion-row>
 
-  </ion-radio-group>
+  </ion-radio-group>-->
 
 
     <ion-item>
@@ -92,10 +116,21 @@
       </ng-container>
     </div>
 
-
-    <ion-button  class="submit-btn" type="submit"  [disabled]="!validationsForm.valid">Register</ion-button>
-    <label class="error-message">{{errorMessage}}</label>
+    <ion-item>
+      <ion-label  position="floating">Code</ion-label>
+      <ion-input type="text"></ion-input>
+    </ion-item>
+ 
+    <ion-button expand="block" color="secondary" class="submit-btn" type="submit"  [disabled]="!validationsForm.valid"  slot="end" float-right>Register</ion-button>
+   <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>
+    <ion-item>
+      <p class="go-to-login"> <a (click)="goLoginPage()">Already have an account?</a></p>
+      </ion-item>
+    
+
   </form>
-  <p class="go-to-login">Already have an account? <a (click)="goLoginPage()">Try to Log In.</a></p>
+
+
+
 </ion-content>
