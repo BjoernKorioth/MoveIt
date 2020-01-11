@@ -11,30 +11,35 @@ import { analytics } from 'firebase';
   styleUrls: ['./socialfeed-detail.page.scss'],
 })
 
+
+
 export class SocialfeedDetailPage implements OnInit {
+  
 
   posts: Observable<Post[]>;
-  comments: any;
+  comments: Array<{userid:string, name:string, comment:string}> = [
+    {
+      userid: '1',
+      name: 'Cindy',
+      comment:'Awesome!'
+    },
+    {
+      userid: '2',
+      name: 'Mike',
+      comment:'Really good :)'
+    },
+    {
+      userid: '3',
+      name: 'Alberto',
+      comment:'Fantastic'
+    }
+  ];
 
   constructor(private postService: PostService) {
     this.posts = postService.getAllPosts();
     this.posts.subscribe(res => {
       console.log(res);
     });
-    this.comments = [
-      {
-        name: 'Cindy',
-        comment:'Awesome!'
-      },
-      {
-        name: 'Mike',
-        comment:'Really good :)'
-      },
-      {
-        name: 'Alberto',
-        comment:'Fantastic'
-      }
-    ]
   }
 
   ngOnInit() {
@@ -87,6 +92,8 @@ export class SocialfeedDetailPage implements OnInit {
   }
 
   newComment() {
+    var cUser = document.getElementsByTagName("input")[0].value;
+    this.comments.push({ userid : '4' , name : 'Greg' ,comment: cUser});
     this.postService.createComment('-LxfARsp_2al7-W3JYcf', new Comment()).then(
         res => console.log(res),
         err => console.log(err)

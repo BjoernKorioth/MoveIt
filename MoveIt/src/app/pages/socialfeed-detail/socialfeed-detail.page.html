@@ -47,14 +47,24 @@
           <div>{{post.comments?.length || 0}} Comments</div>
       </ion-col>
     </ion-row>
-
-    <div>
-      <ion-item lines="none" *ngFor="let c of comments; let i=index">
-        <ion-label *ngIf="i<1"><h3>{{c.name}}</h3> <p>{{c.comment}}</p></ion-label>
-        <ion-label *ngIf="i == 1"><p style="font-style:italic;">all comments</p></ion-label>
-      </ion-item>
-    </div>
-
+      <div *ngIf="comments?.length != 0">
+        <div *ngFor="let c of comments">
+          <ion-item lines="none">
+            <ion-label><h3>{{c.name}}</h3><p>{{c.comment}}</p></ion-label>
+          </ion-item>
+        </div>
+        <ion-item>
+          <ion-label><p style="font-style:italic;">all comments</p></ion-label>
+        </ion-item>
+      </div>
+      <ion-row>
+        <ion-item>
+          <form>
+              <ion-input name="comment" type="text" placeholder="your comment..."></ion-input>
+          </form>
+        </ion-item>
+      </ion-row>
+      
   </ion-card>
 
 </ion-content>
