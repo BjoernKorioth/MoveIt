@@ -35,6 +35,7 @@
     <section>
       <ion-button (click)=addActivity() color="secondary" slot="end" float-right>Add activity</ion-button>
       <!--<ion-button expand="block">Add activity</ion-button>-->
+      
     </section>
 
    <!-- <circle-progress (click)="startTimer()"
@@ -53,6 +54,13 @@
   [outerStrokeGradientStopColor]="'#FF00CB'"
   [showInnerStroke]="false"
 ></circle-progress>-->
+
+<div padding text-decoration="underline">
+  <ion-row>
+    <h2>Track your time!</h2>
+  </ion-row>
+  </div>
+
 
 <p>{{elapsed.h}}:{{elapsed.m}}:{{elapsed.s}}</p>
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
