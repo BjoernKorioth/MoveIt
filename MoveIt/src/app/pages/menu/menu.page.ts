@@ -14,6 +14,7 @@ export class MenuPage implements OnInit {
         {
             // The username will appear hear, this is filled in by this.updatePages() as soon as the value is available
             title: ''
+            //url:'/menu/profile'
 
         },
         {
