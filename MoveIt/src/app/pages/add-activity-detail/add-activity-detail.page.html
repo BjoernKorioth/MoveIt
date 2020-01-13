@@ -37,6 +37,38 @@
       <!--<ion-button expand="block">Add activity</ion-button>-->
     </section>
 
+   <!-- <circle-progress (click)="startTimer()"
+  [percent]="percent"
+  [maxPercent]="100"
+  [radius]="radius"
+  [showTitle]="false"
+  [showSubtitle]="false"
+  [showUnits]="false"
+  [outerStrokeWidth]="16"
+  [outerStrokeColor]="'#8000FF'"
+  [showZeroOuterStroke]="false"
+  [backgroundStroke]="'#33003F'"
+  [backgroundStrokeWidth]="3"
+  [outerStrokeGradient]="true"
+  [outerStrokeGradientStopColor]="'#FF00CB'"
+  [showInnerStroke]="false"
+></circle-progress>-->
+
+<p>{{elapsed.h}}:{{elapsed.m}}:{{elapsed.s}}</p>
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ng-container *ngIf="overallTimer == false; else running">
+    <ion-fab-button (click)="startTimer()">
+      <ion-icon name="play"></ion-icon>
+    </ion-fab-button>
+  </ng-container>
+  <ng-template #running>
+    <ion-fab-button (click)="stopTimer()">
+      <ion-icon name="square"></ion-icon>
+    </ion-fab-button>
+  </ng-template>
+</ion-fab>
+
+
   </ion-content>
 
   
