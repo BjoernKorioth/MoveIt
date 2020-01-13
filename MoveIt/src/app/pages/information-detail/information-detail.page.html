@@ -17,33 +17,16 @@
     <ion-button type="button" (click)='getInformation()'>Get</ion-button>
     <ion-button type="button" (click)='getAllInformation()'>Get All</ion-button>
 
-    <ion-card>
+    <ion-card *ngFor="let info of information">
         <img src="img/nin-live.png"/>
         <ion-card-header>
-            <ion-card-title>Moderate vs. vigorous</ion-card-title>
+            <ion-card-title>{{info.title}} </ion-card-title>
         </ion-card-header>
         <ion-card-content>
-            Intensity refers to the rate at which the activity is being performed or the magnitude of the effort
-            required to perform an activity or exercise. It can be thought of "How hard a person works to do the
-            activity".
+            {{info.description}}
 
             <ion-button fill="outline" slot="end" routerLink="/menu/information/information/single">View</ion-button>
         </ion-card-content>
     </ion-card>
-
-    <ion-card>
-        <img src="img/nin-live.png"/>
-        <ion-card-header>
-            <ion-card-title>Moderate vs. vigorous</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-            Intensity refers to the rate at which the activity is being performed or the magnitude of the effort
-            required to perform an activity or exercise. It can be thought of "How hard a person works to do the
-            activity".
-
-            <ion-button fill="outline" slot="end" routerLink="/menu/information/information/single">View</ion-button>
-        </ion-card-content>
-    </ion-card>
-
 
 </ion-content>
