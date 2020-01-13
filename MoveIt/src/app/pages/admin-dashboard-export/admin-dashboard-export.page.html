@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Export</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-row *ngFor="let user of users">
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label></ion-label>
+        </ion-list-header>
+        <ion-item> {{user.name}} </ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label></ion-label>
+        </ion-list-header>
+        <ion-item>{{user.group}}</ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label></ion-label>
+        </ion-list-header>
+        <ion-item><ion-button color="light">Download</ion-button></ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
