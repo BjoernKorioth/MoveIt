@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {ActivityService} from '../../services/activity/activity.service';
 import {Activity} from '../../model/activity';
 import {Observable} from 'rxjs';
-import { Location } from  '@angular/common';
+import {GoalService} from '../../services/goal/goal.service';
+import {Goal} from '../../model/goal';
+import {Location} from '@angular/common';
 
 @Component({
     selector: 'app-progress-detail',
@@ -11,37 +13,19 @@ import { Location } from  '@angular/common';
 })
 export class ProgressDetailPage implements OnInit {
     activities: Observable<Activity[]>;
-    goals: any;
+    goals: Observable<Goal[]>;
 
-    constructor(private activityService: ActivityService, private location: Location) {
+    constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location) {
         this.activities = this.activityService.getAllUserActivities();
-
-        this.goals = [
-            {
-              name: 'Goal 1',
-              type: 'vigorous',
-              value: '0.4'
-            },
-            {
-              name: 'Goal 2',
-              type: 'moderate',
-              value:'0.6'
-            },
-            {
-              name: 'Goal 3',
-              type: 'weight training',
-              value: '0.8'
-            }
-        ]
-        this.location = location;
+        this.goals = this.goalService.getGoals();
     }
 
     ngOnInit() {
     }
 
-    goBack(){
+    goBack() {
         this.location.back();
-      }
+    }
 
     /**
      * Create a new activity
@@ -89,5 +73,19 @@ export class ProgressDetailPage implements OnInit {
      */
     getAllActivities() {
         return this.activityService.getAllUserActivities();
+    }
+
+    /**
+     * For testing purposes only: Create all default goals for a user
+     */
+    createGoals() {
+        return this.goalService.initializeUserGoals();
+    }
+
+    /**
+     * Adjusts the target of a goal
+     */
+    adjustGoal() {
+        return this.goalService.adjustGoal('dailyModerate', 90);
     }
 }
