@@ -5,6 +5,7 @@ import {Comment} from '../../model/comment';
 import * as firebase from 'firebase/app';
 import {AuthenticateService} from '../authentication/authentication.service';
 import {User} from '../../model/user';
+import {map} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -129,8 +130,9 @@ export class PostService {
      * Retrieve all activities of the group
      */
     getAllPosts() {
-        return this.fireDatabase.list<Post>('/posts/' + this.user.group).valueChanges();
-        // .pipe(map(array => array.map(post => Post.fromFirebaseObject(this.user.group, post.id, post))));
+        const ref = this.fireDatabase.list<Post>('/posts/' + this.user.group);
+        return ref.snapshotChanges().pipe(map(posts => posts.map(
+            postSnapshot => Post.fromFirebaseObject(this.user.group, postSnapshot.key, postSnapshot.payload.val()))));
     }
 
     /**
