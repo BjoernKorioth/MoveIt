@@ -58,23 +58,44 @@
 
     <ion-item>
       <ion-label position="floating">Birth Date</ion-label>
-      <ion-datetime placeholder="Select Date"></ion-datetime>
+      <ion-datetime formControlName="birthdate" placeholder="Select Date"></ion-datetime>
     </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.birthdate">
+        <div class="error-message" *ngIf="validationsForm.get('birthdate').hasError(validation.type) && (validationsForm.get('birthdate').dirty || validationsForm.get('birthdate').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
 
     <ion-item>
       <ion-label position="floating">Gender</ion-label>
-      <ion-select class="gender" placeholder="Select One">
+      <ion-select formControlName="gender" class="gender" placeholder="Select One">
         <ion-select-option value="f">Female</ion-select-option>
         <ion-select-option value="m">Male</ion-select-option>
         <ion-select-option value="d">Diverse</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item>
+      <div class="validation-errors">
+        <ng-container *ngFor="let validation of validationMessages.gender">
+          <div class="error-message" *ngIf="validationsForm.get('gender').hasError(validation.type) && (validationsForm.get('gender').dirty || validationsForm.get('gender').touched)">
+            {{ validation.message }}
+          </div>
+        </ng-container>
+      </div>
       
-      <ion-checkbox slot="end"></ion-checkbox>
-      <p slot="start">Agree to <a routerLink = "/terms">terms of use</a></p>
+      <ion-checkbox formControlName= "terms" slot="end"></ion-checkbox>
+      <p slot="start" >Agree to <a routerLink = "/terms">terms of use</a></p>
      
     </ion-item>
+    <div class="validation-errors">
+      <ng-container *ngFor="let validation of validationMessages.terms">
+        <div class="error-message" *ngIf="validationsForm.get('terms').hasError(validation.type) && (validationsForm.get('terms').dirty || validationsForm.get('terms').touched)">
+          {{ validation.message }}
+        </div>
+      </ng-container>
+    </div>
 
    <!-- <ion-radio-group>
 
@@ -120,13 +141,13 @@
 
     <ion-item>
       <ion-label  position="floating">Code</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-input formControlName="code" type="text"></ion-input>
     </ion-item>
  
     <ion-button expand="block" color="secondary" class="submit-btn" type="submit"  [disabled]="!validationsForm.valid"  slot="end" float-right>Register</ion-button>
    <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>
-    <ion-item>
+    <ion-item style="margin-top: 40px">
       <p class="go-to-login"> <a (click)="goLoginPage()">Already have an account?</a></p>
       </ion-item>
     
