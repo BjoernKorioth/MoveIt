@@ -15,12 +15,14 @@
     <ion-button type="button" (click)='editActivity()'>Edit</ion-button>
     <ion-button type="button" (click)='getActivity()'>Get</ion-button>
     <ion-button type="button" (click)='getAllActivities()'>Get All</ion-button>
+    <ion-button type="button" (click)='createGoals()'>Create Goals</ion-button>
+    <ion-button type="button" (click)='adjustGoal()'>Edit Goals</ion-button>
 
-    <ion-list *ngFor="let goal of goals">
+    <ion-list *ngFor="let goal of (goals | async)">
         <ion-list-header>
             <ion-label>{{goal.name}} - {{goal.type}}</ion-label>
         </ion-list-header>
-        <ion-progress-bar color="primary" [value]="goal.value"></ion-progress-bar>
+        <ion-progress-bar color="primary" [value]="goal.current"></ion-progress-bar>
 
 
         <!-- Colorize Progressbar -->
