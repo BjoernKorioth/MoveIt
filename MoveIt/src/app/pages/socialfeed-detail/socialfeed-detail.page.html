@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content class="cards-bg social-cards">
+  <!--
   <ion-button type="button" (click)='newPost()'>New Post</ion-button>
   <ion-button type="button" (click)='editPost()'>Edit Post</ion-button>
   <ion-button type="button" (click)='like()'>Like</ion-button>
@@ -18,6 +19,7 @@
   <ion-button type="button" (click)='editComment()'>Edit Comment</ion-button>
   <ion-button type="button" (click)='getComment()'>Get Comment</ion-button>
   <ion-button type="button" (click)='getAllComments()'>Get All Comments</ion-button>
+  -->
 
   <ion-card *ngFor="let post of (posts | async)">
 
@@ -27,7 +29,7 @@
         <!--img [src]="post.image"-->
       </ion-avatar>
       <ion-label>
-        <h3>{{post.user}}</h3>
+        <h3>{{post.user}} {{post.id}}</h3>
         <p><ion-icon name="time"></ion-icon> 5 minutes {{getTimeDifference(post.createdAt)}} ago</p>
       </ion-label>
     </ion-item>
@@ -43,8 +45,7 @@
           <ion-button type="button" (click)='like()'><ion-icon name="thumbs-up" style="margin-right: 5px"></ion-icon>{{post.likes?.length || 0}} Likes</ion-button>
       </ion-col>
       <ion-col center text-center>
-          <ion-button type="button" (click)='newComment()'><ion-icon name="text" style="margin-right: 5px"></ion-icon>Comment</ion-button>
-          <div>{{post.comments?.length || 0}} Comments</div>
+          <ion-button type="button" (click)='newComment()'><ion-icon name="text" style="margin-right: 5px"></ion-icon>{{post.comments?.length || 0}} Comments</ion-button>
       </ion-col>
     </ion-row>
       <div *ngIf="comments?.length != 0">
@@ -58,13 +59,13 @@
         </ion-item>
       </div>
       <ion-row>
-        <ion-item>
-          <form>
-              <ion-input name="comment" type="text" placeholder="your comment..."></ion-input>
-          </form>
-        </ion-item>
-      </ion-row>
-      
+        <form>
+          <ion-item>
+            <ion-input name="comment" type="text" placeholder="your comment..."></ion-input>
+            <ion-icon name="send" (click)="newComment()"></ion-icon>  
+          </ion-item>
+        </form>
+    </ion-row>
   </ion-card>
 
 </ion-content>
