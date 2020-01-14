@@ -71,5 +71,9 @@ export class AuthenticateService {
     getUsername() {
         return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/name').valueChanges();
     }
+
+    getSpecificUsername(uid) {
+        return this.db.object<string>('/users/' + uid + '/name').valueChanges();
+    }
 }
 

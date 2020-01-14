@@ -28,7 +28,7 @@
 
 
 <div [ngSwitch]="ranking">
-  <ion-list *ngSwitchCase="'trophies'">
+ <!-- <ion-list *ngSwitchCase="'trophies'">
   
     <ion-item *ngFor="let person of persons">
       <ion-avatar slot="start">
@@ -43,23 +43,23 @@
       </ion-label>
     </ion-item>
   </ion-list>
-
+-->
   <ion-list *ngSwitchCase="'actMinutes'">
-    <ion-item *ngFor="let person of persons; let counter = index" [attr.data-index]="counter">
+    <ion-item *ngFor="let user of activitiesModerate; let counter = index" [attr.data-index]="counter">
       <p slot="start">{{counter+1}}</p>
       <ion-avatar slot="start">
-        <img [src]="person.image">
+        <!--<img [src]="person.image">-->
       </ion-avatar>
       <ion-label>
-        <h2>{{person.name}}</h2>
-        <h3>{{person.age}} years old</h3>
+        <h2>{{user.username}}</h2>
+        <h3>{{user.age}} years old</h3>
       </ion-label>
       <ion-label side="end">
-        <p>{{person.actMinutes}} active minutes</p>
+        <p>{{user.activity}} active minutes</p>
       </ion-label>
     </ion-item>
   </ion-list>
-
+<!--
   <ion-list *ngSwitchCase="'challenges'">
     <ion-item *ngFor="let person of persons">
       <ion-avatar slot="start">
@@ -74,7 +74,7 @@
       </ion-label>
     </ion-item>
   </ion-list>
-
+-->
   </div>
 
   
