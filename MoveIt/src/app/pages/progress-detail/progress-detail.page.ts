@@ -13,11 +13,14 @@ import {Location} from '@angular/common';
 })
 export class ProgressDetailPage implements OnInit {
     activities: Observable<Activity[]>;
-    goals: Observable<Goal[]>;
+    goals: Observable<any>;
+    goalStorage: Array<Goal>;
 
     constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location) {
         this.activities = this.activityService.getAllUserActivities();
+        this.activities.subscribe(activities => this.updateGoals(activities));
         this.goals = this.goalService.getGoals();
+        this.goals.subscribe(goals => this.goalStorage = goals);
     }
 
     ngOnInit() {
@@ -86,6 +89,22 @@ export class ProgressDetailPage implements OnInit {
      * Adjusts the target of a goal
      */
     adjustGoal() {
-        return this.goalService.adjustGoal('dailyModerate', 90);
+        // Get the goal given a name
+        this.goalService.getGoal('dailyModerate').then(
+            // If the goal exists, adjust the goal
+            goal => this.goalService.adjustGoal(goal, 90).then(
+                res => console.log(res), // Goal successfully adjusted
+                err => console.log(err) // Goal adjustment failed
+            ),
+            err => console.log(err) // Fetching the goal failed
+        );
+    }
+
+    updateGoals(activities) {
+        console.log(this.goalStorage);
+        this.goalService.updateGoals(this.goalStorage, activities).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
     }
 }

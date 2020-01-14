@@ -16,7 +16,7 @@
     <ion-button type="button" (click)='getActivity()'>Get</ion-button>
     <ion-button type="button" (click)='getAllActivities()'>Get All</ion-button>
     <ion-button type="button" (click)='createGoals()'>Create Goals</ion-button>
-    <ion-button type="button" (click)='adjustGoal()'>Edit Goals</ion-button>
+    <ion-button type="button" (click)='adjustGoal()'>Adjust Goal</ion-button>
 
     <ion-list *ngFor="let goal of (goals | async)">
         <ion-list-header>
