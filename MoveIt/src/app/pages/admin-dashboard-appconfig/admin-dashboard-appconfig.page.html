@@ -1,15 +1,19 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>App Configuration</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-row>
-    <ion-button id="user" color="secondary" padding>New User</ion-button>
-    <ion-button id="group" color="secondary" padding>New Group</ion-button>
-  </ion-row>
+  <section>
+    <ion-button id="user" color="secondary"  slot="end" float-right padding>New User</ion-button>
+    <ion-button id="group" color="secondary" slot="end" float-right padding>New Group</ion-button>
+  </section>
+  <br><br><br>
 
   <div>
 
