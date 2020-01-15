@@ -24,21 +24,22 @@
   <ion-button type="button" (click)='getAllComments()'>Get All Comments</ion-button>
   -->
 
-  <ion-card *ngFor="let post of (posts | async)">
+  <ion-card *ngFor="let post of (posts | async); let i = index;">
 
     <ion-item>
       <ion-avatar slot="start">
         <img src="../../assets/Profilbild.jpg">
         <!--img [src]="post.image"-->
       </ion-avatar>
-      <ion-label>
+      <ion-label id="{{post.id}}" name="userPlace">
+        <button (click)="myFunction(i)">click me</button>
         <h3>{{post.user}} {{post.id}}</h3>
         <p><ion-icon name="time"></ion-icon> 5 minutes {{getTimeDifference(post.createdAt)}} ago</p>
       </ion-label>
     </ion-item>
     <!--<img src="../assets/Laufschuhe.jpg">-->
 
-    <ion-card-content>
+    <ion-card-content name="demo">
       {{post.content}}
     </ion-card-content>
 
@@ -48,7 +49,7 @@
           <ion-button type="button" (click)='like()'><ion-icon name="thumbs-up" style="margin-right: 5px"></ion-icon>{{post.likes?.length || 0}} Likes</ion-button>
       </ion-col>
       <ion-col center text-center>
-          <ion-button type="button" (click)='newComment()'><ion-icon name="text" style="margin-right: 5px"></ion-icon>{{post.comments?.length || 0}} Comments</ion-button>
+          <ion-button type="button" (click)="newComment()"><ion-icon name="text" style="margin-right: 5px"></ion-icon>{{post.comments?.length || 0}} Comments</ion-button>
       </ion-col>
     </ion-row>
       <div *ngIf="comments?.length != 0">
