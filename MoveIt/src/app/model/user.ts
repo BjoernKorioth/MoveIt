@@ -1,8 +1,10 @@
+import {Challenge} from './challenge';
+
 interface FireBaseObject {
     id: string;
     name: string;
-    challengesActive: Array<any>;
-    challengesWon: Array<any>;
+    challengesActive: Array<Challenge>;
+    challengesWon: Array<Challenge>;
     group: number;
     trophiesWon: Array<any>
     type: string;

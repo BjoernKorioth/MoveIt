@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {ActivityService} from '../../services/activity/activity.service';
 import {Activity} from '../../model/activity';
 import {Observable} from 'rxjs';
-import { Location } from  '@angular/common';
+import {GoalService} from '../../services/goal/goal.service';
+import {Goal} from '../../model/goal';
+import {Location} from '@angular/common';
 
 @Component({
     selector: 'app-progress-detail',
@@ -11,18 +13,22 @@ import { Location } from  '@angular/common';
 })
 export class ProgressDetailPage implements OnInit {
     activities: Observable<Activity[]>;
+    goals: Observable<any>;
+    goalStorage: Array<Goal>;
 
-    constructor(private activityService: ActivityService, private location: Location) {
+    constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location) {
         this.activities = this.activityService.getAllUserActivities();
-        this.location = location;
+        this.activities.subscribe(activities => this.updateGoals(activities));
+        this.goals = this.goalService.getGoals();
+        this.goals.subscribe(goals => this.goalStorage = goals);
     }
 
     ngOnInit() {
     }
 
-    goBack(){
+    goBack() {
         this.location.back();
-      }
+    }
 
     /**
      * Create a new activity
@@ -70,5 +76,35 @@ export class ProgressDetailPage implements OnInit {
      */
     getAllActivities() {
         return this.activityService.getAllUserActivities();
+    }
+
+    /**
+     * For testing purposes only: Create all default goals for a user
+     */
+    createGoals() {
+        return this.goalService.initializeUserGoals();
+    }
+
+    /**
+     * Adjusts the target of a goal
+     */
+    adjustGoal() {
+        // Get the goal given a name
+        this.goalService.getGoal('dailyModerate').then(
+            // If the goal exists, adjust the goal
+            goal => this.goalService.adjustGoal(goal, 90).then(
+                res => console.log(res), // Goal successfully adjusted
+                err => console.log(err) // Goal adjustment failed
+            ),
+            err => console.log(err) // Fetching the goal failed
+        );
+    }
+
+    updateGoals(activities) {
+        console.log(this.goalStorage);
+        this.goalService.updateGoals(this.goalStorage, activities).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
     }
 }

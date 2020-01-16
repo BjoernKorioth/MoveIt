@@ -6,7 +6,7 @@ interface FireBaseObject {
     activity: string;
     comments: Array<Comment>;
     content: string;
-    createdAt: string;
+    createdAt: Date;
     likes: Array<string>;
     user: string;
 }

@@ -13,7 +13,7 @@ allservices: any;
     this.location = location;
 
     this.allservices = [
-      [{label:'Newsfeed', routerLink:'/menu/newsfeed'}, {label:'Leaderboard', routerLink:'/menu/leaderboard'}],
+      [{label:'Socialfeed', routerLink:'/menu/socialfeed'}, {label:'Leaderboard', routerLink:'/menu/leaderboard'}],
       [{label:'Rewards', routerLink:'/menu/rewards'}, {label:'Profile', routerLink:'/menu/rewards'}]
     ];
   }

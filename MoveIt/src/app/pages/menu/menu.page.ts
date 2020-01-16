@@ -35,6 +35,7 @@ export class MenuPage implements OnInit {
 
     ];
     username: Observable<string>;
+    group: Observable<string>;
     selectedPath = '';
 
     constructor(private router: Router, private auth: AuthenticateService) {
@@ -47,6 +48,9 @@ export class MenuPage implements OnInit {
         this.username = auth.getUsername(); // The username is just the observable
         // If a new value is received, we have to manually update the pages object so that Angular notices the change
         this.username.subscribe(username => this.updatePages(username));
+
+        this.group = auth.getUsergroup();
+        this.group.subscribe(group => this.updateGroup(group));
     }
 
     logout() {
@@ -66,5 +70,21 @@ export class MenuPage implements OnInit {
      */
     updatePages(username) {
         this.pages = [{title: username}, ...this.pages.slice(1)];
+    }
+
+    /**
+     * Update the group of the user
+     *
+     * This method updates the whole pages array when there is a new group available. This is necessary, because
+     * Angular cannot detect changes in the elements of the array.
+     *
+     * @param group the new group
+     */
+    updateGroup(group) {
+        // BK: as a test I delted for group 1 the rewards page
+        if (group = '1') {
+            this.pages.pop();
+        }
+            
     }
 }

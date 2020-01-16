@@ -9,10 +9,20 @@ import { Location } from  '@angular/common';
     styleUrls: ['./information-detail.page.scss'],
 })
 export class InformationDetailPage implements OnInit {
-
+    information: any;
     constructor(private informationService: InformationService, private location: Location) {
         this.location = location;
     
+        this.information=[
+            {
+                title: 'moderate vs. vigorous',
+                description: 'moderate activity'
+            },
+            {
+                title: 'WHO Guidelines',
+                description: 'moderate activity'
+            },
+        ]
     }
 
     ngOnInit() {
