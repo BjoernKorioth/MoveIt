@@ -12,15 +12,15 @@ export class AdminDashboardPage implements OnInit {
   pages = [
     {
       title: 'AppConfig',
-      url: '/admin-dashboard/admin-dashboard-appconfig'
+      url: '/admin-dashboard/appconfig'
     },
     {
       title: 'Export',
-      url: '/admin-dashboard/admin-dashboard-export'
+      url: '/admin-dashboard/export'
     },
     {
       title: 'Challenges',
-      url: '/admin-dashboard/admin-dashboard-challenges'
+      url: '/admin-dashboard/challenges'
     }
   ];
 

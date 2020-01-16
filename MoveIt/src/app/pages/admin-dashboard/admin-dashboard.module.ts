@@ -13,22 +13,22 @@ const routes: Routes = [
     component: AdminDashboardPage,
     children: [
       {
-        path: 'admin-dashboard-appconfig',
+        path: 'appconfig',
         loadChildren: '../admin-dashboard-appconfig/admin-dashboard-appconfig.module#AdminDashboardAppconfigPageModule'
       },
       {
-        path: 'admin-dashboard-export',
+        path: 'export',
         loadChildren: '../admin-dashboard-export/admin-dashboard-export.module#AdminDashboardExportPageModule'
       },
       {
-        path: 'admin-dashboard-challenges',
+        path: 'challenges',
         loadChildren: '../admin-dashboard-challenges/admin-dashboard-challenges.module#AdminDashboardChallengesPageModule'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/admin-dashboard/admin-dashboard-appconfig',
+    redirectTo: 'admin-dashboard/appconfig',
     pathMatch: 'full'
   }
 ];

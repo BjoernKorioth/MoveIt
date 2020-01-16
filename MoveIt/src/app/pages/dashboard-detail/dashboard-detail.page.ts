@@ -1,30 +1,39 @@
-import { Component, OnInit } from '@angular/core';
-import { Location } from  '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
 
 @Component({
-  selector: 'app-dashboard-detail',
-  templateUrl: './dashboard-detail.page.html',
-  styleUrls: ['./dashboard-detail.page.scss'],
+    selector: 'app-dashboard-detail',
+    templateUrl: './dashboard-detail.page.html',
+    styleUrls: ['./dashboard-detail.page.scss'],
 })
 export class DashboardDetailPage implements OnInit {
-allservices: any;
-  constructor(private location: Location) { 
+    allservices: any;
 
-    this.location = location;
+    constructor(private location: Location) {
 
-    this.allservices = [
-      [{label:'Socialfeed', routerLink:'/menu/socialfeed'}, {label:'Leaderboard', routerLink:'/menu/leaderboard'}],
-      [{label:'Rewards', routerLink:'/menu/rewards'}, {label:'Profile', routerLink:'/menu/rewards'}]
-    ];
-  }
+        this.location = location;
+
+        this.allservices = [
+            [{
+                label: 'Socialfeed', routerLink: '/menu/socialfeed'
+            }, {
+                label: 'Leaderboard',
+                routerLink: '/menu/leaderboard'
+            }],
+            [{
+                label: 'Rewards', routerLink: '/menu/rewards'
+            }, {
+                label: 'Profile', routerLink: '/menu/profile'
+            }]
+        ];
+    }
 
 
+    ngOnInit() {
+    }
 
-  ngOnInit() {
-  }
 
-
-  goBack(){
-    this.location.back();
-  }
+    goBack() {
+        this.location.back();
+    }
 }
