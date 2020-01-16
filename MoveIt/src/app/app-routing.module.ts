@@ -31,7 +31,9 @@ const routes: Routes = [
     {
         path: 'menu', loadChildren: './pages/menu/menu.module#MenuPageModule', canActivate: [AngularFireAuthGuard],
         data: {authGuardPipe: redirectUnauthorizedToLogin}
-    }
+    },
+  { path: 'goals', loadChildren: './pages/goals/goals.module#GoalsPageModule' },
+  { path: 'goals-detail', loadChildren: './pages/goals-detail/goals-detail.module#GoalsDetailPageModule' }
     // { path: 'admin-dashboard', loadChildren: './pages/<path-to-admin-dashboard>', canActivate: [AngularFireAuthGuard],
     //     data: {authGuardPipe: adminOnly} }
 ];

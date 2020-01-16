@@ -25,7 +25,8 @@ const routes: Routes = [
                 {path: 'information', loadChildren: '../information/information.module#InformationPageModule'},
                 {path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardPageModule'},
                 {path: 'add-activity', loadChildren: '../add-activity/add-activity.module#AddActivityPageModule'},
-                {path: 'edit-activity', loadChildren: '../edit-activity/edit-activity.module#EditActivityPageModule'}
+                {path: 'edit-activity', loadChildren: '../edit-activity/edit-activity.module#EditActivityPageModule'},
+                {path: 'goals', loadChildren: '../goals/goals.module#GoalsPageModule'}
             ]
     }
 ];
