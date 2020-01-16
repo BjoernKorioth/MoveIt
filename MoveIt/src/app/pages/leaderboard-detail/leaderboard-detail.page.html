@@ -11,8 +11,77 @@
     </ion-toolbar>
   </ion-header>
 
-<ion-content>
-    <ion-list>
+<ion-content padding>
+
+    <ion-segment [(ngModel)]="ranking">
+      <ion-segment-button value="trophies">
+        trophies
+      </ion-segment-button>
+      <ion-segment-button value="actMinutes">
+        active minutes
+      </ion-segment-button>
+      <ion-segment-button value="challenges">
+        challenges
+      </ion-segment-button>
+    </ion-segment>
+
+
+
+<div [ngSwitch]="ranking">
+ <!-- <ion-list *ngSwitchCase="'trophies'">
+  
+    <ion-item *ngFor="let person of persons">
+      <ion-avatar slot="start">
+        <img [src]="person.image">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{person.name}}</h2>
+        <h3>{{person.age}} years old</h3>
+      </ion-label>
+      <ion-label side="end">
+        <p>{{person.actMinutes}} active minutes</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+-->
+  <ion-list *ngSwitchCase="'actMinutes'">
+    <ion-item *ngFor="let user of activitiesModerate; let counter = index" [attr.data-index]="counter">
+      <p slot="start">{{counter+1}}</p>
+      <ion-avatar slot="start">
+        <!--<img [src]="person.image">-->
+      </ion-avatar>
+      <ion-label>
+        <h2>{{user.username}}</h2>
+        <h3>{{user.age}} years old</h3>
+      </ion-label>
+      <ion-label side="end">
+        <p>{{user.activity}} active minutes</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+<!--
+  <ion-list *ngSwitchCase="'challenges'">
+    <ion-item *ngFor="let person of persons">
+      <ion-avatar slot="start">
+        <img [src]="person.image">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{person.name}}</h2>
+        <h3>{{person.age}} years old</h3>
+      </ion-label>
+      <ion-label side="end">
+        <p>{{person.actMinutes}} active minutes</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+-->
+  </div>
+
+  
+
+
+
+    <!--<ion-list>
       <ion-list-header>
         Active Minutes
       </ion-list-header>
@@ -29,6 +98,6 @@
           <p>{{person.actMinutes}} active minutes</p>
         </ion-label>
       </ion-item>
-    </ion-list>
+    </ion-list>-->
   </ion-content>
 
