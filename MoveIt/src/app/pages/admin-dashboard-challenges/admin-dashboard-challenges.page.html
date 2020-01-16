@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Challenges</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <section>
+    <ion-button color="secondary"  slot="end" float-right padding>Create Challenge</ion-button>
+  </section>
+  <br><br><br>
+
+  <ion-row *ngFor="let challenge of challenges">
+    <ion-col size="3">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Name</ion-label>
+        </ion-list-header>
+        <ion-item> {{challenge.title}} </ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Starts</ion-label>
+        </ion-list-header>
+        <ion-item>{{challenge.startDate}}</ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Ends</ion-label>
+        </ion-list-header>
+        <ion-item>{{challenge.endDate}}</ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Price</ion-label>
+        </ion-list-header>
+        <ion-item>{{challenge.price}}</ion-item>
+      </ion-list>
+    </ion-col>
+
+
+  </ion-row>
+</ion-content>

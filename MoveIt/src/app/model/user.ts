@@ -1,11 +1,15 @@
+import {Challenge} from './challenge';
+
 interface FireBaseObject {
     id: string;
     name: string;
-    challengesActive: Array<any>;
-    challengesWon: Array<any>;
+    challengesActive: Array<Challenge>;
+    challengesWon: Array<Challenge>;
     group: number;
     trophiesWon: Array<any>
     type: string;
+    birthdate: string;
+    gender: string;
 }
 
 export class User {
@@ -16,6 +20,8 @@ export class User {
     group: number;
     trophiesWon: Array<any>;
     type: string;
+    birthdate:Date;
+    gender: string;
 
     /**
      * Constructor to create User object
@@ -24,7 +30,7 @@ export class User {
      *
      */
     constructor(id?: string, name?: string, challengesActive?: Array<any>, challengesWon?: Array<any>, group?: number,
-                trophiesWon?: Array<any>, type?: string) {
+                trophiesWon?: Array<any>, type?: string, birthdate?: Date, gender?:string) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '-1';
         this.name = name || 'No username';
@@ -33,6 +39,7 @@ export class User {
         this.group = group || -1;
         this.trophiesWon = trophiesWon || [];
         this.type = type || 'user';
+        this.birthdate = birthdate || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
     }
 
     /**
@@ -52,7 +59,9 @@ export class User {
             challengesWon: JSON.stringify(this.challengesWon),
             group: this.group,
             trophiesWon: JSON.stringify(this.trophiesWon),
-            type: this.type
+            type: this.type,
+            birthdate: this.birthdate.toDateString(),
+            gender: this.gender,
         };
     }
 
@@ -64,7 +73,10 @@ export class User {
             firebaseObject.challengesWon || [],
             firebaseObject.group || 2,
             firebaseObject.trophiesWon || [],
-            firebaseObject.type || ''
+            firebaseObject.type || '',
+            new Date(firebaseObject.birthdate),
+            firebaseObject.gender
+
         );
     }
 }

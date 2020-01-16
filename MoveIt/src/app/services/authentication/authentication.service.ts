@@ -71,5 +71,14 @@ export class AuthenticateService {
     getUsername() {
         return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/name').valueChanges();
     }
+
+    // BK: returns the group the user is assigened to. Will be used in menu.page.ts
+    getUsergroup() {
+        return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/group').valueChanges();
+    }
+
+    getSpecificUsername(uid) {
+        return this.db.object<string>('/users/' + uid + '/name').valueChanges();
+    }
 }
 

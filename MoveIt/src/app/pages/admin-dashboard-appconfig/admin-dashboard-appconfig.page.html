@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>App Configuration</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <section>
+    <ion-button id="user" color="secondary"  slot="end" float-right padding>New User</ion-button>
+    <ion-button id="group" color="secondary" slot="end" float-right padding>New Group</ion-button>
+  </section>
+  <br><br><br>
+
+  <div>
+
+  <ion-row *ngFor="let group of groups">
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label></ion-label>
+        </ion-list-header>
+        <ion-item>Group {{group.id}} </ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Progress</ion-label>
+        </ion-list-header>
+        <ion-item><ion-checkbox [checked]="group.featureVector[0]"></ion-checkbox></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Information</ion-label>
+        </ion-list-header>
+        <ion-item><ion-checkbox [checked]="group.featureVector[1]"></ion-checkbox></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Rewards</ion-label>
+        </ion-list-header>
+        <ion-item><ion-checkbox [checked]="group.featureVector[2]"></ion-checkbox></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Newsfeed</ion-label>
+        </ion-list-header>
+        <ion-item><ion-checkbox [checked]="group.featureVector[3]"></ion-checkbox></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Leaderboard</ion-label>
+        </ion-list-header>
+        <ion-item><ion-checkbox [checked]="group.featureVector[4]"></ion-checkbox></ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</div>
+
+<u></u>
+  <div>
+  <ion-row *ngFor="let user of users">
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label></ion-label>
+        </ion-list-header>
+        <ion-item> {{user.name}} </ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Group 1</ion-label>
+        </ion-list-header>
+        <ion-item lines="none"><ion-checkbox [checked]="user.groups[0]"></ion-checkbox></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Group 2</ion-label>
+        </ion-list-header>
+        <ion-item lines="none"><ion-checkbox [checked]="user.groups[1]"></ion-checkbox></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Group 3</ion-label>
+        </ion-list-header>
+        <ion-item lines="none"><ion-checkbox [checked]="user.groups[2]"></ion-checkbox></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Group 4</ion-label>
+        </ion-list-header>
+        <ion-item lines="none"><ion-checkbox [checked]="user.groups[3]"></ion-checkbox></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Group 5</ion-label>
+        </ion-list-header>
+        <ion-item lines="none"><ion-checkbox [checked]="user.groups[4]"></ion-checkbox></ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+</div>
+ 
+
+
+</ion-content>
