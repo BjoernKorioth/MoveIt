@@ -4,9 +4,13 @@ import { Location } from  '@angular/common';
 
 import {Observable} from 'rxjs';
 
-import {GoalService} from '../../services/goals/goal.service'
+import {GoalService} from '../../services/goal/goal.service'
+
+import {AuthenticateService} from '../../services/authentication/authentication.service';
 
 import {LeaderboardObject} from '../../model/leaderboardObject'
+
+
 
 @Component({
   selector: 'app-leaderboard-detail',
@@ -125,7 +129,9 @@ export class LeaderboardDetailPage implements OnInit {
   activitiesVigorous: Array<LeaderboardObject>;
   activitiesObserve: Observable<any>;
 
-  constructor(private goalservice: GoalService, private location:Location) { 
+  tempUsername : string;
+
+  constructor(private goalservice: GoalService, private authService: AuthenticateService, private location:Location) { 
 
     this.activitiesObserve = this.goalservice.getAllOtherAvailableGoals();
 
@@ -139,21 +145,27 @@ export class LeaderboardDetailPage implements OnInit {
   pushObjects(result){
     var testArray = new Array<LeaderboardObject>();
     var testArray2 = new Array<LeaderboardObject>();
-    console.log(result);
+    console.log(result.length);
+
     for(var i = 0; i < result.length; i++){
       var oneResult = result[i];
-      console.log(oneResult);
+      if(oneResult){
+         if(oneResult.goal.type === 'moderate' && oneResult.goal.duration === 'weekly'){
 
-          if(oneResult.weeklyModerate !== undefined && oneResult.weeklyVigorous !== undefined){
-              let entity1 = new LeaderboardObject("TestUser", oneResult.weeklyModerate.current);
+              this.getUserName(oneResult.id);
+              //console.log(this.tempUsername);    
+          
+              let entity1 = new LeaderboardObject(this.tempUsername, oneResult.goal.current);
 
               testArray.push(entity1);
-
-              let entity2 = new LeaderboardObject("TestUser", oneResult.weeklyVigorous.current);
+          }else if(oneResult.goal.type === 'vigorous' && oneResult.goal.duraion === 'weekly'){
+              //console.log("LOLOLO");
+            let entity2 = new LeaderboardObject("TestUser", oneResult.goal.current);
 
               testArray2.push(entity2);
           }
         }
+      }
         
     this.activitiesModerate = testArray;
     this.activitiesVigorous = testArray2;
@@ -165,11 +177,19 @@ export class LeaderboardDetailPage implements OnInit {
     this.activitiesModerate.sort( (a,b) => a.compareTo(b));
     this.activitiesVigorous.sort((a,b) => a.compareTo(b));
 
-    console.log("VIGIROUS");
+   /* console.log("VIGIROUS");
     console.log(this.activitiesVigorous);
 
     console.log("MODERATE");
-    console.log(this.activitiesModerate);
+    console.log(this.activitiesModerate);*/
+  }
+
+  private getUserName(uid){
+    return this.authService.getSpecificUsername(uid).subscribe(result => this.setUsername(result));
+  }
+
+  private setUsername(username){
+    this.tempUsername = username;
   }
 
   goBack(){
