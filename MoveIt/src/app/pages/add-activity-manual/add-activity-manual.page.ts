@@ -4,11 +4,11 @@ import {ActivityService} from '../../services/activity/activity.service';
 import { Location } from  '@angular/common';
 
 @Component({
-  selector: 'app-add-activity-detail',
-  templateUrl: './add-activity-detail.page.html',
-  styleUrls: ['./add-activity-detail.page.scss'],
+  selector: 'app-add-activity-manual',
+  templateUrl: './add-activity-manual.page.html',
+  styleUrls: ['./add-activity-manual.page.scss'],
 })
-export class AddActivityDetailPage implements OnInit {
+export class AddActivityManualPage implements OnInit {
   activity: Activity;
   minutes: number;
   types: Array<string>;

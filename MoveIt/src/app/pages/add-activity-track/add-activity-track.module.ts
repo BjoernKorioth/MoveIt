@@ -8,14 +8,14 @@ import { IonicModule } from '@ionic/angular';
 // Import ng-circle-progress
 import { NgCircleProgressModule } from 'ng-circle-progress';
 
-import { AddActivityDetailPage } from './add-activity-detail.page';
+import { AddActivityTrackPage } from './add-activity-track.page';
 
 
 
 const routes: Routes = [
   {
     path: '',
-    component: AddActivityDetailPage
+    component: AddActivityTrackPage
   }
 ];
 
@@ -38,6 +38,6 @@ const routes: Routes = [
       renderOnClick: false
     })
   ],
-  declarations: [AddActivityDetailPage]
+  declarations: [AddActivityTrackPage]
 })
-export class AddActivityDetailPageModule {}
+export class AddActivityTrackPageModule {}

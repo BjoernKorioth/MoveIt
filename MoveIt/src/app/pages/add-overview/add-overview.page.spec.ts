@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddActivityDetailPage } from './add-activity-detail.page';
+import { AddOverviewPage } from './add-overview.page';
 
-describe('AddActivityDetailPage', () => {
-  let component: AddActivityDetailPage;
-  let fixture: ComponentFixture<AddActivityDetailPage>;
+describe('AddOverviewPage', () => {
+  let component: AddOverviewPage;
+  let fixture: ComponentFixture<AddOverviewPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddActivityDetailPage ],
+      declarations: [ AddOverviewPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddActivityDetailPage);
+    fixture = TestBed.createComponent(AddOverviewPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
