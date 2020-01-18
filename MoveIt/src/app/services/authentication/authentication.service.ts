@@ -81,5 +81,13 @@ export class AuthenticateService {
         return this.db.object<string>('/users/' + uid + '/name').valueChanges();
         
     }
+
+    setUser(){
+        return this.db.object<User>('/users/' + firebase.auth().currentUser.uid).valueChanges().subscribe(result => (this.user = result));
+    }
+
+    getFullUser(){
+        return this.user;
+    }
 }
 

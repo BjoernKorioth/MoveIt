@@ -206,4 +206,8 @@ export class PostService {
     getAllComments(postId: string) {
         return this.fireDatabase.list<Comment>('/posts/' + this.user.group + '/' + postId).valueChanges();
     }
+
+    setUser(){
+        this.user = this.authenticateService.getFullUser();
+    }
 }
