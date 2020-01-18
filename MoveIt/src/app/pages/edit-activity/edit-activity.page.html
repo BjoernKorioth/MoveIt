@@ -12,4 +12,30 @@
 
 <ion-content>
 
+   
+  <ion-list>
+    <ion-item>
+      <ion-label>Kind of activity</ion-label>
+      <ion-select [(ngModel)]="activity.type" placeholder="Select One" disabled="false">
+        <ion-select-option *ngFor="let type of types">{{type}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="activity.intensity" placeholder="Select One">
+          <ion-select-option *ngFor="let intensity of intensities">{{intensity}}</ion-select-option>
+        </ion-select>
+      </ion-item> 
+
+    <ion-item>
+      <ion-input [(ngModel)]="minutes" type="number" placeholder="Minutes"></ion-input>
+    </ion-item>
+    <section>
+      <ion-button (click)=editActivity()  color="secondary" slot="end" float-right>Edit activity</ion-button>
+      <!--<ion-button expand="block">Add activity</ion-button>-->
+      
+    </section>
+  </ion-list>
+
 </ion-content>
