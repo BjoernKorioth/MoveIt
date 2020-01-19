@@ -5,14 +5,13 @@
   </ion-buttons>
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
-  </ion-buttons>
-    <ion-title>Edit activity</ion-title>
+    </ion-buttons>
+    <ion-title>Add Activity</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
-
-   
+  
+<ion-content fullscreen>
+  
   <ion-list>
     <ion-item>
       <ion-label>Kind of activity</ion-label>
@@ -32,10 +31,16 @@
       <ion-input [(ngModel)]="minutes" type="number" placeholder="Minutes"></ion-input>
     </ion-item>
     <section>
-      <ion-button (click)=editActivity()  color="secondary" slot="end" float-right>Edit activity</ion-button>
+      <ion-button (click)=addActivity() color="secondary" slot="end" float-right>Add activity</ion-button>
       <!--<ion-button expand="block">Add activity</ion-button>-->
       
     </section>
   </ion-list>
 
-</ion-content>
+
+
+
+  </ion-content>
+
+  
+

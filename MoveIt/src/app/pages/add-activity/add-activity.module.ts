@@ -18,14 +18,22 @@ const routes: Routes = [
         data: {authGuardPipe: redirectUnauthorizedToLogin},
         children: [
             {
-                path: 'detail',
-                loadChildren: '../add-activity-detail/add-activity-detail.module#AddActivityDetailPageModule'
+                path: 'track',
+                loadChildren: '../add-activity-track/add-activity-track.module#AddActivityTrackPageModule'
+            },
+            {
+                path: 'manual',
+                loadChildren: '../add-activity-manual/add-activity-manual.module#AddActivityManualPageModule'
+            },
+            {
+                path: 'overview',
+                loadChildren: '../add-overview/add-overview.module#AddOverviewPageModule'
             }
         ]
     },
     {
         path: '',
-        redirectTo: 'add/detail',
+        redirectTo: 'add/overview',
         pathMatch: 'full'
     }
 ];

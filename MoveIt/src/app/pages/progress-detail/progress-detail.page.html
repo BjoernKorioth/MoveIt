@@ -17,6 +17,8 @@
     <ion-button type="button" (click)='getAllActivities()'>Get All</ion-button>
     <ion-button type="button" (click)='createGoals()'>Create Goals</ion-button>
     <ion-button type="button" (click)='adjustGoal()'>Adjust Goal</ion-button>
+    
+  <button ion-button full (click)="saveWorkout()">Set a Workout</button>
 
     <ion-list *ngFor="let goal of (goals | async)">
         <ion-list-header>
@@ -54,6 +56,8 @@
             <ion-label>
                 <h2>20.10. 20 minutes {{activity.type}}-{{activity.intensity}}</h2>
             </ion-label>
+            <ion-icon name="create" slot="end" routerLink='/menu/progress/progress/edit'>
+            </ion-icon>
         </ion-item>
     </ion-list>
 
