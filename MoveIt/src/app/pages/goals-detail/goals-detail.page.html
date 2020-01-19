@@ -11,25 +11,38 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-segment [(ngModel)]="goals">
+    <ion-segment-button value="trophies">
+      moderate
+    </ion-segment-button>
+    <ion-segment-button value="actMinutes">
+      vigorous
+    </ion-segment-button>
+    <ion-segment-button value="challenges">
+      weight training
+    </ion-segment-button>
+  </ion-segment>
+
 <ion-content>
   <ion-list>
     <ion-list-header>
       <ion-label>Goals</ion-label>
     </ion-list-header>
     <!-- Colorize Progressbar -->
-   <ion-item> <ion-progress-bar color="primary" value="0.9"></ion-progress-bar></ion-item>
-   <ion-item> <ion-progress-bar color="primary" value="0.58"></ion-progress-bar></ion-item>
    <ion-item> <ion-progress-bar color="primary" value="0.27"></ion-progress-bar></ion-item>
    <ion-item>
     <ion-label>daily goals</ion-label>
-    <ion-input placeholder="Text Input"></ion-input>
+    <ion-input placeholder="500"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Monthly goals</ion-label>
-    <ion-input placeholder="Text Input"></ion-input>
+    <ion-input placeholder="1500"></ion-input>
   </ion-item>
   
   </ion-list>
+  <section>
+    <ion-button slot="end" float-right> Change goals </ion-button>
+  </section>
 
   
 </ion-content>
