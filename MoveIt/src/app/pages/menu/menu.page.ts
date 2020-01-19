@@ -70,7 +70,7 @@ export class MenuPage implements OnInit {
      * @param username the new username
      */
     updatePages(username) {
-        this.pages = [{title: username}, ...this.pages.slice(1)];
+        this.pages = [{title: username, url:'/menu/profile'}, ...this.pages.slice(1)];
     }
 
     /**
