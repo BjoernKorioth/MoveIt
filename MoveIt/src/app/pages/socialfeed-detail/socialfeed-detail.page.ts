@@ -18,23 +18,6 @@ export class SocialfeedDetailPage implements OnInit {
   
 
   posts: Observable<Post[]>;
-  comments: Array<{userid:string, name:string, comment:string}> = [
-    {
-      userid: '1',
-      name: 'Cindy',
-      comment:'Awesome!'
-    },
-    {
-      userid: '2',
-      name: 'Mike',
-      comment:'Really good :)'
-    },
-    {
-      userid: '3',
-      name: 'Alberto',
-      comment:'Fantastic'
-    }
-  ];
 
   constructor(private postService: PostService, private location:Location) {
     this.location = location;
@@ -102,8 +85,6 @@ export class SocialfeedDetailPage implements OnInit {
   newComment(i) {
     var postid = document.getElementsByName("userPlace")[i].id;
     var userComment = document.getElementsByTagName("input")[i].value;
-
-    this.comments.push({ userid : postid , name : "userId" ,comment: userComment});
 
     this.postService.createComment(postid, userComment).then(
       res => console.log(res),

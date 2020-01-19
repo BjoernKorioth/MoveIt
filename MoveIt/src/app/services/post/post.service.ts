@@ -71,6 +71,7 @@ export class PostService {
                 post => {
                     if (post.like(this.user.id)) {
                         this.editPost(post.id, post).then(
+                            console.log(this.user.id),
                             () => resolve('Successfully liked the post'),
                             err => reject(err)
                         );
