@@ -27,7 +27,8 @@ export class AuthenticateService {
                         // A user credential is returned, from which we can extract the user
                         const user = userCredential.user;
                         // Now, we can create a new user object with the provided information
-                        this.user = new User(user.uid, value.firstname + ' ' + value.surname);
+                        //this.user = new User(user.uid, value.firstname + ' ' + value.surname);
+                        this.user = new User(user.uid, value.username);
                         // Try to create the user on the database
                         this.registerOnDatabase().then(
                             // If this is successful, resolve the promise
@@ -70,6 +71,24 @@ export class AuthenticateService {
 
     getUsername() {
         return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/name').valueChanges();
+    }
+
+    // BK: returns the group the user is assigened to. Will be used in menu.page.ts
+    getUsergroup() {
+        return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/group').valueChanges();
+    }
+
+    getSpecificUsername(uid) {
+        return this.db.object<string>('/users/' + uid + '/name').valueChanges();
+        
+    }
+
+    setUser(){
+        return this.db.object<User>('/users/' + firebase.auth().currentUser.uid).valueChanges().subscribe(result => (this.user = result));
+    }
+
+    getFullUser(){
+        return this.user;
     }
 }
 

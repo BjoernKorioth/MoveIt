@@ -1,15 +1,15 @@
 import {NgModule} from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 import {
-  AngularFireAuthGuard,
-  hasCustomClaim,
-  redirectLoggedInTo,
-  redirectUnauthorizedTo
+    AngularFireAuthGuard,
+    hasCustomClaim,
+    redirectLoggedInTo,
+    redirectUnauthorizedTo
 } from '@angular/fire/auth-guard';
 
 const adminOnly = () => hasCustomClaim('admin');
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
-const redirectLoggedInToMenu = () => redirectLoggedInTo(['menu']);
+const redirectLoggedInToDashboard = () => redirectLoggedInTo(['menu/dashboard']);
 
 const routes: Routes = [
     {
@@ -17,13 +17,13 @@ const routes: Routes = [
     },
     {
         path: 'login', loadChildren: './pages/login/login.module#LoginPageModule', canActivate: [AngularFireAuthGuard],
-        data: {authGuardPipe: redirectLoggedInToMenu}
+        data: {authGuardPipe: redirectLoggedInToDashboard}
     },
     {
         path: 'registration',
         loadChildren: './pages/registration/registration.module#RegistrationPageModule',
         canActivate: [AngularFireAuthGuard],
-        data: {authGuardPipe: redirectLoggedInToMenu}
+        data: {authGuardPipe: redirectLoggedInToDashboard}
     },
     {
         path: 'terms', loadChildren: './pages/terms/terms.module#TermsPageModule'
@@ -33,7 +33,11 @@ const routes: Routes = [
         data: {authGuardPipe: redirectUnauthorizedToLogin}
     },
   { path: 'goals', loadChildren: './pages/goals/goals.module#GoalsPageModule' },
-  { path: 'goals-detail', loadChildren: './pages/goals-detail/goals-detail.module#GoalsDetailPageModule' }
+  { path: 'goals-detail', loadChildren: './pages/goals-detail/goals-detail.module#GoalsDetailPageModule' },
+
+    {
+        path: 'admin-dashboard', loadChildren: './pages/admin-dashboard/admin-dashboard.module#AdminDashboardPageModule'
+    }
     // { path: 'admin-dashboard', loadChildren: './pages/<path-to-admin-dashboard>', canActivate: [AngularFireAuthGuard],
     //     data: {authGuardPipe: adminOnly} }
 ];

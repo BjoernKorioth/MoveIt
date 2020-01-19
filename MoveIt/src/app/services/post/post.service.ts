@@ -5,6 +5,7 @@ import {Comment} from '../../model/comment';
 import * as firebase from 'firebase/app';
 import {AuthenticateService} from '../authentication/authentication.service';
 import {User} from '../../model/user';
+import {map} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -74,7 +75,7 @@ export class PostService {
                             err => reject(err)
                         );
                     } else {
-                        reject('This post is already liked by you');
+                        this.unlikePost(postId);
                     }
                 },
                 err => reject(err)
@@ -99,7 +100,7 @@ export class PostService {
                             err => reject(err)
                         );
                     } else {
-                        reject('This post is not liked by you');
+                        this.likePost(postId);
                     }
                 },
                 err => reject(err)
@@ -129,8 +130,9 @@ export class PostService {
      * Retrieve all activities of the group
      */
     getAllPosts() {
-        return this.fireDatabase.list<Post>('/posts/' + this.user.group).valueChanges();
-        // .pipe(map(array => array.map(post => Post.fromFirebaseObject(this.user.group, post.id, post))));
+        const ref = this.fireDatabase.list<Post>('/posts/' + this.user.group);
+        return ref.snapshotChanges().pipe(map(posts => posts.map(
+            postSnapshot => Post.fromFirebaseObject(this.user.group, postSnapshot.key, postSnapshot.payload.val()))));
     }
 
     /**
@@ -139,11 +141,14 @@ export class PostService {
      * @param postId id of the post to be commented on
      * @param comment an existing comment object
      */
-    createComment(postId: string, comment: Comment) {
+    createComment(postId: string, userComment: string) {
+        var comment = new Comment();
         return new Promise<any>((resolve, reject) => {
             const id = firebase.database().ref('/posts/' + this.user.group).child(postId).child('comments').push().key;
             comment.id = id;
             comment.post = postId;
+            comment.text = userComment;
+            comment.user = this.user.name;
 
             this.fireDatabase.database.ref('/posts/' + this.user.group).child(comment.post).child('comments').child(id)
                 .set(comment.toFirebaseObject()).then(
@@ -200,5 +205,9 @@ export class PostService {
      */
     getAllComments(postId: string) {
         return this.fireDatabase.list<Comment>('/posts/' + this.user.group + '/' + postId).valueChanges();
+    }
+
+    setUser(){
+        this.user = this.authenticateService.getFullUser();
     }
 }

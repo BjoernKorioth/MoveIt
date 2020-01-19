@@ -3,6 +3,7 @@ import {Post} from '../../model/post';
 import {Comment} from '../../model/comment';
 import {PostService} from '../../services/post/post.service';
 import {Observable} from 'rxjs';
+import { analytics } from 'firebase';
 import { Location } from  '@angular/common';
 
 @Component({
@@ -10,8 +11,30 @@ import { Location } from  '@angular/common';
   templateUrl: './socialfeed-detail.page.html',
   styleUrls: ['./socialfeed-detail.page.scss'],
 })
+
+
+
 export class SocialfeedDetailPage implements OnInit {
+  
+
   posts: Observable<Post[]>;
+  comments: Array<{userid:string, name:string, comment:string}> = [
+    {
+      userid: '1',
+      name: 'Cindy',
+      comment:'Awesome!'
+    },
+    {
+      userid: '2',
+      name: 'Mike',
+      comment:'Really good :)'
+    },
+    {
+      userid: '3',
+      name: 'Alberto',
+      comment:'Fantastic'
+    }
+  ];
 
   constructor(private postService: PostService, private location:Location) {
     this.location = location;
@@ -22,6 +45,7 @@ export class SocialfeedDetailPage implements OnInit {
   }
 
   ngOnInit() {
+    this.postService.setUser();
   }
 
   goBack(){
@@ -60,24 +84,31 @@ export class SocialfeedDetailPage implements OnInit {
     return this.postService.getAllPosts();
   }
 
-  like() {
-    this.postService.likePost('-LxfARsp_2al7-W3JYcf').then(
+  like(i) {
+    var liked = document.getElementsByName("userPlace")[i].id;
+    this.postService.likePost(liked).then(
         res => console.log(res),
         err => console.log(err)
     );
   }
 
-  unlike() {
-    this.postService.unlikePost('-LxfARsp_2al7-W3JYcf').then(
+  unlike(i) {
+    var unliked = document.getElementsByName("userPlace")[i].id;
+    this.postService.unlikePost(unliked).then(
         res => console.log(res),
         err => console.log(err)
     );
   }
 
-  newComment() {
-    this.postService.createComment('-LxfARsp_2al7-W3JYcf', new Comment()).then(
-        res => console.log(res),
-        err => console.log(err)
+  newComment(i) {
+    var postid = document.getElementsByName("userPlace")[i].id;
+    var userComment = document.getElementsByTagName("input")[i].value;
+
+    this.comments.push({ userid : postid , name : "userId" ,comment: userComment});
+
+    this.postService.createComment(postid, userComment).then(
+      res => console.log(res),
+      err => console.log(err)
     );
   }
 

@@ -27,6 +27,9 @@ export class RegistrationPage implements OnInit {
         name: [
             {type: 'required', message: 'Please enter a name'}
         ],
+        birthdate:[{type: 'required', message:'Please set a birthday'}],
+        gender: [{type: 'required', message: 'Please choose your gender'}],
+        terms: [{type:'required', message: 'Please accept the terms'}]
     };
 
     constructor(
@@ -46,8 +49,12 @@ export class RegistrationPage implements OnInit {
                 Validators.minLength(5),
                 Validators.required
             ])),
-            firstname: new FormControl('', Validators.required),
-            surname: new FormControl('', Validators.required),
+            username: new FormControl('', Validators.required),
+            //surname: new FormControl('', Validators.required),
+            birthdate: new FormControl('', Validators.required),
+            gender: new FormControl('', Validators.required),
+            terms: new FormControl('', Validators.required),
+            code: new FormControl('', Validators.required)
         });
     }
 
