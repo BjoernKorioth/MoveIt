@@ -139,7 +139,7 @@ export class LeaderboardDetailPage implements OnInit {
   }
 
   ngOnInit() {
-
+    console.log(this.authService.getFullUser());
   }
 
   pushObjects(result){

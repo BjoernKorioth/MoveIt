@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router, RouterEvent} from '@angular/router';
 
 import {AuthenticateService} from '../../services/authentication/authentication.service';
+import {PostService} from '../../services/post/post.service';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -59,6 +60,7 @@ export class MenuPage implements OnInit {
     }
 
     ngOnInit() {
+        this.auth.setUser();
     }
 
     /**

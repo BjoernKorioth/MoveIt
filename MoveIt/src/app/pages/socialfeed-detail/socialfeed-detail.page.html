@@ -32,30 +32,29 @@
         <!--img [src]="post.image"-->
       </ion-avatar>
       <ion-label id="{{post.id}}" name="userPlace">
-        <button (click)="myFunction(i)">click me</button>
         <h3>{{post.user}} {{post.id}}</h3>
         <p><ion-icon name="time"></ion-icon> 5 minutes {{getTimeDifference(post.createdAt)}} ago</p>
       </ion-label>
     </ion-item>
     <!--<img src="../assets/Laufschuhe.jpg">-->
 
-    <ion-card-content name="demo">
+    <ion-card-content>
       {{post.content}}
     </ion-card-content>
 
 
     <ion-row>
       <ion-col center text-center>
-          <ion-button type="button" (click)='like()'><ion-icon name="thumbs-up" style="margin-right: 5px"></ion-icon>{{post.likes?.length || 0}} Likes</ion-button>
+          <ion-button id="like" type="button" (click)='like(i)'><ion-icon name="thumbs-up" style="margin-right: 5px"></ion-icon>{{post.likes?.length || 0}} Likes</ion-button>
       </ion-col>
       <ion-col center text-center>
-          <ion-button type="button" (click)="newComment()"><ion-icon name="text" style="margin-right: 5px"></ion-icon>{{post.comments?.length || 0}} Comments</ion-button>
+          <ion-button type="button" (click)="newComment(i)"><ion-icon name="text" style="margin-right: 5px"></ion-icon>{{post.comments?.length || 0}} Comments</ion-button>
       </ion-col>
     </ion-row>
       <div *ngIf="comments?.length != 0">
-        <div *ngFor="let c of comments">
+        <div *ngFor="let c of post.comments">
           <ion-item lines="none">
-            <ion-label><h3>{{c.name}}</h3><p>{{c.comment}}</p></ion-label>
+            <ion-label><h3>{{c.user}}</h3><p>{{c.text}}</p></ion-label>
           </ion-item>
         </div>
         <ion-item>
@@ -66,7 +65,7 @@
         <form>
           <ion-item>
             <ion-input name="comment" type="text" placeholder="your comment..."></ion-input>
-            <ion-icon name="send" (click)="newComment()"></ion-icon>  
+            <ion-icon name="send" (click)="newComment(i)"></ion-icon>  
           </ion-item>
         </form>
     </ion-row>
