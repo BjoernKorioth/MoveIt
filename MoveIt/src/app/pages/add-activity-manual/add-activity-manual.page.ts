@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Activity} from '../../model/activity';
 import {ActivityService} from '../../services/activity/activity.service';
 import { Location } from  '@angular/common';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-add-activity-manual',
@@ -15,7 +16,7 @@ export class AddActivityManualPage implements OnInit {
   intensities: Array<string>;
 
 
-  constructor(private activityService: ActivityService, private location: Location) {
+  constructor(private activityService: ActivityService, private location: Location, public alertController: AlertController) {
     this.activity = new Activity();
     this.location = location;
     this.types = Activity.types;
@@ -29,6 +30,17 @@ export class AddActivityManualPage implements OnInit {
 
   ngOnInit() {
   }
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Success',
+      message: 'Activity added successfully!',
+      buttons: ['OK'],
+    });
+  
+    await alert.present();
+    let result = await alert.onDidDismiss();
+    console.log(result);
+  }
 
   addActivity() {
     this.activity.startTime = new Date(0);
@@ -37,6 +49,7 @@ export class AddActivityManualPage implements OnInit {
         res => console.log(res),
         err => console.log(err)
     );
+   this.presentAlert();
   }
 
 
