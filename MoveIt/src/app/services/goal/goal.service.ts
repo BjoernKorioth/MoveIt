@@ -3,6 +3,7 @@ import {AngularFireDatabase} from '@angular/fire/database';
 import {Goal} from '../../model/goal';
 import * as firebase from 'firebase/app';
 import {Activity} from '../../model/activity';
+import {GoalArray} from '../../model/goalArray';
 import {map} from 'rxjs/operators';
 
 @Injectable({
@@ -107,6 +108,11 @@ export class GoalService {
         // An array of Goals is reconstructed using the fromFirebaseObject method
         return ref.snapshotChanges().pipe(
             map(goals => goals.map(goalPayload => (Goal.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
+    }
+
+    getAllOtherAvailableGoals(){
+        return this.fireDatabase.list<GoalArray>('/goals/').snapshotChanges().pipe(
+            map(goals => goals.map(goalPayload => (GoalArray.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
     }
 
     /**

@@ -79,6 +79,7 @@ export class AuthenticateService {
 
     getSpecificUsername(uid) {
         return this.db.object<string>('/users/' + uid + '/name').valueChanges();
+        
     }
 }
 
