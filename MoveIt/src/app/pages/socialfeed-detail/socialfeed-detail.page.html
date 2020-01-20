@@ -32,7 +32,7 @@
         <!--img [src]="post.image"-->
       </ion-avatar>
       <ion-label id="{{post.id}}" name="userPlace">
-        <h3>{{post.user}} {{post.id}}</h3>
+        <h3>{{post.user}}</h3>
         <p><ion-icon name="time"></ion-icon> 5 minutes {{getTimeDifference(post.createdAt)}} ago</p>
       </ion-label>
     </ion-item>
@@ -45,10 +45,10 @@
 
     <ion-row>
       <ion-col center text-center>
-          <ion-button id="like" type="button" (click)='like(i)'><ion-icon name="thumbs-up" style="margin-right: 5px"></ion-icon>{{post.likes?.length || 0}} Likes</ion-button>
+          <ion-button id="like" type="button" (click)='like(i)'><ion-icon name="thumbs-up" id="icons"></ion-icon>{{post.likes?.length || 0}} Likes</ion-button>
       </ion-col>
       <ion-col center text-center>
-          <ion-button type="button" (click)="newComment(i)"><ion-icon name="text" style="margin-right: 5px"></ion-icon>{{post.comments?.length || 0}} Comments</ion-button>
+          <ion-button id="comment" type="button" (click)="newComment(i)"><ion-icon name="text" id="icons"></ion-icon>{{post.comments?.length || 0}} Comments</ion-button>
       </ion-col>
     </ion-row>
       <div *ngIf="comments?.length != 0">
@@ -57,13 +57,15 @@
             <ion-label><h3>{{c.user}}</h3><p>{{c.text}}</p></ion-label>
           </ion-item>
         </div>
-        <ion-item>
-          <ion-label><p style="font-style:italic;">all comments</p></ion-label>
+        <!--
+          <ion-item>
+          <ion-label><p id="allComments">all comments</p></ion-label>
         </ion-item>
+        -->
       </div>
       <ion-row>
         <form>
-          <ion-item>
+          <ion-item id="form">
             <ion-input name="comment" type="text" placeholder="your comment..."></ion-input>
             <ion-icon name="send" (click)="newComment(i)"></ion-icon>  
           </ion-item>
