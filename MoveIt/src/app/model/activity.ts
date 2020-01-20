@@ -18,7 +18,7 @@ export class Activity {
     constructor(id?: string, distance?: object, endTime?: Date, intensity?: string, startTime?: Date, type?: string) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
-        this.distance = distance || {unit: 'km', value: 12};
+        this.distance = distance || {unit: 'km', value: 0};
         this.endTime = endTime || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
         this.intensity = intensity || 'moderate';
         this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
