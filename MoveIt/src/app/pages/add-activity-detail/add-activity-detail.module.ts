@@ -6,7 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 // Import ng-circle-progress
-/*import { NgCircleProgressModule } from 'ng-circle-progress';
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 import { AddActivityDetailPage } from './add-activity-detail.page';
 
@@ -40,4 +40,4 @@ const routes: Routes = [
   ],
   declarations: [AddActivityDetailPage]
 })
-export class AddActivityDetailPageModule {}*/
+export class AddActivityDetailPageModule {}
