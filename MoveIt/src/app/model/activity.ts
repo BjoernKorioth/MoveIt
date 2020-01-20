@@ -43,15 +43,15 @@ export class Activity {
      * @param firebaseObject result of the query
      */
 
-    static fromFirebaseObject(id: string, firebaseObject: FireBaseObject) {
-        // @ts-ignore TS2339
+    static fromFirebaseObject(id: string, activity: Activity) {// firebaseObject: FireBaseObject) {
+        // @ts-ignore TS2339        
         return new Activity(
-            id || '',
-            firebaseObject.distance || {},
-            new Date(firebaseObject.endTime) || new Date(),
-            firebaseObject.intensity || '',
-            new Date(firebaseObject.startTime) || new Date(),
-            firebaseObject.type || ''
+            id,
+            activity.distance,            
+            new Date(activity.endTime) || new Date(),
+            activity.intensity || '',
+            new Date(activity.startTime) || new Date(), // new Date(firebaseObject.startTime) || new Date(),
+            activity.type || ''
         );
     }
 

@@ -4,7 +4,7 @@ import {Goal} from '../../model/goal';
 import * as firebase from 'firebase/app';
 import {Activity} from '../../model/activity';
 import {map} from 'rxjs/operators';
-import { relative } from 'path';
+// import { relative } from 'path';
 
 @Injectable({
     providedIn: 'root'
