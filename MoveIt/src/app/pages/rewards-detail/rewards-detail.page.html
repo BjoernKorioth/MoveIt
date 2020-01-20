@@ -14,12 +14,12 @@
 
   <div>
     <ion-row>
-      <ion-col size="4" *ngFor="let trophy of trophies" margin-top=80>
+      <ion-col size="4" *ngFor="let trophy of trophies" margin-top="80">
         <ion-list>
           <ion-item>
-              <ion-img [src]="trophy.image"></ion-img>
+              <img [src]="trophy.image"/>
           </ion-item>
-          <ion-item padding>
+          <ion-item class="padding">
               {{trophy.title}}
           </ion-item>
         </ion-list>
