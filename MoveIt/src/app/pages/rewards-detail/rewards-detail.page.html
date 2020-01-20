@@ -15,11 +15,17 @@
   <div>
     <ion-row>
       <ion-col size="4" *ngFor="let trophy of trophies" margin-top=80>
-        <ion-item>
-          <ion-img [src]="trophy.image"></ion-img>
-        </ion-item>
+        <ion-list>
+          <ion-item>
+              <ion-img [src]="trophy.image"></ion-img>
+          </ion-item>
+          <ion-item padding>
+              {{trophy.title}}
+          </ion-item>
+        </ion-list>
       </ion-col>
     </ion-row>
+    
   </div>
 
   <div padding text-decoration="underline">
