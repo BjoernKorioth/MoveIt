@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivityService} from '../../services/activity/activity.service';
 import {Activity} from '../../model/activity';
 import {Observable} from 'rxjs';
@@ -8,6 +8,8 @@ import {Location} from '@angular/common';
 import { Health } from '@ionic-native/health/ngx';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { Chart } from 'chart.js';
+
 
 @Component({
     selector: 'app-progress-detail',
@@ -19,6 +21,10 @@ export class ProgressDetailPage implements OnInit {
     goals: Observable<any>;
     goalStorage: Array<Goal>;
 
+    @ViewChild('hrzLineChart') hrzLineChart: { nativeElement: any; };
+    hrzLines: any;
+
+
     constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location, private health: Health, private platform: Platform, private router: Router) {
         this.activities = this.activityService.getAllUserActivities();
         this.activities.subscribe(activities => this.updateGoals(activities));
@@ -26,6 +32,38 @@ export class ProgressDetailPage implements OnInit {
         this.goals.subscribe(goals => this.goalStorage = goals);
         //this.router = router;
     }
+
+    
+  ionViewDidEnter() {
+    this.createSimpleLineChart()
+  }
+
+  createSimpleLineChart() {
+    this.hrzLines = new Chart(this.hrzLineChart.nativeElement, {
+      type: 'line',
+      data: {
+        //labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
+        datasets: [{
+          label: 'Active Minutes',
+          data: [10, 20, 30, 30, 40, 50, 60, 70],
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+          borderColor: 'rgb(38, 194, 129)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+    });
+  }
+
+
 
 
     ngOnInit() {
