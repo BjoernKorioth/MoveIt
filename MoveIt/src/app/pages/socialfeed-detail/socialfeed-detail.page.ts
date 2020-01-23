@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Post} from '../../model/post';
 import {Comment} from '../../model/comment';
 import {PostService} from '../../services/post/post.service';
-import {Observable} from 'rxjs';
+import {Observable, empty} from 'rxjs';
 import { analytics } from 'firebase';
 import { Location } from  '@angular/common';
 
@@ -86,11 +86,12 @@ export class SocialfeedDetailPage implements OnInit {
   newComment(i) {
     var postid = document.getElementsByName("userPlace")[i].id;
     var userComment = document.getElementsByTagName("input")[i].value;
-
-    this.postService.createComment(postid, userComment).then(
-      res => console.log(res),
-      err => console.log(err)
-    );
+    if (userComment.length != 0){
+      this.postService.createComment(postid, userComment).then(
+        res => console.log(res),
+        err => console.log(err)
+      );
+    }
   }
 
   editComment() {
