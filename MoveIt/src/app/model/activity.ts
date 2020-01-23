@@ -18,7 +18,7 @@ export class Activity {
     constructor(id?: string, distance?: object, endTime?: Date, intensity?: string, startTime?: Date, type?: string) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
-        this.distance = distance || {unit: 'km', value: 12};
+        this.distance = distance || {unit: 'km', value: 0};
         this.endTime = endTime || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
         this.intensity = intensity || 'moderate';
         this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
@@ -43,15 +43,15 @@ export class Activity {
      * @param firebaseObject result of the query
      */
 
-    static fromFirebaseObject(id: string, firebaseObject: FireBaseObject) {
-        // @ts-ignore TS2339
+    static fromFirebaseObject(id: string, activity: Activity) {// firebaseObject: FireBaseObject) {
+        // @ts-ignore TS2339        
         return new Activity(
-            id || '',
-            firebaseObject.distance || {},
-            new Date(firebaseObject.endTime) || new Date(),
-            firebaseObject.intensity || '',
-            new Date(firebaseObject.startTime) || new Date(),
-            firebaseObject.type || ''
+            id,
+            activity.distance,            
+            new Date(activity.endTime) || new Date(),
+            activity.intensity || '',
+            new Date(activity.startTime) || new Date(), // new Date(firebaseObject.startTime) || new Date(),
+            activity.type || ''
         );
     }
 

@@ -24,7 +24,7 @@
         <ion-list-header>
             <ion-label>{{goal.name}} - {{goal.type}}</ion-label>
         </ion-list-header>
-        <ion-progress-bar color="primary" [value]="goal.current"></ion-progress-bar>
+        <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
 
 
         <!-- Colorize Progressbar -->
@@ -56,7 +56,7 @@
             <ion-label>
                 <h2>20.10. 20 minutes {{activity.type}}-{{activity.intensity}}</h2>
             </ion-label>
-            <ion-icon name="create" slot="end" routerLink='/menu/progress/progress/edit'>
+            <ion-icon name="create" slot="end" (click)='routeToEditPage(activity)'>
             </ion-icon>
         </ion-item>
     </ion-list>

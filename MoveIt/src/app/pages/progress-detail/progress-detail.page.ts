@@ -7,6 +7,7 @@ import {Goal} from '../../model/goal';
 import {Location} from '@angular/common';
 import { Health } from '@ionic-native/health/ngx';
 import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-progress-detail',
@@ -18,12 +19,14 @@ export class ProgressDetailPage implements OnInit {
     goals: Observable<any>;
     goalStorage: Array<Goal>;
 
-    constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location, private health: Health, private platform: Platform) {
+    constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location, private health: Health, private platform: Platform, private router: Router) {
         this.activities = this.activityService.getAllUserActivities();
         this.activities.subscribe(activities => this.updateGoals(activities));
         this.goals = this.goalService.getGoals();
         this.goals.subscribe(goals => this.goalStorage = goals);
+        //this.router = router;
     }
+
 
     ngOnInit() {
         this.checkPlatformReady();
@@ -79,6 +82,10 @@ export class ProgressDetailPage implements OnInit {
 
     goBack() {
         this.location.back();
+    }
+
+    routeToEditPage(activity: Activity) {
+        this.router.navigateByUrl('/menu/progress/progress/edit', {state: {activity: activity}});        
     }
 
     /**
@@ -152,7 +159,7 @@ export class ProgressDetailPage implements OnInit {
     }
 
     updateGoals(activities) {
-        console.log(this.goalStorage);
+        console.log(this.goalStorage);        
         this.goalService.updateGoals(this.goalStorage, activities).then(
             res => console.log(res),
             err => console.log(err)

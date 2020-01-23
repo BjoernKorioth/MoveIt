@@ -4,6 +4,7 @@ interface FirebaseObject {
     history: Array<object>;
     target: number;
     type: string;
+    relative: number;
 }
 
 export class Goal {
@@ -24,6 +25,7 @@ export class Goal {
         this.history = history || [];
         this.target = target || 0;
         this.type = type || 'vigorous';
+        this.relative = (current / target) || 0;
     }
 
     static durations = ['daily', 'weekly'];
@@ -42,6 +44,7 @@ export class Goal {
     history: Array<object>;
     target: number;
     type: string;
+    relative: number;
 
     /**
      * Reconstruct the Goal from a firebase result

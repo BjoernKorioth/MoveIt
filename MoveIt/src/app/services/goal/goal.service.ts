@@ -5,7 +5,9 @@ import * as firebase from 'firebase/app';
 import {Activity} from '../../model/activity';
 import {GoalArray} from '../../model/goalArray';
 import {map} from 'rxjs/operators';
+
 import { AuthenticateService } from '../authentication/authentication.service';
+
 
 @Injectable({
     providedIn: 'root'
@@ -109,6 +111,7 @@ export class GoalService {
         // An array of Goals is reconstructed using the fromFirebaseObject method
         return ref.snapshotChanges().pipe(
             map(goals => goals.map(goalPayload => (Goal.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
+            
     }
 
     getAllOtherAvailableGoals(){

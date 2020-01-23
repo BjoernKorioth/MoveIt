@@ -46,8 +46,11 @@ export class AddActivityManualPage implements OnInit {
     this.activity.startTime = new Date(0);
     this.activity.endTime = new Date(this.minutes * 60 * 1000);
     this.activityService.createActivity(this.activity).then(
-        res => console.log(res),
-        err => console.log(err)
+      (activity) => {
+          console.log(activity);
+        })
+        .catch(err => console.error(err)
+        
     );
    this.presentAlert();
   }

@@ -3,6 +3,8 @@ import {Activity} from '../../model/activity';
 import {ActivityService} from '../../services/activity/activity.service';
 import { Location } from  '@angular/common';
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-edit-activity',
   templateUrl: './edit-activity.page.html',
@@ -14,14 +16,18 @@ export class EditActivityPage implements OnInit {
   types: Array<string>;
   intensities: Array<string>;
 
-  constructor(private activityService: ActivityService, private location: Location) { 
-    this.activity = new Activity();
+  constructor(private activityService: ActivityService, private location: Location, private router: Router) { 
+    this.activity = this.router.getCurrentNavigation().extras.state.activity; // TODO: display error message if empty
     this.location = location;
     this.types = Activity.types;
     this.intensities = Activity.intensities;
+
+    this.router = router;    
   }
 
   ngOnInit() {
+    console.log('On Init');
+    console.log(this.router.getCurrentNavigation().extras.state);
   }
 
   goBack(){
@@ -34,26 +40,19 @@ export class EditActivityPage implements OnInit {
      * An updated activity object and the id of the activity to be updated must be provided
      */
     editActivity() {
-      const record = new Activity('-Lx_t1Ch4v1h7sox96XZ', {
+      /*const record = new Activity('-Lx_t1Ch4v1h7sox96XZ', {
         unit: 'km',
         value: 42.2,
         intensity: this.activity.intensity,
       });
-      console.log(this.activity);
+      console.log(this.activity);*/
 
       // TODO replace with actual activity id
-      this.activityService.editActivity('-Lx_t1Ch4v1h7sox96XZ', record).then(
+      this.activityService.editActivity(this.activity.id, this.activity).then(
           res => console.log(res),
           err => console.log(err)
       );
   }
-  addActivity() {
-    this.activity.startTime = new Date(0);
-    this.activity.endTime = new Date(this.minutes * 60 * 1000);
-    this.activityService.createActivity(this.activity).then(
-        res => console.log(res),
-        err => console.log(err)
-    );
-  }
+
 
 }
