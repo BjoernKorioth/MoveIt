@@ -28,7 +28,9 @@ export class AuthenticateService {
                         const user = userCredential.user;
                         // Now, we can create a new user object with the provided information
                         //this.user = new User(user.uid, value.firstname + ' ' + value.surname);
-                        this.user = new User(user.uid, value.username);
+                        this.user = new User(user.uid, value.username, [], [], -1 , [] ,"user", value.birthdate, value.gender);
+
+                        console.log(this.user);
                         // Try to create the user on the database
                         this.registerOnDatabase().then(
                             // If this is successful, resolve the promise
@@ -79,14 +81,7 @@ export class AuthenticateService {
     }
 
     getSpecificUsername(uid) {
-        return new Promise<any>((resolve, reject) => {
-
-            this.db.database.ref('/users/' + uid + '/name').once('value').then(
-                res => resolve(res),
-                err => reject(err)
-            );
-        });
-        
+           return this.db.database.ref('/users/' + uid + '/name').once('value');
     }
 
     async setUser(){
