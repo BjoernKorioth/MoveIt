@@ -13,14 +13,22 @@ const routes: Routes = [
     component: RewardsPage,
     children: [
       {
-        path: 'detail',
-        loadChildren: '../rewards-detail/rewards-detail.module#RewardsDetailPageModule'
-      }
+        path: 'overview',
+        loadChildren: '../rewards-overview/rewards-overview.module#RewardsOverviewPageModule'
+      },
+      {
+        path: 'challenges',
+        loadChildren: '../rewards-challenges/rewards-challenges.module#RewardsChallengesPageModule'
+    },
+    {
+        path: 'trophies',
+        loadChildren: '../rewards-trophies/rewards-trophies.module#RewardsTrophiesPageModule'
+    }
       ]
   },
   {
     path: '',
-    redirectTo: 'rewards/detail',
+    redirectTo: 'rewards/overview',
     pathMatch: 'full'
   }
 ];
