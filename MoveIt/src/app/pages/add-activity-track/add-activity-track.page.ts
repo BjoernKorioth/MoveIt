@@ -2,15 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import {Activity} from '../../model/activity';
 import {ActivityService} from '../../services/activity/activity.service';
 import { Location } from  '@angular/common';
+import { count } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-add-activity-detail',
-  templateUrl: './add-activity-detail.page.html',
-  styleUrls: ['./add-activity-detail.page.scss'],
+  selector: 'app-add-activity-track',
+  templateUrl: './add-activity-track.page.html',
+  styleUrls: ['./add-activity-track.page.scss'],
 })
-export class AddActivityDetailPage implements OnInit {
+export class AddActivityTrackPage implements OnInit {
   activity: Activity;
   minutes: number;
+  counter: number;
   types: Array<string>;
   intensities: Array<string>;
  // percent:number = 0;
@@ -26,6 +28,7 @@ export class AddActivityDetailPage implements OnInit {
     m: '00',
     s: '00'
   }
+  elapsedTotalMilliseconds:number = 0;
   overallTimer: any = false;
 
 
@@ -83,6 +86,7 @@ export class AddActivityDetailPage implements OnInit {
 
   progressTimer(){
     let countDownDate = new Date();
+    countDownDate.setMilliseconds(countDownDate.getMilliseconds() - this.elapsedTotalMilliseconds);
 
     this.overallTimer = setInterval(() => {
       let now = new Date().getTime();
@@ -96,7 +100,42 @@ export class AddActivityDetailPage implements OnInit {
       this.elapsed.m = this.pad(this.elapsed.m, 2);
       this.elapsed.s = this.pad(this.elapsed.s, 2);
 
+      this.elapsedTotalMilliseconds = distance;
+
     }, 1000)
+  }
+
+  progressTimer2(){
+
+    let countDownDate = new Date();
+
+    console.log(this.elapsed.s);
+    this.overallTimer = setInterval(() => {
+      let now = new Date().getTime();
+      let distance = now - countDownDate.getTime();
+      console.log(this.elapsed.s);
+      this.elapsed.h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      this.elapsed.m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      this.elapsed.s = this.elapsed.s + Math.floor((distance % (1000 * 60)) / (1000));
+
+ 
+
+      this.elapsed.h = this.pad(this.elapsed.h, 2);
+      this.elapsed.m = this.pad(this.elapsed.m, 2);
+      this.elapsed.s = this.pad(this.elapsed.s, 2);
+
+    }, 1000)
+  }
+
+  pauseTimer(){
+    clearInterval(this.overallTimer);
+    this.overallTimer = false;
+    console.log(this.elapsed.s);
+  }
+
+  startAgain(){
+    this.overallTimer = true;
+    this.progressTimer();
   }
 
   pad(num, size) {
@@ -112,6 +151,7 @@ export class AddActivityDetailPage implements OnInit {
     //this.timer = false;
     //this.percent = 0;
     //this.progress = 0;
+    this.elapsedTotalMilliseconds = 0;
     this.elapsed = {
       h:'00',
       m:'00',

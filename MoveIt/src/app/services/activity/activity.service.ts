@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import * as firebase from 'firebase/app';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {Activity} from '../../model/activity';
+import {map} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
@@ -69,6 +70,9 @@ export class ActivityService {
      * Retrieve all activities of the current user
      */
     getAllUserActivities() {
-        return this.fireDatabase.list<Activity>(this.activityLocation + firebase.auth().currentUser.uid).valueChanges();
+        const ref = this.fireDatabase.list<Activity>(this.activityLocation + firebase.auth().currentUser.uid);
+        return ref.snapshotChanges().pipe(map(activities => activities.map(
+            activitySnapshot => Activity.fromFirebaseObject(activitySnapshot.key, activitySnapshot.payload.val()))));
+        // return this.fireDatabase.list<Activity>(this.activityLocation + firebase.auth().currentUser.uid).valueChanges();
     }
 }

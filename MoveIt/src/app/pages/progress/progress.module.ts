@@ -20,6 +20,10 @@ const routes: Routes = [
             {
                 path: 'detail',
                 loadChildren: '../progress-detail/progress-detail.module#ProgressDetailPageModule'
+            },
+            {
+                path: 'edit',
+                loadChildren: '../edit-activity/edit-activity.module#EditActivityPageModule'
             }
 
         ]

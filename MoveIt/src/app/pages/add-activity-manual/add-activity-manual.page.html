@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start" >
+      <ion-back-button class="show-back-button" (click)="goBack()"></ion-back-button>
+  </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Add Activity</ion-title>
+  </ion-toolbar>
+</ion-header>
+  
+<ion-content fullscreen>
+  
+  <ion-list>
+    <ion-item>
+      <ion-label>Kind of activity</ion-label>
+      <ion-select [(ngModel)]="activity.type" placeholder="Select One" disabled="false">
+        <ion-select-option *ngFor="let type of types">{{type}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="activity.intensity" placeholder="Select One">
+          <ion-select-option *ngFor="let intensity of intensities">{{intensity}}</ion-select-option>
+        </ion-select>
+      </ion-item> 
+
+    <ion-item>
+      <ion-input [(ngModel)]="minutes" type="number" placeholder="Minutes"></ion-input>
+    </ion-item>
+    <section>
+      <ion-button (click)=addActivity() color="secondary" slot="end" float-right>Add activity</ion-button>
+      <!--<ion-button expand="block">Add activity</ion-button>-->
+      
+    </section>
+  </ion-list>
+
+
+
+
+  </ion-content>
+
+  
+

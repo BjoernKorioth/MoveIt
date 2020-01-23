@@ -5,6 +5,9 @@ import {Observable} from 'rxjs';
 import {GoalService} from '../../services/goal/goal.service';
 import {Goal} from '../../model/goal';
 import {Location} from '@angular/common';
+import { Health } from '@ionic-native/health/ngx';
+import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-progress-detail',
@@ -16,18 +19,73 @@ export class ProgressDetailPage implements OnInit {
     goals: Observable<any>;
     goalStorage: Array<Goal>;
 
-    constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location) {
+    constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location, private health: Health, private platform: Platform, private router: Router) {
         this.activities = this.activityService.getAllUserActivities();
         this.activities.subscribe(activities => this.updateGoals(activities));
         this.goals = this.goalService.getGoals();
         this.goals.subscribe(goals => this.goalStorage = goals);
+        //this.router = router;
     }
 
+
     ngOnInit() {
+        this.checkPlatformReady();
     }
+
+    async checkPlatformReady() {
+        const ready = !!await this.platform.ready();
+        if (ready) {
+            this.health.isAvailable()
+            .then((available:boolean) => {
+              console.log(available);
+              this.health.requestAuthorization([
+                'distance', 'nutrition',  //read and write permissions
+                {
+                  read: ['steps'],       //read only permission
+                  write: ['height', 'weight']  //write only permission
+                }
+              ])
+              .then(res => {console.log(res);     
+              this.loadHealthData();
+              }
+
+              )
+              .catch(e => console.log(e));
+            })
+            .catch(e => console.log(e));
+        }
+        }
+
+        saveWorkout() {
+            this.health.store({
+                startDate:  new Date(new Date().getTime() - 3 * 60 * 1000), // three minutes ago
+                endDate: new Date(),
+                dataType: 'steps',
+                value: '180',
+                sourceName: 'MoveIt_test',
+                sourceBundleId: 'com.example.MoveIt_test'
+            }).then(res => console.log(res))
+            .catch(e => console.log(e));
+          }
+
+          loadHealthData() {
+
+            this.health.query({
+                startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // three days ago
+                endDate: new Date(), // now
+                dataType: 'steps'
+              }).then(res => console.log(res))
+              .catch(e => console.log(e));  
+        }
+        
+         
 
     goBack() {
         this.location.back();
+    }
+
+    routeToEditPage(activity: Activity) {
+        this.router.navigateByUrl('/menu/progress/progress/edit', {state: {activity: activity}});        
     }
 
     /**
@@ -101,10 +159,11 @@ export class ProgressDetailPage implements OnInit {
     }
 
     updateGoals(activities) {
-        console.log(this.goalStorage);
+        console.log(this.goalStorage);        
         this.goalService.updateGoals(this.goalStorage, activities).then(
             res => console.log(res),
             err => console.log(err)
         );
     }
 }
+

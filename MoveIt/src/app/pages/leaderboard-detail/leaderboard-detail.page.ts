@@ -4,9 +4,15 @@ import { Location } from  '@angular/common';
 
 import {Observable} from 'rxjs';
 
-import {GoalService} from '../../services/goals/goal.service'
+import {GoalService} from '../../services/goal/goal.service'
+
+import {AuthenticateService} from '../../services/authentication/authentication.service';
 
 import {LeaderboardObject} from '../../model/leaderboardObject'
+
+import {GoalArray} from '../../model/goalArray'
+
+
 
 @Component({
   selector: 'app-leaderboard-detail',
@@ -123,37 +129,41 @@ export class LeaderboardDetailPage implements OnInit {
   trophies: any;
   activitiesModerate: Array<LeaderboardObject>;
   activitiesVigorous: Array<LeaderboardObject>;
-  activitiesObserve: Observable<any>;
+  activitiesObserve: Observable<GoalArray[]>
 
-  constructor(private goalservice: GoalService, private location:Location) { 
+  tempUsername : string;
+
+  constructor(private goalservice: GoalService, private authService: AuthenticateService, private location:Location) { 
 
     this.activitiesObserve = this.goalservice.getAllOtherAvailableGoals();
 
     this.activitiesObserve.subscribe(result => this.pushObjects(result));
   }
 
-  ngOnInit() {
+  async ngOnInit() {
 
   }
 
-  pushObjects(result){
+  async pushObjects(result){
     var testArray = new Array<LeaderboardObject>();
     var testArray2 = new Array<LeaderboardObject>();
-    console.log(result);
+
     for(var i = 0; i < result.length; i++){
       var oneResult = result[i];
-      console.log(oneResult);
-
-          if(oneResult.weeklyModerate !== undefined && oneResult.weeklyVigorous !== undefined){
-              let entity1 = new LeaderboardObject("TestUser", oneResult.weeklyModerate.current);
+      if(oneResult){
+         if(oneResult.goal.type === 'moderate' && oneResult.goal.duration === 'weekly'){
+   
+              let entity1 = await new LeaderboardObject(oneResult.id, oneResult.goal.current,this.authService);
 
               testArray.push(entity1);
+          }else if(oneResult.goal.type === 'vigorous' && oneResult.goal.duraion === 'weekly'){
 
-              let entity2 = new LeaderboardObject("TestUser", oneResult.weeklyVigorous.current);
+            let entity2 = new LeaderboardObject(oneResult.id, oneResult.goal.current, this.authService);
 
               testArray2.push(entity2);
           }
         }
+      }
         
     this.activitiesModerate = testArray;
     this.activitiesVigorous = testArray2;
@@ -165,12 +175,13 @@ export class LeaderboardDetailPage implements OnInit {
     this.activitiesModerate.sort( (a,b) => a.compareTo(b));
     this.activitiesVigorous.sort((a,b) => a.compareTo(b));
 
-    console.log("VIGIROUS");
+   /* console.log("VIGIROUS");
     console.log(this.activitiesVigorous);
 
     console.log("MODERATE");
-    console.log(this.activitiesModerate);
+    console.log(this.activitiesModerate);*/
   }
+
 
   goBack(){
     this.location.back();

@@ -40,6 +40,7 @@ export class User {
         this.trophiesWon = trophiesWon || [];
         this.type = type || 'user';
         this.birthdate = birthdate || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
+        this.gender = gender;
     }
 
     /**

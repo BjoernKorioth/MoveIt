@@ -1,25 +1,41 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>edit-activity</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start" >
+      <ion-back-button class="show-back-button" (click)="goBack()"></ion-back-button>
+  </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+  </ion-buttons>
+    <ion-title>Edit activity</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
+   
+  <ion-list>
+    <ion-item>
+      <ion-label>Kind of activity</ion-label>
+      <ion-select [(ngModel)]="activity.type" placeholder="Select One" disabled="false">
+        <ion-select-option *ngFor="let type of types">{{type}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Activity</ion-label>
+        <ion-select [(ngModel)]="activity.intensity" placeholder="Select One">
+          <ion-select-option *ngFor="let intensity of intensities">{{intensity}}</ion-select-option>
+        </ion-select>
+      </ion-item> 
+
+    <ion-item>
+      <ion-input [(ngModel)]="minutes" type="number" placeholder="Minutes"></ion-input>
+    </ion-item>
+    <section>
+      <ion-button (click)=editActivity()  color="secondary" slot="end" float-right>Edit activity</ion-button>
+      <!--<ion-button expand="block">Add activity</ion-button>-->
+      
+    </section>
+  </ion-list>
+
 </ion-content>
-<ion-tabs>
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button routerLink="/menu/progress" routerDirection="root">
-      <ion-icon name="sunny"></ion-icon>
-      <ion-label>Progress</ion-label>
-    </ion-tab-button>
-    <ion-tab-button routerLink="/menu/add-activity" routerDirection="root">
-      <ion-icon name="add"></ion-icon>
-      <ion-label>Add Activity</ion-label>
-    </ion-tab-button>
-    <ion-tab-button routerLink="/menu/information" routerDirection="root">
-      <ion-icon name="information-circle-outline"></ion-icon>
-      <ion-label>Information</ion-label>
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>

@@ -28,6 +28,7 @@ export class SocialfeedDetailPage implements OnInit {
   }
 
   ngOnInit() {
+    this.postService.setUser();
   }
 
   goBack(){

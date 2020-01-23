@@ -4,6 +4,7 @@ interface FirebaseObject {
     history: Array<object>;
     target: number;
     type: string;
+    relative: number;
 }
 
 export class Goal {
@@ -14,6 +15,8 @@ export class Goal {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
+
+    
     constructor(name?: string, duration?: string, type?: string, target?: number, current?: number, history?: Array<object>) {
         // Each parameter is optional, if it's not there, set the default value
         this.name = name || '';
@@ -22,6 +25,7 @@ export class Goal {
         this.history = history || [];
         this.target = target || 0;
         this.type = type || 'vigorous';
+        this.relative = (current / target) || 0;
     }
 
     static durations = ['daily', 'weekly'];
@@ -40,6 +44,7 @@ export class Goal {
     history: Array<object>;
     target: number;
     type: string;
+    relative: number;
 
     /**
      * Reconstruct the Goal from a firebase result
@@ -50,6 +55,15 @@ export class Goal {
      * @param firebaseObject result of the firebase query
      */
     static fromFirebaseObject(name, firebaseObject: FirebaseObject) {
+        //console.log(firebaseObject);
+
+        return new Goal(name, firebaseObject.duration,
+            firebaseObject.type, firebaseObject.target, firebaseObject.current, firebaseObject.history);
+        
+    }
+
+    static fromAnyObject(name, firebaseObject: any){
+        //console.log(firebaseObject);
         return new Goal(name, firebaseObject.duration,
             firebaseObject.type, firebaseObject.target, firebaseObject.current, firebaseObject.history);
     }

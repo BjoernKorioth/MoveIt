@@ -18,7 +18,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 
 import {AuthenticateService} from './services/authentication/authentication.service';
 import {AngularFireAuthGuardModule} from '@angular/fire/auth-guard';
-
+import { Health } from '@ionic-native/health/ngx';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyAeeexHFSp2HevDoOi7MdzCLdgET6QtMg4',
@@ -49,6 +49,7 @@ const firebaseConfig = {
         StatusBar,
         SplashScreen,
         AuthenticateService,
+        Health,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]

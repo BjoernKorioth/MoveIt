@@ -71,6 +71,7 @@ export class PostService {
                 post => {
                     if (post.like(this.user.id)) {
                         this.editPost(post.id, post).then(
+
                             () => resolve('Successfully liked the post'),
                             err => reject(err)
                         );
@@ -205,5 +206,9 @@ export class PostService {
      */
     getAllComments(postId: string) {
         return this.fireDatabase.list<Comment>('/posts/' + this.user.group + '/' + postId).valueChanges();
+    }
+
+    setUser(){
+        this.user = this.authenticateService.getFullUser();
     }
 }
