@@ -40,6 +40,11 @@
             Goals
         </ion-list-header>
 
+
+  <section>
+    <ion-button routerLink="/menu/goals/goals/detail" slot="end" float-right> Edit <ion-icon name="create"></ion-icon></ion-button>
+  </section>
+
         <ion-item *ngFor="let goal of (goals | async)">
             <ion-label>
                 <h2>20.10. {{goal.name}}: {{goal.current}} / {{goal.target}}</h2>
