@@ -45,7 +45,7 @@
   </ion-list>
 -->
   <ion-list *ngSwitchCase="'actMinutes'">
-    <ion-item *ngFor="let user of activitiesModerate; let counter = index" [attr.data-index]="counter">
+    <ion-item *ngFor="let user of activitiesModerate ; let counter = index" [attr.data-index]="counter">
       <p slot="start">{{counter+1}}</p>
       <ion-avatar slot="start">
         <!--<img [src]="person.image">-->

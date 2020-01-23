@@ -10,6 +10,8 @@ import {AuthenticateService} from '../../services/authentication/authentication.
 
 import {LeaderboardObject} from '../../model/leaderboardObject'
 
+import {GoalArray} from '../../model/goalArray'
+
 
 
 @Component({
@@ -127,7 +129,7 @@ export class LeaderboardDetailPage implements OnInit {
   trophies: any;
   activitiesModerate: Array<LeaderboardObject>;
   activitiesVigorous: Array<LeaderboardObject>;
-  activitiesObserve: Observable<any>;
+  activitiesObserve: Observable<GoalArray[]>
 
   tempUsername : string;
 
@@ -138,29 +140,25 @@ export class LeaderboardDetailPage implements OnInit {
     this.activitiesObserve.subscribe(result => this.pushObjects(result));
   }
 
-  ngOnInit() {
-    console.log(this.authService.getFullUser());
+  async ngOnInit() {
+
   }
 
-  pushObjects(result){
+  async pushObjects(result){
     var testArray = new Array<LeaderboardObject>();
     var testArray2 = new Array<LeaderboardObject>();
-    console.log(result.length);
 
     for(var i = 0; i < result.length; i++){
       var oneResult = result[i];
       if(oneResult){
          if(oneResult.goal.type === 'moderate' && oneResult.goal.duration === 'weekly'){
-
-              this.getUserName(oneResult.id);
-              //console.log(this.tempUsername);    
-          
-              let entity1 = new LeaderboardObject(this.tempUsername, oneResult.goal.current);
+   
+              let entity1 = await new LeaderboardObject(oneResult.id, oneResult.goal.current,this.authService);
 
               testArray.push(entity1);
           }else if(oneResult.goal.type === 'vigorous' && oneResult.goal.duraion === 'weekly'){
-              //console.log("LOLOLO");
-            let entity2 = new LeaderboardObject("TestUser", oneResult.goal.current);
+
+            let entity2 = new LeaderboardObject(oneResult.id, oneResult.goal.current, this.authService);
 
               testArray2.push(entity2);
           }
@@ -184,13 +182,6 @@ export class LeaderboardDetailPage implements OnInit {
     console.log(this.activitiesModerate);*/
   }
 
-  private getUserName(uid){
-    return this.authService.getSpecificUsername(uid).subscribe(result => this.setUsername(result));
-  }
-
-  private setUsername(username){
-    this.tempUsername = username;
-  }
 
   goBack(){
     this.location.back();

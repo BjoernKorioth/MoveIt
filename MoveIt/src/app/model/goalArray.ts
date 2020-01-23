@@ -34,11 +34,9 @@ export class GoalArray {
 
         if(firebaseObject.weeklyModerate !== undefined){
         //console.log(firebaseObject.weeklyModerate);
-
+        
         var goal = Goal.fromAnyObject(id, firebaseObject.weeklyModerate);
-        
-        console.log(goal);
-        
+    
         return new GoalArray(id, goal);
         }
         

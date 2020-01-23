@@ -5,13 +5,14 @@ import * as firebase from 'firebase/app';
 import {Activity} from '../../model/activity';
 import {GoalArray} from '../../model/goalArray';
 import {map} from 'rxjs/operators';
+import { AuthenticateService } from '../authentication/authentication.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class GoalService {
 
-    constructor(private fireDatabase: AngularFireDatabase) {
+    constructor(private fireDatabase: AngularFireDatabase, private auth: AuthenticateService) {
     }
 
     /**

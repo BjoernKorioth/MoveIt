@@ -79,12 +79,18 @@ export class AuthenticateService {
     }
 
     getSpecificUsername(uid) {
-        return this.db.object<string>('/users/' + uid + '/name').valueChanges();
+        return new Promise<any>((resolve, reject) => {
+
+            this.db.database.ref('/users/' + uid + '/name').once('value').then(
+                res => resolve(res),
+                err => reject(err)
+            );
+        });
         
     }
 
-    setUser(){
-        return this.db.object<User>('/users/' + firebase.auth().currentUser.uid).valueChanges().subscribe(result => (this.user = result));
+    async setUser(){
+        return await this.db.object<User>('/users/' + firebase.auth().currentUser.uid).valueChanges().subscribe(result => (this.user = result));
     }
 
     getFullUser(){
