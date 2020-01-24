@@ -17,4 +17,8 @@ export class UserService {
       return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/group').valueChanges();
   }
 
+  getGroupconfig(groupId){
+    return this.db.object<string>('/groups/' + groupId + '/featureVector').valueChanges();
+  }
+
 }
