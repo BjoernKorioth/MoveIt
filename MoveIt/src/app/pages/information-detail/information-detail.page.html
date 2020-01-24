@@ -29,4 +29,16 @@
         </ion-card-content>
     </ion-card>
 
+    <ion-card *ngFor="let info of information2">
+        <!--<img src="img/nin-live.png"/> -->
+        <ion-card-header>
+            <ion-card-title>{{info.title}} </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            {{info.description}}
+
+            <ion-button fill="outline" slot="end" routerLink="/menu/information/information/single">View</ion-button>
+        </ion-card-content>
+    </ion-card>
+
 </ion-content>

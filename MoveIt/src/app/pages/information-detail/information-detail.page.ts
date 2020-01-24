@@ -10,6 +10,7 @@ import { Location } from  '@angular/common';
 })
 export class InformationDetailPage implements OnInit {
     information: any;
+    information2: any;
     constructor(private informationService: InformationService, private location: Location) {
         this.location = location;
     
@@ -67,8 +68,7 @@ export class InformationDetailPage implements OnInit {
     getAllInformation() {
         this.informationService.getAllInformation().then(
             res => {
-                console.log(res);
-                this.information = res;
+                this.information2 = res;
             },
             err => console.log(err)
         );
