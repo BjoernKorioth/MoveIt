@@ -21,7 +21,7 @@ export class ProgressDetailPage implements OnInit {
     goals: Observable<any>;
     goalStorage: Array<Goal>;
 
-    @ViewChild('hrzLineChart') hrzLineChart: { nativeElement: any; };
+    @ViewChild('hrzLineChart', {static: false}) hrzLineChart: { nativeElement: any; };
     hrzLines: any;
 
 
