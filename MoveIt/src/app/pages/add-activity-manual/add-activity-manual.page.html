@@ -39,8 +39,8 @@
         <ion-datetime display-format="HH:mm" picker-format="HH:mm"></ion-datetime>
       </ion-item>
     <ion-item>
-      <ion-label>Minutes</ion-label>
-      <ion-input [(ngModel)]="minutes" type="number" placeholder="Minutes" slot="end"></ion-input>
+      <ion-label>Duration</ion-label>
+      <ion-input [(ngModel)]="minutes" type="number" slot="end" placeholder="Minutes" text-right></ion-input>
     </ion-item>
     <section>
       <ion-button (click)=addActivity() color="secondary" slot="end" float-right>Add activity</ion-button>
