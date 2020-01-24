@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Post} from '../../model/post';
 import {Comment} from '../../model/comment';
 import {PostService} from '../../services/post/post.service';
-import {Observable} from 'rxjs';
+import {Observable, empty} from 'rxjs';
 import { analytics } from 'firebase';
 import { Location } from  '@angular/common';
 
@@ -18,23 +18,6 @@ export class SocialfeedDetailPage implements OnInit {
   
 
   posts: Observable<Post[]>;
-  comments: Array<{userid:string, name:string, comment:string}> = [
-    {
-      userid: '1',
-      name: 'Cindy',
-      comment:'Awesome!'
-    },
-    {
-      userid: '2',
-      name: 'Mike',
-      comment:'Really good :)'
-    },
-    {
-      userid: '3',
-      name: 'Alberto',
-      comment:'Fantastic'
-    }
-  ];
 
   constructor(private postService: PostService, private location:Location) {
     this.location = location;
@@ -45,6 +28,7 @@ export class SocialfeedDetailPage implements OnInit {
   }
 
   ngOnInit() {
+    this.postService.setUser();
   }
 
   goBack(){
@@ -83,34 +67,31 @@ export class SocialfeedDetailPage implements OnInit {
     return this.postService.getAllPosts();
   }
 
-  like() {
-    this.postService.likePost('-LxfARsp_2al7-W3JYcf').then(
+  like(i) {
+    var liked = document.getElementsByName("userPlace")[i].id;
+    this.postService.likePost(liked).then(
         res => console.log(res),
         err => console.log(err)
     );
   }
 
-  unlike() {
-    this.postService.unlikePost('-LxfARsp_2al7-W3JYcf').then(
+  unlike(i) {
+    var unliked = document.getElementsByName("userPlace")[i].id;
+    this.postService.unlikePost(unliked).then(
         res => console.log(res),
         err => console.log(err)
     );
   }
 
-  newComment() {
-    var userId = document.getElementsByClassName("idPlace")[0].id;
-    var userComment = document.getElementsByTagName("input")[0].value;
-
-    this.comments.push({ userid : '4' , name : userId ,comment: userComment});
-    this.postService.createComment('-LxfARsp_2al7-W3JYcf', new Comment()).then(
+  newComment(i) {
+    var postid = document.getElementsByName("userPlace")[i].id;
+    var userComment = document.getElementsByTagName("input")[i].value;
+    if (userComment.length != 0){
+      this.postService.createComment(postid, userComment).then(
         res => console.log(res),
         err => console.log(err)
-    );
-  }
-
-  myFunction(i){
-    var xxx = document.getElementsByName("userPlace")[i].id;
-    document.getElementsByName("demo")[i].innerHTML = xxx;
+      );
+    }
   }
 
   editComment() {

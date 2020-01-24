@@ -8,11 +8,11 @@ import {ChallengeService} from '../../services/challenges/challenge.service';
 import {Observable} from 'rxjs';
 
 @Component({
-  selector: 'app-rewards-detail',
-  templateUrl: './rewards-detail.page.html',
-  styleUrls: ['./rewards-detail.page.scss'],
+  selector: 'app-rewards-challenges',
+  templateUrl: './rewards-challenges.page.html',
+  styleUrls: ['./rewards-challenges.page.scss'],
 })
-export class RewardsDetailPage implements OnInit {
+export class RewardsChallengesPage implements OnInit {
   trophies: any;
   challenges: Array<Challenge>;
   challengesObserve: Observable<Array<Challenge>>;

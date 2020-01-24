@@ -1,6 +1,6 @@
+
 import {NgModule} from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
-
 import {
     AngularFireAuthGuard,
     hasCustomClaim,
@@ -36,7 +36,8 @@ const routes: Routes = [
     {
         path: 'admin-dashboard', loadChildren: './pages/admin-dashboard/admin-dashboard.module#AdminDashboardPageModule'
     },
-  { path: 'add-overview', loadChildren: './pages/add-overview/add-overview.module#AddOverviewPageModule' }
+  { path: 'admin-dashboard-notifications', loadChildren: './pages/admin-dashboard-notifications/admin-dashboard-notifications.module#AdminDashboardNotificationsPageModule' },
+  { path: 'admin-dashboard-articles', loadChildren: './pages/admin-dashboard-articles/admin-dashboard-articles.module#AdminDashboardArticlesPageModule' }
 
     // { path: 'admin-dashboard', loadChildren: './pages/<path-to-admin-dashboard>', canActivate: [AngularFireAuthGuard],
     //     data: {authGuardPipe: adminOnly} }

@@ -3,15 +3,18 @@ import {AngularFireDatabase} from '@angular/fire/database';
 import {Goal} from '../../model/goal';
 import * as firebase from 'firebase/app';
 import {Activity} from '../../model/activity';
+import {GoalArray} from '../../model/goalArray';
 import {map} from 'rxjs/operators';
-// import { relative } from 'path';
+
+import { AuthenticateService } from '../authentication/authentication.service';
+
 
 @Injectable({
     providedIn: 'root'
 })
 export class GoalService {
 
-    constructor(private fireDatabase: AngularFireDatabase) {
+    constructor(private fireDatabase: AngularFireDatabase, private auth: AuthenticateService) {
     }
 
     /**
@@ -109,6 +112,11 @@ export class GoalService {
         return ref.snapshotChanges().pipe(
             map(goals => goals.map(goalPayload => (Goal.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
             
+    }
+
+    getAllOtherAvailableGoals(){
+        return this.fireDatabase.list<GoalArray>('/goals/').snapshotChanges().pipe(
+            map(goals => goals.map(goalPayload => (GoalArray.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
     }
 
     /**

@@ -71,11 +71,12 @@ export class PostService {
                 post => {
                     if (post.like(this.user.id)) {
                         this.editPost(post.id, post).then(
+
                             () => resolve('Successfully liked the post'),
                             err => reject(err)
                         );
                     } else {
-                        reject('This post is already liked by you');
+                        this.unlikePost(postId);
                     }
                 },
                 err => reject(err)
@@ -100,7 +101,7 @@ export class PostService {
                             err => reject(err)
                         );
                     } else {
-                        reject('This post is not liked by you');
+                        this.likePost(postId);
                     }
                 },
                 err => reject(err)
@@ -141,11 +142,14 @@ export class PostService {
      * @param postId id of the post to be commented on
      * @param comment an existing comment object
      */
-    createComment(postId: string, comment: Comment) {
+    createComment(postId: string, userComment: string) {
+        var comment = new Comment();
         return new Promise<any>((resolve, reject) => {
             const id = firebase.database().ref('/posts/' + this.user.group).child(postId).child('comments').push().key;
             comment.id = id;
             comment.post = postId;
+            comment.text = userComment;
+            comment.user = this.user.name;
 
             this.fireDatabase.database.ref('/posts/' + this.user.group).child(comment.post).child('comments').child(id)
                 .set(comment.toFirebaseObject()).then(
@@ -202,5 +206,9 @@ export class PostService {
      */
     getAllComments(postId: string) {
         return this.fireDatabase.list<Comment>('/posts/' + this.user.group + '/' + postId).valueChanges();
+    }
+
+    setUser(){
+        this.user = this.authenticateService.getFullUser();
     }
 }

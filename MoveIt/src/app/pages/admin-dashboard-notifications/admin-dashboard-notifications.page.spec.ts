@@ -1,22 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RewardsDetailPage } from './rewards-detail.page';
+import { AdminDashboardNotificationsPage } from './admin-dashboard-notifications.page';
 
-describe('RewardsDetailPage', () => {
-  let component: RewardsDetailPage;
-  let fixture: ComponentFixture<RewardsDetailPage>;
+describe('AdminDashboardNotificationsPage', () => {
+  let component: AdminDashboardNotificationsPage;
+  let fixture: ComponentFixture<AdminDashboardNotificationsPage>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RewardsDetailPage ],
+      declarations: [ AdminDashboardNotificationsPage ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RewardsDetailPage);
+    fixture = TestBed.createComponent(AdminDashboardNotificationsPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

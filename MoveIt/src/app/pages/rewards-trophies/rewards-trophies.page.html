@@ -1,0 +1,30 @@
+<ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="start" >
+        <ion-back-button class="show-back-button" (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Rewards</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div>
+    <ion-row>
+      <ion-col size="4" *ngFor="let trophy of trophies" margin-top="80">
+        <ion-list>
+          <ion-item>
+              <img [src]="trophy.image"/>
+          </ion-item>
+          <ion-item class="padding">
+              {{trophy.title}}
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    
+  </div>
+</ion-content>
