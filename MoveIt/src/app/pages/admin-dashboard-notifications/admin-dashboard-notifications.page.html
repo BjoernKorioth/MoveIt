@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Notifications</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <h2 padding>Manage notifications</h2>
+  <ion-row *ngFor="let notification of notifications">
+    <ion-col size="3">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Name</ion-label>
+        </ion-list-header>
+        <ion-item><ion-input [(ngModel)]="notification.title"></ion-input></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Trigger</ion-label>
+        </ion-list-header>
+        <ion-item>{{notification.trigger}}</ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Goal</ion-label>
+        </ion-list-header>
+        <ion-item><ion-input [(ngModel)]="notification.description"></ion-input></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Reaction</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-select [(ngModel)]="notifications.option1" placeholder="Select One" disabled="false">
+            <ion-select-option value="{{notification.option1}}">{{notification.option1}}</ion-select-option>
+            <ion-select-option value="{{notification.option2}}">{{notification.option2}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+
+
+  </ion-row>
+</ion-content>

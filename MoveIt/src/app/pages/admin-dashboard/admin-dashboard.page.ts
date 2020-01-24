@@ -21,7 +21,16 @@ export class AdminDashboardPage implements OnInit {
     {
       title: 'Challenges',
       url: '/admin-dashboard/challenges'
+    },
+    {
+      title: 'Notifications',
+      url: '/admin-dashboard/notifications'
+    },
+    {
+      title: 'Articles',
+      url: '/admin-dashboard/articles'
     }
+
   ];
 
   selectedPath = '';

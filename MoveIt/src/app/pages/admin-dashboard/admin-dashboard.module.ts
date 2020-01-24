@@ -23,6 +23,14 @@ const routes: Routes = [
       {
         path: 'challenges',
         loadChildren: '../admin-dashboard-challenges/admin-dashboard-challenges.module#AdminDashboardChallengesPageModule'
+      },
+      {
+        path: 'notifications',
+        loadChildren: '../admin-dashboard-notifications/admin-dashboard-notifications.module#AdminDashboardNotificationsPageModule'
+      },
+      {
+        path: 'articles',
+        loadChildren: '../admin-dashboard-articles/admin-dashboard-articles.module#AdminDashboardArticlesPageModule'
       }
     ]
   },
