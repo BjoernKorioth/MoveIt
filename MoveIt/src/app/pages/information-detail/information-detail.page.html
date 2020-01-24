@@ -12,32 +12,30 @@
 
 
 <ion-content padding>
-    <ion-button type="button" (click)='createInformation()'>Create</ion-button>
+    <!--<ion-button type="button" (click)='createInformation()'>Create</ion-button>
     <ion-button type="button" (click)='editInformation()'>Edit</ion-button>
     <ion-button type="button" (click)='getInformation()'>Get</ion-button>
-    <ion-button type="button" (click)='getAllInformation()'>Get All</ion-button>
+    <ion-button type="button" (click)='getAllInformation()'>Get All</ion-button>-->
 
-    <ion-card *ngFor="let info of information">
-        <!--<img src="img/nin-live.png"/> -->
+    <ion-card *ngFor="let info of static" routerLink="/menu/information/information/single">
+        <img src="img/nin-live.png"/>
         <ion-card-header>
             <ion-card-title>{{info.title}} </ion-card-title>
         </ion-card-header>
         <ion-card-content>
             {{info.description}}
-
-            <ion-button fill="outline" slot="end" routerLink="/menu/information/information/single">View</ion-button>
         </ion-card-content>
     </ion-card>
 
-    <ion-card *ngFor="let info of information2">
-        <!--<img src="img/nin-live.png"/> -->
+    <ion-card *ngFor="let info of dynamic">
+        <img src="../../assets/{{info.picture}}"/>
         <ion-card-header>
             <ion-card-title>{{info.title}} </ion-card-title>
         </ion-card-header>
         <ion-card-content>
-            {{info.description}}
-
-            <ion-button fill="outline" slot="end" routerLink="/menu/information/information/single">View</ion-button>
+            {{info.content}}
+            <br/><br/>
+            <a href="{{info.link}}" target="_blank"><ion-button fill="outline" slot="end">View</ion-button></a>
         </ion-card-content>
     </ion-card>
 
