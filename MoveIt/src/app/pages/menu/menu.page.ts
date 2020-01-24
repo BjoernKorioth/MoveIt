@@ -4,6 +4,7 @@ import {Router, RouterEvent} from '@angular/router';
 import {AuthenticateService} from '../../services/authentication/authentication.service';
 import {PostService} from '../../services/post/post.service';
 import {Observable} from 'rxjs';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
     selector: 'app-menu',
@@ -40,7 +41,7 @@ export class MenuPage implements OnInit {
     group: Observable<string>;
     selectedPath = '';
 
-    constructor(private router: Router, private auth: AuthenticateService) {
+    constructor(private router: Router, private auth: AuthenticateService, private userService: UserService) {
         this.router.events.subscribe((event: RouterEvent) => {
             if (event && event.url) {
                 this.selectedPath = event.url;
@@ -51,7 +52,7 @@ export class MenuPage implements OnInit {
         // If a new value is received, we have to manually update the pages object so that Angular notices the change
         this.username.subscribe(username => this.updatePages(username));
 
-        this.group = auth.getUsergroup();
+        this.group = userService.getUsergroup();
         this.group.subscribe(group => this.updateGroup(group));
     }
 
