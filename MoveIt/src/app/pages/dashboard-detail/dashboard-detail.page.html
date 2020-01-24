@@ -1,8 +1,5 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="start" >
-      <ion-back-button class="show-back-button" (click)="goBack()"></ion-back-button>
-  </ion-buttons>
     <ion-buttons slot="end">
       <ion-menu-button></ion-menu-button>
   </ion-buttons>
@@ -10,28 +7,19 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
 
- <!-- <div>
-    <ion-row>
-      <ion-col size="5" margin-top=80>
-        <ion-card>
-          <ion-item>
-          <ion-img src="../assets/Profilbild.jpg"></ion-img>
-        </ion-item>
-        </ion-card>
-      </ion-col>
-        <ion-col size="5" margin-top=80>
-        <ion-card>
-          <ion-item>
-          <ion-img src="../assets/Profilbild.jpg"></ion-img>
-        </ion-item>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </div>-->
+ <ion-content class="card-background-page">
 
-  <ion-row *ngFor="let row of allservices">
+  <ion-card *ngFor="let item of allservices" [routerLink]='item.routerLink'>
+    <img [src]="item.image"/>
+    <h2 class="card-title">{{item.label}}</h2>
+  </ion-card>
+
+</ion-content>
+
+
+
+<!--<ion-row *ngFor="let row of allservices">
     <ng-container *ngFor="let item of row">
       <ion-col style="padding:1px;" [attr.col-8]="item.col8">
         <ion-card [routerLink]='item.routerLink'>
@@ -41,6 +29,4 @@
       </ion-card>
       </ion-col>
     </ng-container>
-  </ion-row>
-
-</ion-content>
+  </ion-row>-->

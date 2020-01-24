@@ -23,6 +23,10 @@ export class MenuPage implements OnInit {
             url: '/menu/dashboard'
         },
         {
+            title: 'Dashboard',
+            url: '/menu/dashboard'
+        },
+       /* {
             title: 'Socialfeed',
             url: '/menu/socialfeed'
         },
@@ -33,7 +37,7 @@ export class MenuPage implements OnInit {
         {
             title: 'Rewards',
             url: '/menu/rewards'
-        },
+        }, */
 
     ];
     username: Observable<string>;
