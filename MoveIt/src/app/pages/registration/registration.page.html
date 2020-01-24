@@ -9,31 +9,19 @@
 
 
     <ion-item>
-      <ion-label  position="floating">Firstname</ion-label>
-      <ion-input type="text" formControlName="firstname"></ion-input>
+      <ion-label  position="floating">Username</ion-label>
+      <ion-input type="text" formControlName="username"></ion-input>
     </ion-item>
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validationMessages.name">
-        <div class="error-message" *ngIf="validationsForm.get('firstname').hasError(validation.type) && (validationsForm.get('firstname').dirty || validationsForm.get('firstname').touched)">
+        <div class="error-message" *ngIf="validationsForm.get('username').hasError(validation.type) && (validationsForm.get('username').dirty || validationsForm.get('username').touched)">
           {{ validation.message }}
         </div>
       </ng-container>
     </div>
 
-    <ion-item>
-      <ion-label  position="floating">Surname</ion-label>
-      <ion-input type="text" formControlName="surname"></ion-input>
-    </ion-item>
-    <div class="validation-errors">
-      <ng-container *ngFor="let validation of validationMessages.name">
-        <div class="error-message" *ngIf="validationsForm.get('surname').hasError(validation.type) && (validationsForm.get('surname').dirty || validationsForm.get('surname').touched)">
-          {{ validation.message }}
-        </div>
-      </ng-container>
-    </div>
-
- <!--   <ion-item>
-      <ion-label  position="floating">Surname</ion-label>
+    <!--<ion-item>
+      <ion-label  position="floating"><Surname></ion-label>
       <ion-input type="text" formControlName="surname"></ion-input>
     </ion-item>
     <div class="validation-errors">
@@ -85,7 +73,7 @@
         </ng-container>
       </div>
       
-      <ion-checkbox formControlName= "terms" slot="end"></ion-checkbox>
+      <ion-checkbox formControlName= "terms" checked="false" slot="end"></ion-checkbox>
       <p slot="start" >Agree to <a routerLink = "/terms">terms of use</a></p>
      
     </ion-item>

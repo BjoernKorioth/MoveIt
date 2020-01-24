@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router, RouterEvent} from '@angular/router';
 
 import {AuthenticateService} from '../../services/authentication/authentication.service';
+import {PostService} from '../../services/post/post.service';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -59,6 +60,7 @@ export class MenuPage implements OnInit {
     }
 
     ngOnInit() {
+        this.auth.setUser();
     }
 
     /**
@@ -70,7 +72,7 @@ export class MenuPage implements OnInit {
      * @param username the new username
      */
     updatePages(username) {
-        this.pages = [{title: username}, ...this.pages.slice(1)];
+        this.pages = [{title: username, url:'/menu/profile'}, ...this.pages.slice(1)];
     }
 
     /**

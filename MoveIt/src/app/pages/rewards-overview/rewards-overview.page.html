@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-buttons slot="start" >
+          <ion-back-button class="show-back-button" (click)="goBack()"></ion-back-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+          <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Rewards</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-content class="card-background-page">
+    <ion-card routerLink='/menu/rewards/rewards/challenges'>
+      <img src="../assets/Challenge.png"/>
+      <div class="card-title">Challenges</div>
+    </ion-card>
+  
+    <ion-card routerLink='/menu/rewards/rewards/trophies'>
+      <img src="../assets/Trophy_Card.jpg"/>
+   <div class="card-title">Trophies</div>
+    </ion-card>
+</ion-content>  
+
+</ion-content>
