@@ -26,6 +26,7 @@ export class InformationDetailPage implements OnInit {
     }
 
     ngOnInit() {
+        this.getAllInformation();
     }
 
     goBack(){
@@ -67,6 +68,7 @@ export class InformationDetailPage implements OnInit {
         this.informationService.getAllInformation().then(
             res => {
                 console.log(res);
+                this.information = res;
             },
             err => console.log(err)
         );
