@@ -70,7 +70,7 @@ export class InformationService {
    */
   getAllInformation() {
     return new Promise<any>((resolve, reject) => {
-      firebase.database().ref('/activities/').once('value').then(
+      firebase.database().ref('/information/').once('value').then(
           snapshot => {
             // The data is an object which contains each information as a key
             const data = snapshot.val();
