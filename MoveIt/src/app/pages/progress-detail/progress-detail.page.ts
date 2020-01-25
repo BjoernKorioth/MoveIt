@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivityService} from '../../services/activity/activity.service';
 import {Activity} from '../../model/activity';
-import {Observable} from 'rxjs';
+import {Observable, concat, merge, zip, fromEvent} from 'rxjs';
 import {GoalService} from '../../services/goal/goal.service';
 import {Goal} from '../../model/goal';
 import {Location} from '@angular/common';
@@ -9,6 +9,7 @@ import { Health } from '@ionic-native/health/ngx';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
+import { toArray, take, map, reduce, combineAll, bufferCount, scan, startWith } from 'rxjs/operators';
 
 
 @Component({
@@ -18,6 +19,8 @@ import { Chart } from 'chart.js';
 })
 export class ProgressDetailPage implements OnInit {
     activities: Observable<Activity[]>;
+    //Array which contains the displayed activities
+    displayedActivities: Observable<Activity[]>; 
     goals: Observable<any>;
     goalStorage: Array<Goal>;
 
@@ -25,13 +28,44 @@ export class ProgressDetailPage implements OnInit {
     hrzLines: any;
 
 
-    constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location, private health: Health, private platform: Platform, private router: Router) {
-        this.activities = this.activityService.getAllUserActivities();
-        this.activities.subscribe(activities => this.updateGoals(activities));
+    constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location, private health: Health, private platform: Platform, private router: Router) {            
+        this.activities = this.activityService.getAllUserActivities();    
+        
+        this.activities.subscribe((activities) => {
+          this.updateGoals(activities);                   
+        });
+      
+
+        this.displayedActivities = this.activities.pipe(map(
+          (data) => {
+            data.sort((a, b) => {
+              return b.startTime.getTime() - a.startTime.getTime();
+            });
+            return data.slice(0, 5)
+          }
+        ));
+
         this.goals = this.goalService.getGoals();
         this.goals.subscribe(goals => this.goalStorage = goals);
         //this.router = router;
     }
+  
+
+  loadMoreActivities() {    
+    let currentlyDisplayed = 0;
+    this.displayedActivities.subscribe(
+      c => currentlyDisplayed = c.length
+    );
+
+    let newDisplayedActivities = this.activities.pipe(
+      map(data => data.slice(0, currentlyDisplayed + 5))
+    );
+
+    this.displayedActivities = merge(
+      this.displayedActivities,
+      newDisplayedActivities
+    );
+  }
 
     
   ionViewDidEnter() {

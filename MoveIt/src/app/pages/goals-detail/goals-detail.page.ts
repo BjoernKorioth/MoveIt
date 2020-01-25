@@ -7,8 +7,10 @@ import { Location } from  '@angular/common';
   styleUrls: ['./goals-detail.page.scss'],
 })
 export class GoalsDetailPage implements OnInit {
+  speed: Number = 0;
 
-  constructor(private location: Location) { }
+  constructor(private location: Location) {    
+   }
 
   ngOnInit() {
   }

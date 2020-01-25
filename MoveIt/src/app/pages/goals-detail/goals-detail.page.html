@@ -35,7 +35,7 @@
   <!-- <ion-item> <ion-progress-bar color="primary" value="0.27"></ion-progress-bar></ion-item> --->
 
   <ion-item>
-    <ion-range min="0" max="500" pin color="secondary">
+    <ion-range min="0" max="500" pin color="secondary" [(ngModel)]="speed">
       <ion-icon slot="start" size="small" name="walk"></ion-icon>
       <ion-icon slot="end" name="walk"></ion-icon>
     </ion-range>
@@ -44,7 +44,7 @@
 
    <ion-item>
     <ion-label>Daily goals</ion-label>
-    <ion-input placeholder="500"></ion-input>
+    <ion-input placeholder="500" [(ngModel)]="speed"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Monthly goals</ion-label>
