@@ -49,11 +49,15 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-item>  
+    <ion-button routerLink="/menu/goals/goals/detail" color="secondary" slot="end" float-right>Edit goals</ion-button>
+</ion-item>  
 
 
     <ion-list *ngFor="let goal of (goals | async)">
         <ion-list-header>
             <ion-label>{{goal.name}} - {{goal.type}}</ion-label>
+            <ion-label side="end">{{goal.current}} / {{goal.target}}</ion-label>
         </ion-list-header>
         <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
 
@@ -66,22 +70,21 @@
          <ion-item> <ion-progress-bar color="primary" value="0.27"></ion-progress-bar></ion-item>-->
     </ion-list>
 
-    <ion-list>
+
+
+    <!--<ion-list>
         <ion-list-header>
             Goals
         </ion-list-header>
 
 
-  <section>
-    <ion-button routerLink="/menu/goals/goals/detail" slot="end" float-right> Edit <ion-icon name="create"></ion-icon></ion-button>
-  </section>
 
         <ion-item *ngFor="let goal of (goals | async)">
             <ion-label>
                 <h2>20.10. {{goal.name}}: {{goal.current}} / {{goal.target}}</h2>
             </ion-label>
         </ion-item>
-    </ion-list>
+    </ion-list>-->
 
     <ion-list>
         <ion-list-header>
@@ -96,5 +99,6 @@
             </ion-icon>
         </ion-item>
     </ion-list>
+    
 
 </ion-content>
