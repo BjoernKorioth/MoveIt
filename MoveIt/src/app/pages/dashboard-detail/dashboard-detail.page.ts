@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Location} from '@angular/common';
 
 @Component({
     selector: 'app-dashboard-detail',
@@ -9,22 +8,27 @@ import {Location} from '@angular/common';
 export class DashboardDetailPage implements OnInit {
     allservices: any;
 
-    constructor(private location: Location) {
-
-        this.location = location;
+    constructor() {
 
         this.allservices = [
-            [{
-                label: 'Socialfeed', routerLink: '/menu/socialfeed'
-            }, {
+            {
+                label: 'Socialfeed', 
+                routerLink: '/menu/socialfeed', 
+                image:'./assets/Socialfeed.png'
+            }, 
+            {
                 label: 'Leaderboard',
-                routerLink: '/menu/leaderboard'
-            }],
-            [{
-                label: 'Rewards', routerLink: '/menu/rewards'
-            }, {
+                routerLink: '/menu/leaderboard',
+                image: './assets/Leaderboard.png'
+            },
+            {
+                label: 'Rewards', 
+                routerLink: '/menu/rewards',
+                image: './assets/Rewards.png'
+            }
+            /*, {
                 label: 'Profile', routerLink: '/menu/profile'
-            }]
+            }*/
         ];
     }
 
@@ -32,8 +36,4 @@ export class DashboardDetailPage implements OnInit {
     ngOnInit() {
     }
 
-
-    goBack() {
-        this.location.back();
-    }
 }
