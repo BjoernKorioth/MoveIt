@@ -85,10 +85,12 @@ export class AuthenticateService {
     }
 
     async setUser(){
+        if(this.user === undefined){
         return await this.db.object<User>('/users/' + firebase.auth().currentUser.uid).valueChanges().subscribe(result => (this.user = result));
+        }
     }
 
-    getFullUser(){
+    async getFullUser(){
         return this.user;
     }
 }

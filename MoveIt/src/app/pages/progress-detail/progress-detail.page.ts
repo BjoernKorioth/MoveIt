@@ -37,7 +37,7 @@ export class ProgressDetailPage implements OnInit {
         if (ready) {
             this.health.isAvailable()
             .then((available:boolean) => {
-              console.log(available);
+              console.log("HEALTH IS AVAILABLE :" +available);
               this.health.requestAuthorization([
                 'distance', 'nutrition',  //read and write permissions
                 {

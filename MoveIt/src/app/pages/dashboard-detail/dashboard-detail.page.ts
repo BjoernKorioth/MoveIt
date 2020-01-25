@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 
+
+import {AuthenticateService} from '../../services/authentication/authentication.service';
+
 @Component({
     selector: 'app-dashboard-detail',
     templateUrl: './dashboard-detail.page.html',
@@ -8,7 +11,7 @@ import {Component, OnInit} from '@angular/core';
 export class DashboardDetailPage implements OnInit {
     allservices: any;
 
-    constructor() {
+    constructor(private auth:AuthenticateService) {
 
         this.allservices = [
             {
@@ -33,7 +36,8 @@ export class DashboardDetailPage implements OnInit {
     }
 
 
-    ngOnInit() {
+   async ngOnInit() {
+       await this.auth.setUser();
     }
 
 }

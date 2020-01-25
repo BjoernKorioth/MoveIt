@@ -44,7 +44,7 @@ export class MenuPage implements OnInit {
     group: Observable<string>;
     selectedPath = '';
 
-    constructor(private router: Router, private auth: AuthenticateService) {
+    constructor(private router: Router, private auth: AuthenticateService, private postService:PostService) {
         this.router.events.subscribe((event: RouterEvent) => {
             if (event && event.url) {
                 this.selectedPath = event.url;
@@ -63,8 +63,9 @@ export class MenuPage implements OnInit {
         this.auth.logoutUser();
     }
 
-    ngOnInit() {
-        this.auth.setUser();
+    async ngOnInit() {
+        await this.auth.setUser();
+
     }
 
     /**
