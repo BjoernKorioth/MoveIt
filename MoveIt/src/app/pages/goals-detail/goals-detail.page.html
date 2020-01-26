@@ -28,21 +28,29 @@
     <ion-list-header>
       <ion-label>Goals</ion-label>
     </ion-list-header>
-    <!-- Colorize Progressbar -->
-   <ion-item> <ion-progress-bar color="primary" value="0.27"></ion-progress-bar></ion-item>
-   <ion-item>
-    <ion-label>daily goals</ion-label>
-    <ion-input id="daily" placeholder="500"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label>Monthly goals</ion-label>
-    <ion-input id ="weekly" placeholder="1500"></ion-input>
-  </ion-item>
+
+    <ion-item>
+      <ion-range min="0" max="500" pin color="secondary" [(ngModel)]="speed">
+        <ion-icon slot="start" size="small" name="walk"></ion-icon>
+        <ion-icon slot="end" name="walk"></ion-icon>
+      </ion-range>
+    </ion-item>
   
-  </ion-list>
-  <section>
-    <ion-button slot="end" float-right (click)="adjustGoal()"> Change goals </ion-button>
-  </section>
+  
+     <ion-item>
+      <ion-label>Daily goals</ion-label>
+      <ion-input id="daily" placeholder="500" [(ngModel)]="speed"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Monthly goals</ion-label>
+      <ion-input  id ="weekly"  placeholder="1500"></ion-input>
+    </ion-item>
+    
+    </ion-list>
+
+    <section>
+      <ion-button slot="end"  color="secondary"  float-right (click)="adjustGoal()"> Change goals </ion-button>
+    </section>
 
   
 </ion-content>
