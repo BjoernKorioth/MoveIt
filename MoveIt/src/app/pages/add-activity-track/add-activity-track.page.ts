@@ -3,6 +3,8 @@ import {Activity} from '../../model/activity';
 import {ActivityService} from '../../services/activity/activity.service';
 import { Location } from  '@angular/common';
 import { count } from 'rxjs/operators';
+import { ToastController} from '@ionic/angular';
+
 
 @Component({
   selector: 'app-add-activity-track',
@@ -32,7 +34,7 @@ export class AddActivityTrackPage implements OnInit {
   overallTimer: any = false;
 
 
-  constructor(private activityService: ActivityService, private location: Location) {
+  constructor(private activityService: ActivityService, private location: Location, private toastController: ToastController) {
     this.activity = new Activity();
     this.location = location;
     this.types = Activity.types;
@@ -47,6 +49,17 @@ export class AddActivityTrackPage implements OnInit {
   ngOnInit() {
   }
 
+  async presentAlert() {
+    const controller = await this.toastController.create({
+      color: 'dark',
+      duration: 2000,
+      message: 'Activity added successfully!',
+      showCloseButton: true
+    }).then(toast => {
+      toast.present();
+    })
+  }
+
   addActivity() {
     this.activity.startTime = new Date(0);
     this.activity.endTime = new Date(this.minutes * 60 * 1000);
@@ -54,6 +67,7 @@ export class AddActivityTrackPage implements OnInit {
         res => console.log(res),
         err => console.log(err)
     );
+    this.presentAlert();
   }
 
   startTimer(){
