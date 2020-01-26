@@ -3,7 +3,8 @@ import {Router, RouterEvent} from '@angular/router';
 
 import {AuthenticateService} from '../../services/authentication/authentication.service';
 import {PostService} from '../../services/post/post.service';
-import {Observable} from 'rxjs';
+import {Observable, config} from 'rxjs';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
     selector: 'app-menu',
@@ -12,39 +13,35 @@ import {Observable} from 'rxjs';
 })
 export class MenuPage implements OnInit {
     pages = [
-        {
-            // The username will appear hear, this is filled in by this.updatePages() as soon as the value is available
-            title: ''
-            //url:'/menu/profile'
-
-        },
-        {
-            title: 'Dashboard',
-            url: '/menu/dashboard'
-        },
-        {
-            title: 'Dashboard',
-            url: '/menu/dashboard'
-        },
-       /* {
-            title: 'Socialfeed',
-            url: '/menu/socialfeed'
-        },
-        {
-            title: 'Leaderboard',
-            url: '/menu/leaderboard'
-        },
-        {
-            title: 'Rewards',
-            url: '/menu/rewards'
-        }, */
-
+        
     ];
+
+    dashboard = {
+        title: 'Dashboard',
+        url: '/menu/dashboard'
+    };
+
+    social = {
+        title: 'Socialfeed',
+        url: '/menu/socialfeed'
+    };
+    
+    leaderboard = {
+        title: 'Leaderboard',
+        url: '/menu/leaderboard'
+    };
+
+    rewards = {
+        title: 'Rewards',
+        url: '/menu/rewards'
+    };
+
     username: Observable<string>;
     group: Observable<string>;
+    config: Observable<string>;
     selectedPath = '';
 
-    constructor(private router: Router, private auth: AuthenticateService) {
+    constructor(private router: Router, private auth: AuthenticateService, private userService: UserService) {
         this.router.events.subscribe((event: RouterEvent) => {
             if (event && event.url) {
                 this.selectedPath = event.url;
@@ -55,7 +52,7 @@ export class MenuPage implements OnInit {
         // If a new value is received, we have to manually update the pages object so that Angular notices the change
         this.username.subscribe(username => this.updatePages(username));
 
-        this.group = auth.getUsergroup();
+        this.group = userService.getUsergroup();
         this.group.subscribe(group => this.updateGroup(group));
     }
 
@@ -76,7 +73,7 @@ export class MenuPage implements OnInit {
      * @param username the new username
      */
     updatePages(username) {
-        this.pages = [{title: username, url:'/menu/profile'}, ...this.pages.slice(1)];
+        this.pages.push({title: username, url: '/menu/profile'});
     }
 
     /**
@@ -89,9 +86,35 @@ export class MenuPage implements OnInit {
      */
     updateGroup(group) {
         // BK: as a test I delted for group 1 the rewards page
-        if (group = '1') {
-            this.pages.pop();
-        }
+        this.config = this.userService.getGroupconfig(group);
+        this.config.subscribe(config => this.setPages(config));
             
+    }
+
+    setPages(config) {
+        var array = JSON.parse(config)
+        for (let i of array) {
+            switch(i){
+                case "Dashboard":{
+                    this.pages.push(this.dashboard)
+                    break;
+                }
+                case "Leaderboard":{
+                    this.pages.push(this.leaderboard)
+                    break;
+                }
+                case "Social":{
+                    this.pages.push(this.social)
+                    break;
+                }
+                case "Rewards":{
+                    this.pages.push(this.rewards)
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
     }
 }
