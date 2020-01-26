@@ -81,6 +81,7 @@ export class DashboardDetailPage implements OnInit {
 
     setPages(config) {
         var array = JSON.parse(config)
+        this.allservices = [];
         for (let i of array) {
             switch(i){
                 case "Leaderboard":{
