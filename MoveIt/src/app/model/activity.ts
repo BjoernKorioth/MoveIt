@@ -1,9 +1,9 @@
 interface FireBaseObject {
     id: string;
     distance: object;
-    endTime: string;
+    endTime: Date;
     intensity: string;
-    startTime: string;
+    startTime: Date;
     type: string;
 }
 
@@ -63,10 +63,17 @@ export class Activity {
     toFirebaseObject() {
         return {
             distance: this.distance,
-            endTime: this.endTime.toDateString(),
+            endTime: this.endTime.getTime(),
             intensity: this.intensity,
-            startTime: this.startTime.toDateString(),
+            startTime: this.startTime.getTime(),
             type: this.type
         };
+    }
+
+    /**
+     * Returns the duration of the activity in milliseconds
+     */
+    getDuration() {
+        return this.endTime.getTime() - this.startTime.getTime();
     }
 }
