@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {GoalService} from '../../services/goal/goal.service';
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-goals-detail',
@@ -10,13 +12,18 @@ export class GoalsDetailPage implements OnInit {
 
   goals:any;
 
-  constructor(private goalService: GoalService) {
+  constructor(private goalService: GoalService, private location: Location) {
     this.goals = this.goalService.getGoals();
     
   }
 
   ngOnInit() {
   }
+
+  
+  goBack() {
+    this.location.back();
+}
 
   moderate(){
     this.goalService.getGoal('dailyModerate').then(

@@ -11,6 +11,7 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-content padding>
   <ion-segment [(ngModel)]="goals">
     <ion-segment-button (click)="moderate()" value="moderate">
       moderate
@@ -23,7 +24,7 @@
     </ion-segment-button>
   </ion-segment>
 
-<ion-content>
+
   <ion-list>
     <ion-list-header>
       <ion-label>Goals</ion-label>
