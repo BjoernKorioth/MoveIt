@@ -20,16 +20,48 @@
       <ion-label>
         <h2>Ursula</h2> 
         <p>30 Jahre</p>
-        <button>
-          <ion-icon name="create"></ion-icon>
-        </button>
+        <ion-button (click)="testAlert()">
+          <ion-icon name="create" (click)="testAlert()"></ion-icon>
+        </ion-button>
       </ion-label>
-    </ion-item>
-   
+    </ion-item> 
 </ion-card>
 
-  <ion-card>
-    
-  </ion-card>
+<ion-card>
+<ion-list-header>
+  Goals
+</ion-list-header>
+<ion-list *ngFor="let goal of (goals | async)">
 
-</ion-content>
+      <ion-label>
+        <h3>{{goal.name}} - {{goal.type}} </h3>
+        <p>{{goal.current}} / {{goal.target}}</p> 
+      </ion-label>
+
+  <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
+
+  <!-- Colorize Progressbar -->
+  <!-- <ion-item>
+    <ion-text slot="end">Goal 1</ion-text>
+    <ion-progress-bar color="primary" value="0.9"></ion-progress-bar></ion-item>
+   <ion-item> <ion-progress-bar color="primary" value="0.58"></ion-progress-bar></ion-item>
+   <ion-item> <ion-progress-bar color="primary" value="0.27"></ion-progress-bar></ion-item>-->
+</ion-list>
+</ion-card>
+
+<ion-card>
+<ion-list>
+<ion-list-header>
+    Activities
+</ion-list-header>
+<ion-item *ngFor="let activity of (activities | async)">
+    <ion-label>
+        <h3>20.10.2019 - 20 minutes </h3>
+
+        <p>{{activity.type}}-{{activity.intensity}}</p> 
+    </ion-label>
+        
+    
+</ion-item>
+</ion-list>
+</ion-card>
