@@ -7,7 +7,6 @@ import {Goal} from '../../model/goal';
 import {Observable} from 'rxjs';
 import { AlertController } from '@ionic/angular';
 
-
 @Component({
   selector: 'app-profile-detail',
   templateUrl: './profile-detail.page.html',
@@ -28,12 +27,35 @@ export class ProfileDetailPage implements OnInit {
   async editProfile() {
     const alert = await this.alertController.create({
       header: 'Edit Profile Information',
-      
-
-
-
-
-      buttons: ['Cancel','Save']
+      inputs: [
+        {
+          name: 'name1',
+          type: 'text',
+          value:'name',
+          placeholder: 'Name'
+        },
+        // input date with min & max
+        {
+          name: 'BirthDate',
+          type: 'date',
+          value: '5.3.1994'
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+          handler: () => {
+            console.log('Confirm Cancel');
+          }
+        }, {
+          text: 'Ok',
+          handler: () => {
+            console.log('Confirm Ok');
+          }
+        }
+      ]
     });
     await alert.present();
   }
