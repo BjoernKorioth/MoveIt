@@ -18,14 +18,25 @@ export class ProfileDetailPage implements OnInit {
   goals: Observable<any>;
   goalStorage: Array<Goal>;
 
-  constructor(private location:Location, private goalService: GoalService, private activityService: ActivityService) { 
+  constructor(private location:Location, private goalService: GoalService, private activityService: ActivityService, public alertController: AlertController) { 
     this.activities = this.activityService.getAllUserActivities();
     this.goals = this.goalService.getGoals();
     this.goals.subscribe(goals => this.goalStorage = goals);
     //this.router = router;
   }
 
+  async editProfile() {
+    const alert = await this.alertController.create({
+      header: 'Edit Profile Information',
+      
 
+
+
+
+      buttons: ['Cancel','Save']
+    });
+    await alert.present();
+  }
   
 
   ngOnInit() {

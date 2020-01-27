@@ -20,8 +20,10 @@
       <ion-label>
         <h2>Ursula</h2> 
         <p>30 Jahre</p>
-        <ion-button (click)="testAlert()">
-          <ion-icon name="create" (click)="testAlert()"></ion-icon>
+      </ion-label>
+      <ion-label side="end">
+        <ion-button (click)="editProfile()">
+          <ion-icon name="create"></ion-icon>
         </ion-button>
       </ion-label>
     </ion-item> 
@@ -33,11 +35,15 @@
 </ion-list-header>
 <ion-list *ngFor="let goal of (goals | async)">
 
+  <ion-item>
       <ion-label>
-        <h3>{{goal.name}} - {{goal.type}} </h3>
-        <p>{{goal.current}} / {{goal.target}}</p> 
+        <h3> {{goal.type}} </h3>
+        <p> {{goal.name}}</p> 
       </ion-label>
-
+        <ion-label side="end">
+          <h3>{{goal.current}} / {{goal.target}}</h3>
+      </ion-label>
+    </ion-item>
   <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
 
   <!-- Colorize Progressbar -->
