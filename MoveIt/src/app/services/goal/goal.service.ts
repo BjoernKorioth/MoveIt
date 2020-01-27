@@ -134,6 +134,13 @@ export class GoalService {
                     res => console.log(res),
                     err => reject(err)
                 );
+
+                if (goal.current > goal.target) {
+                    this.winGoal(goal).then(
+                        res => console.log(res),
+                        err => reject(err)
+                    );
+                }
             }
             resolve('Successfully updated goals');
         });
@@ -167,5 +174,37 @@ export class GoalService {
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Win a goal and add current time to the list of wins
+     *
+     * @param goal to be won
+     */
+    winGoal(goal: Goal) {
+        return new Promise<any>((resolve, reject) => {
+            // Get the current list of wins
+            this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
+                .once('value').then(
+                (winsSnapshot) => {
+                    const wins = winsSnapshot.val();
+                    if (Array.isArray(wins)) {
+                        // If the list exists, append the current date
+                        wins.push((new Date()).getTime());
+                        this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
+                            .set(wins).then(
+                            (res) => resolve(res),
+                            (err) => reject(err));
+                    } else {
+                        // If it doesn't exist, create a new array with the current win
+                        const newWins = [(new Date()).getTime()];
+                        this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
+                            .set(newWins).then(
+                            (res) => resolve(res),
+                            (err) => reject(err));
+                    }
+                },
+                (err) => reject(err));
+        });
     }
 }
