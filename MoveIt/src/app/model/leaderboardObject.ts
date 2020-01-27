@@ -3,11 +3,12 @@
 import { AuthenticateService } from '../services/authentication/authentication.service';
 
 export class LeaderboardObject{
+    id: string;
     username;
     activity: number;
 
     constructor(username: string, activity: number, private auth:AuthenticateService){
-        
+        this.id = username;
         this.setUsername(username, auth);
         this.activity = activity || 0;
     }
