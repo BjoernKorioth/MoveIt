@@ -4,6 +4,8 @@ import {ActivityService} from '../../services/activity/activity.service';
 import { Location } from  '@angular/common';
 
 import { Router } from '@angular/router';
+import { ToastController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-edit-activity',
@@ -16,7 +18,7 @@ export class EditActivityPage implements OnInit {
   types: Array<string>;
   intensities: Array<string>;
 
-  constructor(private activityService: ActivityService, private location: Location, private router: Router) { 
+  constructor(private activityService: ActivityService, private location: Location, private router: Router, private toastController: ToastController) { 
     this.activity = this.router.getCurrentNavigation().extras.state.activity; // TODO: display error message if empty
     this.location = location;
     this.types = Activity.types;
@@ -32,6 +34,17 @@ export class EditActivityPage implements OnInit {
 
   goBack(){
     this.location.back();
+  }
+
+  async presentAlert() {
+    const controller = await this.toastController.create({
+      color: 'dark',
+      duration: 2000,
+      message: 'Activity edited successfully!',
+      showCloseButton: true
+    }).then(toast => {
+      toast.present();
+    })
   }
   
       /**
@@ -52,6 +65,7 @@ export class EditActivityPage implements OnInit {
           res => console.log(res),
           err => console.log(err)
       );
+      this.presentAlert();
   }
 
 
