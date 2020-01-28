@@ -86,6 +86,7 @@ export class GoalsDetailPage implements OnInit {
     this.goalService.getGoal(changedDaily).then(
       res => {
         this.goalService.adjustGoal(res,Number(document.getElementsByTagName("input")[0].value));
+        console.log(document.getElementsByTagName("input")[0].value);
       },
       err => console.log(err)
     );
@@ -93,6 +94,7 @@ export class GoalsDetailPage implements OnInit {
     this.goalService.getGoal(changedWeekly).then(
       res => {
         this.goalService.adjustGoal(res,Number(document.getElementsByTagName("input")[1].value));
+        console.log(document.getElementsByTagName("input")[1].value);
       },
       err => console.log(err)
     );
