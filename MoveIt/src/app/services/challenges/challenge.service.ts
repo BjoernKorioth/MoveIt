@@ -26,10 +26,18 @@ getAllUserActiveChallenges(){
 }
 
 getListOfParticipants(challenge:Challenge){
-  return this.fireDatabase.list<any>('challenges/'+ challenge.id + "/participants").valueChanges();
+
+ return new Promise<any>((resolve, reject) => {
+
+    this.fireDatabase.database.ref('/challenges/' + challenge.id).child('participants').once('value')
+                  .then(
+                  res => resolve(res),
+                  err => reject(err)
+              );
+  });
 }
 
- getAllChallenges() {
+getAllChallenges() {
   const ref = this.fireDatabase.list<Challenge>('/challenges/');
   // Retrieve an array, but with its metadata. This is necesary to have the key available
   // An array of Goals is reconstructed using the fromFirebaseObject method

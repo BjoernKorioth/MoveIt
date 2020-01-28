@@ -19,7 +19,7 @@
     <ion-item *ngFor="let challenge of challenges">
       <ion-icon name="trophy"></ion-icon>
       <ion-label padding><h4>{{challenge.title}}</h4></ion-label>
-      <ion-label padding><h2>Participants: {{challenge.registered}}</h2></ion-label>
+      <ion-label padding><h2>Participants: {{challenge.participants.length}}</h2></ion-label>
       <ion-button color="secondary" size="medium" (click)="addToActiveList(challenge)">I'm in</ion-button>
     </ion-item>
   </div>
@@ -32,6 +32,7 @@
     <ion-item *ngFor="let activeChallenge of activeChallenges">
       <ion-icon name="trophy"></ion-icon>
       <ion-label padding><h4>{{activeChallenge.title}}</h4></ion-label>
+      <ion-label padding><h2>Participants: {{activeChallenge.participants.length}}</h2></ion-label>
       <ion-button color="secondary" size="medium" (click)= "removeFromActiveList(activeChallenge)">I'm out</ion-button>
     </ion-item>
 
