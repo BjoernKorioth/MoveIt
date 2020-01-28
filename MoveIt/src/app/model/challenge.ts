@@ -5,6 +5,8 @@ interface FireBaseObject {
     price: string;
     startTime: string;
     title: string;
+    participants: any;
+    registered: number;
 }
 
 export class Challenge{
@@ -15,7 +17,7 @@ export class Challenge{
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?: string, description?: string, endTime?: Date, price?: string, startTime?: Date, title?: string) {
+    constructor(id?: string, description?: string, endTime?: Date, price?: string, startTime?: Date, title?: string, registered?:number) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
         this.description = description || 'You must walk 10km a day for 1 week';
@@ -23,6 +25,7 @@ export class Challenge{
         this.price = price || '10$ amazon gift card';
         this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
         this.title = title || 'running';
+        this.registered = registered || 0;
     }
 
     static types = ['running', 'swimming', 'workout'];
@@ -33,6 +36,7 @@ export class Challenge{
     price: string;
     startTime: Date;
     title: string;
+    registered: number;
 
     /**
      * Creates an Activity object from a firebase query
@@ -43,15 +47,16 @@ export class Challenge{
      * @param firebaseObject result of the query
      */
 
-    static fromFirebaseObject(id: string, firebaseObject: FireBaseObject) {
+    static fromFirebaseObject(id: string, firebaseObject: any) {
         // @ts-ignore TS2339
-        return new Activity(
+        return new Challenge(
             id || '',
             firebaseObject.description || '',
             new Date(firebaseObject.endTime) || new Date(),
             firebaseObject.price || '',
             new Date(firebaseObject.startTime) || new Date(),
-            firebaseObject.title || ''
+            firebaseObject.title || '',
+            firebaseObject.participants.length || 0
         );
     }
 

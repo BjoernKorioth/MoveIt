@@ -21,14 +21,17 @@ export class RewardsChallengesPage implements OnInit {
 
   constructor(private challService: ChallengeService, private location:Location) { 
 
-    this.challengesObserve = this.challService.getAllAvailableChallenges();
+    this.challengesObserve = this.challService.getAllChallenges();
 
-    this.challengesObserve.subscribe(result => this.updateAllChallenges(result));
+    this.challengesObserve.subscribe(result => 
+      this.updateAllChallenges(result)
+      );
 
     this.challengesActiveObserve = this.challService.getAllUserActiveChallenges();
 
-    this.challengesActiveObserve.subscribe(result => {this.updateAllActiveChallenges(result);
-           for(var i = 0; i< this.activeChallenges.length; i++){
+    this.challengesActiveObserve.subscribe(result => {
+      this.updateAllActiveChallenges(result);
+      for(var i = 0; i< this.activeChallenges.length; i++){
       this.identifyChallenge(this.activeChallenges[i]);
     }});
 
@@ -90,24 +93,39 @@ export class RewardsChallengesPage implements OnInit {
 
   }
 
-  updateAllChallenges(newChallenges: Array<Challenge>){
+ updateAllChallenges(newChallenges: Array<Challenge>){
     this.challenges = newChallenges;
   }
 
-  updateAllActiveChallenges(newActive: Array<Challenge>){
+  async updateAllActiveChallenges(newActive: Array<Challenge>){
     this.activeChallenges = newActive;
+    
+  }
+
+  setParticipants(){
+    for(var i = 0; i<this.activeChallenges.length; i++){
+      
+      this.challService.getListOfParticipants(this.activeChallenges[i]).subscribe(result => this.activeChallenges[i].registered = result.length);
+    }
+
+    for(var i = 0; i<this.challenges.length; i++){
+      
+      this.challService.getListOfParticipants(this.challenges[i]).subscribe(result => this.challenges[i].registered = result.length);
+    }
   }
 
 
   addToActiveList(challenge:Challenge){
     this.activeChallenges.push(challenge);
     this.identifyChallenge(challenge);
+    this.challService.registerOnChallenge(challenge);
     this.challService.addChallengeToActive(this.activeChallenges);
   }
 
   removeFromActiveList(activeChallenge:Challenge){
     this.challenges.push(activeChallenge);
     this.identifyActiveChallenge(activeChallenge);
+    this.challService.deRegisterOnChallenge(activeChallenge);
     this.challService.addChallengeToActive(this.activeChallenges);
   }
 
