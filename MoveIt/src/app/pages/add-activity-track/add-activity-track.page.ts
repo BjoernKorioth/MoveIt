@@ -69,6 +69,7 @@ export class AddActivityTrackPage implements OnInit {
         res => console.log(res),
         err => console.log(err)
     );
+    this.stopTimer();
     this.presentAlert();
   }
 
