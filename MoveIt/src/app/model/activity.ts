@@ -74,6 +74,6 @@ export class Activity {
      * Returns the duration of the activity in milliseconds
      */
     getDuration() {
-        return this.endTime.getTime() - this.startTime.getTime();
+        return (this.endTime.getTime() - this.startTime.getTime())/60000;
     }
 }

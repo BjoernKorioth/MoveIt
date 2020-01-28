@@ -14,7 +14,7 @@ import { ToastController} from '@ionic/angular';
 export class AddActivityTrackPage implements OnInit {
   activity: Activity;
   minutes: number;
-  counter: number;
+  counter: number = 0;
   types: Array<string>;
   intensities: Array<string>;
  // percent:number = 0;
@@ -61,8 +61,10 @@ export class AddActivityTrackPage implements OnInit {
   }
 
   addActivity() {
-    this.activity.startTime = new Date(0);
-    this.activity.endTime = new Date(this.minutes * 60 * 1000);
+    var newDateObj = new Date(this.activity.startTime.getTime() + this.elapsed.m*60000 + this.elapsed.s*10000 + this.elapsed.h*3600000);
+    
+    this.activity.endTime = new Date(newDateObj);
+    console.log(this.activity);
     this.activityService.createActivity(this.activity).then(
         res => console.log(res),
         err => console.log(err)
@@ -71,6 +73,7 @@ export class AddActivityTrackPage implements OnInit {
   }
 
   startTimer(){
+
 
    /* if(this.timer){
       clearInterval(this.timer);
@@ -118,38 +121,22 @@ export class AddActivityTrackPage implements OnInit {
 
     }, 1000)
   }
-
-  progressTimer2(){
-
-    let countDownDate = new Date();
-
-    console.log(this.elapsed.s);
-    this.overallTimer = setInterval(() => {
-      let now = new Date().getTime();
-      let distance = now - countDownDate.getTime();
-      console.log(this.elapsed.s);
-      this.elapsed.h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      this.elapsed.m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      this.elapsed.s = this.elapsed.s + Math.floor((distance % (1000 * 60)) / (1000));
-
- 
-
-      this.elapsed.h = this.pad(this.elapsed.h, 2);
-      this.elapsed.m = this.pad(this.elapsed.m, 2);
-      this.elapsed.s = this.pad(this.elapsed.s, 2);
-
-    }, 1000)
-  }
-
   pauseTimer(){
     clearInterval(this.overallTimer);
     this.overallTimer = false;
-    console.log(this.elapsed.s);
+
   }
 
   startAgain(){
+    while(this.counter < 1){
+      this.activity.startTime = new Date();
+      this.counter++;
+    }
+    console.log(this.activity.startTime);
     this.overallTimer = true;
     this.progressTimer();
+
+  
   }
 
   pad(num, size) {
@@ -171,6 +158,7 @@ export class AddActivityTrackPage implements OnInit {
       m:'00',
       s:'00'
     }
+    this.counter = 0;
   }
 
 
