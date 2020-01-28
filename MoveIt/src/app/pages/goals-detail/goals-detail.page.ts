@@ -85,14 +85,14 @@ export class GoalsDetailPage implements OnInit {
 
     this.goalService.getGoal(changedDaily).then(
       res => {
-        console.log(this.goalService.adjustGoal(res,Number(document.getElementsByTagName("input")[0].value)));
+        this.goalService.adjustGoal(res,Number(document.getElementsByTagName("input")[0].value));
       },
       err => console.log(err)
     );
 
     this.goalService.getGoal(changedWeekly).then(
       res => {
-        console.log(this.goalService.adjustGoal(res,Number(document.getElementsByTagName("input")[1].value)));
+        this.goalService.adjustGoal(res,Number(document.getElementsByTagName("input")[1].value));
       },
       err => console.log(err)
     );
