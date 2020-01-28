@@ -1,13 +1,13 @@
 interface FireBaseObject {
     id: string;
     description: string;
-   // endTime: string;
-    //price: string;
-    //startTime: string;
+    // endTime: string;
+    // price: string;
+    // startTime: string;
     title: string;
 }
 
-export class Trophy{
+export class Trophy {
 
     /**
      * Constructor to create Activity
@@ -19,12 +19,16 @@ export class Trophy{
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
         this.description = description || 'You get this trophy for winning 10 times a daily goal.';
-        //this.endTime = endTime || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
-        //this.price = price || '10$ amazon gift card';
-        //this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
+        // this.endTime = endTime || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
+        // this.price = price || '10$ amazon gift card';
+        // this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
         this.title = title || '10 Daily Goals';
     }
 
+    static defaultTrophies = [
+        new Trophy('win-a-goal', 'Win one of your goals', 'Win a goal'),
+        new Trophy('win-two-goals', 'Win two of your goals', 'Win two goals')
+    ];
     id: string;
     description: string;
     title: string;
