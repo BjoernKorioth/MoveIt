@@ -58,7 +58,7 @@
         <ion-list-header>
             <ion-label>{{goal.name}} - {{goal.type}}</ion-label>
             <ion-label side="end">{{goal.current}} / {{goal.target}} min</ion-label>
-          <!-- <ion-icon name="create" id="edit"></ion-icon>-->
+          <ion-icon name="create" id="edit" (click)='routeToEditGoalPage(goal)'></ion-icon>
 
         </ion-list-header>
         <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
@@ -70,9 +70,10 @@
     <!--<ion-list>
         <ion-list-header>
             Goals
+            <section>
+                <ion-button routerLink="/menu/goals/goals/detail" slot="end" float-right> Edit <ion-icon name="create"></ion-icon></ion-button>
+            </section>
         </ion-list-header>
-
-
 
         <ion-item *ngFor="let goal of (goals | async)">
             <ion-label>

@@ -15,27 +15,26 @@
 <ion-content padding>
 
 
-  <ion-segment [(ngModel)]="goals">
+  <!--<ion-segment [(ngModel)]="goals">
     <ion-segment-button value="trophies">
       moderate
     </ion-segment-button>
-    <ion-segment-button value="actMinutes">
+    <ion-segment-button (click)="vigorous()" value="vigorous">
       vigorous
     </ion-segment-button>
-    <ion-segment-button value="challenges">
+    <ion-segment-button (click)="weight()" value="weight">
       weight training
     </ion-segment-button>
-  </ion-segment>
+  </ion-segment>-->
+
 
   <ion-list>
     <ion-list-header>
       <ion-label>Goals</ion-label>
     </ion-list-header>
-    <!-- Colorize Progressbar -->
-  <!-- <ion-item> <ion-progress-bar color="primary" value="0.27"></ion-progress-bar></ion-item> --->
 
   <ion-item>
-    <ion-range min="0" max="500" pin color="secondary" [(ngModel)]="speed">
+    <ion-range min="0" max="1000" pin color="secondary" [(ngModel)]="goal.target">
       <ion-icon slot="start" size="small" name="walk"></ion-icon>
       <ion-icon slot="end" name="walk"></ion-icon>
     </ion-range>
@@ -43,18 +42,28 @@
 
 
    <ion-item>
-    <ion-label>Daily goals</ion-label>
-    <ion-input placeholder="500" [(ngModel)]="speed"></ion-input>
+    <ion-label>Goal</ion-label>
+    <ion-input type="number"  slot="end" [(ngModel)]="goal.target" text-right></ion-input>
   </ion-item>
-  <ion-item>
+  <!--<ion-item>
     <ion-label>Monthly goals</ion-label>
     <ion-input placeholder="1500"></ion-input>
-  </ion-item>
+  </ion-item> 
   
-  </ion-list>
-  <section>
-    <ion-button slot="end" color="secondary" float-right> Change goals </ion-button>
-  </section>
+     <ion-item>
+      <ion-label>Daily goals</ion-label>
+      <ion-input id="daily" placeholder="500"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Monthly goals</ion-label>
+      <ion-input id="weekly" placeholder="1500"></ion-input>
+    </ion-item>-->
+    
+    </ion-list>
+
+    <section>
+      <ion-button slot="end" color="secondary"  float-right (click)="editGoal()"> Change goals </ion-button>
+    </section>
 
   
 </ion-content>
