@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {GoalService} from '../../services/goal/goal.service';
 import {Location} from '@angular/common';
 
+import { Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-goals-detail',
@@ -10,21 +12,45 @@ import {Location} from '@angular/common';
 })
 export class GoalsDetailPage implements OnInit {
 
-  goals:any;
+  goal:any;
 
-  constructor(private goalService: GoalService, private location: Location) {
-    this.goals = this.goalService.getGoals();
-    
+  constructor(private goalService: GoalService, private location: Location, private router: Router, private alertController: AlertController) {
+    this.goal = this.router.getCurrentNavigation().extras.state.goal; // TODO: display error message if empty
+
+    //this.goals = this.goalService.getGoals();
+    this.router = router; 
   }
 
   ngOnInit() {
+    console.log(this.router.getCurrentNavigation().extras.state);
   }
   
   goBack() {
     this.location.back();
 }
 
-  moderate(){
+async presentAlert() {
+  const alert = await this.alertController.create({
+    header: 'Success',
+    message: 'Were the previous goal too easy?',
+    buttons: ['YES','No'],
+  });
+
+  await alert.present();
+  let result = await alert.onDidDismiss();
+  console.log(result);
+}
+
+editGoal() {
+
+  this.goalService.adjustGoal(this.goal, this.goal.target).then(
+      res => console.log(res),
+      err => console.log(err)
+  );
+
+  this.presentAlert();
+
+  /*moderate(){
     this.goalService.getGoal('dailyModerate').then(
       res => {
           document.getElementById("daily").setAttribute("value",res.target);
@@ -97,6 +123,7 @@ export class GoalsDetailPage implements OnInit {
       },
       err => console.log(err)
     );
-  }
+  }*/
 
+}
 }

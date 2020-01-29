@@ -34,7 +34,7 @@
     </ion-list-header>
 
   <ion-item>
-    <ion-range min="0" max="500" pin color="secondary" [(ngModel)]="speed">
+    <ion-range min="0" max="1000" pin color="secondary" [(ngModel)]="goal.target">
       <ion-icon slot="start" size="small" name="walk"></ion-icon>
       <ion-icon slot="end" name="walk"></ion-icon>
     </ion-range>
@@ -43,12 +43,12 @@
 
    <ion-item>
     <ion-label>Goal</ion-label>
-    <ion-input placeholder="500" [(ngModel)]="speed"></ion-input>
+    <ion-input type="number"  slot="end" [(ngModel)]="goal.target" text-right></ion-input>
   </ion-item>
   <!--<ion-item>
     <ion-label>Monthly goals</ion-label>
     <ion-input placeholder="1500"></ion-input>
-  </ion-item> -->
+  </ion-item> 
   
      <ion-item>
       <ion-label>Daily goals</ion-label>
@@ -57,12 +57,12 @@
     <ion-item>
       <ion-label>Monthly goals</ion-label>
       <ion-input id="weekly" placeholder="1500"></ion-input>
-    </ion-item>
+    </ion-item>-->
     
     </ion-list>
 
     <section>
-      <ion-button slot="end" color="secondary"  float-right (click)="adjustGoal()"> Change goals </ion-button>
+      <ion-button slot="end" color="secondary"  float-right (click)="editGoal()"> Change goals </ion-button>
     </section>
 
   
