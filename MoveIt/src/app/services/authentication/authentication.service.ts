@@ -31,10 +31,11 @@ export class AuthenticateService {
                             (userCredential) => {
                                 user.id = userCredential.user.uid;
                                 user.group = group;
+                                this.removeOTP(otp);
                                 // Try to create the user on the database
                                 this.registerOnDatabase(user).then(
                                     // If this is successful, resolve the promise
-                                    res => resolve(res),
+                                    () => resolve(userCredential),
                                     // If it's not successful, the user was created with the auth service but not in the database
                                     err => reject(err)
                                 );
@@ -53,10 +54,7 @@ export class AuthenticateService {
                     // Maybe use snapshot.exists() ?
                     const group = groupSnapshot.val();
                     if (group) {
-                        this.db.database.ref(/otps/ + 'otp').remove().then(
-                            () => resolve(group),
-                            err => reject(err)
-                        );
+                        resolve(group);
                     } else {
                         reject('invalid otp');
                     }
@@ -64,6 +62,10 @@ export class AuthenticateService {
                 err => reject(err)
             );
         });
+    }
+
+    removeOTP(otp: string) {
+        return this.db.database.ref(/otps/ + otp).remove();
     }
 
     registerOnDatabase(user: User) {
@@ -104,14 +106,14 @@ export class AuthenticateService {
     }
 
     getSpecificUsername(uid) {
-           return this.db.database.ref('/users/' + uid + '/name').once('value');
+        return this.db.database.ref('/users/' + uid + '/name').once('value');
     }
 
-    async setUser(){
-        return await this.db.object<User>('/users/' + firebase.auth().currentUser.uid).valueChanges().subscribe(result => (this.user = result));
+    async setUser() {
+        return this.db.object<User>('/users/' + firebase.auth().currentUser.uid).valueChanges().subscribe(result => (this.user = result));
     }
 
-    getFullUser(){
+    getFullUser() {
         return this.user;
     }
 }

@@ -6,7 +6,7 @@ interface FireBaseObject {
     challengesActive: Array<Challenge>;
     group: number;
     type: string;
-    birthdate: string;
+    birthday: string;
     gender: string;
 }
 
@@ -19,14 +19,14 @@ export class User {
      *
      */
     constructor(id?: string, name?: string, challengesActive?: Array<any>, group?: number, type?: string,
-                birthdate?: Date, gender?: string) {
+                birthday?: Date, gender?: string) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '-1';
         this.name = name || 'No username';
         this.challengesActive = challengesActive || [];
         this.group = group || -1;
         this.type = type || 'user';
-        this.birthdate = birthdate || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
+        this.birthday = birthday || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
         this.gender = gender;
     }
     id: string;
@@ -34,7 +34,7 @@ export class User {
     challengesActive: Array<any>;
     group: number;
     type: string;
-    birthdate: Date;
+    birthday: Date;
     gender: string;
 
     static fromFirebaseObject(id: string, firebaseObject: FireBaseObject) {
@@ -44,8 +44,8 @@ export class User {
             firebaseObject.challengesActive || [],
             firebaseObject.group || 2,
             firebaseObject.type || '',
-            new Date(firebaseObject.birthdate),
-            firebaseObject.gender
+            new Date(firebaseObject.birthday) || new Date(),
+            firebaseObject.gender || ''
         );
     }
 
@@ -64,7 +64,7 @@ export class User {
             challengesActive: JSON.stringify(this.challengesActive),
             group: this.group,
             type: this.type,
-            birthdate: this.birthdate.toDateString(),
+            birthday: this.birthday.toDateString(),
             gender: this.gender,
         };
     }
