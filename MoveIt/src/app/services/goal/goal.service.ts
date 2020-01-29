@@ -7,15 +7,12 @@ import {GoalArray} from '../../model/goalArray';
 import {map} from 'rxjs/operators';
 import {ActivityService} from '../activity/activity.service';
 
-import {AuthenticateService} from '../authentication/authentication.service';
-
-
 @Injectable({
     providedIn: 'root'
 })
 export class GoalService {
 
-    constructor(private fireDatabase: AngularFireDatabase, private activityService: ActivityService, auth: AuthenticateService) {
+    constructor(private fireDatabase: AngularFireDatabase, private activityService: ActivityService) {
     }
 
     /**
