@@ -50,6 +50,8 @@ editGoal() {
   );
 
   this.presentAlert();
+}
+
 
   /*moderate(){
     this.goalService.getGoal('dailyModerate').then(
@@ -126,10 +128,8 @@ editGoal() {
     );
   }*/
 
-  goBack(){
-    this.location.back();
-  }
+
   
 
-}
+
 }
