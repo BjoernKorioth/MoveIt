@@ -12,6 +12,8 @@ import {LeaderboardObject} from '../../model/leaderboardObject'
 
 import {GoalArray} from '../../model/goalArray'
 
+import {User} from '../../model/user';
+
 
 
 @Component({
@@ -68,60 +70,6 @@ export class LeaderboardDetailPage implements OnInit {
       age: 40,
       actMinutes: 115,
       image: './assets/Profilbild.jpg'
-    },
-    {
-      name: 'Mary',
-      age: 25,
-      actMinutes: 100,
-      image: './assets/Profilbild.jpg'
-    },
-    {
-      name: 'Maya',
-      age: 20,
-      actMinutes: 150,
-      image: './assets/Profilbild.jpg'
-    },
-    {
-      name: 'Ursula',
-      age: 25,
-      actMinutes: 120,
-      image: './assets/Profilbild.jpg'
-    },
-    {
-      name: 'Phil',
-      age: 40,
-      actMinutes: 115,
-      image: './assets/Profilbild.jpg'
-    },
-    {
-      name: 'Mary',
-      age: 25,
-      actMinutes: 100,
-      image: './assets/Profilbild.jpg'
-    },
-    {
-      name: 'Maya',
-      age: 20,
-      actMinutes: 150,
-      image: './assets/Profilbild.jpg'
-    },
-    {
-      name: 'Ursula',
-      age: 25,
-      actMinutes: 120,
-      image: './assets/Profilbild.jpg'
-    },
-    {
-      name: 'Phil',
-      age: 40,
-      actMinutes: 115,
-      image: './assets/Profilbild.jpg'
-    },
-    {
-      name: 'Mary',
-      age: 25,
-      actMinutes: 100,
-      image: './assets/Profilbild.jpg'
     }
   ];
   }*/
@@ -132,12 +80,16 @@ export class LeaderboardDetailPage implements OnInit {
   activitiesObserve: Observable<GoalArray[]>
 
   tempUsername : string;
+  private currentUser: User;
 
   constructor(private goalservice: GoalService, private authService: AuthenticateService, private location:Location) { 
 
+    
     this.activitiesObserve = this.goalservice.getAllOtherAvailableGoals();
 
     this.activitiesObserve.subscribe(result => this.pushObjects(result));
+    this.currentUser = this.authService.getFullUser();
+    console.log(this.currentUser);
   }
 
   async ngOnInit() {
