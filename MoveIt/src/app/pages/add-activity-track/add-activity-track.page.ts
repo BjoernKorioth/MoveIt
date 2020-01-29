@@ -61,7 +61,7 @@ export class AddActivityTrackPage implements OnInit {
   }
 
   addActivity() {
-    var newDateObj = new Date(this.activity.startTime.getTime() + this.elapsed.m*60000 + this.elapsed.s*10000 + this.elapsed.h*3600000);
+    var newDateObj = new Date(this.activity.startTime.getTime() + this.elapsed.m*60000 + this.elapsed.s*1000 + this.elapsed.h*3600000);
     
     this.activity.endTime = new Date(newDateObj);
     console.log(this.activity);
