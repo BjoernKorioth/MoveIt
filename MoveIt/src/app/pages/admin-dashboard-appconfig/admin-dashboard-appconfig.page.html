@@ -8,75 +8,120 @@
 </ion-header>
 
 <ion-content>
+  <ion-button padding (click)="createGroup()">Create Group</ion-button>
+  <ion-button padding (click)="editGroup()">Edit Group</ion-button>
+  <ion-button padding (click)="createUser()">Create User</ion-button>
+  <ion-button padding (click)="changeUserGroup()">Change User Group</ion-button>
+
 
   <section>
-    <ion-button id="user" color="secondary"  slot="end" float-right padding>New User</ion-button>
-    <ion-button id="group" color="secondary" slot="end" float-right padding>New Group</ion-button>
+    <h4 padding>Manage the groups</h4>
+    <ion-button id="group" color="secondary" padding (click)="presentPopoverGroup($event)">New Group</ion-button>
   </section>
   <br><br><br>
 
-  <div>
+  <div style="border-bottom:1px solid black">
+  
+    <ion-row>
+      <ion-col size="2">
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Group</ion-label>
+          </ion-list-header>
+        </ion-list>
+      </ion-col>
+  
+      <ion-col size="2">
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Progress</ion-label>
+          </ion-list-header>
+        </ion-list>
+      </ion-col>
+  
+      <ion-col size="2">
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Information</ion-label>
+          </ion-list-header>
+        </ion-list>
+      </ion-col>
+  
+      <ion-col size="2">
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Rewards</ion-label>
+          </ion-list-header>
+        </ion-list>
+      </ion-col>
+  
+      <ion-col size="2">
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Newsfeed</ion-label>
+          </ion-list-header>
+        </ion-list>
+      </ion-col>
 
-  <ion-row *ngFor="let group of groups">
+      <ion-col size="2">
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Leaderboard</ion-label>
+          </ion-list-header>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+
+  <ion-row *ngFor="let group of (groups | async)">
     <ion-col size="2">
       <ion-list>
-        <ion-list-header>
-          <ion-label></ion-label>
-        </ion-list-header>
-        <ion-item>Group {{group.id}} </ion-item>
+        <ion-item>{{group.name}} </ion-item>
       </ion-list>
     </ion-col>
 
-    <ion-col size="2">
+    <!--ion-col size="2">
       <ion-list>
-        <ion-list-header>
-          <ion-label>Progress</ion-label>
-        </ion-list-header>
         <ion-item><ion-checkbox [checked]="group.featureVector[0]"></ion-checkbox></ion-item>
       </ion-list>
     </ion-col>
 
     <ion-col size="2">
       <ion-list>
-        <ion-list-header>
-          <ion-label>Information</ion-label>
-        </ion-list-header>
         <ion-item><ion-checkbox [checked]="group.featureVector[1]"></ion-checkbox></ion-item>
       </ion-list>
     </ion-col>
 
     <ion-col size="2">
       <ion-list>
-        <ion-list-header>
-          <ion-label>Rewards</ion-label>
-        </ion-list-header>
         <ion-item><ion-checkbox [checked]="group.featureVector[2]"></ion-checkbox></ion-item>
       </ion-list>
     </ion-col>
 
     <ion-col size="2">
       <ion-list>
-        <ion-list-header>
-          <ion-label>Newsfeed</ion-label>
-        </ion-list-header>
         <ion-item><ion-checkbox [checked]="group.featureVector[3]"></ion-checkbox></ion-item>
       </ion-list>
     </ion-col>
 
     <ion-col size="2">
       <ion-list>
-        <ion-list-header>
-          <ion-label>Leaderboard</ion-label>
-        </ion-list-header>
         <ion-item><ion-checkbox [checked]="group.featureVector[4]"></ion-checkbox></ion-item>
       </ion-list>
-    </ion-col>
+    </ion-col-->
   </ion-row>
 </div>
 
-<u></u>
+
+
+<section>
+  <h4 padding>Manage the users</h4>
+  <ion-button id="user" color="secondary"  slot="end" padding (click)="presentPopover($event)">New User</ion-button>
+</section>
+<br><br><br>
+
   <div>
-  <ion-row *ngFor="let user of users">
+  <ion-row *ngFor="let user of (users | async)">
     <ion-col size="2">
       <ion-list>
         <ion-list-header>
@@ -86,7 +131,7 @@
       </ion-list>
     </ion-col>
 
-    <ion-col size="2">
+    <!--ion-col size="2">
       <ion-list>
         <ion-list-header>
           <ion-label>Group 1</ion-label>
@@ -129,10 +174,8 @@
         </ion-list-header>
         <ion-item lines="none"><ion-checkbox [checked]="user.groups[4]"></ion-checkbox></ion-item>
       </ion-list>
-    </ion-col>
+    </ion-col-->
   </ion-row>
 </div>
  
-
-
 </ion-content>

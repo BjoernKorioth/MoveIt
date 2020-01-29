@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { AdminDashboardArticlesPage } from './admin-dashboard-articles.page';
+import { ArticlesPopoverComponent } from 'src/app/articles-popover/articles-popover.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [AdminDashboardArticlesPage]
+  entryComponents: [ArticlesPopoverComponent],
+  declarations: [AdminDashboardArticlesPage, ArticlesPopoverComponent]
 })
 export class AdminDashboardArticlesPageModule {}

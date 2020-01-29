@@ -9,14 +9,15 @@ export class AdminDashboardNotificationsPage implements OnInit {
   notifications: any;
 
   constructor() {
-    this.notifications= [
+    this.notifications = [
       {
         title: 'Good Weather',
         trigger: 'Above 18°',
         description: 'The weather is good for a walk today',
         option1: 'OK!',
         option2: 'Thumbs up!',
-        options: ["OK", "Thumbs up"]
+        options: ['OK', 'Thumbs up'],
+        groups: ['Group 1', 'Group 2', 'Group 3']
       },
       {
         title: 'Good Weather',
@@ -24,9 +25,10 @@ export class AdminDashboardNotificationsPage implements OnInit {
         description: 'The weather is good for a walk today',
         option1: 'OK!',
         option2: 'Thumbs up!',
-        options: ["OK", "Thumbs up"]
+        options: ['OK', 'Thumbs up'],
+        groups: ['Group 1', 'Group 2', 'Group 3']
       }
-    ]
+    ];
    }
 
   ngOnInit() {

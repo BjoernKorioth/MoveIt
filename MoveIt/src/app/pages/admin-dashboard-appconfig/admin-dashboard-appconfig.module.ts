@@ -6,6 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { AdminDashboardAppconfigPage } from './admin-dashboard-appconfig.page';
+import { AppconfigPopoverComponent } from 'src/app/appconfig-popover/appconfig-popover.component';
+import { AppconfigGroupPopoverComponent } from 'src/app/appconfig-group-popover/appconfig-group-popover.component';
 
 const routes: Routes = [
   {
@@ -21,7 +23,8 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
+  entryComponents: [AppconfigPopoverComponent, AppconfigGroupPopoverComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  declarations: [AdminDashboardAppconfigPage]
+  declarations: [AdminDashboardAppconfigPage, AppconfigPopoverComponent, AppconfigGroupPopoverComponent]
 })
 export class AdminDashboardAppconfigPageModule {}

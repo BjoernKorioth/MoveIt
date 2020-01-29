@@ -1,32 +1,75 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Articles</ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Articles</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <h2 padding>Manage articles</h2>
-  <ion-row *ngFor="let article of articles">
-    <ion-col size="3">
-      <ion-list>
-        <ion-list-header>
-          <ion-label>Title</ion-label>
-        </ion-list-header>
-        <ion-item> {{article.title}} </ion-item>
-      </ion-list>
-    </ion-col>
+    <h2 padding>Manage articles</h2>
 
-    <ion-col size="3">
-      <ion-list>
-        <ion-list-header>
-          <ion-label>Description</ion-label>
-        </ion-list-header>
-        <ion-item>{{article.description}}</ion-item>
-      </ion-list>
-    </ion-col>
-  </ion-row>
+    <section>
+        <ion-button color="secondary" padding (click)="presentPopover($event)">Create Article</ion-button>
+    </section>
+    <br><br><br>
+
+    <ion-row>
+        <ion-col size="3">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Title</ion-label>
+                </ion-list-header>
+            </ion-list>
+        </ion-col>
+        <ion-col size="3">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Description</ion-label>
+                </ion-list-header>
+            </ion-list>
+        </ion-col>
+        <ion-col size="3">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Link</ion-label>
+                </ion-list-header>
+            </ion-list>
+        </ion-col>
+        <ion-col size="3">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Image</ion-label>
+                </ion-list-header>
+            </ion-list>
+        </ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let article of articles">
+        <ion-col size="3">
+            <ion-list>
+                <ion-item> {{article.title}} </ion-item>
+            </ion-list>
+        </ion-col>
+
+        <ion-col size="3">
+            <ion-list>
+                <ion-item>{{article.content}}</ion-item>
+            </ion-list>
+        </ion-col>
+
+        <ion-col size="3">
+            <ion-list>
+                <ion-item>{{article.link}}</ion-item>
+            </ion-list>
+        </ion-col>
+
+        <ion-col size="3">
+            <ion-list>
+                <ion-item>{{article.picture}}</ion-item>
+            </ion-list>
+        </ion-col>
+    </ion-row>
 
 </ion-content>

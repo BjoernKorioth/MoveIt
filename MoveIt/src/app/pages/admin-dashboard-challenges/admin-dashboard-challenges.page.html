@@ -9,35 +9,40 @@
 
 <ion-content>
   <section>
-    <ion-button color="secondary"  slot="end" float-right padding>Create Challenge</ion-button>
+    <ion-button color="secondary"  slot="end" float-right padding (click)="presentPopover($event)">Create Challenge</ion-button>
   </section>
   <br><br><br>
 
-  <ion-row *ngFor="let challenge of challenges">
-    <ion-col size="3">
+  <ion-row>
+    <ion-col size="2">
       <ion-list>
         <ion-list-header>
-          <ion-label>Name</ion-label>
+          <ion-label>Title</ion-label>
         </ion-list-header>
-        <ion-item> {{challenge.title}} </ion-item>
       </ion-list>
     </ion-col>
 
     <ion-col size="3">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Description</ion-label>
+        </ion-list-header>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
       <ion-list>
         <ion-list-header>
           <ion-label>Starts</ion-label>
         </ion-list-header>
-        <ion-item>{{challenge.startDate}}</ion-item>
       </ion-list>
     </ion-col>
 
-    <ion-col size="3">
+    <ion-col size="2">
       <ion-list>
         <ion-list-header>
           <ion-label>Ends</ion-label>
         </ion-list-header>
-        <ion-item>{{challenge.endDate}}</ion-item>
       </ion-list>
     </ion-col>
 
@@ -46,7 +51,38 @@
         <ion-list-header>
           <ion-label>Price</ion-label>
         </ion-list-header>
-        <ion-item>{{challenge.price}}</ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+
+  <ion-row *ngFor="let challenge of challenges">
+    <ion-col size="2">
+      <ion-list>
+        <ion-item><ion-label>{{challenge.title}}</ion-label></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-list>
+        <ion-item><ion-label>{{challenge.description}}</ion-label></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-item><ion-label>{{challenge.startDate}}</ion-label></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-item><ion-label>{{challenge.endDate}}</ion-label></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="3">
+      <ion-list>
+        <ion-item><ion-label>{{challenge.price}}</ion-label></ion-item>
       </ion-list>
     </ion-col>
 

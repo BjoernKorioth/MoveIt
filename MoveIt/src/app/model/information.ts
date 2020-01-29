@@ -2,22 +2,18 @@ interface FireBaseObject {
     id: string;
     content: string;
     createdAt: string;
-    imagePath: string;
-    source: string;
-    title: string;
-    link: string;
     picture: string;
+    link: string;
+    title: string;
 }
 
 export class Information {
     id: string;
     content: string;
     createdAt: Date;
-    imagePath: string;
-    source: string;
-    title: string;
-    link:string;
     picture: string;
+    link: string;
+    title: string;
 
     /**
      * Constructor to create Information
@@ -25,16 +21,14 @@ export class Information {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?: string, content?: string, createdAt?: Date, imagePath?: string, source?: string, title?: string, link?: string, picture?: string) {
+    constructor(id?: string, content?: string, createdAt?: Date, picture?: string, link?: string, title?: string) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
-        this.content = content || 'Lorem ipsum';
+        this.content = content || '';
         this.createdAt = createdAt || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
-        this.imagePath = imagePath || '';
-        this.source = source || 'Lorem ipsum';
-        this.title = title || 'Lorem ipsum';
-        this.link = link || 'No Link';
         this.picture = picture || '';
+        this.link = link || '';
+        this.title = title || '';
     }
 
     /**
@@ -52,11 +46,9 @@ export class Information {
             id || '',
             firebaseObject.content || '',
             new Date(firebaseObject.createdAt) || new Date(),
-            firebaseObject.imagePath || '',
-            firebaseObject.source || '',
-            firebaseObject.title || '',
+            firebaseObject.picture || '',
             firebaseObject.link || '',
-            firebaseObject.picture || ''
+            firebaseObject.title || ''
         );
     }
 
@@ -70,11 +62,9 @@ export class Information {
             id: this.id,
             content: this.content,
             createdAt: this.createdAt.toDateString(),
-            imagePath: this.imagePath,
-            source: this.source,
-            title: this.title,
+            picture: this.picture,
             link: this.link,
-            picture: this.picture
+            title: this.title
         };
     }
 }
