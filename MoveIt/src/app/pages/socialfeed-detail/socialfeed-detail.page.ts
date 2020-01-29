@@ -21,14 +21,17 @@ export class SocialfeedDetailPage implements OnInit {
 
   constructor(private postService: PostService, private location:Location) {
     this.location = location;
-    this.posts = postService.getAllPosts();
+    
+    
+   
+  }
+
+  async ngOnInit() {
+    this.postService.setUser();
+    this.posts = await this.postService.getAllPosts();
     this.posts.subscribe(res => {
       console.log(res);
     });
-  }
-
-  ngOnInit() {
-    this.postService.setUser();
   }
 
   goBack(){
@@ -86,6 +89,7 @@ export class SocialfeedDetailPage implements OnInit {
   newComment(i) {
     var postid = document.getElementsByName("userPlace")[i].id;
     var userComment = document.getElementsByTagName("input")[i].value;
+    console.log("Comment " + userComment);
     if (userComment.length != 0){
       this.postService.createComment(postid, userComment).then(
         res => console.log(res),

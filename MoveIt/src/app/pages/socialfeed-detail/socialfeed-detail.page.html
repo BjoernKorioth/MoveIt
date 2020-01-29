@@ -24,6 +24,16 @@
   <ion-button type="button" (click)='getAllComments()'>Get All Comments</ion-button>
   -->
 
+  <ion-row>
+    <form>
+      <ion-item id="form">
+        <ion-input name="post" type="text" placeholder="create your own post"></ion-input>
+        <ion-icon name="send" ></ion-icon>  
+      </ion-item>
+    </form>
+</ion-row>
+
+
   <ion-card *ngFor="let post of (posts | async); let i = index;">
 
     <ion-item>

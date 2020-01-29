@@ -15,7 +15,8 @@ export class PostService {
 
     constructor(private fireDatabase: AngularFireDatabase, private authenticateService: AuthenticateService) {
         // TODO get user
-        this.user = new User();
+
+        this.setUser();
     }
 
     /**
@@ -130,7 +131,8 @@ export class PostService {
     /**
      * Retrieve all activities of the group
      */
-    getAllPosts() {
+    async getAllPosts() {
+        await this.setUser();
         const ref = this.fireDatabase.list<Post>('/posts/' + this.user.group);
         return ref.snapshotChanges().pipe(map(posts => posts.map(
             postSnapshot => Post.fromFirebaseObject(this.user.group, postSnapshot.key, postSnapshot.payload.val()))));
@@ -208,7 +210,7 @@ export class PostService {
         return this.fireDatabase.list<Comment>('/posts/' + this.user.group + '/' + postId).valueChanges();
     }
 
-    setUser(){
-        this.user = this.authenticateService.getFullUser();
+    async setUser(){
+        this.user = await this.authenticateService.getFullUser();
     }
 }
