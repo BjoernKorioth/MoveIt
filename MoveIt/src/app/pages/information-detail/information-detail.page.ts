@@ -9,11 +9,12 @@ import { Location } from  '@angular/common';
     styleUrls: ['./information-detail.page.scss'],
 })
 export class InformationDetailPage implements OnInit {
-    information: any;
+    static: any;
+    dynamic: any;
     constructor(private informationService: InformationService, private location: Location) {
         this.location = location;
     
-        this.information=[
+        this.static=[
             {
                 title: 'moderate vs. vigorous',
                 description: 'moderate activity'
@@ -26,6 +27,7 @@ export class InformationDetailPage implements OnInit {
     }
 
     ngOnInit() {
+        this.getAllInformation();
     }
 
     goBack(){
@@ -66,7 +68,7 @@ export class InformationDetailPage implements OnInit {
     getAllInformation() {
         this.informationService.getAllInformation().then(
             res => {
-                console.log(res);
+                this.dynamic = res;
             },
             err => console.log(err)
         );

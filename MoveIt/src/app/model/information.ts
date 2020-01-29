@@ -5,6 +5,8 @@ interface FireBaseObject {
     imagePath: string;
     source: string;
     title: string;
+    link: string;
+    picture: string;
 }
 
 export class Information {
@@ -14,6 +16,8 @@ export class Information {
     imagePath: string;
     source: string;
     title: string;
+    link:string;
+    picture: string;
 
     /**
      * Constructor to create Information
@@ -21,7 +25,7 @@ export class Information {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?: string, content?: string, createdAt?: Date, imagePath?: string, source?: string, title?: string) {
+    constructor(id?: string, content?: string, createdAt?: Date, imagePath?: string, source?: string, title?: string, link?: string, picture?: string) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
         this.content = content || 'Lorem ipsum';
@@ -29,6 +33,8 @@ export class Information {
         this.imagePath = imagePath || '';
         this.source = source || 'Lorem ipsum';
         this.title = title || 'Lorem ipsum';
+        this.link = link || 'No Link';
+        this.picture = picture || '';
     }
 
     /**
@@ -48,7 +54,9 @@ export class Information {
             new Date(firebaseObject.createdAt) || new Date(),
             firebaseObject.imagePath || '',
             firebaseObject.source || '',
-            firebaseObject.title || ''
+            firebaseObject.title || '',
+            firebaseObject.link || '',
+            firebaseObject.picture || ''
         );
     }
 
@@ -64,7 +72,9 @@ export class Information {
             createdAt: this.createdAt.toDateString(),
             imagePath: this.imagePath,
             source: this.source,
-            title: this.title
+            title: this.title,
+            link: this.link,
+            picture: this.picture
         };
     }
 }
