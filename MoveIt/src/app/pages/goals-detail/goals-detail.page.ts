@@ -19,7 +19,6 @@ export class GoalsDetailPage implements OnInit {
 
   ngOnInit() {
   }
-
   
   goBack() {
     this.location.back();
