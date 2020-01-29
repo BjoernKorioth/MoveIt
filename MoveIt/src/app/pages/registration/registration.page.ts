@@ -3,6 +3,7 @@ import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
 import {NavController} from '@ionic/angular';
 
 import {AuthenticateService} from '../../services/authentication/authentication.service';
+import {User} from '../../model/user';
 
 @Component({
     selector: 'app-registration',
@@ -27,9 +28,9 @@ export class RegistrationPage implements OnInit {
         name: [
             {type: 'required', message: 'Please enter a name'}
         ],
-        birthdate:[{type: 'required', message:'Please set a birthday'}],
+        birthdate: [{type: 'required', message: 'Please set a birthday'}],
         gender: [{type: 'required', message: 'Please choose your gender'}],
-        terms: [{type:'required', message: 'Please accept the terms'}]
+        terms: [{type: 'required', message: 'Please accept the terms'}]
     };
 
     constructor(
@@ -59,7 +60,12 @@ export class RegistrationPage implements OnInit {
     }
 
     tryRegister(value) {
-        this.authService.registerUser(value)
+        // TODO check if terms are accepted
+        const user = new User();
+        user.name = value.firstname + ' ' + value.lastname;
+        user.gender = value.gender;
+        user.birthdate = value.birthdate;
+        this.authService.registerUser(value.otp, value.email, value.password, user)
             .then(res => {
                 console.log(res);
                 this.errorMessage = '';
