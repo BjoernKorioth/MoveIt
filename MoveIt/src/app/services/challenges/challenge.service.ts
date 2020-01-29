@@ -55,7 +55,7 @@ export class ChallengeService {
     }
 
     getAllChallenges() {
-        const ref = this.fireDatabase.list<Challenge>('/challenges/');
+        const ref = this.fireDatabase.list<any>('/challenges/');
         // Retrieve an array, but with its metadata. This is necesary to have the key available
         // An array of Goals is reconstructed using the fromFirebaseObject method
         return ref.snapshotChanges().pipe(
