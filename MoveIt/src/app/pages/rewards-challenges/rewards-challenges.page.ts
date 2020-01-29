@@ -6,6 +6,7 @@ import {Challenge} from '../../model/challenge';
 import {ChallengeService} from '../../services/challenges/challenge.service';
 
 import {Observable} from 'rxjs';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-rewards-challenges',
@@ -24,13 +25,17 @@ export class RewardsChallengesPage implements OnInit {
     this.challengesObserve = this.challService.getAllChallenges();
 
     this.challengesObserve.subscribe(result => 
+      
       this.updateAllChallenges(result)
+      
       );
 
     this.challengesActiveObserve = this.challService.getAllUserActiveChallenges();
 
     this.challengesActiveObserve.subscribe(result => {
+      
       this.updateAllActiveChallenges(result);
+
       for(var i = 0; i< this.activeChallenges.length; i++){
       this.identifyChallenge(this.activeChallenges[i]);
     }});
@@ -91,6 +96,26 @@ export class RewardsChallengesPage implements OnInit {
 
   ngOnInit() {
 
+   /*this.challengesObserve = this.challService.getAllChallenges();
+
+   this.challengesActiveObserve = this.challService.getAllUserActiveChallenges();
+
+    this.challengesObserve.subscribe(result => {
+      
+      this.updateAllChallenges(result)
+      
+      this.challengesActiveObserve.subscribe(result => {
+        this.updateAllActiveChallenges(result);
+        for(var i = 0; i< this.activeChallenges.length; i++){
+        this.identifyChallenge(this.activeChallenges[i]);
+      }});
+    
+    });*/
+
+   
+
+   
+
   }
 
  updateAllChallenges(newChallenges: Array<Challenge>){
@@ -102,23 +127,23 @@ export class RewardsChallengesPage implements OnInit {
     
   }
 
-  setParticipants(){
+  /*setParticipants(){
     for(var i = 0; i<this.activeChallenges.length; i++){
-      
-      this.challService.getListOfParticipants(this.activeChallenges[i]).subscribe(result => this.activeChallenges[i].registered = result.length);
+      console.log("IM in");
+      this.challService.getListOfParticipants(this.activeChallenges[i]).then(result => this.activeChallenges[i].setNumber(result.length));
     }
 
     for(var i = 0; i<this.challenges.length; i++){
-      
-      this.challService.getListOfParticipants(this.challenges[i]).subscribe(result => this.challenges[i].registered = result.length);
+      console.log("IM iN");
+      this.challService.getListOfParticipants(this.challenges[i]).then(result => this.challenges[i].setNumber(result.length));
     }
-  }
+  }*/
 
 
   addToActiveList(challenge:Challenge){
     this.activeChallenges.push(challenge);
     this.identifyChallenge(challenge);
-    this.challService.registerOnChallenge(challenge);
+    this.challService.registerOnChallenge(challenge);   
     this.challService.addChallengeToActive(this.activeChallenges);
   }
 
@@ -131,6 +156,7 @@ export class RewardsChallengesPage implements OnInit {
 
   identifyChallenge(challenge:Challenge){
     console.log(challenge);
+    console.log("CHALLENGES SIZE " + this.challenges.length)
     for(var i = 0; i<this.challenges.length; i++){
       if(this.challenges[i].title === challenge.title){
         this.challenges.splice(i,i+1);
@@ -141,9 +167,10 @@ export class RewardsChallengesPage implements OnInit {
   identifyActiveChallenge(challenge:Challenge){
     console.log(challenge);
     for(var i = 0; i<this.activeChallenges.length; i++){
-      if(this.activeChallenges[i].title === challenge.title){
+      if(this.activeChallenges[i].id === challenge.id){
         this.activeChallenges.splice(i,i+1);
       }
+
     }
   }
 
