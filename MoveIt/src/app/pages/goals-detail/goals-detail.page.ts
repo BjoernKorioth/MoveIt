@@ -23,7 +23,6 @@ export class GoalsDetailPage implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.router.getCurrentNavigation().extras.state);
   }
   
   goBack() {
