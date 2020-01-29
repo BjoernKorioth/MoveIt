@@ -3,6 +3,7 @@ import {Activity} from '../../model/activity';
 import {ActivityService} from '../../services/activity/activity.service';
 import { Location } from  '@angular/common';
 import { AlertController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-add-activity-manual',
@@ -16,7 +17,8 @@ export class AddActivityManualPage implements OnInit {
   intensities: Array<string>;
 
 
-  constructor(private activityService: ActivityService, private location: Location, public alertController: AlertController) {
+
+  constructor(private activityService: ActivityService, private location: Location, public alertController: AlertController, public toastController: ToastController) {
     this.activity = new Activity();
     this.location = location;
     this.types = Activity.types;
@@ -31,7 +33,15 @@ export class AddActivityManualPage implements OnInit {
   ngOnInit() {
   }
   async presentAlert() {
-    const alert = await this.alertController.create({
+    const controller = await this.toastController.create({
+      color: 'dark',
+      duration: 2000,
+      message: 'Activity added successfully!',
+      showCloseButton: true
+    }).then(toast => {
+      toast.present();
+    })
+  /*  const alert = await this.alertController.create({
       header: 'Success',
       message: 'Activity added successfully!',
       buttons: ['OK'],
@@ -39,7 +49,7 @@ export class AddActivityManualPage implements OnInit {
   
     await alert.present();
     let result = await alert.onDidDismiss();
-    console.log(result);
+    console.log(result);*/
   }
 
   addActivity() {

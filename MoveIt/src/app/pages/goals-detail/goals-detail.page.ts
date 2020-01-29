@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from  '@angular/common';
 
 @Component({
   selector: 'app-goals-detail',
@@ -6,10 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./goals-detail.page.scss'],
 })
 export class GoalsDetailPage implements OnInit {
+  speed: Number = 0;
 
-  constructor() { }
+  constructor(private location: Location) {    
+   }
 
   ngOnInit() {
   }
+
+  goBack(){
+    this.location.back();
+  }
+  
 
 }

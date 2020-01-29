@@ -73,6 +73,34 @@ export class ActivityService {
         const ref = this.fireDatabase.list<Activity>(this.activityLocation + firebase.auth().currentUser.uid);
         return ref.snapshotChanges().pipe(map(activities => activities.map(
             activitySnapshot => Activity.fromFirebaseObject(activitySnapshot.key, activitySnapshot.payload.val()))));
-        // return this.fireDatabase.list<Activity>(this.activityLocation + firebase.auth().currentUser.uid).valueChanges();
+    }
+
+    /**
+     * Filter an array of activities based on time and intensity
+     *
+     * The output is an array of activities, where all items match the given intensity and their endTime lies between
+     * the fromDate and the untilDate
+     *
+     * @param activities array of activities
+     * @param intensity intensity to filter for (e.g. 'moderate')
+     * @param fromDate earliest endTime of an activity
+     * @param untilDate latest endTime of an activity
+     */
+    filterActivities(activities: Array<Activity>, intensity: string, fromDate: Date = new Date(0), untilDate: Date = new Date()) {
+        return activities.filter((activity: Activity) => {
+            if (activity.intensity !== intensity) {
+                return false;
+            }
+
+            if (activity.endTime <= fromDate) {
+                return false;
+            }
+
+            if (activity.endTime >= untilDate) {
+                return false;
+            }
+
+            return true;
+        });
     }
 }

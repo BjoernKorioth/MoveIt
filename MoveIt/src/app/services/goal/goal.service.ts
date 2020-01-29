@@ -5,8 +5,9 @@ import * as firebase from 'firebase/app';
 import {Activity} from '../../model/activity';
 import {GoalArray} from '../../model/goalArray';
 import {map} from 'rxjs/operators';
+import {ActivityService} from '../activity/activity.service';
 
-import { AuthenticateService } from '../authentication/authentication.service';
+import {AuthenticateService} from '../authentication/authentication.service';
 
 
 @Injectable({
@@ -14,7 +15,7 @@ import { AuthenticateService } from '../authentication/authentication.service';
 })
 export class GoalService {
 
-    constructor(private fireDatabase: AngularFireDatabase, private auth: AuthenticateService) {
+    constructor(private fireDatabase: AngularFireDatabase, private activityService: ActivityService, auth: AuthenticateService) {
     }
 
     /**
@@ -111,10 +112,9 @@ export class GoalService {
         // An array of Goals is reconstructed using the fromFirebaseObject method
         return ref.snapshotChanges().pipe(
             map(goals => goals.map(goalPayload => (Goal.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
-            
     }
 
-    getAllOtherAvailableGoals(){
+    getAllOtherAvailableGoals() {
         return this.fireDatabase.list<GoalArray>('/goals/').snapshotChanges().pipe(
             map(goals => goals.map(goalPayload => (GoalArray.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
     }
@@ -129,13 +129,82 @@ export class GoalService {
     updateGoals(goals: Array<Goal>, activities: Array<Activity>) {
         return new Promise<any>((resolve, reject) => {
             for (const goal of goals) {
-                goal.current += 5; // TODO replace with real goal adjustment
+                goal.current = this.calculateGoalProgress(goal, activities);
                 this.updateGoal(goal).then(
                     res => console.log(res),
                     err => reject(err)
                 );
+
+                if (goal.current > goal.target) {
+                    this.winGoal(goal).then(
+                        res => console.log(res),
+                        err => reject(err)
+                    );
+                }
             }
             resolve('Successfully updated goals');
+        });
+    }
+
+    /**
+     * Calculate the progress of a given goal
+     *
+     * @param goal to calculate the progress for
+     * @param activities list of activities to base the progress on
+     */
+    calculateGoalProgress(goal: Goal, activities: Array<Activity>) {
+        let startDate = new Date();
+        startDate.setHours(0, 0, 0, 0); // Set to start of the day (= 0:00:00)
+        if (goal.duration === 'weekly') {
+            // If it's a weekly goal, set to start of the week (week starts on Sunday)
+            const startOfWeek = startDate.getDate() - startDate.getDay();
+            startDate = new Date(startDate.setDate(startOfWeek));
+        }
+
+        // Filter the activites based on the goals type (e.g. 'moderate') and duration (e.g. 'weekly')
+        const filteredActivities = this.activityService.filterActivities(activities, goal.type, startDate);
+
+        // Get the duration for each activity
+        const times = filteredActivities.map((activity) => activity.getDuration());
+
+        // Check if there are elements in the array, that passed the filtering
+        if (times.length > 0) {
+            // Return the sum of the durations. This comes in milliseconds. The division by 1000*60 converts it to minutes
+            return times.reduce((accumulator, currentValue) => accumulator + currentValue) / 1000 * 60;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Win a goal and add current time to the list of wins
+     *
+     * @param goal to be won
+     */
+    winGoal(goal: Goal) {
+        return new Promise<any>((resolve, reject) => {
+            // Get the current list of wins
+            this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
+                .once('value').then(
+                (winsSnapshot) => {
+                    const wins = winsSnapshot.val();
+                    if (Array.isArray(wins)) {
+                        // If the list exists, append the current date
+                        wins.push((new Date()).getTime());
+                        this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
+                            .set(wins).then(
+                            (res) => resolve(res),
+                            (err) => reject(err));
+                    } else {
+                        // If it doesn't exist, create a new array with the current win
+                        const newWins = [(new Date()).getTime()];
+                        this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
+                            .set(newWins).then(
+                            (res) => resolve(res),
+                            (err) => reject(err));
+                    }
+                },
+                (err) => reject(err));
         });
     }
 }

@@ -21,36 +21,23 @@
     </ion-item>
 
     <ion-item>
-        <ion-label>Activity</ion-label>
+        <ion-label>Intensity*</ion-label>
         <ion-select [(ngModel)]="activity.intensity" placeholder="Select One">
           <ion-select-option *ngFor="let intensity of intensities">{{intensity}}</ion-select-option>
         </ion-select>
       </ion-item> 
 
     <ion-item>
-      <ion-input [(ngModel)]="minutes" type="number" placeholder="Minutes"></ion-input>
+        <a routerLink = "/menu/information">*get infos</a>
+        <!--<ion-button expand="block">Add activity</ion-button>-->
     </ion-item>
+  
+    <!--<ion-item>
+      <ion-input [(ngModel)]="minutes" type="number" placeholder="Minutes"></ion-input>
+    </ion-item> -->
 
   </ion-list>
 
-   
-
-   <!-- <circle-progress (click)="startTimer()"
-  [percent]="percent"
-  [maxPercent]="100"
-  [radius]="radius"
-  [showTitle]="false"
-  [showSubtitle]="false"
-  [showUnits]="false"
-  [outerStrokeWidth]="16"
-  [outerStrokeColor]="'#8000FF'"
-  [showZeroOuterStroke]="false"
-  [backgroundStroke]="'#33003F'"
-  [backgroundStrokeWidth]="3"
-  [outerStrokeGradient]="true"
-  [outerStrokeGradientStopColor]="'#FF00CB'"
-  [showInnerStroke]="false"
-></circle-progress>-->
 <div padding text-decoration="underline">
   <ion-row>
     <h2>Track your time!</h2>
@@ -58,37 +45,52 @@
 <p>{{elapsed.h}}:{{elapsed.m}}:{{elapsed.s}}</p>
 </div>
 
+
 <section>
   <ion-button (click)=addActivity() color="secondary" slot="end" float-right>Add activity</ion-button>
-  <!--<ion-button expand="block">Add activity</ion-button>-->
-  
 </section>
 
+<ion-button (click)="stopTimer()" float-right>
+  <ion-icon size="large" name="square"></ion-icon>
+</ion-button>
 
-<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+<ng-container *ngIf="overallTimer == false; else running">
+  <ion-button (click)="startAgain()" float-right>
+    <ion-icon size="large" name="play" ></ion-icon>
+  </ion-button>
+</ng-container>
+<ng-template #running>
+  <ion-button (click)="pauseTimer()" float-right> 
+    <ion-icon size="large" name="pause"></ion-icon>
+  </ion-button>
+</ng-template>
+
+
+
+
+
+
+
+<!--<ion-fab vertical="bottom" horizontal="end" slot="fixed">
   <ng-container *ngIf="overallTimer == false; else running">
-    <ion-fab-button (click)="startTimer()">
+    <ion-fab-button (click)="startAgain()">
       <ion-icon name="play"></ion-icon>
     </ion-fab-button>
   </ng-container>
   <ng-template #running>
-    <ion-fab-button (click)="stopTimer()">
-      <ion-icon name="square"></ion-icon>
+    <ion-fab-button (click)="pauseTimer()">
+      <ion-icon name="pause"></ion-icon>
     </ion-fab-button>
   </ng-template>
 
-  <ion-fab-button (click)="pauseTimer()">
-    <ion-icon name="alarm"></ion-icon>
+  <ion-fab-button (click)="stopTimer()">
+    <ion-icon name="square"></ion-icon>
   </ion-fab-button>
 
-  <ion-fab-button (click)="startAgain()">
+ <ion-fab-button (click)="startAgain()">
     <ion-icon name="airplane"></ion-icon>
   </ion-fab-button>
-
-
-
- 
-</ion-fab>
+</ion-fab>-->
 
 
   </ion-content>

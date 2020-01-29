@@ -22,15 +22,22 @@
     </ion-item>
 
     <ion-item>
-        <ion-label>Activity</ion-label>
+        <ion-label>Intensity*</ion-label>
         <ion-select [(ngModel)]="activity.intensity" placeholder="Select One">
           <ion-select-option *ngFor="let intensity of intensities">{{intensity}}</ion-select-option>
         </ion-select>
       </ion-item> 
 
     <ion-item>
-      <ion-input [(ngModel)]="minutes" type="number" placeholder="Minutes"></ion-input>
+      <ion-label>Duration</ion-label>
+      <ion-input [(ngModel)]="minutes" type="number" slot="end" placeholder="Minutes" text-right></ion-input>
     </ion-item>
+
+    <ion-item>
+      <a routerLink = "/menu/information">*get infos</a>
+      <!--<ion-button expand="block">Add activity</ion-button>-->
+  </ion-item>
+
     <section>
       <ion-button (click)=editActivity()  color="secondary" slot="end" float-right>Edit activity</ion-button>
       <!--<ion-button expand="block">Add activity</ion-button>-->
