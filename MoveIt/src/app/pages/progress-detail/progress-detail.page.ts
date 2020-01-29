@@ -84,9 +84,13 @@ export class ProgressDetailPage implements OnInit {
         this.location.back();
     }
 
-    routeToEditPage(activity: Activity) {
-        this.router.navigateByUrl('/menu/progress/progress/edit', {state: {activity: activity}});        
+    routeToEditGoalPage(goal: Goal) {
+        this.router.navigateByUrl('/menu/goals/goals/detail', {state: {goal: goal}});        
     }
+
+    routeToEditPage(activity: Activity) {
+      this.router.navigateByUrl('/menu/progress/progress/edit', {state: {activity: activity}});        
+  }
 
     /**
      * Create a new activity
