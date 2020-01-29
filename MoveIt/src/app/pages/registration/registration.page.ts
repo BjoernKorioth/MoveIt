@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormBuilder, Validators, FormControl} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {NavController} from '@ionic/angular';
 
 import {AuthenticateService} from '../../services/authentication/authentication.service';
+import {User} from '../../model/user';
 
 @Component({
     selector: 'app-registration',
@@ -27,9 +28,9 @@ export class RegistrationPage implements OnInit {
         name: [
             {type: 'required', message: 'Please enter a name'}
         ],
-        birthdate:[{type: 'required', message:'Please set a birthday'}],
+        birthday: [{type: 'required', message: 'Please set a birthday'}],
         gender: [{type: 'required', message: 'Please choose your gender'}],
-        terms: [{type:'required', message: 'Please accept the terms'}]
+        terms: [{type: 'required', message: 'Please accept the terms'}]
     };
 
     constructor(
@@ -50,8 +51,8 @@ export class RegistrationPage implements OnInit {
                 Validators.required
             ])),
             username: new FormControl('', Validators.required),
-            //surname: new FormControl('', Validators.required),
-            birthdate: new FormControl('', Validators.required),
+            // surname: new FormControl('', Validators.required),
+            birthday: new FormControl('', Validators.required),
             gender: new FormControl('', Validators.required),
             terms: new FormControl('', Validators.required),
             code: new FormControl('', Validators.required)
@@ -59,11 +60,17 @@ export class RegistrationPage implements OnInit {
     }
 
     tryRegister(value) {
-        this.authService.registerUser(value)
+        // TODO check if terms are accepted
+        const user = new User();
+        user.name = value.username;
+        user.gender = value.gender;
+        user.birthday = new Date(value.birthday);
+        this.authService.registerUser(value.code, value.email, value.password, user)
             .then(res => {
                 console.log(res);
                 this.errorMessage = '';
                 this.successMessage = 'Your account has been created. Please log in.';
+                this.navCtrl.navigateRoot('/menu/dashboard');
             }, err => {
                 console.log(err);
                 this.errorMessage = err.message;

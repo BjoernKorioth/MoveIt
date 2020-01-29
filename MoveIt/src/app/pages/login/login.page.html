@@ -24,7 +24,8 @@
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validationMessages.email">
         <div class="error-message" *ngIf="loginForm.get('email').hasError(validation.type) && (loginForm.get('email').dirty || loginForm.get('email').touched)">
-          {{ validation.message }}
+          <ion-icon class="icon" name="close-circle-outline" size="small"></ion-icon>
+          <ion-label>{{ validation.message }}</ion-label>
         </div>
       </ng-container>
     </div>
@@ -36,7 +37,8 @@
     <div class="validation-errors">
       <ng-container *ngFor="let validation of validationMessages.password">
         <div class="error-message" *ngIf="loginForm.get('password').hasError(validation.type) && (loginForm.get('password').dirty || loginForm.get('password').touched)">
-          {{ validation.message }}
+          <ion-icon class="icon" name="close-circle-outline" size="small"></ion-icon>
+          <ion-label>{{ validation.message }} </ion-label>
         </div>
       </ng-container>
     </div>

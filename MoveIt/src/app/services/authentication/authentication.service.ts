@@ -16,35 +16,60 @@ export class AuthenticateService {
      *
      * creates a new user in the firebase authentication service and the database
      *
-     * @param value contains the contents of the registration form
+     * @param otp one-time-password for account creation
+     * @param email of the user
+     * @param password of the user
+     * @param user Object containing things like name, gender, etc.
      */
-    registerUser(value) {
+    registerUser(otp: string, email: string, password: string, user: User) {
         return new Promise<any>((resolve, reject) => {
-            firebase.auth().createUserWithEmailAndPassword(value.email, value.password)
-                .then(
-                    // If the auth service could create the new user, we'll enter this function
-                    (userCredential) => {
-                        // A user credential is returned, from which we can extract the user
-                        const user = userCredential.user;
-                        // Now, we can create a new user object with the provided information
-                        //this.user = new User(user.uid, value.firstname + ' ' + value.surname);
-                        this.user = new User(user.uid, value.username, [], [], -1 , [] ,"user", value.birthdate, value.gender);
-
-                        console.log(this.user);
-                        // Try to create the user on the database
-                        this.registerOnDatabase().then(
-                            // If this is successful, resolve the promise
-                            res => resolve(res),
-                            // If it's not successful, the user was created with the auth service but not in the database
-                            err => reject(err)
-                        );
-                    },
-                    err => reject(err));
+            this.validateOTP(otp).then(
+                group => {
+                    firebase.auth().createUserWithEmailAndPassword(email, password)
+                        .then(
+                            // If the auth service could create the new user, we'll enter this function
+                            (userCredential) => {
+                                user.id = userCredential.user.uid;
+                                user.group = group;
+                                this.removeOTP(otp);
+                                // Try to create the user on the database
+                                this.registerOnDatabase(user).then(
+                                    // If this is successful, resolve the promise
+                                    () => resolve(userCredential),
+                                    // If it's not successful, the user was created with the auth service but not in the database
+                                    err => reject(err)
+                                );
+                            },
+                            err => reject(err));
+                },
+                err => reject(err)
+            );
         });
     }
 
-    registerOnDatabase() {
-        return this.db.object<User>('/users/' + this.user.id).set(this.user);
+    validateOTP(otp: string) {
+        return new Promise<any>((resolve, reject) => {
+            this.db.database.ref('/otps/' + otp).once('value').then(
+                groupSnapshot => {
+                    // Maybe use snapshot.exists() ?
+                    const group = groupSnapshot.val();
+                    if (group) {
+                        resolve(group);
+                    } else {
+                        reject('invalid otp');
+                    }
+                },
+                err => reject(err)
+            );
+        });
+    }
+
+    removeOTP(otp: string) {
+        return this.db.database.ref(/otps/ + otp).remove();
+    }
+
+    registerOnDatabase(user: User) {
+        return this.db.object<any>('/users/' + user.id).set(user.toFirebaseObject());
     }
 
     loginUser(value) {
@@ -75,17 +100,20 @@ export class AuthenticateService {
         return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/name').valueChanges();
     }
 
+    // BK: returns the group the user is assigened to. Will be used in menu.page.ts
+    getUsergroup() {
+        return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/group').valueChanges();
+    }
+
     getSpecificUsername(uid) {
-           return this.db.database.ref('/users/' + uid + '/name').once('value');
+        return this.db.database.ref('/users/' + uid + '/name').once('value');
     }
 
-    async setUser(){
-        if(this.user === undefined){
-        return await this.db.object<User>('/users/' + firebase.auth().currentUser.uid).valueChanges().subscribe(result => (this.user = result));
-        }
+    async setUser() {
+        return this.db.object<User>('/users/' + firebase.auth().currentUser.uid).valueChanges().subscribe(result => (this.user = result));
     }
 
-    async getFullUser(){
+    getFullUser() {
         return this.user;
     }
 }
