@@ -25,7 +25,7 @@ export class Activity {
         this.type = type || 'running';
     }
 
-    static types = ['running', 'swimming', 'workout'];
+    static types = ['basketball', 'biking', 'dancing','handball','football','running', 'swimming', 'volleyball', 'walking', 'other'];
     static intensities = ['moderate', 'vigorous', 'weight training'];
     id: string;
     distance: object;
@@ -74,6 +74,6 @@ export class Activity {
      * Returns the duration of the activity in milliseconds
      */
     getDuration() {
-        return this.endTime.getTime() - this.startTime.getTime();
+        return Math.round((this.endTime.getTime() - this.startTime.getTime())/60000);
     }
 }

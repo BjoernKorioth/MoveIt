@@ -31,11 +31,11 @@
 
       <ion-item>
         <ion-label>Start Date</ion-label>
-        <ion-datetime placeholder="Select Date"></ion-datetime>
+        <ion-datetime placeholder="Select Date" [(ngModel)]="date"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label>Start Time</ion-label>
-        <ion-datetime placeholder="Select Time" display-format="HH:mm" picker-format="HH:mm"></ion-datetime>
+        <ion-datetime placeholder="Select Time" display-format="HH:mm" picker-format="HH:mm" [(ngModel)]="time"></ion-datetime>
       </ion-item>
     <ion-item>
       <ion-label>Duration</ion-label>
