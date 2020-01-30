@@ -88,7 +88,7 @@ export class LeaderboardDetailPage implements OnInit {
   challengesList: Array<LeaderboardObject>
 
   tempUsername : string;
-  private currentUser: User;
+ // private currentUser: User;
 
   constructor(private goalservice: GoalService, private trophyService: TrophyService, private userService: UserService, private location:Location) { 
 
@@ -129,10 +129,10 @@ export class LeaderboardDetailPage implements OnInit {
       });
       
       
-      this.userService.getUser().subscribe(user => this.currentUser = user);
-      console.log(this.currentUser);
+   //   this.userService.getUser().subscribe(user => this.currentUser = user);
+   //   console.log(this.currentUser);
 
-      console.log(this.currentUser);
+   //   console.log(this.currentUser);
     }
 
 
@@ -147,12 +147,12 @@ export class LeaderboardDetailPage implements OnInit {
       var oneResult = result[i];
       console.log("IM IN");
       if(oneResult){
-   
+   /** 
               let entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length ,this.authService);
 
               console.log(entity1);
               
-              testArray.push(entity1);
+              testArray.push(entity1); */
         }
       }
         
