@@ -48,25 +48,25 @@
     <ion-row *ngFor="let article of articles">
         <ion-col size="2">
             <ion-list>
-                <ion-item><ion-input [(ngModel)]="article.title"></ion-input> </ion-item>
+                <ion-item><ion-textarea [(ngModel)]="article.title"></ion-textarea> </ion-item>
             </ion-list>
         </ion-col>
 
         <ion-col size="3">
             <ion-list>
-                <ion-item text-wrap><ion-input [(ngModel)]="article.content" text-wrap></ion-input></ion-item>
+                <ion-item text-wrap><ion-textarea [(ngModel)]="article.content" text-wrap></ion-textarea></ion-item>
             </ion-list>
         </ion-col>
 
         <ion-col size="3">
             <ion-list>
-                <ion-item><ion-input [(ngModel)]="article.link" text-wrap></ion-input></ion-item>
+                <ion-item><ion-textarea [(ngModel)]="article.link" text-wrap></ion-textarea></ion-item>
             </ion-list>
         </ion-col>
 
         <ion-col size="2">
             <ion-list>
-                <ion-item><ion-input [(ngModel)]="article.picture"></ion-input></ion-item>
+                <ion-item><ion-textarea [(ngModel)]="article.picture"></ion-textarea></ion-item>
             </ion-list>
         </ion-col>
         <ion-col size="2">
