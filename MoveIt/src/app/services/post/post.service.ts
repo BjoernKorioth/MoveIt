@@ -15,10 +15,8 @@ export class PostService {
     private user: ReplaySubject<User>;
 
     constructor(private fireDatabase: AngularFireDatabase, private userService: UserService) {
-        // TODO get user
         this.user = new ReplaySubject(1);
         userService.getUser().subscribe(this.user);
-        userService.getUser().subscribe(user => console.log(user));
     }
 
     /**
@@ -33,7 +31,6 @@ export class PostService {
                 post.id = id;
                 post.group = user.group;
                 post.user = user.id;
-                console.log(post);
 
                 this.fireDatabase.database.ref('/posts/' + user.group).child(id)
                     .set(post.toFirebaseObject()).then(
@@ -147,9 +144,9 @@ export class PostService {
      */
     getAllPosts() {
         return this.user.pipe(switchMap(user => {
-            const ref = this.fireDatabase.list<Post>('/posts/' + user.group);
+            const ref = this.fireDatabase.list<Post>('/posts/' + user.group, query => query.orderByChild('createdAt'));
             return ref.snapshotChanges().pipe(map(posts => posts.map(
-                postSnapshot => Post.fromFirebaseObject(user.group, postSnapshot.key, postSnapshot.payload.val()))));
+                postSnapshot => Post.fromFirebaseObject(user.group, postSnapshot.key, postSnapshot.payload.val())).reverse()));
         }));
 
     }
@@ -168,7 +165,7 @@ export class PostService {
                 comment.id = id;
                 comment.post = postId;
                 comment.text = userComment;
-                comment.user = user.name;
+                comment.user = user.id;
 
                 this.fireDatabase.database.ref('/posts/' + user.group).child(comment.post).child('comments').child(id)
                     .set(comment.toFirebaseObject()).then(

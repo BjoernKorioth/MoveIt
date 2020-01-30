@@ -4,6 +4,7 @@ import {Comment} from '../../model/comment';
 import {PostService} from '../../services/post/post.service';
 import {Observable} from 'rxjs';
 import {Location} from '@angular/common';
+import {UserService} from '../../services/user/user.service';
 
 @Component({
     selector: 'app-socialfeed-detail',
@@ -14,16 +15,15 @@ import {Location} from '@angular/common';
 
 export class SocialfeedDetailPage implements OnInit {
     posts: Observable<Post[]>;
+    postText: string;
+    commentText = [];
 
-    constructor(private postService: PostService, private location: Location) {
+    constructor(private postService: PostService, private location: Location, private userService: UserService) {
         this.location = location;
     }
 
     async ngOnInit() {
         this.posts = this.postService.getAllPosts();
-        this.posts.subscribe(res => {
-            console.log(res);
-        });
     }
 
     goBack() {
@@ -34,9 +34,9 @@ export class SocialfeedDetailPage implements OnInit {
         // return new Date() - new Date(date);
     }
 
-    newPost() {
+    newPost(text: string) {
         const post = new Post();
-        post.activity = 'asdf';
+        post.content = text;
 
         this.postService.createPost(post).then(
             res => console.log(res),
@@ -78,12 +78,9 @@ export class SocialfeedDetailPage implements OnInit {
         );
     }
 
-    newComment(i) {
-        const postid = document.getElementsByName('userPlace')[i].id;
-        const userComment = document.getElementsByTagName('input')[i].value;
-        console.log('Comment ' + userComment);
-        if (userComment.length !== 0) {
-            this.postService.createComment(postid, userComment).then(
+    newComment(post: Post, text) {
+        if (this.commentText.length !== 0) {
+            this.postService.createComment(post.id, text).then(
                 res => console.log(res),
                 err => console.log(err)
             );
@@ -106,5 +103,9 @@ export class SocialfeedDetailPage implements OnInit {
 
     getAllComments() {
         return this.postService.getAllComments('-LxfARsp_2al7-W3JYcf');
+    }
+
+    getUsername(id) {
+        return this.userService.getUsernameById(id);
     }
 }
