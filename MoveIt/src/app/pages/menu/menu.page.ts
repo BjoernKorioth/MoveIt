@@ -2,9 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Router, RouterEvent} from '@angular/router';
 
 import {AuthenticateService} from '../../services/authentication/authentication.service';
-import {PostService} from '../../services/post/post.service';
-import {Observable, config} from 'rxjs';
-import { UserService } from 'src/app/services/user/user.service';
+import {Observable} from 'rxjs';
+import {UserService} from 'src/app/services/user/user.service';
 
 @Component({
     selector: 'app-menu',
@@ -30,7 +29,7 @@ export class MenuPage implements OnInit {
             }
         });
 
-        this.username = auth.getUsername(); // The username is just the observable
+        this.username = userService.getUsername(); // The username is just the observable
         // If a new value is received, we have to manually update the pages object so that Angular notices the change
         this.username.subscribe(username => this.updatePages(username));
     }
@@ -40,7 +39,6 @@ export class MenuPage implements OnInit {
     }
 
     ngOnInit() {
-        this.auth.setUser();
     }
 
     /**
@@ -53,6 +51,5 @@ export class MenuPage implements OnInit {
      */
     updatePages(username) {
         this.pages.push({title: username, url: '/menu/profile'});
-    }   
-
+    }
 }

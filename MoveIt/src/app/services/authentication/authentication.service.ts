@@ -101,26 +101,5 @@ export class AuthenticateService {
             }
         });
     }
-
-    getUsername() {
-        return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/name').valueChanges();
-    }
-
-    // BK: returns the group the user is assigened to. Will be used in menu.page.ts
-    getUsergroup() {
-        return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/group').valueChanges();
-    }
-
-    getSpecificUsername(uid) {
-        return this.db.database.ref('/users/' + uid + '/name').once('value');
-    }
-
-    async setUser() {
-        return this.db.object<User>('/users/' + firebase.auth().currentUser.uid).valueChanges().subscribe(result => (this.user = result));
-    }
-
-    getFullUser() {
-        return this.user;
-    }
 }
 

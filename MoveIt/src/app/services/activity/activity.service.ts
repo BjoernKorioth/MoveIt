@@ -3,6 +3,8 @@ import * as firebase from 'firebase/app';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {Activity} from '../../model/activity';
 import {map} from 'rxjs/operators';
+import {PostService} from '../post/post.service';
+import {Post} from '../../model/post';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +12,7 @@ import {map} from 'rxjs/operators';
 export class ActivityService {
     activityLocation = '/activities/';
 
-    constructor(private fireDatabase: AngularFireDatabase) {
+    constructor(private fireDatabase: AngularFireDatabase, private postService: PostService) {
     }
 
     /**
@@ -26,7 +28,15 @@ export class ActivityService {
             this.fireDatabase.database.ref('/activities/' + firebase.auth().currentUser.uid).child(id)
                 .set(activity.toFirebaseObject()).then(
                 // Returns the activity with the new id
-                () => resolve(activity),
+                () => {
+                    const post = new Post();
+                    post.activity = activity.id;
+                    post.content = 'Look, I did ' + activity.getDuration() + ' minutes of ' + activity.type;
+                    this.postService.createPost(post).then(
+                        () => resolve(activity),
+                        err => reject(err)
+                    );
+                },
                 err => reject(err)
             );
         });
