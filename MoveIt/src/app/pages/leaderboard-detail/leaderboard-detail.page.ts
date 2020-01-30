@@ -148,7 +148,7 @@ export class LeaderboardDetailPage implements OnInit {
       console.log("IM IN");
       if(oneResult){
    
-              let entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length ,this.authService);
+              let entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length ,this.userService);
 
               console.log(entity1);
               
