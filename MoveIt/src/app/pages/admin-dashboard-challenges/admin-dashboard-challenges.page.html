@@ -70,13 +70,13 @@
 
     <ion-col size="2">
       <ion-list>
-        <ion-item><ion-label>{{challenge.startDate}}</ion-label></ion-item>
+        <ion-item><ion-label>{{challenge.startTime | date:'yyyy-MM-dd'}}</ion-label></ion-item>
       </ion-list>
     </ion-col>
 
     <ion-col size="2">
       <ion-list>
-        <ion-item><ion-label>{{challenge.endDate}}</ion-label></ion-item>
+        <ion-item><ion-label>{{challenge.endTime | date:'yyyy-MM-dd'}}</ion-label></ion-item>
       </ion-list>
     </ion-col>
 

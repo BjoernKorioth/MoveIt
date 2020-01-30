@@ -20,12 +20,14 @@ export class ChallengeService {
      */
     createChallenge(challenge: Challenge) {
         return new Promise<any>((resolve, reject) => {
-            firebase.database().ref('/challenges/').push(challenge.toFirebaseObject()).then(
-                newReference => {
-                    challenge.id = newReference.key;
-                    resolve(challenge);
-                },
-                err => reject(err)
+            const id = firebase.database().ref().child('challenges').push().key;
+            challenge.id = id;
+
+            this.fireDatabase.database.ref('/challenges/').child(id)
+            .set(challenge.toFirebaseObject()).then(
+            // Returns the information with the new id
+            () => resolve(challenge),
+            err => reject(err)
             );
         });
     }
