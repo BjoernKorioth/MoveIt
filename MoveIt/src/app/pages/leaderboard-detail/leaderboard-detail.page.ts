@@ -6,11 +6,16 @@ import {Observable} from 'rxjs';
 
 import {GoalService} from '../../services/goal/goal.service';
 
+import {TrophyService} from '../../services/trophies/trophy.service';
+
 import {LeaderboardObject} from '../../model/leaderboardObject';
 
 import {GoalArray} from '../../model/goalArray';
 
 import {User} from '../../model/user';
+
+import { TrophyArray } from 'src/app/model/trophyArray';
+
 import {UserService} from '../../services/user/user.service';
 
 
@@ -77,26 +82,92 @@ export class LeaderboardDetailPage implements OnInit {
     activitiesVigorous: Array<LeaderboardObject>;
     activitiesObserve: Observable<GoalArray[]>;
 
-    tempUsername: string;
-    private currentUser: User;
+  trophiesList: Array<LeaderboardObject>
+  trophiesObserve: Observable<TrophyArray[]>
 
-    constructor(private goalservice: GoalService, private userService: UserService, private location: Location) {
+  challengesList: Array<LeaderboardObject>
 
+  tempUsername : string;
+  private currentUser: User;
 
-        this.activitiesObserve = this.goalservice.getAllOtherAvailableGoals();
+  constructor(private goalservice: GoalService, private trophyService: TrophyService, private userService: UserService, private location:Location) { 
 
-        this.activitiesObserve.subscribe(result => this.pushObjects(result));
-        this.userService.getUser().subscribe(user => this.currentUser = user);
-        console.log(this.currentUser);
+   /* //Observable1
+    this.activitiesObserve = this.goalservice.getAllOtherAvailableGoals();
+
+    //Observable2
+    this.trophiesObserve = this.trophyService.getListOfAllUserAndTherWonTrophies();
+
+    //Observable1 in action
+    this.activitiesObserve.subscribe(result => {
+      this.pushMinuteObjects(result);
+      
+      //Observable2 in action
+      this.trophiesObserve.subscribe(result => this.pushTrophyObjects(result));
+    });
+    this.currentUser = this.authService.getFullUser();
+
+    console.log(this.currentUser);*/
+  }
+
+  /**
+   * first get all important observables with the corresponding database queries
+   */
+    ngOnInit() {
+  //Observable1
+      this.activitiesObserve = this.goalservice.getAllOtherAvailableGoals();
+
+      //Observable2
+      this.trophiesObserve = this.trophyService.getListOfAllUserAndTherWonTrophies();
+
+      //Observable1 in action
+      this.activitiesObserve.subscribe(result => {
+        this.pushMinuteObjects(result);
+        
+        //Observable2 in action
+        this.trophiesObserve.subscribe(result => this.pushTrophyObjects(result));
+      });
+      
+      
+      this.userService.getUser().subscribe(user => this.currentUser = user);
+      console.log(this.currentUser);
+
+      console.log(this.currentUser);
     }
 
-    async ngOnInit() {
 
-    }
+    /**
+   * This method pushes the result of a query into the respective instances in order to make them visible on the UI
+   * @param result the param from the database query which gets the array of all trophies won per user
+   */
+  async pushTrophyObjects(result){
+    var testArray = new Array<LeaderboardObject>();
 
-    async pushObjects(result) {
-        const testArray = new Array<LeaderboardObject>();
-        const testArray2 = new Array<LeaderboardObject>();
+    for(var i = 0; i < result.length; i++){
+      var oneResult = result[i];
+      console.log("IM IN");
+      if(oneResult){
+   
+              let entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length ,this.authService);
+
+              console.log(entity1);
+              
+              testArray.push(entity1);
+        }
+      }
+        
+    this.trophiesList = testArray;
+
+    this.sortArrays();
+  }
+
+  /**
+   * This method pushes the result of a query into the respective instances in order to make them visible on the UI
+   * @param result the param from the database query which gets the array of all goalsprogress per user
+   */
+  async pushMinuteObjects(result){
+    var testArray = new Array<LeaderboardObject>();
+    var testArray2 = new Array<LeaderboardObject>();
 
         for (let i = 0; i < result.length; i++) {
             const oneResult = result[i];
@@ -121,9 +192,18 @@ export class LeaderboardDetailPage implements OnInit {
         this.sortArrays();
     }
 
-    sortArrays() {
-        this.activitiesModerate.sort((a, b) => a.compareTo(b));
-        this.activitiesVigorous.sort((a, b) => a.compareTo(b));
+  /**
+   * this method sorts all arrays for the leaderboard visualization
+   */
+  sortArrays(){
+    if(this.activitiesModerate !== undefined){
+    this.activitiesModerate.sort( (a,b) => a.compareTo(b));
+    this.activitiesVigorous.sort((a,b) => a.compareTo(b));
+    }
+
+    if(this.trophiesList !== undefined){
+    this.trophiesList.sort((a,b) => a.compareTo(b));
+    }
 
         /* console.log("VIGIROUS");
          console.log(this.activitiesVigorous);
