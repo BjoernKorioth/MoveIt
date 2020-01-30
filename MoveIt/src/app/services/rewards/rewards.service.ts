@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Trophy} from '../../model/trophy';
 import {AngularFireDatabase} from '@angular/fire/database';
 import * as firebase from 'firebase/app';
+import {Activity} from '../../model/activity';
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +22,12 @@ export class RewardsService {
             available: trophyIDs,
             won: []
         };
-        this.fireDatabase.database.ref('/trophies/' + firebase.auth().currentUser.uid).push(trophyStatus);
+
+        return this.setTrophies(trophyStatus);
+    }
+
+    setTrophies(trophies) {
+        return this.fireDatabase.database.ref('/trophies/' + firebase.auth().currentUser.uid).set(trophies);
     }
 
     getWonTrophies() {
@@ -30,6 +36,34 @@ export class RewardsService {
 
     getAvailableTrophies() {
         return this.fireDatabase.list<string>('/trophies/' + firebase.auth().currentUser.uid + '/available').valueChanges();
+    }
+
+    getAllTrophies() {
+        return Trophy.defaultTrophies;
+    }
+
+    updateTrophies(activities: Array<Activity>, goalWins: object) {
+        const trophyStatus = {
+            available: [],
+            won: []
+        };
+
+        // Use only trophies that aren't won yet?
+        for (const trophy of this.getAllTrophies()) {
+            const won = this.calculateTrophyStatus(activities, goalWins);
+            if (won) {
+                trophyStatus.won.push(trophy.id);
+            } else {
+                trophyStatus.available.push(trophy.id);
+            }
+        }
+
+        return this.setTrophies(trophyStatus);
+    }
+
+    calculateTrophyStatus(activities: Array<Activity>, goalWins: object) {
+        // TODO implement this
+        return true;
     }
 
     winTrophy(trophyID: string) {
