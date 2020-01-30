@@ -16,7 +16,6 @@ export class LeaderboardObject{
     compareTo(compare: LeaderboardObject): number {
         return (-1) * (this.activity - compare.activity);
     }
-
     async setUsername(uid, auth:AuthenticateService){
         await auth.getSpecificUsername(uid).then(result => this.username = result.val());
     }

@@ -1,13 +1,12 @@
 interface FireBaseObject {
     id: string;
-    description: string;
+    won: any;
     // endTime: string;
     // price: string;
     // startTime: string;
-    title: string;
 }
 
-export class Trophy {
+export class TrophyArray {
 
     /**
      * Constructor to create Activity
@@ -15,23 +14,21 @@ export class Trophy {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?: string, description?: string, title?: string) {
+    constructor(id?: string, wonObject?: any) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
-        this.description = description || 'You get this trophy for winning 10 times a daily goal.';
         // this.endTime = endTime || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
         // this.price = price || '10$ amazon gift card';
         // this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
-        this.title = title || '10 Daily Goals';
+        this.won = new Array();
+
+        for(var key in wonObject){
+            this.won.push(wonObject[key]);
+        }
     }
 
-    static defaultTrophies = [
-        new Trophy('win-a-goal', 'Win one of your goals', 'Win a goal'),
-        new Trophy('win-two-goals', 'Win two of your goals', 'Win two goals')
-    ];
     id: string;
-    description: string;
-    title: string;
+    won: Array<any>
 
     /**
      * Creates an Activity object from a firebase query
@@ -44,22 +41,9 @@ export class Trophy {
 
     static fromFirebaseObject(id: string, firebaseObject: FireBaseObject) {
         // @ts-ignore TS2339
-        return new Trophy(
+        return new TrophyArray(
             id || '',
-            firebaseObject.description || '',
-            firebaseObject.title || ''
+            firebaseObject.won || '',
         );
-    }
-    
-    /**
-     * Converts the activity to upload it to firebase
-     *
-     * Basically just replaces the dates with date strings
-     */
-    toFirebaseObject() {
-        return {
-            description: this.description,
-            title: this.title
-        };
     }
 }

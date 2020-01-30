@@ -3,6 +3,10 @@ import * as firebase from 'firebase/app';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {Trophy} from '../../model/trophy';
 
+import {TrophyArray} from '../../model/trophyArray';
+
+import {map} from 'rxjs/operators';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -33,6 +37,14 @@ export class TrophyService {
                   err => reject(err)
               );
   });
+  }
+
+  getListOfAllUserAndTherWonTrophies(){
+    const ref = this.fireDatabase.list<TrophyArray>('/trophyStatus/');
+    // Retrieve an array, but with its metadata. This is necesary to have the key available
+    // An array of Goals is reconstructed using the fromFirebaseObject method
+    return ref.snapshotChanges().pipe(
+        map(user => user.map(trophypayload => (TrophyArray.fromFirebaseObject(trophypayload.key, trophypayload.payload.val())))));
   }
   
   }
