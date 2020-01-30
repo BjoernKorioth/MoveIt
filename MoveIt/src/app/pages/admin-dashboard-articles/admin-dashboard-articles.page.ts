@@ -18,7 +18,7 @@ export class AdminDashboardArticlesPage implements OnInit {
     articles: Array<Information>;
     information: Information;
 
-    editedArticle: any;
+    article: any;
 
     constructor(private informationService: InformationService, public popoverController: PopoverController) {
 
@@ -44,10 +44,11 @@ export class AdminDashboardArticlesPage implements OnInit {
             ]*/
     }
 
-    editArticle() {
-        console.log(this.information);
+    editArticle(article: Information) {
 
-        this.informationService.editInformation(this.editedArticle.id, this.editedArticle).then(
+        console.log(article);
+
+        this.informationService.editInformation(article.id, article).then(
             res => console.log(res),
             err => console.log(err)
         );

@@ -13,7 +13,7 @@ export class Information {
     createdAt: Date;
     picture: string;
     link: string;
-    title: string;
+    title: string; 
 
     /**
      * Constructor to create Information
@@ -40,15 +40,15 @@ export class Information {
      * @param firebaseObject result of the query
      */
 
-    static fromFirebaseObject(id: string, firebaseObject: FireBaseObject) {
+    static fromFirebaseObject(id: string, information: Information) {
         // @ts-ignore TS2339
         return new Information(
             id || '',
-            firebaseObject.content || '',
-            new Date(firebaseObject.createdAt) || new Date(),
-            firebaseObject.picture || '',
-            firebaseObject.link || '',
-            firebaseObject.title || ''
+            information.content || '',
+            new Date(information.createdAt) || new Date(),
+            information.picture || '',
+            information.link || '',
+            information.title || ''
         );
     }
 
@@ -57,14 +57,15 @@ export class Information {
      *
      * Basically just replaces the dates with date strings
      */
-    toFirebaseObject() {
+    toFirebaseObject(){
         return {
             id: this.id,
             content: this.content,
-            createdAt: this.createdAt.toDateString(),
+           createdAt: this.createdAt.getTime(),
             picture: this.picture,
             link: this.link,
             title: this.title
         };
+
     }
 }

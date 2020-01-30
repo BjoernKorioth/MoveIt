@@ -38,14 +38,15 @@ export class InformationService {
      * @param information the updated/new information
      */
     editInformation(informationId, information: Information) {
+        console.log(information);
         return new Promise<any>((resolve, reject) => {
-            this.fireDatabase.database.ref('/information/').child(informationId)
-                .set(information.toFirebaseObject()).then(
+            this.fireDatabase.database.ref('/information/').child(informationId).set(information.toFirebaseObject()).then(
                 res => resolve(res),
                 err => reject(err)
             );
         });
     }
+
 
     /**
      * Retrieves an information from firebase
@@ -69,6 +70,13 @@ export class InformationService {
      * Retrieve all information
      */
     getAllInformation() {
-        return this.fireDatabase.list<Information>('information').valueChanges();
+
+        const ref = this.fireDatabase.list<Information>(this.informationLocation);
+        return ref.snapshotChanges().pipe(map(informations => informations.map(
+            infoSnapshot => Information.fromFirebaseObject(infoSnapshot.key, infoSnapshot.payload.val()))));
+    
+
+
+      //  return this.fireDatabase.list<Information>('information').valueChanges();
     }
 }
