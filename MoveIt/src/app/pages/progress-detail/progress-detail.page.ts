@@ -9,7 +9,7 @@ import {Health} from '@ionic-native/health/ngx';
 import {Platform} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {Chart} from 'chart.js';
-import {map} from 'rxjs/operators';
+import {first, map} from 'rxjs/operators';
 
 
 @Component({
@@ -43,7 +43,11 @@ export class ProgressDetailPage implements OnInit {
 
         this.goals = this.goalService.getGoals();
         this.goals.subscribe(goals => this.goalStorage = goals);
-        // this.router = router;
+        this.goals.pipe(first()).subscribe(goals => {
+            this.activities.pipe(first()).subscribe(activities => {
+                this.goalService.updateGoals(goals, activities);
+            });
+        });
     }
 
 

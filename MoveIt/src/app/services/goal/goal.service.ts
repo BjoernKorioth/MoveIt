@@ -87,7 +87,7 @@ export class GoalService {
         return new Promise<any>((resolve, reject) => {
             // Create a new history entry with the current date as key and the previous target as value
             const newHistoryEntry = {};
-            newHistoryEntry[new Date().toString()] = goal.target;
+            newHistoryEntry[new Date().getTime()] = goal.target;
 
             goal.history.push(newHistoryEntry); // Add the value to the history
             goal.target = target; // Set the new target value
@@ -185,12 +185,21 @@ export class GoalService {
                 (winsSnapshot) => {
                     const wins = winsSnapshot.val();
                     if (Array.isArray(wins)) {
-                        // If the list exists, append the current date
-                        wins.push((new Date()).getTime());
-                        this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
-                            .set(wins).then(
-                            (res) => resolve(res),
-                            (err) => reject(err));
+                        // If the list exists, check if the goals was already won today
+                        const lastWin = new Date(wins.slice(-1)[0]);
+                        const newWin = new Date();
+                        if (lastWin.getDate() === newWin.getDate()
+                            && lastWin.getMonth() === newWin.getMonth()
+                            && lastWin.getFullYear() === newWin.getFullYear()) {
+                            resolve('goal was already won for today');
+                        } else {
+                            // If not, append it to the wins list
+                            wins.push((new Date()).getTime());
+                            this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
+                                .set(wins).then(
+                                (res) => resolve(res),
+                                (err) => reject(err));
+                        }
                     } else {
                         // If it doesn't exist, create a new array with the current win
                         const newWins = [(new Date()).getTime()];
