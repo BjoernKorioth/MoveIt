@@ -5,14 +5,9 @@
         </ion-buttons>
         <ion-title>Articles</ion-title>
     </ion-toolbar>
-</ion-header>
 
-<ion-content>
-    <h2 padding>Manage articles</h2>
+        <ion-button color="secondary" padding (click)="presentPopover($event)"float-right>Create Article</ion-button>
 
-    <section>
-        <ion-button color="secondary" padding (click)="presentPopover($event)">Create Article</ion-button>
-    </section>
     <br><br><br>
 
     <ion-row>
@@ -45,6 +40,10 @@
             </ion-list>
         </ion-col>
     </ion-row>
+</ion-header>
+
+<ion-content>
+
 
     <ion-row *ngFor="let article of articles">
         <ion-col size="2">
