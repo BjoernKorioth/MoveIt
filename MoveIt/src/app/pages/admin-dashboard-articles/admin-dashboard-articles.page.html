@@ -13,6 +13,9 @@
     <section>
         <ion-button color="secondary" padding (click)="presentPopover($event)">Create Article</ion-button>
     </section>
+    <section>
+        <ion-button color="secondary" padding (click)="editArticle()">Save</ion-button>
+    </section>
     <br><br><br>
 
     <ion-row>
@@ -49,25 +52,25 @@
     <ion-row *ngFor="let article of articles">
         <ion-col size="3">
             <ion-list>
-                <ion-item> {{article.title}} </ion-item>
+                <ion-item><ion-input>{{article.title}} </ion-input> </ion-item>
             </ion-list>
         </ion-col>
 
         <ion-col size="3">
             <ion-list>
-                <ion-item>{{article.content}}</ion-item>
+                <ion-item><ion-input>{{article.content}}</ion-input></ion-item>
             </ion-list>
         </ion-col>
 
         <ion-col size="3">
             <ion-list>
-                <ion-item>{{article.link}}</ion-item>
+                <ion-item><ion-input>{{article.link}}</ion-input></ion-item>
             </ion-list>
         </ion-col>
 
         <ion-col size="3">
             <ion-list>
-                <ion-item>{{article.picture}}</ion-item>
+                <ion-item><ion-input>{{article.picture}}</ion-input></ion-item>
             </ion-list>
         </ion-col>
     </ion-row>

@@ -18,6 +18,7 @@ export class AdminDashboardArticlesPage implements OnInit {
     articles: Array<Information>;
     information: Information;
 
+    editedArticle: any;
 
     constructor(private informationService: InformationService, public popoverController: PopoverController) {
 
@@ -41,6 +42,15 @@ export class AdminDashboardArticlesPage implements OnInit {
                 picture: './assets/Trophy.png'
               }
             ]*/
+    }
+
+    editArticle() {
+        console.log(this.information);
+
+        this.informationService.editInformation(this.editedArticle.id, this.editedArticle).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
     }
 
     updateAllInformation(newInformation: Array<Information>) {
