@@ -93,8 +93,8 @@ export class ActivityService {
      * Retrieve all activities of the current user
      */
     getAllUserActivities() {
-        const ref = this.fireDatabase.list<Activity>(this.activityLocation + firebase.auth().currentUser.uid);
+        const ref = this.fireDatabase.list<Activity>(this.activityLocation + firebase.auth().currentUser.uid, query => query.orderByChild('endTime'));
         return ref.snapshotChanges().pipe(map(activities => activities.map(
-            activitySnapshot => Activity.fromFirebaseObject(activitySnapshot.key, activitySnapshot.payload.val()))));
+            activitySnapshot => Activity.fromFirebaseObject(activitySnapshot.key, activitySnapshot.payload.val())).reverse()));
     }
 }
