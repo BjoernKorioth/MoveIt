@@ -38,12 +38,16 @@ export class RewardsService {
                 trophiesSnapshot => {
                     const trophies = trophiesSnapshot.val();
                     if (Array.isArray(trophies.available) && Array.isArray(trophies.won)) {
-                        trophies.available = trophies.available.filter(trophy => trophy === trophyID);
-                        trophies.won.push(trophyID);
-                        this.fireDatabase.database.ref('/trophies/' + firebase.auth().currentUser.uid).set(trophies).then(
-                            res => resolve(res),
-                            err => reject(err)
-                        );
+                        if (trophies.won.indexOf(trophyID) === -1) {
+                            trophies.available = trophies.available.filter(trophy => trophy !== trophyID);
+                            trophies.won.push(trophyID);
+                            this.fireDatabase.database.ref('/trophies/' + firebase.auth().currentUser.uid).set(trophies).then(
+                                res => resolve(res),
+                                err => reject(err)
+                            );
+                        } else {
+                            resolve('trophy was already won');
+                        }
                     } else {
                         reject('Received available trophies in different format than array');
                     }
