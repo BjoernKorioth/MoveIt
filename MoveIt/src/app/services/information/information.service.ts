@@ -2,11 +2,13 @@ import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {Information} from '../../model/information';
 import * as firebase from 'firebase/app';
+import {map} from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class InformationService {
+    informationLocation = '/information/';
 
     constructor(private fireDatabase: AngularFireDatabase) {
     }
@@ -21,6 +23,7 @@ export class InformationService {
         return new Promise<any>((resolve, reject) => {
             const id = firebase.database().ref().child('information').push().key;
             information.id = id;
+            information.createdAt = new Date();
 
             this.fireDatabase.database.ref('/information/').child(id)
                 .set(information.toFirebaseObject()).then(
@@ -70,13 +73,8 @@ export class InformationService {
      * Retrieve all information
      */
     getAllInformation() {
-
-        const ref = this.fireDatabase.list<Information>(this.informationLocation);
-        return ref.snapshotChanges().pipe(map(informations => informations.map(
+        const ref = this.fireDatabase.list<any>(this.informationLocation);
+        return ref.snapshotChanges().pipe(map(information => information.map(
             infoSnapshot => Information.fromFirebaseObject(infoSnapshot.key, infoSnapshot.payload.val()))));
-    
-
-
-      //  return this.fireDatabase.list<Information>('information').valueChanges();
     }
 }
