@@ -9,8 +9,6 @@ import {map} from 'rxjs/operators';
     providedIn: 'root'
 })
 export class UserService {
-    private user: User;
-
     constructor(private db: AngularFireDatabase) {
     }
 
@@ -21,6 +19,19 @@ export class UserService {
 
     getGroupconfig(groupId) {
         return this.db.object<string>('/groups/' + groupId + '/featureVector').valueChanges();
+    }
+
+    getUsername() {
+        return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/name').valueChanges();
+    }
+
+    getSpecificUsername(uid) {
+        return this.db.database.ref('/users/' + uid + '/name').once('value');
+    }
+
+    getUser() {
+        return this.db.object<any>('/users/' + firebase.auth().currentUser.uid).snapshotChanges()
+            .pipe(map(userSnapshot => User.fromFirebaseObject(firebase.auth().currentUser.uid, userSnapshot.payload.val())));
     }
 
     /**
