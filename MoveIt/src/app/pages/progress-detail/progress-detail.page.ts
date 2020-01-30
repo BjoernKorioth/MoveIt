@@ -1,15 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivityService} from '../../services/activity/activity.service';
 import {Activity} from '../../model/activity';
-import {Observable, concat, merge, zip, fromEvent} from 'rxjs';
+import {merge, Observable} from 'rxjs';
 import {GoalService} from '../../services/goal/goal.service';
 import {Goal} from '../../model/goal';
 import {Location} from '@angular/common';
-import { Health } from '@ionic-native/health/ngx';
-import { Platform } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { Chart } from 'chart.js';
-import { toArray, take, map, reduce, combineAll, bufferCount, scan, startWith } from 'rxjs/operators';
+import {Health} from '@ionic-native/health/ngx';
+import {Platform} from '@ionic/angular';
+import {Router} from '@angular/router';
+import {Chart} from 'chart.js';
+import {map} from 'rxjs/operators';
 
 
 @Component({
@@ -19,8 +19,8 @@ import { toArray, take, map, reduce, combineAll, bufferCount, scan, startWith } 
 })
 export class ProgressDetailPage implements OnInit {
     activities: Observable<Activity[]>;
-    //Array which contains the displayed activities
-    displayedActivities: Observable<Activity[]>; 
+    // Array which contains the displayed activities
+    displayedActivities: Observable<Activity[]>;
     goals: Observable<any>;
     goalStorage: Array<Goal>;
 
@@ -28,76 +28,70 @@ export class ProgressDetailPage implements OnInit {
     hrzLines: any;
 
 
-    constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location, private health: Health, private platform: Platform, private router: Router) {            
-        this.activities = this.activityService.getAllUserActivities();    
-        
-        this.activities.subscribe((activities) => {
-          this.updateGoals(activities);                   
-        });
-      
+    constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location,
+                private health: Health, private platform: Platform, private router: Router) {
+        this.activities = this.activityService.getAllUserActivities();
 
         this.displayedActivities = this.activities.pipe(map(
-          (data) => {
-            data.sort((a, b) => {
-              return b.startTime.getTime() - a.startTime.getTime();
-            });
-            return data.slice(0, 5)
-          }
+            (data) => {
+                data.sort((a, b) => {
+                    return b.startTime.getTime() - a.startTime.getTime();
+                });
+                return data.slice(0, 5);
+            }
         ));
 
         this.goals = this.goalService.getGoals();
         this.goals.subscribe(goals => this.goalStorage = goals);
-        //this.router = router;
+        // this.router = router;
     }
-  
 
-  loadMoreActivities() {    
-    let currentlyDisplayed = 0;
-    this.displayedActivities.subscribe(
-      c => currentlyDisplayed = c.length
-    );
 
-    let newDisplayedActivities = this.activities.pipe(
-      map(data => data.slice(0, currentlyDisplayed + 5))
-    );
+    loadMoreActivities() {
+        let currentlyDisplayed = 0;
+        this.displayedActivities.subscribe(
+            c => currentlyDisplayed = c.length
+        );
 
-    this.displayedActivities = merge(
-      this.displayedActivities,
-      newDisplayedActivities
-    );
-  }
+        const newDisplayedActivities = this.activities.pipe(
+            map(data => data.slice(0, currentlyDisplayed + 5))
+        );
 
-    
-  ionViewDidEnter() {
-    this.createSimpleLineChart()
-  }
+        this.displayedActivities = merge(
+            this.displayedActivities,
+            newDisplayedActivities
+        );
+    }
 
-  createSimpleLineChart() {
-    this.hrzLines = new Chart(this.hrzLineChart.nativeElement, {
-      type: 'line',
-      data: {
-        //labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
-        datasets: [{
-          label: 'Active Minutes',
-          data: [10, 20, 30, 30, 40, 50, 60, 70],
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-          borderColor: 'rgb(38, 194, 129)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true
+
+    ionViewDidEnter() {
+        this.createSimpleLineChart();
+    }
+
+    createSimpleLineChart() {
+        this.hrzLines = new Chart(this.hrzLineChart.nativeElement, {
+            type: 'line',
+            data: {
+                // labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
+                datasets: [{
+                    label: 'Active Minutes',
+                    data: [10, 20, 30, 30, 40, 50, 60, 70],
+                    backgroundColor: 'rgba(0, 0, 0, 0)',
+                    borderColor: 'rgb(38, 194, 129)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
             }
-          }]
-        }
-      }
-    });
-  }
-
-
+        });
+    }
 
 
     ngOnInit() {
@@ -108,61 +102,60 @@ export class ProgressDetailPage implements OnInit {
         const ready = !!await this.platform.ready();
         if (ready) {
             this.health.isAvailable()
-            .then((available:boolean) => {
-              console.log("HEALTH IS AVAILABLE :" +available);
-              this.health.requestAuthorization([
-                'distance', 'nutrition',  //read and write permissions
-                {
-                  read: ['steps'],       //read only permission
-                  write: ['height', 'weight']  //write only permission
-                }
-              ])
-              .then(res => {console.log(res);     
-              this.loadHealthData();
-              }
+                .then((available: boolean) => {
+                    console.log('HEALTH IS AVAILABLE :' + available);
+                    this.health.requestAuthorization([
+                        'distance', 'nutrition',  // read and write permissions
+                        {
+                            read: ['steps'],       // read only permission
+                            write: ['height', 'weight']  // write only permission
+                        }
+                    ])
+                        .then(res => {
+                                console.log(res);
+                                this.loadHealthData();
+                            }
+                        )
+                        .catch(e => console.log(e));
+                })
+                .catch(e => console.log(e));
+        }
+    }
 
-              )
-              .catch(e => console.log(e));
-            })
+    saveWorkout() {
+        this.health.store({
+            startDate: new Date(new Date().getTime() - 3 * 60 * 1000), // three minutes ago
+            endDate: new Date(),
+            dataType: 'steps',
+            value: '180',
+            sourceName: 'MoveIt_test',
+            sourceBundleId: 'com.example.MoveIt_test'
+        }).then(res => console.log(res))
             .catch(e => console.log(e));
-        }
-        }
+    }
 
-        saveWorkout() {
-            this.health.store({
-                startDate:  new Date(new Date().getTime() - 3 * 60 * 1000), // three minutes ago
-                endDate: new Date(),
-                dataType: 'steps',
-                value: '180',
-                sourceName: 'MoveIt_test',
-                sourceBundleId: 'com.example.MoveIt_test'
-            }).then(res => console.log(res))
+    loadHealthData() {
+
+        this.health.query({
+            startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // three days ago
+            endDate: new Date(), // now
+            dataType: 'steps'
+        }).then(res => console.log(res))
             .catch(e => console.log(e));
-          }
+    }
 
-          loadHealthData() {
-
-            this.health.query({
-                startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // three days ago
-                endDate: new Date(), // now
-                dataType: 'steps'
-              }).then(res => console.log(res))
-              .catch(e => console.log(e));  
-        }
-        
-         
 
     goBack() {
         this.location.back();
     }
 
     routeToEditGoalPage(goal: Goal) {
-        this.router.navigateByUrl('/menu/goals/goals/detail', {state: {goal: goal}});        
+        this.router.navigateByUrl('/menu/goals/goals/detail', {state: {goal}});
     }
 
     routeToEditPage(activity: Activity) {
-      this.router.navigateByUrl('/menu/progress/progress/edit', {state: {activity: activity}});        
-  }
+        this.router.navigateByUrl('/menu/progress/progress/edit', {state: {activity}});
+    }
 
     /**
      * Create a new activity
@@ -231,14 +224,6 @@ export class ProgressDetailPage implements OnInit {
                 err => console.log(err) // Goal adjustment failed
             ),
             err => console.log(err) // Fetching the goal failed
-        );
-    }
-
-    updateGoals(activities) {
-        console.log(this.goalStorage);        
-        this.goalService.updateGoals(this.goalStorage, activities).then(
-            res => console.log(res),
-            err => console.log(err)
         );
     }
 }
