@@ -16,8 +16,11 @@ import {User} from '../../model/user';
 
 import { TrophyArray } from 'src/app/model/trophyArray';
 
+import { ViewLog } from 'src/app/model/viewLog';
+
 import {UserService} from '../../services/user/user.service';
 
+import {TrackingService} from '../../services/tracking/tracking.service';
 
 @Component({
     selector: 'app-leaderboard-detail',
@@ -90,7 +93,10 @@ export class LeaderboardDetailPage implements OnInit {
   tempUsername : string;
   private currentUser: User;
 
-  constructor(private goalservice: GoalService, private trophyService: TrophyService, private userService: UserService, private location:Location) { 
+  startTime: Date;
+  endTime: Date;
+
+  constructor(private goalservice: GoalService, private trophyService: TrophyService, private userService: UserService, private trackingService: TrackingService, private location:Location) { 
 
    /* //Observable1
     this.activitiesObserve = this.goalservice.getAllOtherAvailableGoals();
@@ -114,6 +120,7 @@ export class LeaderboardDetailPage implements OnInit {
    * first get all important observables with the corresponding database queries
    */
     ngOnInit() {
+      this.startTime = new Date();
   //Observable1
       this.activitiesObserve = this.goalservice.getAllOtherAvailableGoals();
 
@@ -135,6 +142,14 @@ export class LeaderboardDetailPage implements OnInit {
       console.log(this.currentUser);
     }
 
+    
+    ngOnDestroy(){
+      this.endTime = new Date();
+      var viewLog = new ViewLog("Leaderboard-Detail", this.startTime, this.endTime);
+      this.trackingService.logViewTime(viewLog);
+      console.log(viewLog);
+    }
+
 
     /**
    * This method pushes the result of a query into the respective instances in order to make them visible on the UI
@@ -145,7 +160,6 @@ export class LeaderboardDetailPage implements OnInit {
 
     for(var i = 0; i < result.length; i++){
       var oneResult = result[i];
-      console.log("IM IN");
       if(oneResult){
    
               let entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length ,this.userService);
@@ -211,6 +225,7 @@ export class LeaderboardDetailPage implements OnInit {
          console.log("MODERATE");
          console.log(this.activitiesModerate);*/
     }
+
 
 
     goBack() {
