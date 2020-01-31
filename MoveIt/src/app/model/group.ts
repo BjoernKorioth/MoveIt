@@ -15,8 +15,10 @@ export class Group {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '-1';
         this.name = name || 'No groupname';
-        this.featureVector = featureVector || [];
+        this.featureVector = featureVector || ['Leaderboard', 'Social', 'Rewards'];
     }
+
+    static feautres = ['Leaderboard', 'Social', 'Rewards'];
     id: string;
     name: string;
     featureVector: Array<any>;
@@ -25,8 +27,28 @@ export class Group {
         return new Group(
             id || '-1',
             firebaseObject.name || 'Test Account',
-            JSON.parse(firebaseObject.featureVector) || [],
+            JSON.parse(firebaseObject.featureVector) || ['Leaderboard', 'Social', 'Rewards'],
         );
+    }
+
+    enableFeature(feature: string) {
+        if (feature in Group.feautres) {
+            if (!(feature in this.featureVector)) {
+                this.featureVector.push(feature);
+            }
+        } else {
+            console.log('invalid feature');
+        }
+    }
+
+    disableFeature(feature: string) {
+        if (feature in Group.feautres) {
+            if (feature in this.featureVector) {
+                this.featureVector.filter(element => element !== feature);
+            }
+        } else {
+            console.log('invalid feature');
+        }
     }
 
     /**

@@ -58,8 +58,8 @@ export class AdminDashboardAppconfigPage implements OnInit {
         );
     }
 
-    createGroup(groupName: string, featureVector: Array<boolean>) {
-        this.userService.createGroup(new Group('', 'Group Test', [true, true, true, true])).then(
+    createGroup(groupName: string, featureVector: Array<string>) {
+        this.userService.createGroup(new Group('', 'Group Test', ['Leaderboard', 'Social', 'Rewards'])).then(
             res => console.log(res),
             err => console.log(err)
         );
