@@ -103,4 +103,14 @@ export class ChallengeService {
         });
     }
 
+    setWinner(challenge:Challenge, uid: string){
+        return new Promise<any>((resolve, reject) => {
+            this.fireDatabase.database.ref('/challenges/' + challenge.id).child('winner')
+                .set(uid).then(
+                res => resolve(res),
+                err => reject(err)
+            );
+        });
+    }
+
 }
