@@ -116,6 +116,13 @@ export class GoalService {
     }
 
     /**
+     * Get all goalsWins of the current user
+     */
+    getGoalWins() {
+        return this.fireDatabase.object('/wins/' + firebase.auth().currentUser.uid).valueChanges();
+    }
+
+    /**
      * Update all goals and set the new progress
      *
      * Recalculates the active minutes for each goal and updates the goals by setting the new progress value
