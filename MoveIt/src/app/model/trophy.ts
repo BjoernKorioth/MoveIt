@@ -1,3 +1,5 @@
+import { Conditional } from '@angular/compiler';
+
 interface FireBaseObject {
     id: string;
     description: string;
@@ -30,7 +32,7 @@ export class Trophy {
         // this.price = price || '10$ amazon gift card';
         // this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
         this.title = title || '10 Daily Goals';
-        this.conditions = conditions || '10 Daily Goals';
+        this.conditions = conditions || [];
     }
 
     static defaultTrophies = [

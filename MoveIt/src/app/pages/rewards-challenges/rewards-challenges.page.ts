@@ -120,10 +120,12 @@ export class RewardsChallengesPage implements OnInit {
 
  updateAllChallenges(newChallenges: Array<Challenge>){
     this.challenges = newChallenges;
+    this.identifyInvalidChallenges(this.challenges);
   }
 
   async updateAllActiveChallenges(newActive: Array<Challenge>){
     this.activeChallenges = newActive;
+    this.identifyInvalidChallenges(this.activeChallenges);
     
   }
 
@@ -158,8 +160,19 @@ export class RewardsChallengesPage implements OnInit {
     console.log(challenge);
     console.log("CHALLENGES SIZE " + this.challenges.length)
     for(var i = 0; i<this.challenges.length; i++){
-      if(this.challenges[i].title === challenge.title){
+      if(this.challenges[i].id === challenge.id){
         this.challenges.splice(i,i+1);
+      }
+    }
+  }
+
+  identifyInvalidChallenges(challenges:Array<Challenge>){
+    var date = new Date();
+    for(var i = 0; i<challenges.length; i++){
+      console.log("CHALLENGE DATE:" +challenges[i].endTime.getTime());
+      console.log("SYSTEM DATE:" +  date.getTime() );
+      if(challenges[i].endTime.getTime() < date.getTime()){
+        challenges.splice(i,i+1);
       }
     }
   }

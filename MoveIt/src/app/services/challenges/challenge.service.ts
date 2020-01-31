@@ -93,4 +93,14 @@ export class ChallengeService {
         });
     }
 
+    finishChallenge(challenge:Challenge){
+        return new Promise<any>((resolve, reject) => {
+            this.fireDatabase.database.ref('/challenges/' + challenge.id).child('finished')
+                .set('true').then(
+                res => resolve(res),
+                err => reject(err)
+            );
+        });
+    }
+
 }

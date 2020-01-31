@@ -3,6 +3,7 @@ import * as firebase from 'firebase/app';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {User} from '../../model/user';
 import {GoalService} from '../goal/goal.service';
+import {RewardsService} from '../rewards/rewards.service';
 
 
 @Injectable()
