@@ -5,14 +5,13 @@ import * as firebase from 'firebase/app';
 import {Activity} from '../../model/activity';
 import {GoalArray} from '../../model/goalArray';
 import {map} from 'rxjs/operators';
-import {ActivityService} from '../activity/activity.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class GoalService {
 
-    constructor(private fireDatabase: AngularFireDatabase, private activityService: ActivityService) {
+    constructor(private fireDatabase: AngularFireDatabase) {
     }
 
     /**
@@ -88,7 +87,7 @@ export class GoalService {
         return new Promise<any>((resolve, reject) => {
             // Create a new history entry with the current date as key and the previous target as value
             const newHistoryEntry = {};
-            newHistoryEntry[new Date().toString()] = goal.target;
+            newHistoryEntry[new Date().getTime()] = goal.target;
 
             goal.history.push(newHistoryEntry); // Add the value to the history
             goal.target = target; // Set the new target value
@@ -159,7 +158,7 @@ export class GoalService {
         }
 
         // Filter the activites based on the goals type (e.g. 'moderate') and duration (e.g. 'weekly')
-        const filteredActivities = this.activityService.filterActivities(activities, goal.type, startDate);
+        const filteredActivities = this.filterActivities(activities, goal.type, startDate);
 
         // Get the duration for each activity
         const times = filteredActivities.map((activity) => activity.getDuration());
@@ -167,7 +166,7 @@ export class GoalService {
         // Check if there are elements in the array, that passed the filtering
         if (times.length > 0) {
             // Return the sum of the durations. This comes in milliseconds. The division by 1000*60 converts it to minutes
-            return times.reduce((accumulator, currentValue) => accumulator + currentValue) / 1000 * 60;
+            return times.reduce((accumulator, currentValue) => accumulator + currentValue);
         } else {
             return 0;
         }
@@ -186,12 +185,21 @@ export class GoalService {
                 (winsSnapshot) => {
                     const wins = winsSnapshot.val();
                     if (Array.isArray(wins)) {
-                        // If the list exists, append the current date
-                        wins.push((new Date()).getTime());
-                        this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
-                            .set(wins).then(
-                            (res) => resolve(res),
-                            (err) => reject(err));
+                        // If the list exists, check if the goals was already won today
+                        const lastWin = new Date(wins.slice(-1)[0]);
+                        const newWin = new Date();
+                        if (lastWin.getDate() === newWin.getDate()
+                            && lastWin.getMonth() === newWin.getMonth()
+                            && lastWin.getFullYear() === newWin.getFullYear()) {
+                            resolve('goal was already won for today');
+                        } else {
+                            // If not, append it to the wins list
+                            wins.push((new Date()).getTime());
+                            this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
+                                .set(wins).then(
+                                (res) => resolve(res),
+                                (err) => reject(err));
+                        }
                     } else {
                         // If it doesn't exist, create a new array with the current win
                         const newWins = [(new Date()).getTime()];
@@ -202,6 +210,35 @@ export class GoalService {
                     }
                 },
                 (err) => reject(err));
+        });
+    }
+
+    /**
+     * Filter an array of activities based on time and intensity
+     *
+     * The output is an array of activities, where all items match the given intensity and their endTime lies between
+     * the fromDate and the untilDate
+     *
+     * @param activities array of activities
+     * @param intensity intensity to filter for (e.g. 'moderate')
+     * @param fromDate earliest endTime of an activity
+     * @param untilDate latest endTime of an activity
+     */
+    filterActivities(activities: Array<Activity>, intensity: string, fromDate: Date = new Date(0), untilDate: Date = new Date()) {
+        return activities.filter((activity: Activity) => {
+            if (activity.intensity !== intensity) {
+                return false;
+            }
+
+            if (activity.endTime <= fromDate) {
+                return false;
+            }
+
+            if (activity.endTime >= untilDate) {
+                return false;
+            }
+
+            return true;
         });
     }
 }

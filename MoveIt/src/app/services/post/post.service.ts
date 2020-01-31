@@ -18,7 +18,6 @@ export class PostService {
         // TODO get user
         this.user = new ReplaySubject(1);
         userService.getUser().subscribe(this.user);
-        userService.getUser().subscribe(user => console.log(user));
     }
 
     /**
