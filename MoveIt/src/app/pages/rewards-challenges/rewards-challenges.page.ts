@@ -24,6 +24,9 @@ export class RewardsChallengesPage implements OnInit {
 
     this.challengesObserve = this.challService.getAllChallenges();
 
+    /**
+     * gets ALL challenges
+     */
     this.challengesObserve.subscribe(result => 
       
       this.updateAllChallenges(result)
@@ -32,6 +35,9 @@ export class RewardsChallengesPage implements OnInit {
 
     this.challengesActiveObserve = this.challService.getAllUserActiveChallenges();
 
+    /**
+     * gets ALL challenges user participates in
+     */
     this.challengesActiveObserve.subscribe(result => {
       
       this.updateAllActiveChallenges(result);
@@ -58,70 +64,24 @@ export class RewardsChallengesPage implements OnInit {
         image: './assets/Trophy.png'
       }
     ]
-    /*this.challenges= [
-      {
-        description: 'Run the equivalent of a marathon during one week',
-        title: 'Run 100 km within a week',
-        startDate: 33,
-        endDate: 55,
-        price: '30 Euro Amazon Gift Card'
-      },
-      {
-        description: 'Run the equivalent of a marathon during one week',
-        title: 'Run 150 km within a week',
-        startDate: 33,
-        endDate: 55,
-        price: '30 Euro Amazon Gift Card'
-      },
-    ]*/
-
-
-    /*this.activeChallenges= [
-      {
-        description: 'Run the equivalent of a marathon during one week',
-        title: 'Run 50 km within a week',
-        startDate: 33,
-        endDate: 55,
-        price: '30 Euro Amazon Gift Card'
-      },
-      {
-        description: 'Run the equivalent of a marathon during one week',
-        title: 'Run 75 km within a week',
-        startDate: 33,
-        endDate: 55,
-        price: '30 Euro Amazon Gift Card'
-      }
-    ]*/
   }
 
   ngOnInit() {
 
-   /*this.challengesObserve = this.challService.getAllChallenges();
-
-   this.challengesActiveObserve = this.challService.getAllUserActiveChallenges();
-
-    this.challengesObserve.subscribe(result => {
-      
-      this.updateAllChallenges(result)
-      
-      this.challengesActiveObserve.subscribe(result => {
-        this.updateAllActiveChallenges(result);
-        for(var i = 0; i< this.activeChallenges.length; i++){
-        this.identifyChallenge(this.activeChallenges[i]);
-      }});
-    
-    });*/
-
-   
-
-   
-
   }
-
+  /**
+   * this sets the local challenges & identifies the valid challenges
+   * @param newChallenges income from service call as array
+   */
  updateAllChallenges(newChallenges: Array<Challenge>){
     this.challenges = newChallenges;
     this.identifyInvalidChallenges(this.challenges);
   }
+
+  /**
+   * this is the local list of challenges which the user participates
+   * @param newActive active array
+   */
 
   async updateAllActiveChallenges(newActive: Array<Challenge>){
     this.activeChallenges = newActive;
@@ -129,19 +89,9 @@ export class RewardsChallengesPage implements OnInit {
     
   }
 
-  /*setParticipants(){
-    for(var i = 0; i<this.activeChallenges.length; i++){
-      console.log("IM in");
-      this.challService.getListOfParticipants(this.activeChallenges[i]).then(result => this.activeChallenges[i].setNumber(result.length));
-    }
-
-    for(var i = 0; i<this.challenges.length; i++){
-      console.log("IM iN");
-      this.challService.getListOfParticipants(this.challenges[i]).then(result => this.challenges[i].setNumber(result.length));
-    }
-  }*/
-
-
+  /**this adds an challenge if you want to participate
+   * 
+   */
   addToActiveList(challenge:Challenge){
     this.activeChallenges.push(challenge);
     this.identifyChallenge(challenge);
@@ -149,6 +99,10 @@ export class RewardsChallengesPage implements OnInit {
     this.challService.addChallengeToActive(this.activeChallenges);
   }
 
+  /**
+   * this sorts the array which the user has registered to according to challenges
+   * @param activeChallenge activeChallenge array
+   */
   removeFromActiveList(activeChallenge:Challenge){
     this.challenges.push(activeChallenge);
     this.identifyActiveChallenge(activeChallenge);
@@ -156,9 +110,11 @@ export class RewardsChallengesPage implements OnInit {
     this.challService.addChallengeToActive(this.activeChallenges);
   }
 
+  /**
+   * identify the challenges you participate in order to sort them out of the local all challenges array
+   * @param challenge challenge for identification
+   */
   identifyChallenge(challenge:Challenge){
-    console.log(challenge);
-    console.log("CHALLENGES SIZE " + this.challenges.length)
     for(var i = 0; i<this.challenges.length; i++){
       if(this.challenges[i].id === challenge.id){
         this.challenges.splice(i,i+1);
@@ -166,12 +122,14 @@ export class RewardsChallengesPage implements OnInit {
     }
   }
 
+  /**
+   * sorts the ended challenges out according to finish or endtime
+   * @param challenges array of all challenges
+   */
   identifyInvalidChallenges(challenges:Array<Challenge>){
     var date = new Date();
     for(var i = 0; i<challenges.length; i++){
-      console.log("CHALLENGE DATE:" +challenges[i].endTime.getTime());
-      console.log("SYSTEM DATE:" +  date.getTime() );
-      if(challenges[i].endTime.getTime() < date.getTime()){
+      if(challenges[i].endTime.getTime() < date.getTime() || challenges[i].finished){
         challenges.splice(i,i+1);
       }
     }
