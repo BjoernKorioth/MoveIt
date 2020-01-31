@@ -4,6 +4,7 @@ interface FireBaseObject {
     endTime: string;
     price: string;
     startTime: string;
+    finished:boolean;
     title: string;
     participants: any;
 }
@@ -15,7 +16,7 @@ export class Challenge {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?: string, description?: string, endTime?: Date, price?: string, startTime?: Date, title?: string, participantObject?: any) {
+    constructor(id?: string, description?: string, endTime?: Date, price?: string, startTime?: Date, title?: string, participantObject?: any, finished?:boolean) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || 'runMarathon';
         this.description = description || 'You must walk 10km a day for 1 week';
@@ -28,6 +29,7 @@ export class Challenge {
         for(let user in participantObject){
             this.participants.push(participantObject[user]);
         }
+        this.finished = finished || false;
     }
 
     static types = ['running', 'swimming', 'workout'];
@@ -38,6 +40,7 @@ export class Challenge {
     price: string;
     startTime: Date;
     title: string;
+    finished: boolean;
     participants: Array<any>;
 
     /**
@@ -56,7 +59,8 @@ export class Challenge {
             firebaseObject.price || '',
             new Date(firebaseObject.startTime) || new Date(),
             firebaseObject.title || '',
-            firebaseObject.participants || 0
+            firebaseObject.participants || 0,
+            firebaseObject.finished,
         );
     }
 
@@ -71,7 +75,8 @@ export class Challenge {
             endTime: this.endTime.toDateString(),
             price: this.price,
             startTime: this.startTime.toDateString(),
-            title: this.title
+            title: this.title,
+            finished: this.finished
         };
     }
 }

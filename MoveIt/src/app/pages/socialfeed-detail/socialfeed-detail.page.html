@@ -1,87 +1,99 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start" >
-      <ion-back-button class="show-back-button" (click)="goBack()"></ion-back-button>
-  </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Socialfeed</ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button class="show-back-button" (click)="goBack()"></ion-back-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Socialfeed</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content class="cards-bg social-cards">
-  <!--
-  <ion-button type="button" (click)='newPost()'>New Post</ion-button>
-  <ion-button type="button" (click)='editPost()'>Edit Post</ion-button>
-  <ion-button type="button" (click)='like()'>Like</ion-button>
-  <ion-button type="button" (click)='unlike()'>Unlike</ion-button>
-  <ion-button type="button" (click)='getPost()'>Get Post</ion-button>
-  <ion-button type="button" (click)='getAllPosts()'>Get All Posts</ion-button>
-  <ion-button type="button" (click)='newComment()'>New Comment</ion-button>
-  <ion-button type="button" (click)='editComment()'>Edit Comment</ion-button>
-  <ion-button type="button" (click)='getComment()'>Get Comment</ion-button>
-  <ion-button type="button" (click)='getAllComments()'>Get All Comments</ion-button>
-  -->
-
-  <ion-row>
-    <form>
-      <ion-item id="form">
-        <ion-input name="post" type="text" placeholder="create your own post"></ion-input>
-        <ion-icon name="send" ></ion-icon>  
-      </ion-item>
-    </form>
-</ion-row>
-
-
-  <ion-card *ngFor="let post of (posts | async); let i = index;">
-
-    <ion-item>
-      <ion-avatar slot="start">
-        <img src="../../assets/Profilbild.jpg">
-        <!--img [src]="post.image"-->
-      </ion-avatar>
-      <ion-label id="{{post.id}}" name="userPlace">
-        <h3>{{post.user}}</h3>
-        <p><ion-icon name="time"></ion-icon> 5 minutes {{getTimeDifference(post.createdAt)}} ago</p>
-      </ion-label>
-    </ion-item>
-    <!--<img src="../assets/Laufschuhe.jpg">-->
-
-    <ion-card-content>
-      {{post.content}}
-    </ion-card-content>
-
+    <!--
+    <ion-button type="button" (click)='newPost()'>New Post</ion-button>
+    <ion-button type="button" (click)='editPost()'>Edit Post</ion-button>
+    <ion-button type="button" (click)='like()'>Like</ion-button>
+    <ion-button type="button" (click)='unlike()'>Unlike</ion-button>
+    <ion-button type="button" (click)='getPost()'>Get Post</ion-button>
+    <ion-button type="button" (click)='getAllPosts()'>Get All Posts</ion-button>
+    <ion-button type="button" (click)='newComment()'>New Comment</ion-button>
+    <ion-button type="button" (click)='editComment()'>Edit Comment</ion-button>
+    <ion-button type="button" (click)='getComment()'>Get Comment</ion-button>
+    <ion-button type="button" (click)='getAllComments()'>Get All Comments</ion-button>
+    -->
 
     <ion-row>
-      <ion-col center text-center>
-          <ion-button id="like" type="button" (click)='like(i)'><ion-icon name="thumbs-up" id="icons"></ion-icon>{{post.likes?.length || 0}} Likes</ion-button>
-      </ion-col>
-      <ion-col center text-center>
-          <ion-button id="comment" type="button" (click)="newComment(i)"><ion-icon name="text" id="icons"></ion-icon>{{post.comments?.length || 0}} Comments</ion-button>
-      </ion-col>
-    </ion-row>
-      <div *ngIf="comments?.length != 0">
-        <div *ngFor="let c of post.comments">
-          <ion-item lines="none">
-            <ion-label><h3>{{c.user}}</h3><p>{{c.text}}</p></ion-label>
-          </ion-item>
-        </div>
-        <!--
-          <ion-item>
-          <ion-label><p id="allComments">all comments</p></ion-label>
-        </ion-item>
-        -->
-      </div>
-      <ion-row>
         <form>
-          <ion-item id="form">
-            <ion-input name="comment" type="text" placeholder="your comment..."></ion-input>
-            <ion-icon name="send" (click)="newComment(i)"></ion-icon>  
-          </ion-item>
+            <ion-item id="postForm">
+                <ion-input name="post" type="text" [(ngModel)]="postText"
+                           placeholder="create your own post"></ion-input>
+                <ion-icon name="send" (click)="newPost(postText)"></ion-icon>
+            </ion-item>
         </form>
     </ion-row>
-  </ion-card>
+
+
+    <ion-card *ngFor="let post of (posts | async); let i = index;">
+
+        <ion-item>
+            <ion-avatar slot="start">
+                <img src="../../assets/Profilbild.jpg">
+                <!--img [src]="post.image"-->
+            </ion-avatar>
+            <ion-label id="{{post.id}}" name="userPlace">
+                <h3>{{ post.username | async}}</h3>
+                <p>
+                    <ion-icon name="time"></ion-icon>
+                    {{ post.createdAt.toString() }}
+                </p>
+            </ion-label>
+        </ion-item>
+        <!--<img src="../assets/Laufschuhe.jpg">-->
+
+        <ion-card-content>
+            {{post.content}}
+        </ion-card-content>
+
+
+        <ion-row>
+            <ion-col center text-center>
+                <ion-button id="like" type="button" (click)='like(i)'>
+                    <ion-icon name="thumbs-up" id="icons"></ion-icon>
+                    {{post.likes?.length || 0}} Likes
+                </ion-button>
+            </ion-col>
+            <ion-col center text-center>
+                <ion-button id="comment" type="button">
+                    <ion-icon name="text" id="icons"></ion-icon>
+                    {{post.comments?.length || 0}} Comments
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <div *ngIf="post.comments?.length != 0">
+            <div *ngFor="let c of post.comments">
+                <ion-item lines="none">
+                    <ion-label><h3>{{ (post.usernames[i] | async)}}</h3>
+                        <p>{{c.text}}</p></ion-label>
+                </ion-item>
+            </div>
+            <!--
+              <ion-item>
+              <ion-label><p id="allComments">all comments</p></ion-label>
+            </ion-item>
+            -->
+        </div>
+        <ion-row>
+            <form>
+                <ion-item id="commentForm">
+                    <ion-input name="comment" type="text" [(ngModel)]="commentText[i]"
+                               placeholder="your comment..."></ion-input>
+                    <ion-icon name="send" (click)="newComment(post, commentText[i])"></ion-icon>
+                </ion-item>
+            </form>
+        </ion-row>
+    </ion-card>
 
 </ion-content>
 

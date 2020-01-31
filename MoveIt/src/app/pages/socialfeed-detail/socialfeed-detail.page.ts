@@ -4,6 +4,8 @@ import {Comment} from '../../model/comment';
 import {PostService} from '../../services/post/post.service';
 import {Observable} from 'rxjs';
 import {Location} from '@angular/common';
+import {UserService} from '../../services/user/user.service';
+import {first, map} from 'rxjs/operators';
 
 @Component({
     selector: 'app-socialfeed-detail',
@@ -13,30 +15,39 @@ import {Location} from '@angular/common';
 
 
 export class SocialfeedDetailPage implements OnInit {
-    posts: Observable<Post[]>;
+    posts: Observable<any[]>;
+    postText: string;
+    commentText = [];
+    now = new Date();
 
-    constructor(private postService: PostService, private location: Location) {
+    constructor(private postService: PostService, private location: Location, private userService: UserService) {
         this.location = location;
     }
 
     async ngOnInit() {
-        this.posts = this.postService.getAllPosts();
-        this.posts.subscribe(res => {
-            console.log(res);
-        });
+        this.posts = this.postService.getAllPosts().pipe(map(posts => posts.map(post => {
+            const pseudoPost = {
+                username: this.getUsername(post.user).pipe(first()),
+                usernames: [],
+                ...post
+            };
+            pseudoPost.usernames = pseudoPost.comments.map(comment => this.getUsername(comment.user).pipe(first()));
+            return pseudoPost;
+        })));
+        this.posts.subscribe(r => console.log(r));
     }
 
     goBack() {
         this.location.back();
     }
 
-    getTimeDifference(date) {
-        // return new Date() - new Date(date);
+    getTimeDifference(date: Date) {
+        return Math.round(this.now.getTime() - date.getTime() / 60 * 1000);
     }
 
-    newPost() {
+    newPost(text: string) {
         const post = new Post();
-        post.activity = 'asdf';
+        post.content = text;
 
         this.postService.createPost(post).then(
             res => console.log(res),
@@ -78,13 +89,14 @@ export class SocialfeedDetailPage implements OnInit {
         );
     }
 
-    newComment(i) {
-        const postid = document.getElementsByName('userPlace')[i].id;
-        const userComment = document.getElementsByTagName('input')[i].value;
-        console.log('Comment ' + userComment);
-        if (userComment.length !== 0) {
-            this.postService.createComment(postid, userComment).then(
-                res => console.log(res),
+    newComment(post: Post, text) {
+        if (this.commentText.length !== 0) {
+            this.postService.createComment(post.id, text).then(
+                res => {
+                    // @ts-ignore
+                    this.userService.getUsername().pipe(first()).subscribe(username => post.usernames.push(username));
+                    console.log(res);
+                },
                 err => console.log(err)
             );
         }
@@ -106,5 +118,9 @@ export class SocialfeedDetailPage implements OnInit {
 
     getAllComments() {
         return this.postService.getAllComments('-LxfARsp_2al7-W3JYcf');
+    }
+
+    getUsername(id) {
+        return this.userService.getUsernameById(id);
     }
 }

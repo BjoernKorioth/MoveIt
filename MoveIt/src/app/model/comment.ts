@@ -59,7 +59,7 @@ export class Comment {
      */
     toFirebaseObject() {
         return {
-            createdAt: this.createdAt.toDateString(),
+            createdAt: this.createdAt.getTime(),
             text: this.text,
             user: this.user
         };
