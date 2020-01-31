@@ -26,6 +26,10 @@ export class UserService {
         return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/name').valueChanges();
     }
 
+    getUsernameById(uid: string) {
+        return this.db.object<string>('/users/' + uid + '/name').valueChanges();
+    }
+
     getSpecificUsername(uid) {
         return this.db.database.ref('/users/' + uid + '/name').once('value');
     }
