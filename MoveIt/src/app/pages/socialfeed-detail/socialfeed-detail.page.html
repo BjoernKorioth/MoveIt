@@ -43,10 +43,10 @@
                 <!--img [src]="post.image"-->
             </ion-avatar>
             <ion-label id="{{post.id}}" name="userPlace">
-                <h3>{{ post.user }}</h3>
+                <h3>{{ post.username | async}}</h3>
                 <p>
                     <ion-icon name="time"></ion-icon>
-                    5 minutes {{getTimeDifference(post.createdAt)}} ago
+                    {{ post.createdAt.toString() }}
                 </p>
             </ion-label>
         </ion-item>
@@ -74,7 +74,7 @@
         <div *ngIf="post.comments?.length != 0">
             <div *ngFor="let c of post.comments">
                 <ion-item lines="none">
-                    <ion-label><h3>{{(getUsername(c.user) | async)}}</h3>
+                    <ion-label><h3>{{ (post.usernames[i] | async)}}</h3>
                         <p>{{c.text}}</p></ion-label>
                 </ion-item>
             </div>

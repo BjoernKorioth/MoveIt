@@ -5,6 +5,7 @@ import {PostService} from '../../services/post/post.service';
 import {Observable} from 'rxjs';
 import {Location} from '@angular/common';
 import {UserService} from '../../services/user/user.service';
+import {first, map} from 'rxjs/operators';
 
 @Component({
     selector: 'app-socialfeed-detail',
@@ -14,24 +15,34 @@ import {UserService} from '../../services/user/user.service';
 
 
 export class SocialfeedDetailPage implements OnInit {
-    posts: Observable<Post[]>;
+    posts: Observable<any[]>;
     postText: string;
     commentText = [];
+    now = new Date();
 
     constructor(private postService: PostService, private location: Location, private userService: UserService) {
         this.location = location;
     }
 
     async ngOnInit() {
-        this.posts = this.postService.getAllPosts();
+        this.posts = this.postService.getAllPosts().pipe(map(posts => posts.map(post => {
+            const pseudoPost = {
+                username: this.getUsername(post.user).pipe(first()),
+                usernames: [],
+                ...post
+            };
+            pseudoPost.usernames = pseudoPost.comments.map(comment => this.getUsername(comment.user).pipe(first()));
+            return pseudoPost;
+        })));
+        this.posts.subscribe(r => console.log(r));
     }
 
     goBack() {
         this.location.back();
     }
 
-    getTimeDifference(date) {
-        // return new Date() - new Date(date);
+    getTimeDifference(date: Date) {
+        return Math.round(this.now.getTime() - date.getTime() / 60 * 1000);
     }
 
     newPost(text: string) {
@@ -81,7 +92,11 @@ export class SocialfeedDetailPage implements OnInit {
     newComment(post: Post, text) {
         if (this.commentText.length !== 0) {
             this.postService.createComment(post.id, text).then(
-                res => console.log(res),
+                res => {
+                    // @ts-ignore
+                    this.userService.getUsername().pipe(first()).subscribe(username => post.usernames.push(username));
+                    console.log(res);
+                },
                 err => console.log(err)
             );
         }

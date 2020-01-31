@@ -111,7 +111,7 @@ export class Post {
             activity: this.activity,
             comments: this.comments,
             content: this.content,
-            createdAt: this.createdAt.toDateString(),
+            createdAt: this.createdAt.getTime(),
             likes: this.likes,
             user: this.user
         };
