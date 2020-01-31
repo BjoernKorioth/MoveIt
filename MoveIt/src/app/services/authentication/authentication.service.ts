@@ -3,13 +3,14 @@ import * as firebase from 'firebase/app';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {User} from '../../model/user';
 import {GoalService} from '../goal/goal.service';
+import {RewardsService} from '../rewards/rewards.service';
 
 
 @Injectable()
 export class AuthenticateService {
     private user: User;
 
-    constructor(private db: AngularFireDatabase, private goalService: GoalService) {
+    constructor(private db: AngularFireDatabase, private goalService: GoalService, private rewardsService: RewardsService) {
     }
 
     /**
@@ -37,6 +38,7 @@ export class AuthenticateService {
                                 this.registerOnDatabase(user).then(
                                     // If this is successful, resolve the promise
                                     () => {
+                                        this.rewardsService.initializeTrophies();
                                         this.goalService.initializeUserGoals().then(
                                             () => resolve(userCredential),
                                             err => reject(err)
@@ -100,27 +102,6 @@ export class AuthenticateService {
                 });
             }
         });
-    }
-
-    getUsername() {
-        return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/name').valueChanges();
-    }
-
-    // BK: returns the group the user is assigened to. Will be used in menu.page.ts
-    getUsergroup() {
-        return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/group').valueChanges();
-    }
-
-    getSpecificUsername(uid) {
-        return this.db.database.ref('/users/' + uid + '/name').once('value');
-    }
-
-    async setUser() {
-        return this.db.object<User>('/users/' + firebase.auth().currentUser.uid).valueChanges().subscribe(result => (this.user = result));
-    }
-
-    getFullUser() {
-        return this.user;
     }
 }
 

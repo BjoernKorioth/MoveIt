@@ -1,3 +1,5 @@
+import { Conditional } from '@angular/compiler';
+
 interface FireBaseObject {
     id: string;
     description: string;
@@ -5,6 +7,13 @@ interface FireBaseObject {
     // price: string;
     // startTime: string;
     title: string;
+    conditions: Array<Condition>;
+}
+
+interface Condition {
+    characteristic: string;
+    time: string;
+    amount: number;
 }
 
 export class Trophy {
@@ -15,7 +24,7 @@ export class Trophy {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?: string, description?: string, title?: string) {
+    constructor(id?: string, description?: string, title?: string, conditions?: Array<Condition>) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
         this.description = description || 'You get this trophy for winning 10 times a daily goal.';
@@ -23,6 +32,7 @@ export class Trophy {
         // this.price = price || '10$ amazon gift card';
         // this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
         this.title = title || '10 Daily Goals';
+        this.conditions = conditions || [];
     }
 
     static defaultTrophies = [
@@ -32,6 +42,7 @@ export class Trophy {
     id: string;
     description: string;
     title: string;
+    conditions: Array<Condition>;
 
     /**
      * Creates an Activity object from a firebase query
@@ -43,11 +54,11 @@ export class Trophy {
      */
 
     static fromFirebaseObject(id: string, firebaseObject: FireBaseObject) {
-        // @ts-ignore TS2339
-        return new Activity(
+        return new Trophy(
             id || '',
             firebaseObject.description || '',
-            firebaseObject.title || ''
+            firebaseObject.title || '',
+            firebaseObject.conditions || []
         );
     }
 
@@ -59,7 +70,8 @@ export class Trophy {
     toFirebaseObject() {
         return {
             description: this.description,
-            title: this.title
+            title: this.title,
+            conditions: this.conditions
         };
     }
 }

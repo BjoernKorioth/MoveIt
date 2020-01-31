@@ -39,7 +39,7 @@ export class User {
 
     static fromFirebaseObject(id: string, firebaseObject: FireBaseObject) {
         return new User(
-            firebaseObject.id || '',
+            id || '',
             firebaseObject.name || 'Test Account',
             firebaseObject.challengesActive || [],
             firebaseObject.group || 2,

@@ -4,13 +4,12 @@ import {AngularFireDatabase} from '@angular/fire/database';
 import {User} from '../../model/user';
 import {Group} from '../../model/group';
 import {map} from 'rxjs/operators';
+import {of} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class UserService {
-    private user: User;
-
     constructor(private db: AngularFireDatabase) {
     }
 
@@ -21,6 +20,27 @@ export class UserService {
 
     getGroupconfig(groupId) {
         return this.db.object<string>('/groups/' + groupId + '/featureVector').valueChanges();
+    }
+
+    getUsername() {
+        return this.db.object<string>('/users/' + firebase.auth().currentUser.uid + '/name').valueChanges();
+    }
+
+    getUsernameById(uid: string) {
+        return this.db.object<string>('/users/' + uid + '/name').valueChanges();
+    }
+
+    getSpecificUsername(uid) {
+        return this.db.database.ref('/users/' + uid + '/name').once('value');
+    }
+
+    getUser() {
+        if (firebase.auth().currentUser) {
+            return this.db.object<any>('/users/' + firebase.auth().currentUser.uid).snapshotChanges()
+                .pipe(map(userSnapshot => User.fromFirebaseObject(firebase.auth().currentUser.uid, userSnapshot.payload.val())));
+        } else {
+            return of(new User());
+        }
     }
 
     /**

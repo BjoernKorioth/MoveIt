@@ -3,20 +3,20 @@ import {AngularFireDatabase} from '@angular/fire/database';
 import {Post} from '../../model/post';
 import {Comment} from '../../model/comment';
 import * as firebase from 'firebase/app';
-import {AuthenticateService} from '../authentication/authentication.service';
 import {User} from '../../model/user';
-import {map} from 'rxjs/operators';
+import {first, map, switchMap} from 'rxjs/operators';
+import {UserService} from '../user/user.service';
+import {ReplaySubject} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class PostService {
-    private user: User;
+    private user: ReplaySubject<User>;
 
-    constructor(private fireDatabase: AngularFireDatabase, private authenticateService: AuthenticateService) {
-        // TODO get user
-
-        this.setUser();
+    constructor(private fireDatabase: AngularFireDatabase, private userService: UserService) {
+        this.user = new ReplaySubject(1);
+        userService.getUser().subscribe(this.user);
     }
 
     /**
@@ -26,17 +26,19 @@ export class PostService {
      */
     createPost(post: Post) {
         return new Promise<any>((resolve, reject) => {
-            const id = firebase.database().ref('/posts/' + this.user.group).push().key;
-            post.id = id;
-            post.group = this.user.group;
-            post.user = this.user.id;
+            this.user.pipe(first()).subscribe(user => {
+                const id = firebase.database().ref('/posts/' + user.group).push().key;
+                post.id = id;
+                post.group = user.group;
+                post.user = user.id;
 
-            this.fireDatabase.database.ref('/posts/' + this.user.group).child(id)
-                .set(post.toFirebaseObject()).then(
-                // Returns the post with the new id
-                () => resolve(post),
-                err => reject(err)
-            );
+                this.fireDatabase.database.ref('/posts/' + user.group).child(id)
+                    .set(post.toFirebaseObject()).then(
+                    // Returns the post with the new id
+                    () => resolve(post),
+                    err => reject(err)
+                );
+            });
         });
     }
 
@@ -48,14 +50,17 @@ export class PostService {
      */
     editPost(postId: string, post: Post) {
         return new Promise<any>((resolve, reject) => {
-            post.id = postId;
-            post.group = this.user.group;
+            this.user.pipe(first()).subscribe(user => {
 
-            this.fireDatabase.database.ref('/posts/' + this.user.group).child(postId)
-                .set(post.toFirebaseObject()).then(
-                res => resolve(res),
-                err => reject(err)
-            );
+                post.id = postId;
+                post.group = user.group;
+
+                this.fireDatabase.database.ref('/posts/' + user.group).child(postId)
+                    .set(post.toFirebaseObject()).then(
+                    res => resolve(res),
+                    err => reject(err)
+                );
+            });
         });
     }
 
@@ -70,15 +75,17 @@ export class PostService {
         return new Promise<any>((resolve, reject) => {
             this.getPost(postId).then(
                 post => {
-                    if (post.like(this.user.id)) {
-                        this.editPost(post.id, post).then(
+                    this.user.pipe(first()).subscribe(user => {
+                        if (post.like(user.id)) {
+                            this.editPost(post.id, post).then(
+                                () => resolve('Successfully liked the post'),
+                                err => reject(err)
+                            );
 
-                            () => resolve('Successfully liked the post'),
-                            err => reject(err)
-                        );
-                    } else {
-                        this.unlikePost(postId);
-                    }
+                        } else {
+                            this.unlikePost(postId);
+                        }
+                    });
                 },
                 err => reject(err)
             );
@@ -96,14 +103,16 @@ export class PostService {
         return new Promise<any>((resolve, reject) => {
             this.getPost(postId).then(
                 post => {
-                    if (post.unlike(this.user.id)) {
-                        this.editPost(post.id, post).then(
-                            () => resolve('Successfully unliked the post'),
-                            err => reject(err)
-                        );
-                    } else {
-                        this.likePost(postId);
-                    }
+                    this.user.pipe(first()).subscribe(user => {
+                        if (post.unlike(user.id)) {
+                            this.editPost(post.id, post).then(
+                                () => resolve('Successfully unliked the post'),
+                                err => reject(err)
+                            );
+                        } else {
+                            this.likePost(postId);
+                        }
+                    });
                 },
                 err => reject(err)
             );
@@ -117,48 +126,54 @@ export class PostService {
      */
     getPost(postId: string) {
         return new Promise<any>((resolve, reject) => {
-            firebase.database().ref('/posts/' + this.user.group).child(postId).once('value').then(
-                snapshot => {
-                    const data = snapshot.val();
-                    // Convert the data to an post object and return it
-                    resolve(Post.fromFirebaseObject(this.user.group, postId, data));
-                },
-                err => reject(err)
-            );
+            this.user.pipe(first()).subscribe(user => {
+                firebase.database().ref('/posts/' + user.group).child(postId).once('value').then(
+                    snapshot => {
+                        const data = snapshot.val();
+                        // Convert the data to an post object and return it
+                        resolve(Post.fromFirebaseObject(user.group, postId, data));
+                    },
+                    err => reject(err)
+                );
+            });
         });
     }
 
     /**
      * Retrieve all activities of the group
      */
-    async getAllPosts() {
-        await this.setUser();
-        const ref = this.fireDatabase.list<Post>('/posts/' + this.user.group);
-        return ref.snapshotChanges().pipe(map(posts => posts.map(
-            postSnapshot => Post.fromFirebaseObject(this.user.group, postSnapshot.key, postSnapshot.payload.val()))));
+    getAllPosts() {
+        return this.user.pipe(switchMap(user => {
+            const ref = this.fireDatabase.list<Post>('/posts/' + user.group, query => query.orderByChild('createdAt'));
+            return ref.snapshotChanges().pipe(map(posts => posts.map(
+                postSnapshot => Post.fromFirebaseObject(user.group, postSnapshot.key, postSnapshot.payload.val())).reverse()));
+        }));
+
     }
 
     /**
      * Creates a new comment in firebase from an comment objects
      *
      * @param postId id of the post to be commented on
-     * @param comment an existing comment object
+     * @param userComment an existing comment object
      */
     createComment(postId: string, userComment: string) {
-        var comment = new Comment();
+        const comment = new Comment();
         return new Promise<any>((resolve, reject) => {
-            const id = firebase.database().ref('/posts/' + this.user.group).child(postId).child('comments').push().key;
-            comment.id = id;
-            comment.post = postId;
-            comment.text = userComment;
-            comment.user = this.user.name;
+            this.user.pipe(first()).subscribe(user => {
+                const id = firebase.database().ref('/posts/' + user.group).child(postId).child('comments').push().key;
+                comment.id = id;
+                comment.post = postId;
+                comment.text = userComment;
+                comment.user = user.id;
 
-            this.fireDatabase.database.ref('/posts/' + this.user.group).child(comment.post).child('comments').child(id)
-                .set(comment.toFirebaseObject()).then(
-                // Returns the post with the new id
-                () => resolve(comment),
-                err => reject(err)
-            );
+                this.fireDatabase.database.ref('/posts/' + user.group).child(comment.post).child('comments').child(id)
+                    .set(comment.toFirebaseObject()).then(
+                    // Returns the post with the new id
+                    () => resolve(comment),
+                    err => reject(err)
+                );
+            });
         });
     }
 
@@ -174,11 +189,13 @@ export class PostService {
             comment.post = postId;
             comment.id = commentId;
 
-            this.fireDatabase.database.ref('/posts/' + this.user.group).child(postId).child('comments').child(commentId)
-                .set(comment.toFirebaseObject()).then(
-                res => resolve(res),
-                err => reject(err)
-            );
+            this.user.pipe(first()).subscribe(user => {
+                this.fireDatabase.database.ref('/posts/' + user.group).child(postId).child('comments').child(commentId)
+                    .set(comment.toFirebaseObject()).then(
+                    res => resolve(res),
+                    err => reject(err)
+                );
+            });
         });
     }
 
@@ -190,14 +207,16 @@ export class PostService {
      */
     getComment(postId, commentId) {
         return new Promise<any>((resolve, reject) => {
-            firebase.database().ref('/posts/' + this.user.group).child(postId).child('comments').child(commentId).once('value').then(
-                snapshot => {
-                    const data = snapshot.val();
-                    // Convert the data to an post object and return it
-                    resolve(Comment.fromFirebaseObject(postId, commentId, data));
-                },
-                err => reject(err)
-            );
+            this.user.pipe(first()).subscribe(user => {
+                firebase.database().ref('/posts/' + user.group).child(postId).child('comments').child(commentId).once('value').then(
+                    snapshot => {
+                        const data = snapshot.val();
+                        // Convert the data to an post object and return it
+                        resolve(Comment.fromFirebaseObject(postId, commentId, data));
+                    },
+                    err => reject(err)
+                );
+            });
         });
     }
 
@@ -207,10 +226,8 @@ export class PostService {
      * @param postId id of the post
      */
     getAllComments(postId: string) {
-        return this.fireDatabase.list<Comment>('/posts/' + this.user.group + '/' + postId).valueChanges();
-    }
-
-    async setUser(){
-        this.user = await this.authenticateService.getFullUser();
+        return this.user.pipe(switchMap(user => {
+            return this.fireDatabase.list<Comment>('/posts/' + user.group + '/' + postId).valueChanges();
+        }));
     }
 }

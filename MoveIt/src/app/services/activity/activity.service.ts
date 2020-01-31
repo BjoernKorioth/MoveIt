@@ -2,7 +2,10 @@ import {Injectable} from '@angular/core';
 import * as firebase from 'firebase/app';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {Activity} from '../../model/activity';
-import {map} from 'rxjs/operators';
+import {first, map} from 'rxjs/operators';
+import {PostService} from '../post/post.service';
+import {Post} from '../../model/post';
+import {GoalService} from '../goal/goal.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +13,7 @@ import {map} from 'rxjs/operators';
 export class ActivityService {
     activityLocation = '/activities/';
 
-    constructor(private fireDatabase: AngularFireDatabase) {
+    constructor(private fireDatabase: AngularFireDatabase, private postService: PostService, private goalService: GoalService) {
     }
 
     /**
@@ -26,7 +29,27 @@ export class ActivityService {
             this.fireDatabase.database.ref('/activities/' + firebase.auth().currentUser.uid).child(id)
                 .set(activity.toFirebaseObject()).then(
                 // Returns the activity with the new id
-                () => resolve(activity),
+                () => {
+                    this.getAllUserActivities().pipe(first()).subscribe(activities => {
+                        this.goalService.getGoals().pipe(first()).subscribe(goals => {
+                            console.log(goals);
+                            console.log(activities);
+                            this.goalService.updateGoals(goals, activities).then(
+                                () => {
+                                    const post = new Post();
+                                    post.activity = activity.id;
+                                    post.content = 'Look, I did ' + activity.getDuration() + ' minutes of ' + activity.type;
+                                    this.postService.createPost(post).then(
+                                        () => resolve(activity),
+                                        err => reject(err)
+                                    );
+                                },
+                                err => reject(err)
+                            );
+                        });
+                    });
+
+                },
                 err => reject(err)
             );
         });
@@ -70,37 +93,8 @@ export class ActivityService {
      * Retrieve all activities of the current user
      */
     getAllUserActivities() {
-        const ref = this.fireDatabase.list<Activity>(this.activityLocation + firebase.auth().currentUser.uid);
+        const ref = this.fireDatabase.list<Activity>(this.activityLocation + firebase.auth().currentUser.uid, query => query.orderByChild('endTime'));
         return ref.snapshotChanges().pipe(map(activities => activities.map(
-            activitySnapshot => Activity.fromFirebaseObject(activitySnapshot.key, activitySnapshot.payload.val()))));
-    }
-
-    /**
-     * Filter an array of activities based on time and intensity
-     *
-     * The output is an array of activities, where all items match the given intensity and their endTime lies between
-     * the fromDate and the untilDate
-     *
-     * @param activities array of activities
-     * @param intensity intensity to filter for (e.g. 'moderate')
-     * @param fromDate earliest endTime of an activity
-     * @param untilDate latest endTime of an activity
-     */
-    filterActivities(activities: Array<Activity>, intensity: string, fromDate: Date = new Date(0), untilDate: Date = new Date()) {
-        return activities.filter((activity: Activity) => {
-            if (activity.intensity !== intensity) {
-                return false;
-            }
-
-            if (activity.endTime <= fromDate) {
-                return false;
-            }
-
-            if (activity.endTime >= untilDate) {
-                return false;
-            }
-
-            return true;
-        });
+            activitySnapshot => Activity.fromFirebaseObject(activitySnapshot.key, activitySnapshot.payload.val())).reverse()));
     }
 }

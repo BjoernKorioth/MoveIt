@@ -1,118 +1,126 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Post} from '../../model/post';
 import {Comment} from '../../model/comment';
 import {PostService} from '../../services/post/post.service';
-import {Observable, empty} from 'rxjs';
-import { analytics } from 'firebase';
-import { Location } from  '@angular/common';
+import {Observable} from 'rxjs';
+import {Location} from '@angular/common';
+import {UserService} from '../../services/user/user.service';
+import {first, map} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-socialfeed-detail',
-  templateUrl: './socialfeed-detail.page.html',
-  styleUrls: ['./socialfeed-detail.page.scss'],
+    selector: 'app-socialfeed-detail',
+    templateUrl: './socialfeed-detail.page.html',
+    styleUrls: ['./socialfeed-detail.page.scss'],
 })
 
 
-
 export class SocialfeedDetailPage implements OnInit {
-  
+    posts: Observable<any[]>;
+    postText: string;
+    commentText = [];
+    now = new Date();
 
-  posts: Observable<Post[]>;
-
-  constructor(private postService: PostService, private location:Location) {
-    this.location = location;
-    
-    
-   
-  }
-
-  async ngOnInit() {
-    this.postService.setUser();
-    this.posts = await this.postService.getAllPosts();
-    this.posts.subscribe(res => {
-      console.log(res);
-    });
-  }
-
-  goBack(){
-    this.location.back();
-  }
-
-  getTimeDifference(date) {
-    // return new Date() - new Date(date);
-  }
-
-  newPost() {
-    const post = new Post();
-    post.activity = 'asdf';
-
-    this.postService.createPost(post).then(
-        res => console.log(res),
-        err => console.log(err)
-    );
-  }
-
-  editPost() {
-    this.postService.editPost('-LxfARsp_2al7-W3JYcf', new Post()).then(
-        res => console.log(res),
-        err => console.log(err)
-    );
-  }
-
-  getPost() {
-    this.postService.getPost('-LxfARsp_2al7-W3JYcf').then(
-        res => console.log(res),
-        err => console.log(err)
-    );
-  }
-
-  getAllPosts() {
-    return this.postService.getAllPosts();
-  }
-
-  like(i) {
-    var liked = document.getElementsByName("userPlace")[i].id;
-    this.postService.likePost(liked).then(
-        res => console.log(res),
-        err => console.log(err)
-    );
-  }
-
-  unlike(i) {
-    var unliked = document.getElementsByName("userPlace")[i].id;
-    this.postService.unlikePost(unliked).then(
-        res => console.log(res),
-        err => console.log(err)
-    );
-  }
-
-  newComment(i) {
-    var postid = document.getElementsByName("userPlace")[i].id;
-    var userComment = document.getElementsByTagName("input")[i].value;
-    console.log("Comment " + userComment);
-    if (userComment.length != 0){
-      this.postService.createComment(postid, userComment).then(
-        res => console.log(res),
-        err => console.log(err)
-      );
+    constructor(private postService: PostService, private location: Location, private userService: UserService) {
+        this.location = location;
     }
-  }
 
-  editComment() {
-    this.postService.editComment('-LxfARsp_2al7-W3JYcf', '-LxfDHCgec1oZ268jioI', new Comment()).then(
-        res => console.log(res),
-        err => console.log(err)
-    );
-  }
+    async ngOnInit() {
+        this.posts = this.postService.getAllPosts().pipe(map(posts => posts.map(post => {
+            const pseudoPost = {
+                username: this.getUsername(post.user).pipe(first()),
+                usernames: [],
+                ...post
+            };
+            pseudoPost.usernames = pseudoPost.comments.map(comment => this.getUsername(comment.user).pipe(first()));
+            return pseudoPost;
+        })));
+        this.posts.subscribe(r => console.log(r));
+    }
 
-  getComment() {
-    this.postService.getComment('-LxfARsp_2al7-W3JYcf', '-LxfDHCgec1oZ268jioI').then(
-        res => console.log(res),
-        err => console.log(err)
-    );
-  }
+    goBack() {
+        this.location.back();
+    }
 
-  getAllComments() {
-    return this.postService.getAllComments('-LxfARsp_2al7-W3JYcf');
-  }
+    getTimeDifference(date: Date) {
+        return Math.round(this.now.getTime() - date.getTime() / 60 * 1000);
+    }
+
+    newPost(text: string) {
+        const post = new Post();
+        post.content = text;
+
+        this.postService.createPost(post).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
+    }
+
+    editPost() {
+        this.postService.editPost('-LxfARsp_2al7-W3JYcf', new Post()).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
+    }
+
+    getPost() {
+        this.postService.getPost('-LxfARsp_2al7-W3JYcf').then(
+            res => console.log(res),
+            err => console.log(err)
+        );
+    }
+
+    getAllPosts() {
+        return this.postService.getAllPosts();
+    }
+
+    like(i) {
+        const liked = document.getElementsByName('userPlace')[i].id;
+        this.postService.likePost(liked).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
+    }
+
+    unlike(i) {
+        const unliked = document.getElementsByName('userPlace')[i].id;
+        this.postService.unlikePost(unliked).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
+    }
+
+    newComment(post: Post, text) {
+        if (this.commentText.length !== 0) {
+            this.postService.createComment(post.id, text).then(
+                res => {
+                    // @ts-ignore
+                    this.userService.getUsername().pipe(first()).subscribe(username => post.usernames.push(username));
+                    console.log(res);
+                },
+                err => console.log(err)
+            );
+        }
+    }
+
+    editComment() {
+        this.postService.editComment('-LxfARsp_2al7-W3JYcf', '-LxfDHCgec1oZ268jioI', new Comment()).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
+    }
+
+    getComment() {
+        this.postService.getComment('-LxfARsp_2al7-W3JYcf', '-LxfDHCgec1oZ268jioI').then(
+            res => console.log(res),
+            err => console.log(err)
+        );
+    }
+
+    getAllComments() {
+        return this.postService.getAllComments('-LxfARsp_2al7-W3JYcf');
+    }
+
+    getUsername(id) {
+        return this.userService.getUsernameById(id);
+    }
 }

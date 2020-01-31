@@ -14,9 +14,9 @@ export class ChallengeService {
     }
 
     /**
-     * Creates a new activity in firebase from an activity objects
+     * Creates a new challenge in firebase from an activity objects
      *
-     * @param challenge an existing activity object
+     * @param challenge an existing challenge object
      */
     createChallenge(challenge: Challenge) {
         return new Promise<any>((resolve, reject) => {
@@ -34,15 +34,25 @@ export class ChallengeService {
         return firebase.database().ref('/challenges/' + challenge.id).set(challenge.toFirebaseObject());
     }
 
-
+    /**
+     * this is needed to initially get all available challenges
+     */
     getAllAvailableChallenges() {
         return this.fireDatabase.list<Challenge>('challenges').valueChanges();
     }
 
+    /**
+     * this is necessary in order to get all own active challenges to sort it in the frontend then
+     */
     getAllUserActiveChallenges() {
         return this.fireDatabase.list<Challenge>('/users/' + firebase.auth().currentUser.uid + '/challengesActive').valueChanges();
     }
 
+
+    /**
+     * this methods returns the participants node as a object which is then converted to an array in order to determine it length
+     * @param challenge identify a specific challenge and its participants
+     */
     getListOfParticipants(challenge: Challenge) {
         return new Promise<any>((resolve, reject) => {
 
@@ -54,6 +64,7 @@ export class ChallengeService {
         });
     }
 
+
     getAllChallenges() {
         const ref = this.fireDatabase.list<any>('/challenges/');
         // Retrieve an array, but with its metadata. This is necesary to have the key available
@@ -63,6 +74,11 @@ export class ChallengeService {
 
     }
 
+
+    /**
+     * this method adds the challenge to the users array which is necessary to determine the participated challenges
+     * @param challenge identify the specific challenge which the user wants to participate
+     */
     addChallengeToActive(challenge: Array<Challenge>) {
         return new Promise<any>((resolve, reject) => {
             this.fireDatabase.database.ref('/users/' + firebase.auth().currentUser.uid).child('challengesActive')
@@ -73,6 +89,10 @@ export class ChallengeService {
         });
     }
 
+    /**
+     * increment the participants array in order to show it to the others
+     * @param challenge identify challenge
+     */
     registerOnChallenge(challenge: Challenge) {
         return new Promise<any>((resolve, reject) => {
             this.fireDatabase.database.ref('/challenges/' + challenge.id).child('participants')
@@ -83,10 +103,43 @@ export class ChallengeService {
         });
     }
 
+    /**
+     * decrement the participants array in order to show it to the others
+     * @param challenge identify challenge
+     */
     deRegisterOnChallenge(challenge: Challenge) {
         return new Promise<any>((resolve, reject) => {
             this.fireDatabase.database.ref('/challenges/' + challenge.id).child('participants')
                 .child(firebase.auth().currentUser.uid).remove().then(
+                res => resolve(res),
+                err => reject(err)
+            );
+        });
+    }
+
+    /**
+     * finish the challenge, this method is called from the admin dashboard in order to disable further registration
+     * @param challenge identify the challenge
+     */
+    finishChallenge(challenge:Challenge){
+        return new Promise<any>((resolve, reject) => {
+            this.fireDatabase.database.ref('/challenges/' + challenge.id).child('finished')
+                .set('true').then(
+                res => resolve(res),
+                err => reject(err)
+            );
+        });
+    }
+
+    /**
+     * after the finish, the researcher needs to manually determine the challenge winner
+     * @param challenge the challenge to identify
+     * @param uid the uid who wins this challenge
+     */
+    setWinner(challenge:Challenge, uid: string){
+        return new Promise<any>((resolve, reject) => {
+            this.fireDatabase.database.ref('/challenges/' + challenge.id).child('winner')
+                .set(uid).then(
                 res => resolve(res),
                 err => reject(err)
             );
