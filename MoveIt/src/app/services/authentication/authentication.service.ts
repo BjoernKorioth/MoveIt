@@ -9,7 +9,7 @@ import {GoalService} from '../goal/goal.service';
 export class AuthenticateService {
     private user: User;
 
-    constructor(private db: AngularFireDatabase, private goalService: GoalService) {
+    constructor(private db: AngularFireDatabase, private goalService: GoalService, private rewardsService: RewardsService) {
     }
 
     /**
@@ -37,6 +37,7 @@ export class AuthenticateService {
                                 this.registerOnDatabase(user).then(
                                     // If this is successful, resolve the promise
                                     () => {
+                                        this.rewardsService.initializeTrophies();
                                         this.goalService.initializeUserGoals().then(
                                             () => resolve(userCredential),
                                             err => reject(err)
