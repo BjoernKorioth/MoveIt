@@ -2,6 +2,7 @@ interface FirebaseObject {
     view: string;
     startTime: number;
     endTime: number;
+    completeTime: number;
 }
 
 export class ViewLog {
@@ -17,6 +18,7 @@ export class ViewLog {
         this.view = view || '';
         this.startTime = startTime || new Date();
         this.endTime = endTime || new Date();
+        this.completeTime = endTime.getTime() - startTime.getTime();
     }
 
     static views = ['registration', 'login', 'dashboard', 'progress', 'add-activity', 'information', 'socialfeed',
@@ -24,6 +26,7 @@ export class ViewLog {
     view: string;
     startTime: Date;
     endTime: Date;
+    completeTime: number;
 
     /**
      * Reconstruct the ViewLog from a firebase result
@@ -46,7 +49,8 @@ export class ViewLog {
         return {
             view: this.view,
             startTime: this.startTime.getTime(),
-            endTime: this.endTime.getTime()
+            endTime: this.endTime.getTime(),
+            completeTime: this.completeTime
         };
     }
 }
