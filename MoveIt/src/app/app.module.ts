@@ -21,6 +21,7 @@ import {AuthenticateService} from './services/authentication/authentication.serv
 import {AngularFireAuthGuardModule} from '@angular/fire/auth-guard';
 import { Health } from '@ionic-native/health/ngx';
 
+
 const firebaseConfig = {
     apiKey: 'AIzaSyAeeexHFSp2HevDoOi7MdzCLdgET6QtMg4',
     authDomain: 'moveit-2019.firebaseapp.com',
@@ -45,7 +46,10 @@ const firebaseConfig = {
         AngularFirestoreModule,
         AngularFireDatabaseModule,
         AngularFireAuthGuardModule,
-        AngularFireStorageModule
+        AngularFireStorageModule,
+        AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+        AngularFireStorageModule // imports firebase/storage only needed for storage features
+  
     ],
     providers: [
         StatusBar,
