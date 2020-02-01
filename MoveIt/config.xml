@@ -99,4 +99,15 @@
     <plugin name="cordova-plugin-splashscreen" spec="5.0.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="^4.0.0" />
     <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
+    <plugin name="cordova-plugin-health" source="npm">
+        <variable name="HEALTH_READ_PERMISSION" value="App needs read access" />
+        <variable name="HEALTH_WRITE_PERMISSION" value="App needs write access" />
+        <variable name="GMS_VERSION" value="16.0.1" />
+    </plugin>
+    <config-file parent="NSHealthShareUsageDescription" platform="ios">
+        <string>App needs read access</string>
+    </config-file>
+    <config-file parent="NSHealthUpdateUsageDescription" platform="ios">
+        <string>App needs write access</string>
+    </config-file>
 </widget>

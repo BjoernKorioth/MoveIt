@@ -82,6 +82,8 @@
       },
       "cordova-plugin-ionic-keyboard": {},
       "cordova-plugin-health": {
+        "HEALTH_READ_PERMISSION": "App needs read access",
+        "HEALTH_WRITE_PERMISSION": "App needs write access",
         "GMS_VERSION": "16.0.1"
       }
     },
