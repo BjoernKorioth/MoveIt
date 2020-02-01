@@ -1,5 +1,3 @@
-import { Conditional } from '@angular/compiler';
-
 interface FireBaseObject {
     id: string;
     description: string;
@@ -77,9 +75,21 @@ export class Trophy {
             }]
         }
     ];
+    static conditions3 = [
+        {
+            time: {unit: 'day', number: 1},
+            requirements: [{
+                type: 'goal',
+                expression: 'dailyWeight',
+                amount: 2,
+                modifier: ''
+            }]
+        }
+    ];
     static defaultTrophies = [
         new Trophy('perfect-week', 'Win all your daily goals each day for a week', 'Perfect Week', Trophy.conditions1),
-        new Trophy('7-activity-week', 'Complete 7 physical activities in one week', '7 Activity Week', Trophy.conditions2)
+        new Trophy('7-activity-week', 'Complete 7 physical activities in one week', '7 Activity Week', Trophy.conditions2),
+        new Trophy('2-weight-goals', 'Win your weight goal twice', '2 weight goals', Trophy.conditions3)
     ];
     id: string;
     description: string;

@@ -52,7 +52,12 @@ export class ActivityService {
         return new Promise<any>((resolve, reject) => {
             this.fireDatabase.database.ref(this.activityLocation + firebase.auth().currentUser.uid).child(activityId)
                 .set(activity.toFirebaseObject()).then(
-                res => resolve(res),
+                () => {
+                    this.runUpdates(activity).then(
+                        () => resolve(activity),
+                        err => reject(err)
+                    );
+                },
                 err => reject(err)
             );
         });
@@ -62,6 +67,7 @@ export class ActivityService {
         return new Promise<any>((resolve, reject) => {
             this.getAllUserActivities().pipe(first()).subscribe(activities => {
                 this.goalService.getGoals().pipe(first()).subscribe(goals => {
+                    console.log(activities);
                     this.goalService.updateGoals(goals, activities).then(
                         () => {
                             this.rewardsService.updateTrophies(activities, goals).then(

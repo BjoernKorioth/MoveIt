@@ -161,8 +161,11 @@ export class RewardsService {
                 for (const requirement of condition.requirements) {
                     let targetCollection: Array<number>;
                     if (requirement.type === 'goal') {
-                        targetCollection = goalWins[requirement.expression]
-                            .map(element => mapToStartOf(new Date(element), condition.time.unit));
+                        targetCollection = [];
+                        if (requirement.expression in goalWins) {
+                            targetCollection = goalWins[requirement.expression]
+                                .map(element => mapToStartOf(new Date(element), condition.time.unit));
+                        }
                     } else if (requirement.type === 'activity') {
                         targetCollection = activities.map(activity => mapToStartOf(activity.endTime, condition.time.unit));
                     } else {

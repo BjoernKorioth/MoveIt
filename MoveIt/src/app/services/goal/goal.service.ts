@@ -232,6 +232,8 @@ export class GoalService {
      * @param untilDate latest endTime of an activity
      */
     filterActivities(activities: Array<Activity>, intensity: string, fromDate: Date = new Date(0), untilDate: Date = new Date()) {
+        fromDate.setHours(0, 0, 0);
+        untilDate.setHours(23, 59, 59);
         return activities.filter((activity: Activity) => {
             if (activity.intensity !== intensity) {
                 return false;
