@@ -41,7 +41,7 @@ export class RewardsTrophiesPage implements OnInit {
         this.location = location;
         this.trophies = Trophy.defaultTrophies;
         this.activityService.getAllUserActivities().subscribe(activities => this.activities = activities);
-       
+        this.goalService.getGoalWins().subscribe(goals => this.goals = goals);
        
        this.inactTrophies = [
            {
@@ -123,13 +123,13 @@ export class RewardsTrophiesPage implements OnInit {
     addToActiveList(challenge: Challenge) {
         this.activeChallenges.push(challenge);
         this.identifyChallenge(challenge);
-      //  this.challService.addChallengeToActive(this.activeChallenges);
+        this.challService.addChallengeToActive(this.activeChallenges);
     }
 
     removeFromActiveList(activeChallenge: Challenge) {
         this.challenges.push(activeChallenge);
         this.identifyActiveChallenge(activeChallenge);
-      //  this.challService.addChallengeToActive(this.activeChallenges);
+       this.challService.addChallengeToActive(this.activeChallenges);
     }
 
     identifyChallenge(challenge: Challenge) {
