@@ -16,9 +16,9 @@ export class PostService {
 
     constructor(private fireDatabase: AngularFireDatabase, private userService: UserService) {
         // TODO get user
-       // this.user = new ReplaySubject(1);
-        // userService.getUser().subscribe(this.user);
-        // userService.getUser().subscribe(user => console.log(user));
+        this.user = new ReplaySubject(1);
+        userService.getUser().subscribe(this.user);
+        userService.getUser().subscribe(user => console.log(user));
     }
 
     /**
