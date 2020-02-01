@@ -1,15 +1,15 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivityService} from '../../services/activity/activity.service';
-import {Activity} from '../../model/activity';
-import {merge, Observable} from 'rxjs';
-import {GoalService} from '../../services/goal/goal.service';
-import {Goal} from '../../model/goal';
-import {Location} from '@angular/common';
-import {Health} from '@ionic-native/health/ngx';
-import {Platform} from '@ionic/angular';
-import {Router} from '@angular/router';
-import {Chart} from 'chart.js';
-import {first, map} from 'rxjs/operators';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivityService } from '../../services/activity/activity.service';
+import { Activity } from '../../model/activity';
+import { merge, Observable } from 'rxjs';
+import { GoalService } from '../../services/goal/goal.service';
+import { Goal } from '../../model/goal';
+import { Location } from '@angular/common';
+import { Health } from '@ionic-native/health/ngx';
+import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { Chart } from 'chart.js';
+import { first, map } from 'rxjs/operators';
 
 
 @Component({
@@ -24,12 +24,12 @@ export class ProgressDetailPage implements OnInit {
     goals: Observable<any>;
     goalStorage: Array<Goal>;
 
-    @ViewChild('hrzLineChart', {static: false}) hrzLineChart: { nativeElement: any; };
+    @ViewChild('hrzLineChart', { static: false }) hrzLineChart: { nativeElement: any; };
     hrzLines: any;
 
 
     constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location,
-                private health: Health, private platform: Platform, private router: Router) {
+        private health: Health, private platform: Platform, private router: Router) {
         this.activities = this.activityService.getAllUserActivities();
 
         this.displayedActivities = this.activities.pipe(map(
@@ -116,9 +116,9 @@ export class ProgressDetailPage implements OnInit {
                         }
                     ])
                         .then(res => {
-                                console.log(res);
-                                this.loadHealthData();
-                            }
+                            console.log(res);
+                            this.loadHealthData();
+                        }
                         )
                         .catch(e => console.log(e));
                 })
@@ -140,12 +140,32 @@ export class ProgressDetailPage implements OnInit {
 
     loadHealthData() {
 
+        this.health.requestAuthorization([
+            'distance', 'nutrition', //read and write permissions
+            {
+                read: ['steps'], //read only permission
+                write: ['height', 'weight'] //write only permission
+            }
+        ])
+            .then(
+                res => console.log(res))
+            .catch(e => console.log(e));
         this.health.query({
             startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // three days ago
             endDate: new Date(), // now
-            dataType: 'steps'
-        }).then(res => console.log(res))
-            .catch(e => console.log(e));
+            dataType: 'steps',
+        }).then((value: []) => {
+            console.log('Value:', value);
+            // console.log('Before For loop');
+            // tslint:disable-next-line: forin
+            // for (const val in value) {
+            // console.log('HealthData data' + JSON.stringify(value[val].value));
+            // console.log('HealthData data' + JSON.stringify(value[val]));
+            // }
+        }).catch((e: any) => {
+            console.error('HealthData ERROR:---' + e);
+        });
+
     }
 
 
@@ -154,11 +174,11 @@ export class ProgressDetailPage implements OnInit {
     }
 
     routeToEditGoalPage(goal: Goal) {
-        this.router.navigateByUrl('/menu/goals/goals/detail', {state: {goal}});
+        this.router.navigateByUrl('/menu/goals/goals/detail', { state: { goal } });
     }
 
     routeToEditPage(activity: Activity) {
-        this.router.navigateByUrl('/menu/progress/progress/edit', {state: {activity}});
+        this.router.navigateByUrl('/menu/progress/progress/edit', { state: { activity } });
     }
 
     /**
@@ -180,7 +200,7 @@ export class ProgressDetailPage implements OnInit {
      * An updated activity object and the id of the activity to be updated must be provided
      */
     editActivity() {
-        const record = new Activity('-Lx_t1Ch4v1h7sox96XZ', {unit: 'km', value: 42.2});
+        const record = new Activity('-Lx_t1Ch4v1h7sox96XZ', { unit: 'km', value: 42.2 });
 
         // TODO replace with actual activity id
         this.activityService.editActivity('-Lx_t1Ch4v1h7sox96XZ', record).then(
