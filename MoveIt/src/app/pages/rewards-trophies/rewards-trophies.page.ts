@@ -39,11 +39,14 @@ export class RewardsTrophiesPage implements OnInit {
         //   this.identifyChallenge(this.activeChallenges[i]);
         // }});
         this.location = location;
-        this.trophies = Trophy.defaultTrophies;
+        this.rewardsService.getWonTrophies().subscribe(rewards => this.trophies = rewards);
+        this.rewardsService.getAvailableTrophies().subscribe(rewards => this.inactTrophies = rewards);
+       // this.trophies = Trophy.defaultTrophies;
         this.activityService.getAllUserActivities().subscribe(activities => this.activities = activities);
         this.goalService.getGoalWins().subscribe(goals => this.goals = goals);
        
-       this.inactTrophies = [
+        
+      /* this.inactTrophies = [
            {
             title: "Not achieved"   
            },
@@ -53,7 +56,7 @@ export class RewardsTrophiesPage implements OnInit {
            {
             title: "Not achieved"   
            }
-       ]
+       ] */
         // this.goalService.getGoalWins().subscribe(goals => this.goals = goals);
         /*this.challenges= [
           {
