@@ -24,6 +24,8 @@ export class RewardsChallengesPage implements OnInit {
   calculatedActive: boolean;
   calculatedAll: boolean;
 
+  date : Date;
+
   constructor(private challService: ChallengeService, private location:Location) { 
 
     this.challengesObserve = this.challService.getAllChallenges();
@@ -185,10 +187,10 @@ export class RewardsChallengesPage implements OnInit {
    * @param challenges array of all challenges
    */
   identifyInvalidChallenges(challenges:Array<Challenge>){
-    var date = new Date();
+    this.date = new Date();
     for(var i = 0; i<challenges.length; i++){    
-      if(challenges[i].endTime.getTime() < date.getTime() || challenges[i].finished){
-        console.log("SYSTEM DATE: " + date);
+      if(challenges[i].endTime.getTime() < this.date.getTime() || challenges[i].finished){
+        console.log("SYSTEM DATE: " + this.date);
         console.log("Challenge date: " + challenges[i].endTime);
         challenges.splice(i,i+1);
       }
