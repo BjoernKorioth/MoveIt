@@ -4,11 +4,14 @@ import { GoalService } from 'src/app/services/goal/goal.service';
 import { Activity } from 'src/app/model/activity';
 import { ActivityService } from 'src/app/services/activity/activity.service';
 import {Goal} from '../../model/goal';
+import {User} from '../../model/user';
 import {Observable} from 'rxjs';
 import { AlertController } from '@ionic/angular';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { finalize, tap } from 'rxjs/operators';
+//import { userInfo } from 'os';
+import {UserService} from '../../services/user/user.service';
 
 export interface MyData {
   name: string;
@@ -26,12 +29,14 @@ export interface MyData {
 
 
 export class ProfileDetailPage implements OnInit {
+   currentUser: User;
   activities: Observable<Activity[]>;
   goals: Observable<any>;
   goalStorage: Array<Goal>;
   private imageCollection: AngularFirestoreCollection<MyData>
+  age: any;
 
-  constructor(private location:Location, private goalService: GoalService, private activityService: ActivityService, public alertController: AlertController, private storage: AngularFireStorage, private database: AngularFirestore) { 
+  constructor(private location:Location, private goalService: GoalService, private userService: UserService, private activityService: ActivityService, public alertController: AlertController, private storage: AngularFireStorage, private database: AngularFirestore) { 
     this.activities = this.activityService.getAllUserActivities();
     this.goals = this.goalService.getGoals();
     this.goals.subscribe(goals => this.goalStorage = goals);
@@ -41,6 +46,18 @@ export class ProfileDetailPage implements OnInit {
     this.imageCollection = database.collection<MyData>('freakyImages');
     this.images = this.imageCollection.valueChanges();
     //this.router = router;
+    this.userService.getUser().subscribe(user => {
+      this.currentUser = user;
+      console.log(this.currentUser);
+
+      let timeDiff = Math.abs(Date.now() - this.currentUser.birthday.getTime());
+   this.age = Math.floor((timeDiff / (1000 * 3600 * 24))/365.25);
+   console.log(this.age);
+
+    });
+    
+
+   
   }
 
 // Upload Task 

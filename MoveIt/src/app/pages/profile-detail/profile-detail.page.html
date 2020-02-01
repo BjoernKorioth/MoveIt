@@ -18,12 +18,12 @@
         <!--img [src]="post.image"-->
       </ion-avatar>
       
-      <ion-label>
-        <h2>Ursula</h2> 
-        <p>30 Jahre</p>
+        
+        <ion-label>
+        <h2>{{ (currentUser.name | async )}}</h2> 
+        <p>{{age}} years old</p>
       </ion-label>
-      <ion-label side="end">
-       
+      <ion-label side="end">  
        
       </ion-label>
       
