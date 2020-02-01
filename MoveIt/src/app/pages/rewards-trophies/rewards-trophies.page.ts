@@ -19,6 +19,7 @@ import {Activity} from '../../model/activity';
 })
 export class RewardsTrophiesPage implements OnInit {
     trophies: any;
+    inactTrophies: any;
     activities: Array<Activity>;
     goals: object;
     challenges: Array<Challenge>;
@@ -38,9 +39,25 @@ export class RewardsTrophiesPage implements OnInit {
         //   this.identifyChallenge(this.activeChallenges[i]);
         // }});
         this.location = location;
-        this.trophies = Trophy.defaultTrophies;
+        this.rewardsService.getWonTrophies().subscribe(rewards => this.trophies = rewards);
+        this.rewardsService.getAvailableTrophies().subscribe(rewards => this.inactTrophies = rewards);
+       // this.trophies = Trophy.defaultTrophies;
         this.activityService.getAllUserActivities().subscribe(activities => this.activities = activities);
         this.goalService.getGoalWins().subscribe(goals => this.goals = goals);
+       
+        
+      /* this.inactTrophies = [
+           {
+            title: "Not achieved"   
+           },
+           {
+            title: "Not achieved"   
+           },
+           {
+            title: "Not achieved"   
+           }
+       ] */
+        // this.goalService.getGoalWins().subscribe(goals => this.goals = goals);
         /*this.challenges= [
           {
             description: 'Run the equivalent of a marathon during one week',
@@ -115,7 +132,7 @@ export class RewardsTrophiesPage implements OnInit {
     removeFromActiveList(activeChallenge: Challenge) {
         this.challenges.push(activeChallenge);
         this.identifyActiveChallenge(activeChallenge);
-        this.challService.addChallengeToActive(this.activeChallenges);
+       this.challService.addChallengeToActive(this.activeChallenges);
     }
 
     identifyChallenge(challenge: Challenge) {

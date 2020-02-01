@@ -16,11 +16,23 @@
 
 
     <div>
+      
     <ion-row>
       <ion-col size="4" *ngFor="let trophy of trophies" margin-top="80">
         <ion-list>
           <ion-item>
               <img [src]="'./assets/Trophy.png'"/>
+          </ion-item>
+          <ion-item class="padding">
+              {{trophy.title}}
+          </ion-item>
+        </ion-list>
+      </ion-col>
+
+      <ion-col size="4" *ngFor="let trophy of inactTrophies" margin-top="80">
+        <ion-list>
+          <ion-item>
+              <img [src]="'./assets/TrophyNotAchieved.png'"/>
           </ion-item>
           <ion-item class="padding">
               {{trophy.title}}
