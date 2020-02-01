@@ -16,11 +16,8 @@ import {User} from '../../model/user';
 
 import { TrophyArray } from 'src/app/model/trophyArray';
 
-import { ViewLog } from 'src/app/model/viewLog';
-
 import {UserService} from '../../services/user/user.service';
 
-import {TrackingService} from '../../services/tracking/tracking.service';
 
 @Component({
     selector: 'app-leaderboard-detail',
@@ -91,12 +88,9 @@ export class LeaderboardDetailPage implements OnInit {
   challengesList: Array<LeaderboardObject>
 
   tempUsername : string;
-  private currentUser: User;
+ // private currentUser: User;
 
-  startTime: Date;
-  endTime: Date;
-
-  constructor(private goalservice: GoalService, private trophyService: TrophyService, private userService: UserService, private trackingService: TrackingService, private location:Location) { 
+  constructor(private goalservice: GoalService, private trophyService: TrophyService, private userService: UserService, private location:Location) { 
 
    /* //Observable1
     this.activitiesObserve = this.goalservice.getAllOtherAvailableGoals();
@@ -120,7 +114,6 @@ export class LeaderboardDetailPage implements OnInit {
    * first get all important observables with the corresponding database queries
    */
     ngOnInit() {
-      this.startTime = new Date();
   //Observable1
       this.activitiesObserve = this.goalservice.getAllOtherAvailableGoals();
 
@@ -136,18 +129,10 @@ export class LeaderboardDetailPage implements OnInit {
       });
       
       
-      this.userService.getUser().subscribe(user => this.currentUser = user);
-      console.log(this.currentUser);
+   //   this.userService.getUser().subscribe(user => this.currentUser = user);
+   //   console.log(this.currentUser);
 
-      console.log(this.currentUser);
-    }
-
-    
-    ngOnDestroy(){
-      this.endTime = new Date();
-      var viewLog = new ViewLog("Leaderboard-Detail", this.startTime, this.endTime);
-      this.trackingService.logViewTime(viewLog);
-      console.log(viewLog);
+   //   console.log(this.currentUser);
     }
 
 
@@ -160,13 +145,14 @@ export class LeaderboardDetailPage implements OnInit {
 
     for(var i = 0; i < result.length; i++){
       var oneResult = result[i];
+      console.log("IM IN");
       if(oneResult){
-   
-              let entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length ,this.userService);
+   /** 
+              let entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length ,this.authService);
 
               console.log(entity1);
               
-              testArray.push(entity1);
+              testArray.push(entity1); */
         }
       }
         
@@ -225,7 +211,6 @@ export class LeaderboardDetailPage implements OnInit {
          console.log("MODERATE");
          console.log(this.activitiesModerate);*/
     }
-
 
 
     goBack() {

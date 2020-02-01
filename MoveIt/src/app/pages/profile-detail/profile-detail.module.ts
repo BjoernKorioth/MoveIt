@@ -7,6 +7,9 @@ import { IonicModule } from '@ionic/angular';
 
 import { ProfileDetailPage } from './profile-detail.page';
 
+import { FileSizeFormatPipe } from './file-size-format.pipe';
+
+
 const routes: Routes = [
   {
     path: '',
@@ -21,6 +24,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [ProfileDetailPage]
+  declarations: [ProfileDetailPage, FileSizeFormatPipe]
 })
 export class ProfileDetailPageModule {}

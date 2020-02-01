@@ -15,10 +15,12 @@ import {AngularFireDatabaseModule} from '@angular/fire/database';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {ReactiveFormsModule} from '@angular/forms';
+import { AngularFireStorageModule } from '@angular/fire/storage';
 
 import {AuthenticateService} from './services/authentication/authentication.service';
 import {AngularFireAuthGuardModule} from '@angular/fire/auth-guard';
 import { Health } from '@ionic-native/health/ngx';
+
 
 const firebaseConfig = {
     apiKey: 'AIzaSyAeeexHFSp2HevDoOi7MdzCLdgET6QtMg4',
@@ -43,7 +45,11 @@ const firebaseConfig = {
         AngularFireAuthModule,
         AngularFirestoreModule,
         AngularFireDatabaseModule,
-        AngularFireAuthGuardModule
+        AngularFireAuthGuardModule,
+        AngularFireStorageModule,
+        AngularFirestoreModule, // imports firebase/firestore, only needed for database features
+        AngularFireStorageModule // imports firebase/storage only needed for storage features
+  
     ],
     providers: [
         StatusBar,
