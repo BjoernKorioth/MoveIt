@@ -76,7 +76,8 @@ export class Challenge {
             price: this.price,
             startTime: this.startTime.toDateString(),
             title: this.title,
-            finished: this.finished
+            finished: this.finished,
+            participants: this.participants
         };
     }
 }
