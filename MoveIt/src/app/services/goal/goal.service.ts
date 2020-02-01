@@ -198,7 +198,7 @@ export class GoalService {
                         if (lastWin.getDate() === newWin.getDate()
                             && lastWin.getMonth() === newWin.getMonth()
                             && lastWin.getFullYear() === newWin.getFullYear()) {
-                            resolve('goal was already won for today');
+                            resolve('goal was already won');
                         } else {
                             // If not, append it to the wins list
                             wins.push((new Date()).getTime());

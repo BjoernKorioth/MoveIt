@@ -6,6 +6,7 @@ import {first, map} from 'rxjs/operators';
 import {PostService} from '../post/post.service';
 import {Post} from '../../model/post';
 import {GoalService} from '../goal/goal.service';
+import {RewardsService} from '../rewards/rewards.service';
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,8 @@ import {GoalService} from '../goal/goal.service';
 export class ActivityService {
     activityLocation = '/activities/';
 
-    constructor(private fireDatabase: AngularFireDatabase, private postService: PostService, private goalService: GoalService) {
+    constructor(private fireDatabase: AngularFireDatabase, private postService: PostService, private goalService: GoalService,
+                private rewardsService: RewardsService) {
     }
 
     /**
@@ -30,25 +32,10 @@ export class ActivityService {
                 .set(activity.toFirebaseObject()).then(
                 // Returns the activity with the new id
                 () => {
-                    this.getAllUserActivities().pipe(first()).subscribe(activities => {
-                        this.goalService.getGoals().pipe(first()).subscribe(goals => {
-                            console.log(goals);
-                            console.log(activities);
-                            this.goalService.updateGoals(goals, activities).then(
-                                () => {
-                                    const post = new Post();
-                                    post.activity = activity.id;
-                                    post.content = 'Look, I did ' + activity.getDuration() + ' minutes of ' + activity.type;
-                                    this.postService.createPost(post).then(
-                                        () => resolve(activity),
-                                        err => reject(err)
-                                    );
-                                },
-                                err => reject(err)
-                            );
-                        });
-                    });
-
+                    this.runUpdates(activity).then(
+                        () => resolve(activity),
+                        err => reject(err)
+                    );
                 },
                 err => reject(err)
             );
@@ -69,6 +56,33 @@ export class ActivityService {
                 err => reject(err)
             );
         });
+    }
+
+    runUpdates(activity: Activity) {
+        return new Promise<any>((resolve, reject) => {
+            this.getAllUserActivities().pipe(first()).subscribe(activities => {
+                this.goalService.getGoals().pipe(first()).subscribe(goals => {
+                    this.goalService.updateGoals(goals, activities).then(
+                        () => {
+                            this.rewardsService.updateTrophies(activities, goals).then(
+                                () => {
+                                    const post = new Post();
+                                    post.activity = activity.id;
+                                    post.content = 'Look, I did ' + activity.getDuration() + ' minutes of ' + activity.type;
+                                    this.postService.createPost(post).then(
+                                        () => resolve(activity),
+                                        err => reject(err)
+                                    );
+                                },
+                                err => reject(err)
+                            );
+                        },
+                        err => reject(err)
+                    );
+                });
+            });
+        });
+
     }
 
     /**
@@ -93,7 +107,8 @@ export class ActivityService {
      * Retrieve all activities of the current user
      */
     getAllUserActivities() {
-        const ref = this.fireDatabase.list<Activity>(this.activityLocation + firebase.auth().currentUser.uid, query => query.orderByChild('endTime'));
+        const ref = this.fireDatabase
+            .list<Activity>(this.activityLocation + firebase.auth().currentUser.uid, query => query.orderByChild('endTime'));
         return ref.snapshotChanges().pipe(map(activities => activities.map(
             activitySnapshot => Activity.fromFirebaseObject(activitySnapshot.key, activitySnapshot.payload.val())).reverse()));
     }
