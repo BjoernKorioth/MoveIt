@@ -71,3 +71,9 @@ git pull origin master
 git push origin staging
 git checkout master
 git branch -D staging
+
+git checkout -b tracking
+git pull origin master
+git push origin tracking
+git checkout master
+git branch -D tracking

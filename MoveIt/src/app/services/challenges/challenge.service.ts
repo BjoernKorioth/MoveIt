@@ -44,8 +44,16 @@ export class ChallengeService {
     /**
      * this is necessary in order to get all own active challenges to sort it in the frontend then
      */
-    getAllUserActiveChallenges() {
+    /**getAllUserActiveChallenges() {
         return this.fireDatabase.list<Challenge>('/users/' + firebase.auth().currentUser.uid + '/challengesActive').valueChanges();
+    }*/
+
+    getAllUserActiveChallenges() {
+        const ref = this.fireDatabase.list<String>('/users/' + firebase.auth().currentUser.uid + '/challengesActive');
+        // Retrieve an array, but with its metadata. This is necesary to have the key available
+        // An array of Goals is reconstructed using the fromFirebaseObject method
+        return ref.snapshotChanges().pipe(
+            map(challenges => challenges.map(goalPayload => goalPayload.key)));
     }
 
 
@@ -79,10 +87,31 @@ export class ChallengeService {
      * this method adds the challenge to the users array which is necessary to determine the participated challenges
      * @param challenge identify the specific challenge which the user wants to participate
      */
-    addChallengeToActive(challenge: Array<Challenge>) {
+    /*addChallengeToActive(challenge: Array<Challenge>) {
         return new Promise<any>((resolve, reject) => {
             this.fireDatabase.database.ref('/users/' + firebase.auth().currentUser.uid).child('challengesActive')
                 .set(challenge).then(
+                res => resolve(res),
+                err => reject(err)
+            );
+        });
+    }*/
+
+
+    addChallengeToActive(challenge: Challenge) {
+        return new Promise<any>((resolve, reject) => {
+            this.fireDatabase.database.ref('/users/' + firebase.auth().currentUser.uid).child('challengesActive')
+                .child(challenge.id).set('true').then(
+                res => resolve(res),
+                err => reject(err)
+            );
+        });
+    }
+
+    removeChallengeFromActive(challenge: Challenge) {
+        return new Promise<any>((resolve, reject) => {
+            this.fireDatabase.database.ref('/users/' + firebase.auth().currentUser.uid).child('challengesActive')
+                .child(challenge.id).remove().then(
                 res => resolve(res),
                 err => reject(err)
             );

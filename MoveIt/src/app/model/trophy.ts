@@ -11,15 +11,21 @@ interface FireBaseObject {
 }
 
 interface Condition {
-    characteristic: string;
-    time: string;
+    time: { unit: string, number: number };
+    requirements: Array<Requirement>;
+}
+
+interface Requirement {
+    type: string;
+    expression: string;
     amount: number;
+    modifier: string;
 }
 
 export class Trophy {
 
     /**
-     * Constructor to create Activity
+     * Constructor to create Trophy
      *
      * Each parameter is optional. If it's not present, a default value is used
      *
@@ -35,9 +41,45 @@ export class Trophy {
         this.conditions = conditions || [];
     }
 
+    static conditions1 = [
+        {
+            time: {unit: 'week', number: 1},
+            requirements: [
+                {
+                    type: 'goal',
+                    expression: 'dailyModerate',
+                    amount: 7,
+                    modifier: 'consecutive'
+                },
+                {
+                    type: 'goal',
+                    expression: 'dailyVigorous',
+                    amount: 7,
+                    modifier: 'consecutive'
+                },
+                {
+                    type: 'goal',
+                    expression: 'dailyWeight',
+                    amount: 7,
+                    modifier: 'consecutive'
+                },
+            ]
+        }
+    ];
+    static conditions2 = [
+        {
+            time: {unit: 'week', number: 1},
+            requirements: [{
+                type: 'activity',
+                expression: '',
+                amount: 7,
+                modifier: ''
+            }]
+        }
+    ];
     static defaultTrophies = [
-        new Trophy('win-a-goal', 'Win one of your goals', 'Win a goal'),
-        new Trophy('win-two-goals', 'Win two of your goals', 'Win two goals')
+        new Trophy('perfect-week', 'Win all your daily goals each day for a week', 'Perfect Week', Trophy.conditions1),
+        new Trophy('7-activity-week', 'Complete 7 physical activities in one week', '7 Activity Week', Trophy.conditions2)
     ];
     id: string;
     description: string;
@@ -45,11 +87,11 @@ export class Trophy {
     conditions: Array<Condition>;
 
     /**
-     * Creates an Activity object from a firebase query
+     * Creates an Trophy object from a firebase query
      *
      * This basically reconstructs the dates from the date strings
      *
-     * @param id id of the activity
+     * @param id id of the trophy
      * @param firebaseObject result of the query
      */
 
@@ -63,7 +105,7 @@ export class Trophy {
     }
 
     /**
-     * Converts the activity to upload it to firebase
+     * Converts the trophy to upload it to firebase
      *
      * Basically just replaces the dates with date strings
      */
