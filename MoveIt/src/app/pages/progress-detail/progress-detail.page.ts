@@ -34,9 +34,9 @@ export class ProgressDetailPage implements OnInit {
 
         this.displayedActivities = this.activities.pipe(map(
             (data) => {
-                data.sort((a, b) => {
-                    return b.startTime.getTime() - a.startTime.getTime();
-                });
+               // data.sort((a, b) => {
+                 //   return b.startTime.getTime() - a.startTime.getTime();
+                //});
                 return data.slice(0, 5);
             }
         ));
