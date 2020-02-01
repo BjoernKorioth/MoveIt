@@ -1,15 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivityService } from '../../services/activity/activity.service';
-import { Activity } from '../../model/activity';
-import { merge, Observable } from 'rxjs';
-import { GoalService } from '../../services/goal/goal.service';
-import { Goal } from '../../model/goal';
-import { Location } from '@angular/common';
-import { Health } from '@ionic-native/health/ngx';
-import { Platform } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { Chart } from 'chart.js';
-import { first, map } from 'rxjs/operators';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {ActivityService} from '../../services/activity/activity.service';
+import {Activity} from '../../model/activity';
+import {merge, Observable, of} from 'rxjs';
+import {GoalService} from '../../services/goal/goal.service';
+import {Goal} from '../../model/goal';
+import {Location} from '@angular/common';
+import {Health} from '@ionic-native/health/ngx';
+import {Platform} from '@ionic/angular';
+import {Router} from '@angular/router';
+import {Chart} from 'chart.js';
+import {first, map} from 'rxjs/operators';
 
 
 @Component({
@@ -23,9 +23,13 @@ export class ProgressDetailPage implements OnInit {
     displayedActivities: Observable<Activity[]>;
     goals: Observable<any>;
     goalStorage: Array<Goal>;
+    public chartLabels               : any    = [];
+    public chartValues               : any    = []; 
+    public chartColours              : any    = [];
+    public chartHoverColours         : any    = [];
 
-    @ViewChild('hrzLineChart', { static: false }) hrzLineChart: { nativeElement: any; };
-    hrzLines: any;
+    @ViewChild('barChart', {static: false}) barChart: { nativeElement: any; };
+   // barChart: any;
 
 
     constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location,
@@ -69,17 +73,32 @@ export class ProgressDetailPage implements OnInit {
 
 
     ionViewDidEnter() {
+        this.defineChartData();
         this.createSimpleLineChart();
     }
 
+    defineChartData()
+        {
+        let k : any;
+
+        for(k in this.goalStorage)
+        {   console.log(k);
+
+           // this.chartLabels.push(active.intensity);
+          //  this.chartValues.push(active.type);
+          //  this.chartColours.push(tech.color);
+          //  this.chartHoverColours.push(tech.hover);
+        }
+        }
+
     createSimpleLineChart() {
-        this.hrzLines = new Chart(this.hrzLineChart.nativeElement, {
-            type: 'line',
+        this.barChart = new Chart(this.barChart.nativeElement, {
+            type: 'bar',
             data: {
-                // labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
+                 labels: this.chartLabels,
                 datasets: [{
                     label: 'Active Minutes',
-                    data: [10, 20, 30, 30, 40, 50, 60, 70],
+                    data: this.chartValues,
                     backgroundColor: 'rgba(0, 0, 0, 0)',
                     borderColor: 'rgb(38, 194, 129)',
                     borderWidth: 1
