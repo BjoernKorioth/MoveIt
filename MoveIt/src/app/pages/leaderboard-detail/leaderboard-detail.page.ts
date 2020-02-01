@@ -28,59 +28,10 @@ export class LeaderboardDetailPage implements OnInit {
     persons: any;
     ranking = 'actMinutes';
 
-    /*constructor(private location: Location) {
-      this.location = location;
-
-    this.persons = [
-      {
-        name: 'Maya',
-        age: 20,
-        actMinutes: 150,
-        image: './assets/Profilbild.jpg'
-      },
-      {
-        name: 'Ursula',
-        age: 25,
-        actMinutes: 120,
-        image: './assets/Profilbild.jpg'
-      },
-      {
-        name: 'Phil',
-        age: 40,
-        actMinutes: 115,
-        image: './assets/Profilbild.jpg'
-      },
-      {
-        name: 'Mary',
-        age: 25,
-        actMinutes: 100,
-        image: './assets/Profilbild.jpg'
-      },
-      {
-        name: 'Maya',
-        age: 20,
-        actMinutes: 150,
-        image: './assets/Profilbild.jpg'
-      },
-      {
-        name: 'Ursula',
-        age: 25,
-        actMinutes: 120,
-        image: './assets/Profilbild.jpg'
-      },
-      {
-        name: 'Phil',
-        age: 40,
-        actMinutes: 115,
-        image: './assets/Profilbild.jpg'
-      }
-    ];
-    }*/
-
-    trophies: any;
-    activitiesModerate: Array<LeaderboardObject>;
-    activitiesVigorous: Array<LeaderboardObject>;
-    activitiesObserve: Observable<GoalArray[]>;
+  trophies: any;
+  activitiesModerate: Array<LeaderboardObject>;
+  activitiesVigorous: Array<LeaderboardObject>;
+  activitiesObserve: Observable<GoalArray[]>;
 
   trophiesList: Array<LeaderboardObject>
   trophiesObserve: Observable<TrophyArray[]>
@@ -88,26 +39,11 @@ export class LeaderboardDetailPage implements OnInit {
   challengesList: Array<LeaderboardObject>
 
   tempUsername : string;
-   currentUser: User;
+  
+  currentUser: User;
 
   constructor(private goalservice: GoalService, private trophyService: TrophyService, private userService: UserService, private location:Location) { 
 
-   /* //Observable1
-    this.activitiesObserve = this.goalservice.getAllOtherAvailableGoals();
-
-    //Observable2
-    this.trophiesObserve = this.trophyService.getListOfAllUserAndTherWonTrophies();
-
-    //Observable1 in action
-    this.activitiesObserve.subscribe(result => {
-      this.pushMinuteObjects(result);
-      
-      //Observable2 in action
-      this.trophiesObserve.subscribe(result => this.pushTrophyObjects(result));
-    });
-    this.currentUser = this.authService.getFullUser();
-
-    console.log(this.currentUser);*/
   }
 
   /**
@@ -130,9 +66,6 @@ export class LeaderboardDetailPage implements OnInit {
       
       
       this.userService.getUser().subscribe(user => this.currentUser = user);
-   //   console.log(this.currentUser);
-
-   //   console.log(this.currentUser);
     }
 
 
@@ -145,14 +78,13 @@ export class LeaderboardDetailPage implements OnInit {
 
     for(var i = 0; i < result.length; i++){
       var oneResult = result[i];
-      console.log("IM IN");
       if(oneResult){
-   /** 
-              let entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length ,this.authService);
+   
+              let entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length ,this.userService);
 
               console.log(entity1);
               
-              testArray.push(entity1); */
+              testArray.push(entity1);
         }
       }
         
@@ -204,12 +136,7 @@ export class LeaderboardDetailPage implements OnInit {
     if(this.trophiesList !== undefined){
     this.trophiesList.sort((a,b) => a.compareTo(b));
     }
-
-        /* console.log("VIGIROUS");
-         console.log(this.activitiesVigorous);
-
-         console.log("MODERATE");
-         console.log(this.activitiesModerate);*/
+    
     }
 
 

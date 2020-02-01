@@ -41,40 +41,6 @@ export class RewardsTrophiesPage implements OnInit {
         this.trophies = Trophy.defaultTrophies;
         this.activityService.getAllUserActivities().subscribe(activities => this.activities = activities);
         this.goalService.getGoalWins().subscribe(goals => this.goals = goals);
-        /*this.challenges= [
-          {
-            description: 'Run the equivalent of a marathon during one week',
-            title: 'Run 100 km within a week',
-            startDate: 33,
-            endDate: 55,
-            price: '30 Euro Amazon Gift Card'
-          },
-          {
-            description: 'Run the equivalent of a marathon during one week',
-            title: 'Run 150 km within a week',
-            startDate: 33,
-            endDate: 55,
-            price: '30 Euro Amazon Gift Card'
-          },
-        ]*/
-
-
-        /*this.activeChallenges= [
-          {
-            description: 'Run the equivalent of a marathon during one week',
-            title: 'Run 50 km within a week',
-            startDate: 33,
-            endDate: 55,
-            price: '30 Euro Amazon Gift Card'
-          },
-          {
-            description: 'Run the equivalent of a marathon during one week',
-            title: 'Run 75 km within a week',
-            startDate: 33,
-            endDate: 55,
-            price: '30 Euro Amazon Gift Card'
-          }
-        ]*/
     }
 
     ngOnInit() {
