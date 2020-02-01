@@ -167,7 +167,7 @@
 </ion-list-header>
 <ion-item *ngFor="let activity of (activities | async)">
     <ion-label>
-        <h3>20.10.2019 - 20 minutes </h3>
+        <h3>{{ activity.startTime | date:'dd.MM.' }} {{activity.getDuration()}} minutes </h3>
 
         <p>{{activity.type}}-{{activity.intensity}}</p> 
     </ion-label>
