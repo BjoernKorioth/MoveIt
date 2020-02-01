@@ -17,8 +17,12 @@ export class RewardsChallengesPage implements OnInit {
   trophies: any;
   challenges: Array<Challenge>;
   challengesObserve: Observable<Array<Challenge>>;
-  challengesActiveObserve: Observable<Array<Challenge>>
+  challengesActiveObserve: Observable<Array<String>>;
+  keysOfActiveChallenges: Array<String>;
   activeChallenges: Array<Challenge>;
+
+  calculatedActive: boolean;
+  calculatedAll: boolean;
 
   constructor(private challService: ChallengeService, private location:Location) { 
 
@@ -37,14 +41,23 @@ export class RewardsChallengesPage implements OnInit {
 
     /**
      * gets ALL challenges user participates in
-     */
+     *
     this.challengesActiveObserve.subscribe(result => {
       
       this.updateAllActiveChallenges(result);
+      
+  
+    this.identifyInvalidChallenges(this.challenges);
 
-      for(var i = 0; i< this.activeChallenges.length; i++){
-      this.identifyChallenge(this.activeChallenges[i]);
-    }});
+      for(var i = 0; i< this.keysOfActiveChallenges.length; i++){
+      this.identifyChallengeFromAll(this.keysOfActiveChallenges[i]);
+    }
+    
+    this.identifyInvalidChallenges(this.activeChallenges);
+    
+    this.calculatedAll = true;
+    this.calculatedActive = true;
+  });*/
 
     this.location = location;
     this.trophies = [
@@ -67,7 +80,38 @@ export class RewardsChallengesPage implements OnInit {
   }
 
   ngOnInit() {
+    this.challengesObserve = this.challService.getAllChallenges();
 
+    /**
+     * gets ALL challenges
+     */
+    this.challengesObserve.subscribe(result => 
+      
+      this.updateAllChallenges(result)
+      
+      );
+
+    this.challengesActiveObserve = this.challService.getAllUserActiveChallenges();
+
+    /**
+     * gets ALL challenges user participates in
+     */
+    this.challengesActiveObserve.subscribe(result => {
+      
+      this.updateAllActiveChallenges(result);
+      
+  
+    this.identifyInvalidChallenges(this.challenges);
+
+      for(var i = 0; i< this.keysOfActiveChallenges.length; i++){
+      this.identifyChallengeFromAll(this.keysOfActiveChallenges[i]);
+    }
+    
+    this.identifyInvalidChallenges(this.activeChallenges);
+    
+    this.calculatedAll = true;
+    this.calculatedActive = true;
+  });
   }
   /**
    * this sets the local challenges & identifies the valid challenges
@@ -75,7 +119,6 @@ export class RewardsChallengesPage implements OnInit {
    */
  updateAllChallenges(newChallenges: Array<Challenge>){
     this.challenges = newChallenges;
-    this.identifyInvalidChallenges(this.challenges);
   }
 
   /**
@@ -83,41 +126,50 @@ export class RewardsChallengesPage implements OnInit {
    * @param newActive active array
    */
 
-  async updateAllActiveChallenges(newActive: Array<Challenge>){
-    this.activeChallenges = newActive;
-    this.identifyInvalidChallenges(this.activeChallenges);
-    
+  updateAllActiveChallenges(newActive: Array<String>){
+    this.keysOfActiveChallenges = newActive;
+    this.activeChallenges = new Array();
   }
 
   /**this adds an challenge if you want to participate
    * 
    */
-  addToActiveList(challenge:Challenge){
-    this.activeChallenges.push(challenge);
-    this.identifyChallenge(challenge);
-    this.challService.registerOnChallenge(challenge);   
-    this.challService.addChallengeToActive(this.activeChallenges);
+  async addToActiveList(challenge:Challenge){
+    this.identifyChallengeFromAll(challenge.id);
+    await this.challService.registerOnChallenge(challenge);   
+    this.challService.addChallengeToActive(challenge);
   }
 
   /**
    * this sorts the array which the user has registered to according to challenges
    * @param activeChallenge activeChallenge array
    */
-  removeFromActiveList(activeChallenge:Challenge){
-    this.challenges.push(activeChallenge);
-    this.identifyActiveChallenge(activeChallenge);
-    this.challService.deRegisterOnChallenge(activeChallenge);
-    this.challService.addChallengeToActive(this.activeChallenges);
+  async removeFromActiveList(activeChallenge:Challenge){
+    this.identifyChallengeFromActive(activeChallenge.id);
+    await this.challService.deRegisterOnChallenge(activeChallenge);
+    this.challService.removeChallengeFromActive(activeChallenge);
   }
 
   /**
    * identify the challenges you participate in order to sort them out of the local all challenges array
    * @param challenge challenge for identification
    */
-  identifyChallenge(challenge:Challenge){
+  identifyChallengeFromAll(id: String){
+
     for(var i = 0; i<this.challenges.length; i++){
-      if(this.challenges[i].id === challenge.id){
+      if(this.challenges[i].id === id){
+        this.activeChallenges.push(this.challenges[i]);
         this.challenges.splice(i,i+1);
+      }
+    }
+  }
+
+  identifyChallengeFromActive(id: String){
+
+    for(var i = 0; i<this.activeChallenges.length; i++){
+      if(this.activeChallenges[i].id === id){
+        this.challenges.push(this.activeChallenges[i]);
+        this.activeChallenges.splice(i,i+1);
       }
     }
   }
@@ -128,20 +180,12 @@ export class RewardsChallengesPage implements OnInit {
    */
   identifyInvalidChallenges(challenges:Array<Challenge>){
     var date = new Date();
-    for(var i = 0; i<challenges.length; i++){
+    for(var i = 0; i<challenges.length; i++){    
       if(challenges[i].endTime.getTime() < date.getTime() || challenges[i].finished){
+        console.log("SYSTEM DATE: " + date);
+        console.log("Challenge date: " + challenges[i].endTime);
         challenges.splice(i,i+1);
       }
-    }
-  }
-
-  identifyActiveChallenge(challenge:Challenge){
-    console.log(challenge);
-    for(var i = 0; i<this.activeChallenges.length; i++){
-      if(this.activeChallenges[i].id === challenge.id){
-        this.activeChallenges.splice(i,i+1);
-      }
-
     }
   }
 
