@@ -20,7 +20,7 @@ import {Activity} from '../../model/activity';
 export class RewardsTrophiesPage implements OnInit {
     trophies: any;
     activities: Array<Activity>;
-    goals: object;
+    goals: any;
     challenges: Array<Challenge>;
     challengesObserve: Observable<Array<Challenge>>;
     challengesActiveObserve: Observable<Array<Challenge>>;
@@ -97,7 +97,7 @@ export class RewardsTrophiesPage implements OnInit {
         );
     }
 
-    updateAllChallenges(newChallenges: Array<Challenge>) {
+    /**updateAllChallenges(newChallenges: Array<Challenge>) {
         this.challenges = newChallenges;
     }
 
@@ -134,7 +134,7 @@ export class RewardsTrophiesPage implements OnInit {
                 this.activeChallenges.splice(i, i + 1);
             }
         }
-    }
+    }**/
 
     goBack() {
         this.location.back();

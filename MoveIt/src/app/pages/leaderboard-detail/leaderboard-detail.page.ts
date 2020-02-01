@@ -88,7 +88,7 @@ export class LeaderboardDetailPage implements OnInit {
   challengesList: Array<LeaderboardObject>
 
   tempUsername : string;
- // private currentUser: User;
+   currentUser: User;
 
   constructor(private goalservice: GoalService, private trophyService: TrophyService, private userService: UserService, private location:Location) { 
 
@@ -129,7 +129,7 @@ export class LeaderboardDetailPage implements OnInit {
       });
       
       
-   //   this.userService.getUser().subscribe(user => this.currentUser = user);
+      this.userService.getUser().subscribe(user => this.currentUser = user);
    //   console.log(this.currentUser);
 
    //   console.log(this.currentUser);

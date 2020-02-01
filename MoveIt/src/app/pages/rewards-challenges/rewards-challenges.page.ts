@@ -152,7 +152,7 @@ export class RewardsChallengesPage implements OnInit {
 
   /**
    * identify the challenges you participate in order to sort them out of the local all challenges array
-   * @param challenge challenge for identification
+   * @param id id for challenge for identification
    */
   identifyChallengeFromAll(id: String){
 
@@ -164,6 +164,12 @@ export class RewardsChallengesPage implements OnInit {
     }
   }
 
+
+  /**
+   * identify the challenges you participate in order to sort them out of the local all challenges array
+   * @param id id for challenge for identification
+   */
+  
   identifyChallengeFromActive(id: String){
 
     for(var i = 0; i<this.activeChallenges.length; i++){
