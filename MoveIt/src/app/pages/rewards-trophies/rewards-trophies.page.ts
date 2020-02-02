@@ -11,6 +11,10 @@ import {Trophy} from '../../model/trophy';
 import {ActivityService} from '../../services/activity/activity.service';
 import {GoalService} from '../../services/goal/goal.service';
 import {Activity} from '../../model/activity';
+import {PopoverController} from '@ionic/angular';
+import { TrophyPopover } from 'src/app/trophy-popover/trophy-popover.component';
+import {Router} from '@angular/router';
+
 
 @Component({
     selector: 'app-rewards-trophies',
@@ -27,7 +31,7 @@ export class RewardsTrophiesPage implements OnInit {
     challengesActiveObserve: Observable<Array<Challenge>>;
     activeChallenges: Array<Challenge>;
 
-    constructor(private challService: ChallengeService, private location: Location, private rewardsService: RewardsService, private activityService: ActivityService, private goalService: GoalService) {
+    constructor(private challService: ChallengeService, private location: Location, private rewardsService: RewardsService, private activityService: ActivityService, private goalService: GoalService, public popoverController: PopoverController, private router: Router) {
         // this.challengesObserve = this.challService.getAllAvailableChallenges();
         //
         // this.challengesObserve.subscribe(result => this.updateAllChallenges(result));
@@ -40,23 +44,26 @@ export class RewardsTrophiesPage implements OnInit {
         // }});
         this.location = location;
         this.rewardsService.getWonTrophies().subscribe(rewards => this.trophies = rewards);
-        this.rewardsService.getAvailableTrophies().subscribe(rewards => this.inactTrophies = rewards);
+        //this.rewardsService.getAvailableTrophies().subscribe(rewards => this.inactTrophies = rewards);
        // this.trophies = Trophy.defaultTrophies;
         this.activityService.getAllUserActivities().subscribe(activities => this.activities = activities);
         this.goalService.getGoalWins().subscribe(goals => this.goals = goals);
        
         
-      /* this.inactTrophies = [
+       this.inactTrophies = [
            {
-            title: "Not achieved"   
+            title: "Not achieved",
+            description: "Walk 10km every day." 
            },
            {
-            title: "Not achieved"   
+            title: "Not achieved",
+            description: "Walk 10km every day."    
            },
            {
-            title: "Not achieved"   
+            title: "Not achieved",
+            description: "Walk 10km every day."    
            }
-       ] */
+       ] 
         // this.goalService.getGoalWins().subscribe(goals => this.goals = goals);
         /*this.challenges= [
           {
@@ -133,6 +140,17 @@ export class RewardsTrophiesPage implements OnInit {
         this.challenges.push(activeChallenge);
         this.identifyActiveChallenge(activeChallenge);
        this.challService.addChallengeToActive(this.activeChallenges);
+    }
+
+    async presentPopover(trophy: Trophy, event) {
+        const popover = await this.popoverController.create({
+            component: TrophyPopover,      
+            event,
+            componentProps: {
+                trophy: trophy
+            }
+        });
+        return await popover.present();
     }
 
     identifyChallenge(challenge: Challenge) {
