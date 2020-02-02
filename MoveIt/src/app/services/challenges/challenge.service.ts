@@ -40,8 +40,12 @@ export class ChallengeService {
      * this is needed to initially get all available challenges
      */
     getAllAvailableChallenges() {
-        return this.fireDatabase.list<Challenge>('challenges').valueChanges();
+        const ref = this.fireDatabase.list<any>('/challenges/');
+        return ref.snapshotChanges().pipe(map(challenge => challenge.map(
+            chalSnapshot => Challenge.fromFirebaseObject(chalSnapshot.key, chalSnapshot.payload.val()))));
     }
+       // return this.fireDatabase.list<Challenge>('challenges').valueChanges();
+    
 
     /**
      * this is necessary in order to get all own active challenges to sort it in the frontend then

@@ -7,6 +7,7 @@ interface FireBaseObject {
     finished:boolean;
     title: string;
     participants: any;
+    registered: number;
 }
 
 export class Challenge {
