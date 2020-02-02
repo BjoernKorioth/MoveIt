@@ -17,13 +17,15 @@
     <ion-button type="button" (click)='getInformation()'>Get</ion-button>
     <ion-button type="button" (click)='getAllInformation()'>Get All</ion-button>-->
 
-    <ion-card *ngFor="let info of static" routerLink="/menu/information/information/single">
+    <ion-card *ngFor="let info of static">
         <img src="img/nin-live.png"/>
         <ion-card-header>
             <ion-card-title>{{info.title}} </ion-card-title>
         </ion-card-header>
         <ion-card-content>
             {{info.description}}
+            <br/><br/>
+            <ion-button routerLink="/menu/information/information/single/" routerDirection="forward" fill="outline" slot="end">View</ion-button>
         </ion-card-content>
     </ion-card>
 

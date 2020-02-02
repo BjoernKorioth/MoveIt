@@ -3,6 +3,7 @@ import {InformationService} from '../../services/information/information.service
 import {Information} from '../../model/information';
 import {Location} from '@angular/common';
 
+
 @Component({
     selector: 'app-information-detail',
     templateUrl: './information-detail.page.html',
@@ -18,12 +19,14 @@ export class InformationDetailPage implements OnInit {
 
         this.static = [
             {
+                id: 0,
                 title: 'moderate vs. vigorous',
                 description: 'moderate activity'
             },
             {
+                id: 1,
                 title: 'WHO Guidelines',
-                description: 'moderate activity'
+                description: 'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum '
             },
         ];
     }
