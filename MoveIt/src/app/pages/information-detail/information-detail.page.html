@@ -25,7 +25,7 @@
         <ion-card-content>
             {{info.description}}
             <br/><br/>
-            <ion-button routerLink="/menu/information/information/single/" routerDirection="forward" fill="outline" slot="end">View</ion-button>
+            <ion-button routerLink="/menu/information/information/single/" routerDirection="forward" fill="outline" slot="end">More</ion-button>
         </ion-card-content>
     </ion-card>
 
@@ -37,7 +37,7 @@
         <ion-card-content>
             {{info.content}}
             <br/><br/>
-            <a href="{{info.link}}" target="_blank"><ion-button fill="outline" slot="end">View</ion-button></a>
+            <a [href]="info.link" target="_blank"><ion-button fill="outline" slot="end">More</ion-button></a>
         </ion-card-content>
     </ion-card>
 
