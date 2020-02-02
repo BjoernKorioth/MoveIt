@@ -10,6 +10,8 @@ import { AlertController } from '@ionic/angular';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { finalize, tap } from 'rxjs/operators';
+//import { userInfo } from 'os';
+import {UserService} from '../../services/user/user.service';
 
 import {UserService} from 'src/app/services/user/user.service';
 import * as firebase from 'firebase';
@@ -29,11 +31,13 @@ export interface MyData {
 
 
 
-export class ProfileDetailPage implements OnInit {
+export class ProfileDetailPage implements OnInit {  
+  currentUser: Observable<User>;
   activities: Observable<Activity[]>;
   goals: Observable<any>;
   goalStorage: Array<Goal>;
   private imageCollection: AngularFirestoreCollection<MyData>
+  age: any;  
 
   username:Observable<any>;
   test: Observable <string>;
@@ -56,8 +60,8 @@ export class ProfileDetailPage implements OnInit {
   //  this.storage.ref(path)
     this.usertestpath=`profilePic/${firebase.auth().currentUser.uid}`
     //this.router = router;
-
-    
+    this.currentUser = this.userService.getUser();
+   
   }
 
 // Upload Task 
@@ -83,7 +87,11 @@ fileSize:number;
 isUploading:boolean;
 isUploaded:boolean;
 
+calculateAge(birthday: Date){
+  let timeDiff = Math.abs(Date.now() - birthday.getTime());
+  return Math.floor((timeDiff / (1000 * 3600 * 24))/365.25);
 
+}
 
 
 
