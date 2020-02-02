@@ -28,13 +28,13 @@ export interface MyData {
 
 
 
-export class ProfileDetailPage implements OnInit {
-   currentUser: User;
+export class ProfileDetailPage implements OnInit {  
+  currentUser: Observable<User>;
   activities: Observable<Activity[]>;
   goals: Observable<any>;
   goalStorage: Array<Goal>;
   private imageCollection: AngularFirestoreCollection<MyData>
-  age: any;
+  age: any;  
 
   constructor(private location:Location, private goalService: GoalService, private userService: UserService, private activityService: ActivityService, public alertController: AlertController, private storage: AngularFireStorage, private database: AngularFirestore) { 
     this.activities = this.activityService.getAllUserActivities();
@@ -46,17 +46,7 @@ export class ProfileDetailPage implements OnInit {
     this.imageCollection = database.collection<MyData>('freakyImages');
     this.images = this.imageCollection.valueChanges();
     //this.router = router;
-    this.userService.getUser().subscribe(user => {
-      this.currentUser = user;
-      console.log(this.currentUser);
-
-      let timeDiff = Math.abs(Date.now() - this.currentUser.birthday.getTime());
-   this.age = Math.floor((timeDiff / (1000 * 3600 * 24))/365.25);
-   console.log(this.age);
-
-    });
-    
-
+    this.currentUser = this.userService.getUser();
    
   }
 
@@ -83,7 +73,11 @@ fileSize:number;
 isUploading:boolean;
 isUploaded:boolean;
 
+calculateAge(birthday: Date){
+  let timeDiff = Math.abs(Date.now() - birthday.getTime());
+  return Math.floor((timeDiff / (1000 * 3600 * 24))/365.25);
 
+}
 
 
 uploadFile(event: FileList) {

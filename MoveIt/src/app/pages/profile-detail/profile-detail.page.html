@@ -20,8 +20,9 @@
       
         
         <ion-label>
-        <h2>{{ (currentUser.name | async )}}</h2> 
-        <p>{{age}} years old</p>
+        <h2>{{ (currentUser | async)?.name  }}</h2> 
+        <!-- <h2 *ngIf="(currentUser | async); let user">{{ user.name }} Username</h2> -->
+        <p *ngIf="(currentUser | async); let user">{{ calculateAge(user.birthday) }} years old</p>
       </ion-label>
       <ion-label side="end">  
        
