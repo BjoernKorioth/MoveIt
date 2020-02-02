@@ -17,7 +17,7 @@ export class InformationDetailPage implements OnInit {
 
     constructor(private informationService: InformationService, private location: Location, private router: Router) {
         this.location = location;
-        this.dynamic = informationService.getAllInformation();
+        informationService.getAllInformation().subscribe(dynamic => this.dynamic = dynamic);
 
         this.static = [
             {
