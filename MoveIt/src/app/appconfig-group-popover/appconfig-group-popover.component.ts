@@ -11,24 +11,42 @@ import { Group } from '../model/group';
 export class AppconfigGroupPopoverComponent implements OnInit {
 
   group: Group;
-  feature1: string = "Leaderboard";
-  feature2: string = "Social";
-  feature3: string = "Rewards";
+  features: Array<any> = [
+    {
+      val: 'Leaderboard',
+      isChecked: false
+    },
+    {
+      val: 'Social',
+      isChecked: false
+    },
+    {
+      val: 'Rewards',
+      isChecked: false
+    }
+  ];
 
   constructor(public popoverController: PopoverController, private userService: UserService) { 
     this.group = new Group();
-
-  // this.group.enableFeature()
   }
 
   ngOnInit() {}
 
-  createGroup(groupName: string, featureVector: Array<string>) {
-    console.log(this.group.featureVector);
+  createGroup() {
+    console.log(this.features);
+
+    let checkedFeatures = this.features.filter(function(feature) {
+      return feature.isChecked;
+    });
+
+    this.group.featureVector = checkedFeatures.map(function(feature) {
+      return feature.val;
+    });
+
     this.userService.createGroup(this.group).then(
-        res => console.log(res),
-        err => console.log(err)
-    );
+      res => console.log(res),
+      err => console.log(err)
+  );
 }
 
 }

@@ -3,20 +3,12 @@
     <ion-label>Group</ion-label>
     <ion-input [(ngModel)]="group.name" placeholder="Enter group"></ion-input>
   </ion-item>
-  <ion-item>
-    <ion-label>Leaderboard</ion-label>
-    <ion-checkbox (ionChange)="group.featureVector.push(feature1)"></ion-checkbox>
-  </ion-item>
-  <ion-item>
-    <ion-label>Socialfeed</ion-label>
-    <ion-checkbox (ionChange)="group.featureVector.push(feature2)"></ion-checkbox>
-  </ion-item>
-  <ion-item>
-    <ion-label>Rewards</ion-label>
-    <ion-checkbox (ionChange)="group.featureVector.push(feature3)"></ion-checkbox>
+  <ion-item *ngFor="let feature of features">
+    <ion-label>{{ feature.val }}</ion-label>
+    <ion-checkbox [(ngModel)]="feature.isChecked"></ion-checkbox>
   </ion-item>
 
   <ion-item>
-    <ion-button (click)="createGroup(group)" color="secondary"  slot="end" float-right>Create</ion-button>
+    <ion-button (click)="createGroup()" color="secondary"  slot="end" float-right>Create</ion-button>
   </ion-item>
 </ion-list>
