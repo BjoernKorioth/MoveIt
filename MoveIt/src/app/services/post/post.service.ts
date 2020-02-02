@@ -147,9 +147,9 @@ export class PostService {
      */
     getAllPosts() {
         return this.user.pipe(switchMap(user => {
-            const ref = this.fireDatabase.list<Post>('/posts/' + user.group);
+            const ref = this.fireDatabase.list<Post>('/posts/' + user.group, query => query.orderByChild('createdAt'));
             return ref.snapshotChanges().pipe(map(posts => posts.map(
-                postSnapshot => Post.fromFirebaseObject(user.group, postSnapshot.key, postSnapshot.payload.val()))));
+                postSnapshot => Post.fromFirebaseObject(user.group, postSnapshot.key, postSnapshot.payload.val())).reverse()));
         }));
 
     }
