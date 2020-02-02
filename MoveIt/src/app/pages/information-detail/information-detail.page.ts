@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {InformationService} from '../../services/information/information.service';
 import {Information} from '../../model/information';
 import {Location} from '@angular/common';
+import {Router, NavigationExtras} from '@angular/router';
+
 
 
 @Component({
@@ -13,18 +15,16 @@ export class InformationDetailPage implements OnInit {
     static: any;
     dynamic: any;
 
-    constructor(private informationService: InformationService, private location: Location) {
+    constructor(private informationService: InformationService, private location: Location, private router: Router) {
         this.location = location;
         this.dynamic = informationService.getAllInformation();
 
         this.static = [
             {
-                id: 0,
                 title: 'moderate vs. vigorous',
                 description: 'moderate activity'
             },
             {
-                id: 1,
                 title: 'WHO Guidelines',
                 description: 'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum '
             },
@@ -36,6 +36,18 @@ export class InformationDetailPage implements OnInit {
 
     goBack() {
         this.location.back();
+    }
+
+    passData(i){
+
+        const object = this.static[i];
+
+        let navigationExtras: NavigationExtras = {
+            queryParams: {
+                special: JSON.stringify(object)
+            }
+        }
+        this.router.navigate(['/menu/information/information/single'], navigationExtras);
     }
 
     // TODO For testing purposes only, only reserachers can create activities
