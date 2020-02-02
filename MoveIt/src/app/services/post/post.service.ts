@@ -233,4 +233,5 @@ export class PostService {
             return this.fireDatabase.list<Comment>('/posts/' + user.group + '/' + postId).valueChanges();
         }));
     }
+
 }

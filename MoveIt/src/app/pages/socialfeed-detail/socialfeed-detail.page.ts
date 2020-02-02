@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {Location} from '@angular/common';
 import {UserService} from '../../services/user/user.service';
 import {first, map} from 'rxjs/operators';
+import { User } from 'src/app/model/user';
 
 @Component({
     selector: 'app-socialfeed-detail',
@@ -19,6 +20,8 @@ export class SocialfeedDetailPage implements OnInit {
     postText: string;
     commentText = [];
     now = new Date();
+    post: Post;
+    user:User; 
 
     constructor(private postService: PostService, private location: Location, private userService: UserService) {
         this.location = location;
@@ -35,6 +38,7 @@ export class SocialfeedDetailPage implements OnInit {
             return pseudoPost;
         })));
         this.posts.subscribe(r => console.log(r));
+        this.userService.getUser().subscribe(user => this.user = user);
     }
 
     goBack() {
@@ -79,6 +83,13 @@ export class SocialfeedDetailPage implements OnInit {
             res => console.log(res),
             err => console.log(err)
         );
+        this.postService.getPost(liked).then(
+            res => {
+                this.post = res;
+            },
+            err => console.log(err)
+        );
+        console.log(this.post);
     }
 
     unlike(i) {

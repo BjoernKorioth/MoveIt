@@ -26,10 +26,10 @@
 
     <ion-row>
         <form>
-            <ion-item id="postForm">
+            <ion-item id="form">
                 <ion-input name="post" type="text" [(ngModel)]="postText"
                            placeholder="create your own post"></ion-input>
-                <ion-icon name="send" (click)="newPost(postText)"></ion-icon>
+                <ion-icon name="send" id="icons" (click)="newPost(postText)" float-right></ion-icon>
             </ion-item>
         </form>
     </ion-row>
@@ -58,12 +58,22 @@
 
 
         <ion-row>
+        <ng-container *ngIf="post.likes.includes(user.id); else running">
+            <ion-col center text-center>
+                <ion-button id="like" type="button" (click)='like(i)'>
+                    <ion-icon name="thumbs-up" color="secondary" id="icons"></ion-icon>
+                    {{post.likes?.length || 0}} Likes
+                </ion-button>
+            </ion-col>
+        </ng-container>
+        <ng-template #running>
             <ion-col center text-center>
                 <ion-button id="like" type="button" (click)='like(i)'>
                     <ion-icon name="thumbs-up" id="icons"></ion-icon>
                     {{post.likes?.length || 0}} Likes
                 </ion-button>
             </ion-col>
+        </ng-template>
             <ion-col center text-center>
                 <ion-button id="comment" type="button">
                     <ion-icon name="text" id="icons"></ion-icon>
@@ -74,7 +84,8 @@
         <div *ngIf="post.comments?.length != 0">
             <div *ngFor="let c of post.comments">
                 <ion-item lines="none">
-                    <ion-label><h3>{{ (post.usernames[i] | async)}}</h3>
+                    <!--<ion-label><h3>{{ (post.usernames[i] | async)}}</h3> -->
+                        <ion-label><h3>{{ c.user}}</h3>
                         <p>{{c.text}}</p></ion-label>
                 </ion-item>
             </div>
@@ -86,10 +97,10 @@
         </div>
         <ion-row>
             <form>
-                <ion-item id="commentForm">
+                <ion-item id="form">
                     <ion-input name="comment" type="text" [(ngModel)]="commentText[i]"
                                placeholder="your comment..."></ion-input>
-                    <ion-icon name="send" (click)="newComment(post, commentText[i])"></ion-icon>
+                    <ion-icon id="icons" name="send" (click)="newComment(post, commentText[i])"></ion-icon>
                 </ion-item>
             </form>
         </ion-row>
