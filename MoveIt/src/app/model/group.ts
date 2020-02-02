@@ -14,8 +14,8 @@ export class Group {
     constructor(id?: string, name?: string, featureVector?: Array<any>) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '-1';
-        this.name = name || 'No groupname';
-        this.featureVector = featureVector || ['Leaderboard', 'Social', 'Rewards'];
+        this.name = name || '';
+        this.featureVector = featureVector || [];
     }
 
     static feautres = ['Leaderboard', 'Social', 'Rewards'];
@@ -32,8 +32,13 @@ export class Group {
     }
 
     enableFeature(feature: string) {
+        console.log(feature);
+        console.log(Group.feautres);
         if (feature in Group.feautres) {
+            console.log("Hier1");
+            console.log(feature);
             if (!(feature in this.featureVector)) {
+                console.log("Hier2");
                 this.featureVector.push(feature);
             }
         } else {
