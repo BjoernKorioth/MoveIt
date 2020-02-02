@@ -10,87 +10,78 @@
   </ion-toolbar>
 </ion-header>
   
-<ion-content>
+
  <ion-card>
     <ion-item>
       <ion-avatar slot="start">
-        <img src="../../assets/Profilbild.jpg">
+        <img src="../assets/Profilbild.jpg">
         <!--img [src]="post.image"-->
       </ion-avatar>
       
       <ion-label>
-        <h2>Ursula</h2> 
-        <p>30 Jahre</p>
+        <h2>{{usertest}}</h2> 
+        <p>{{usertestpath}}</p>
+        <p>Alter</p>
       </ion-label>
       <ion-label side="end">
-       
-       
+        <div class="fileUpload btn btn-primary">
+          <span>Profilbild hochladen</span>
+          <input
+            id="uploadBtn"
+            type="file"
+            class="upload"
+            (change)="uploadFile($event.target.files)"
+          />
+        </div>
       </ion-label>
-      
     </ion-item> 
     
 </ion-card>
 
-<ion-card class="ion-text-center" *ngIf="!isUploading && !isUploaded">
-  <ion-card-header>
-    <ion-card-title>Choose Images to Upload</ion-card-title>
-  </ion-card-header>
-  <ion-card-content>
-    <div class="fileUpload btn btn-primary">
-      <span>Upload</span>
-      <input
-        id="uploadBtn"
-        type="file"
-        class="upload"
-        (change)="uploadFile($event.target.files)"
-      />
-    </div>
-  </ion-card-content>
-</ion-card>
-
-
+<div *ngIf="percentage | async as pct">
+  Progress: {{ pct | number }}%
+  <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+</div>
+<div *ngIf="snapshot | async as snap">
+  File Size: {{ snap.totalBytes | fileSizePipe }} Transfered:
+  {{ snap.bytesTransferred | fileSizePipe }}
+  <div *ngIf="snapshot && snap.bytesTransferred != snap.totalBytes">
+    <ion-button
+      color="warning"
+      size="small"
+      (click)="task.pause()"
+      class="button is-warning"
+      >Pause</ion-button
+    >
+    <ion-button
+      size="small"
+      (click)="task.resume()"
+      class="button is-info"
+      >Resume</ion-button
+    >
+    <ion-button
+      color="danger"
+      size="small"
+      (click)="task.cancel()"
+      class="button is-danger"
+      >Cancel</ion-button
+    >
+  </div>
+</div>
 
 
 <ion-card *ngIf="isUploading && !isUploaded">
-  <ion-card-header>
+ <!-- <ion-card-header>
     <ion-card-title
-      >Selected File:<b>{{ fileName }}</b></ion-card-title
-    >
-  </ion-card-header>
+      >Selected File:<b>{{ fileName }}</b></ion-card-title>
+  </ion-card-header> -->
 
   <ion-card-content>
-    <div *ngIf="percentage | async as pct">
-      Progress: {{ pct | number }}%
-      <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
-    </div>
-    <div *ngIf="snapshot | async as snap">
-      File Size: {{ snap.totalBytes | fileSizePipe }} Transfered:
-      {{ snap.bytesTransferred | fileSizePipe }}
-      <div *ngIf="snapshot && snap.bytesTransferred != snap.totalBytes">
-        <ion-button
-          color="warning"
-          size="small"
-          (click)="task.pause()"
-          class="button is-warning"
-          >Pause</ion-button
-        >
-        <ion-button
-          size="small"
-          (click)="task.resume()"
-          class="button is-info"
-          >Resume</ion-button
-        >
-        <ion-button
-          color="danger"
-          size="small"
-          (click)="task.cancel()"
-          class="button is-danger"
-          >Cancel</ion-button
-        >
-      </div>
-    </div>
+    
   </ion-card-content>
 </ion-card>
+
+
 <ion-card *ngIf="!isUploading && isUploaded">
   <ion-card-header>
     <ion-card-title>
@@ -113,8 +104,8 @@
   </ion-card-content>
 </ion-card>
 
-<h2>Uploaded Freaky Images</h2>
 
+<h2>Uploaded Images</h2>
 <ion-card color="light" *ngFor="let item of images | async">
   <ion-card-header>
     <ion-card-title>
@@ -124,13 +115,8 @@
 
   <ion-card-content>
     <img [src]="item.filepath" />
-    <a [href]="item.filepath" target="_blank" rel="noopener">Download</a>
   </ion-card-content>
 </ion-card>
-
-
-
-
 
 
 

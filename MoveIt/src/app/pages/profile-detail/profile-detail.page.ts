@@ -4,11 +4,15 @@ import { GoalService } from 'src/app/services/goal/goal.service';
 import { Activity } from 'src/app/model/activity';
 import { ActivityService } from 'src/app/services/activity/activity.service';
 import {Goal} from '../../model/goal';
+import {User} from '../../model/user';
 import {Observable} from 'rxjs';
 import { AlertController } from '@ionic/angular';
 import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { finalize, tap } from 'rxjs/operators';
+
+import {UserService} from 'src/app/services/user/user.service';
+import * as firebase from 'firebase';
 
 export interface MyData {
   name: string;
@@ -31,16 +35,29 @@ export class ProfileDetailPage implements OnInit {
   goalStorage: Array<Goal>;
   private imageCollection: AngularFirestoreCollection<MyData>
 
-  constructor(private location:Location, private goalService: GoalService, private activityService: ActivityService, public alertController: AlertController, private storage: AngularFireStorage, private database: AngularFirestore) { 
+  username:Observable<any>;
+  test: Observable <string>;
+  usertest:string;
+  usertestpath:string;
+
+  
+
+  constructor(private location:Location, private userService: UserService, private goalService: GoalService, private activityService: ActivityService, public alertController: AlertController, private storage: AngularFireStorage, private database: AngularFirestore) { 
     this.activities = this.activityService.getAllUserActivities();
     this.goals = this.goalService.getGoals();
     this.goals.subscribe(goals => this.goalStorage = goals);
     this.isUploading = false;
     this.isUploaded= false; 
     //Set collection where our documents/ images info will save
-    this.imageCollection = database.collection<MyData>('freakyImages');
+    this.imageCollection = database.collection<MyData>('profilePic');
     this.images = this.imageCollection.valueChanges();
+    this.username=this.userService.getUsername();
+    this.usertest=firebase.auth().currentUser.uid;
+  //  this.storage.ref(path)
+    this.usertestpath=`profilePic/${firebase.auth().currentUser.uid}`
     //this.router = router;
+
+    
   }
 
 // Upload Task 
@@ -69,6 +86,7 @@ isUploaded:boolean;
 
 
 
+
 uploadFile(event: FileList) {
   
 
@@ -88,16 +106,14 @@ uploadFile(event: FileList) {
   this.fileName = file.name;
 
   // The storage path
-  const path = `freakyStorage/${new Date().getTime()}_${file.name}`;
+  const path = `profilePic/${firebase.auth().currentUser.uid}`;
 
-  // Totally optional metadata
-  const customMetadata = { app: 'Freaky Image Upload Demo' };
 
   //File reference
   const fileRef = this.storage.ref(path);
 
   // The main task
-  this.task = this.storage.upload(path, file, { customMetadata });
+  this.task = this.storage.upload(path, file);
 
   // Get file progress percentage
   this.percentage = this.task.percentageChanges();
@@ -137,48 +153,6 @@ addImagetoDB(image: MyData) {
   });
 }
 
-
-
-  async editProfile() {
-    const alert = await this.alertController.create({
-      header: 'Edit Profile Information',
-      inputs: [
-        {
-          name: 'name1',
-          type: 'text',
-          value:'name',
-          placeholder: 'Name'
-        },
-        // input date with min & max
-        {
-          name: 'BirthDate',
-          type: 'date',
-          value: '5.3.1994'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel');
-          }
-        }, {
-          text: 'Ok',
-          handler: () => {
-            console.log('Confirm Ok');
-          }
-        }
-      ]
-    });
-    await alert.present();
-  }
-
-
-
-
-  
 
   ngOnInit() {
   }
