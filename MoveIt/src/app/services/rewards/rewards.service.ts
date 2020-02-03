@@ -38,6 +38,10 @@ export class RewardsService {
         return this.fireDatabase.list<string>('/trophyStatus/' + firebase.auth().currentUser.uid + '/available').valueChanges();
     }
 
+    getTrophy(id: string) {
+        return Trophy.defaultTrophies.find(trophy => trophy.id === id);
+    }
+
     getAllTrophies() {
         return Trophy.defaultTrophies;
     }
