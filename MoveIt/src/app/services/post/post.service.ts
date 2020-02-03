@@ -16,9 +16,9 @@ export class PostService {
 
     constructor(private fireDatabase: AngularFireDatabase, private userService: UserService) {
         // TODO get user
-       // this.user = new ReplaySubject(1);
-        // userService.getUser().subscribe(this.user);
-        // userService.getUser().subscribe(user => console.log(user));
+        this.user = new ReplaySubject(1);
+        userService.getUser().subscribe(this.user);
+        userService.getUser().subscribe(user => console.log(user));
     }
 
     /**
@@ -147,9 +147,9 @@ export class PostService {
      */
     getAllPosts() {
         return this.user.pipe(switchMap(user => {
-            const ref = this.fireDatabase.list<Post>('/posts/' + user.group);
+            const ref = this.fireDatabase.list<Post>('/posts/' + user.group, query => query.orderByChild('createdAt'));
             return ref.snapshotChanges().pipe(map(posts => posts.map(
-                postSnapshot => Post.fromFirebaseObject(user.group, postSnapshot.key, postSnapshot.payload.val()))));
+                postSnapshot => Post.fromFirebaseObject(user.group, postSnapshot.key, postSnapshot.payload.val())).reverse()));
         }));
 
     }
@@ -233,4 +233,5 @@ export class PostService {
             return this.fireDatabase.list<Comment>('/posts/' + user.group + '/' + postId).valueChanges();
         }));
     }
+
 }

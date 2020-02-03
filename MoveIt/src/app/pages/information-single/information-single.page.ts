@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {InformationService} from '../../services/information/information.service';
 import { Location } from  '@angular/common';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
     selector: 'app-information-single',
@@ -9,8 +10,13 @@ import { Location } from  '@angular/common';
 })
 export class InformationSinglePage implements OnInit {
 
-    constructor(private informationService: InformationService, private location: Location) {
+    data:any;
+
+    constructor(private informationService: InformationService, private location: Location, private route:ActivatedRoute, private router:Router) {
     this.location = location;
+    this.route.queryParams.subscribe(params=>{
+        this.data = JSON.parse(params.special);
+    })
     }
 
     ngOnInit() {
