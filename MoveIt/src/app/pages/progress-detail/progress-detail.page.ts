@@ -73,25 +73,43 @@ export class ProgressDetailPage implements OnInit {
 
 
     ionViewDidEnter() {
+        
         this.defineChartData();
-        this.createSimpleLineChart();
     }
 
-    defineChartData()
-        {
-        let k : any;
+    defineChartData(){
+        let that = this;
+        let now = new Date();
+        this.activities.subscribe(activities => {
+            let todayActivities = activities.filter(function(activity){
+                return activity.startTime.getFullYear() == now.getFullYear() && 
+                activity.startTime.getMonth()           == now.getMonth()    &&
+                activity.startTime.getDay()             == now.getDay();
+            })
+            todayActivities.forEach(function(activity){
+                console.log(activity);
 
-        for(k in this.goalStorage)
-        {   console.log(k);
+                that.chartValues.push({
+                    x: activity.startTime, 
+                    y: activity.getDuration()
+                });
+                //that.chartLabels.push(activity.startTime.getHours());
+                //that.chartValues.push(activity.getDuration());
+            
+            });
+            that.createSimpleLineChart();
+    })
 
            // this.chartLabels.push(active.intensity);
           //  this.chartValues.push(active.type);
           //  this.chartColours.push(tech.color);
-          //  this.chartHoverColours.push(tech.hover);
-        }
-        }
+       
+       }   //  this.chartHoverColours.push(tech.hover);
+    
+
 
     createSimpleLineChart() {
+        
         this.barChart = new Chart(this.barChart.nativeElement, {
             type: 'bar',
             data: {
@@ -99,14 +117,29 @@ export class ProgressDetailPage implements OnInit {
                 datasets: [{
                     label: 'Active Minutes',
                     data: this.chartValues,
-                    backgroundColor: 'rgba(0, 0, 0, 0)',
+                    backgroundColor: 'rgba(38, 194, 129, .7)',
                     borderColor: 'rgb(38, 194, 129)',
                     borderWidth: 1
                 }]
             },
             options: {
                 scales: {
+                    xAxes: [{
+                        gridLines: {
+                            display: false
+                        },
+                        type: 'time',
+                        time: {
+                            unit: 'hour',
+                            displayFormats: {
+                                hour: 'HH'
+                            }
+                        }
+                    }],
                     yAxes: [{
+                        gridLines: {
+                            display: true
+                        },
                         ticks: {
                             beginAtZero: true
                         }
