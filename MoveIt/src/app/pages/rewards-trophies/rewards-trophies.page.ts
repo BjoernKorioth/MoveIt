@@ -12,7 +12,7 @@ import {ActivityService} from '../../services/activity/activity.service';
 import {GoalService} from '../../services/goal/goal.service';
 import {Activity} from '../../model/activity';
 import {PopoverController} from '@ionic/angular';
-import { TrophyPopover } from 'src/app/trophy-popover/trophy-popover.component';
+import {TrophyPopover} from 'src/app/trophy-popover/trophy-popover.component';
 import {Router} from '@angular/router';
 
 
@@ -45,7 +45,7 @@ export class RewardsTrophiesPage implements OnInit {
         this.location = location;
         this.rewardsService.getWonTrophies().subscribe(rewards => this.trophies = rewards);
         this.rewardsService.getAvailableTrophies().subscribe(rewards => this.inactTrophies = rewards);
-       // this.trophies = Trophy.defaultTrophies;
+        // this.trophies = Trophy.defaultTrophies;
         this.activityService.getAllUserActivities().subscribe(activities => this.activities = activities);
         this.goalService.getGoalWins().subscribe(goals => this.goals = goals);
     }
@@ -82,13 +82,15 @@ export class RewardsTrophiesPage implements OnInit {
     addToActiveList(challenge: Challenge) {
         this.activeChallenges.push(challenge);
         this.identifyChallenge(challenge);
-        this.challService.addChallengeToActive(this.activeChallenges);
+        // TODO fix this, returns an error on compilation
+        // this.challService.addChallengeToActive(this.activeChallenges);
     }
 
     removeFromActiveList(activeChallenge: Challenge) {
         this.challenges.push(activeChallenge);
         this.identifyActiveChallenge(activeChallenge);
-       this.challService.addChallengeToActive(this.activeChallenges);
+        // TODO fix this, returns an error on compilation
+        // this.challService.addChallengeToActive(this.activeChallenges);
     }
 
     async presentPopover(trophy: Trophy, event) {
