@@ -4,7 +4,7 @@ interface FireBaseObject {
     endTime: string;
     price: string;
     startTime: string;
-    finished:boolean;
+    finished: boolean;
     title: string;
     participants: any;
     registered: number;
@@ -17,7 +17,8 @@ export class Challenge {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?: string, description?: string, endTime?: Date, price?: string, startTime?: Date, title?: string, participantObject?: any, finished?:boolean) {
+    constructor(id?: string, description?: string, endTime?: Date, price?: string, startTime?: Date, title?: string,
+                participantObject?: any, finished?: boolean) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || 'runMarathon';
         this.description = description || 'You must walk 10km a day for 1 week';
@@ -25,9 +26,9 @@ export class Challenge {
         this.price = price || '10$ amazon gift card';
         this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
         this.title = title || 'running';
-        this.participants = new Array();
+        this.participants = [];
 
-        for(let user in participantObject){
+        for (const user of participantObject) {
             this.participants.push(participantObject[user]);
         }
         this.finished = finished || false;
@@ -43,6 +44,8 @@ export class Challenge {
     title: string;
     finished: boolean;
     participants: Array<any>;
+    startTimeIso: string;
+    endTimeIso: string;
 
     /**
      * Creates an Challenge object from a firebase query
