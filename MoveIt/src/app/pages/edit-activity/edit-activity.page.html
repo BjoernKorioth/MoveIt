@@ -30,12 +30,15 @@
 
       <ion-item>
         <ion-label>Start Date</ion-label>
-        <ion-datetime placeholder="Select Date"></ion-datetime>
+        <ion-datetime placeholder="Select Date"  [(ngModel)]="activity.startDateIso"></ion-datetime>
       </ion-item>
-
+      <ion-item>
+        <ion-label>Start Time</ion-label>
+        <ion-datetime placeholder="Select Time" display-format="HH:mm" picker-format="HH:mm" [(ngModel)]="activity.startTimeIso"></ion-datetime>
+      </ion-item>
     <ion-item>
       <ion-label>Duration</ion-label>
-      <ion-input [(ngModel)]="minutes" type="number" slot="end" placeholder="Minutes" text-right></ion-input>
+      <ion-input [(ngModel)]="activity.minutes" type="number" slot="end" placeholder="Minutes" text-right></ion-input>
     </ion-item>
 
     <ion-item>
