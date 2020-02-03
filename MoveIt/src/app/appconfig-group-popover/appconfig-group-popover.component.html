@@ -1,29 +1,14 @@
 <ion-list>
   <ion-item>
-    <ion-label>Group:</ion-label>
-    <ion-input placeholder="Enter group"></ion-input>
+    <ion-label>Group</ion-label>
+    <ion-input [(ngModel)]="group.name" placeholder="Enter group"></ion-input>
   </ion-item>
-  <ion-item>
-    <ion-label>Progress:</ion-label>
-    <ion-checkbox></ion-checkbox>
+  <ion-item *ngFor="let feature of features">
+    <ion-label>{{ feature.val }}</ion-label>
+    <ion-checkbox [(ngModel)]="feature.isChecked"></ion-checkbox>
   </ion-item>
+
   <ion-item>
-    <ion-label>Information:</ion-label>
-    <ion-checkbox></ion-checkbox>
-  </ion-item>
-  <ion-item>
-    <ion-label>Rewards:</ion-label>
-    <ion-checkbox></ion-checkbox>
-  </ion-item>
-  <ion-item>
-    <ion-label>Newsfeed:</ion-label>
-    <ion-checkbox></ion-checkbox>
-  </ion-item>
-  <ion-item>
-    <ion-label>Leaderboard:</ion-label>
-    <ion-checkbox></ion-checkbox>
-  </ion-item>
-  <ion-item>
-    <ion-button color="secondary"  slot="end" float-right>Create</ion-button>
+    <ion-button (click)="createGroup()" color="secondary"  slot="end" float-right>Create</ion-button>
   </ion-item>
 </ion-list>

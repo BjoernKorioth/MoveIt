@@ -1,23 +1,23 @@
 <ion-list>
   <ion-item>
     <ion-label>Title:</ion-label>
-    <ion-input [(ngModel)]="title" placeholder="Enter Title"></ion-input>
+    <ion-input [(ngModel)]="challenge.title" placeholder="Enter Title"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Description:</ion-label>
-    <ion-input [(ngModel)]="description" placeholder="Enter Description"></ion-input>
+    <ion-input [(ngModel)]="challenge.description" placeholder="Enter Description"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label>Start:</ion-label>
-    <ion-datetime display-format="YYYY-MM-DD" placeholder="Enter Start Time"></ion-datetime>
+    <ion-datetime [(ngModel)]="challenge.startTime" displayFormat="YYYY-MM-DD" placeholder="Enter Start Time"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>End:</ion-label>
-    <ion-datetime display-format="YYYY-MM-DD" placeholder="Enter End Time"></ion-datetime>
+    <ion-datetime [(ngModel)]="challenge.endTime" displayFormat="YYYY-MM-DD" placeholder="Enter End Time"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Price:</ion-label>
-    <ion-input [(ngModel)]="price" placeholder="Price"></ion-input>
+    <ion-input [(ngModel)]="challenge.price" placeholder="Price"></ion-input>
   </ion-item>
   <ion-item>
     <ion-button (click)="addChallenge()" color="secondary"  slot="end" float-right>Create</ion-button>

@@ -21,11 +21,11 @@ export class Information {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?: string, content?: string, createdAt?: Date, picture?: string, link?: string, title?: string) {
+    constructor(id?: string, title?: string, content?: string, link?: string, picture?: string, createdAt?: Date) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
         this.content = content || '';
-        this.createdAt = createdAt || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
+        this.createdAt = createdAt || new Date();
         this.picture = picture || '';
         this.link = link || '';
         this.title = title || '';
@@ -44,11 +44,11 @@ export class Information {
         // @ts-ignore TS2339
         return new Information(
             id || '',
+            firebaseObject.title || '',
             firebaseObject.content || '',
-            new Date(firebaseObject.createdAt) || new Date(),
-            firebaseObject.picture || '',
             firebaseObject.link || '',
-            firebaseObject.title || ''
+            firebaseObject.picture || '',
+            new Date(firebaseObject.createdAt) || new Date()
         );
     }
 
@@ -61,10 +61,11 @@ export class Information {
         return {
             id: this.id,
             content: this.content,
-            createdAt: this.createdAt.toDateString(),
+            createdAt: this.createdAt.getTime(),
             picture: this.picture,
             link: this.link,
             title: this.title
         };
+
     }
 }

@@ -20,12 +20,14 @@ export class ChallengeService {
      */
     createChallenge(challenge: Challenge) {
         return new Promise<any>((resolve, reject) => {
-            firebase.database().ref('/challenges/').push(challenge.toFirebaseObject()).then(
-                newReference => {
-                    challenge.id = newReference.key;
-                    resolve(challenge);
-                },
-                err => reject(err)
+            const id = firebase.database().ref().child('challenges').push().key;
+            challenge.id = id;
+
+            this.fireDatabase.database.ref('/challenges/').child(id)
+            .set(challenge.toFirebaseObject()).then(
+            // Returns the information with the new id
+            () => resolve(challenge),
+            err => reject(err)
             );
         });
     }
@@ -38,8 +40,12 @@ export class ChallengeService {
      * this is needed to initially get all available challenges
      */
     getAllAvailableChallenges() {
-        return this.fireDatabase.list<Challenge>('challenges').valueChanges();
+        const ref = this.fireDatabase.list<any>('/challenges/');
+        return ref.snapshotChanges().pipe(map(challenge => challenge.map(
+            chalSnapshot => Challenge.fromFirebaseObject(chalSnapshot.key, chalSnapshot.payload.val()))));
     }
+       // return this.fireDatabase.list<Challenge>('challenges').valueChanges();
+    
 
     /**
      * this is necessary in order to get all own active challenges to sort it in the frontend then

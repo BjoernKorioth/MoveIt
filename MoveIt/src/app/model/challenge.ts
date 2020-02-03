@@ -7,6 +7,7 @@ interface FireBaseObject {
     finished:boolean;
     title: string;
     participants: any;
+    registered: number;
 }
 
 export class Challenge {
@@ -25,7 +26,7 @@ export class Challenge {
         this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
         this.title = title || 'running';
         this.participants = new Array();
-        
+
         for(let user in participantObject){
             this.participants.push(participantObject[user]);
         }
@@ -60,7 +61,7 @@ export class Challenge {
             new Date(firebaseObject.startTime) || new Date(),
             firebaseObject.title || '',
             firebaseObject.participants || 0,
-            firebaseObject.finished,
+            firebaseObject.finished
         );
     }
 

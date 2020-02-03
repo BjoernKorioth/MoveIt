@@ -5,18 +5,13 @@
         </ion-buttons>
         <ion-title>Articles</ion-title>
     </ion-toolbar>
-</ion-header>
 
-<ion-content>
-    <h2 padding>Manage articles</h2>
+        <ion-button color="secondary" padding (click)="presentPopover($event)"float-right>Create Article</ion-button>
 
-    <section>
-        <ion-button color="secondary" padding (click)="presentPopover($event)">Create Article</ion-button>
-    </section>
     <br><br><br>
 
     <ion-row>
-        <ion-col size="3">
+        <ion-col size="2">
             <ion-list>
                 <ion-list-header>
                     <ion-label>Title</ion-label>
@@ -37,7 +32,7 @@
                 </ion-list-header>
             </ion-list>
         </ion-col>
-        <ion-col size="3">
+        <ion-col size="2">
             <ion-list>
                 <ion-list-header>
                     <ion-label>Image</ion-label>
@@ -45,30 +40,37 @@
             </ion-list>
         </ion-col>
     </ion-row>
+</ion-header>
+
+<ion-content>
+
 
     <ion-row *ngFor="let article of articles">
-        <ion-col size="3">
+        <ion-col size="2">
             <ion-list>
-                <ion-item> {{article.title}} </ion-item>
+                <ion-item><ion-textarea [(ngModel)]="article.title"></ion-textarea> </ion-item>
             </ion-list>
         </ion-col>
 
         <ion-col size="3">
             <ion-list>
-                <ion-item>{{article.content}}</ion-item>
+                <ion-item text-wrap><ion-textarea [(ngModel)]="article.content" text-wrap></ion-textarea></ion-item>
             </ion-list>
         </ion-col>
 
         <ion-col size="3">
             <ion-list>
-                <ion-item>{{article.link}}</ion-item>
+                <ion-item><ion-textarea [(ngModel)]="article.link" text-wrap></ion-textarea></ion-item>
             </ion-list>
         </ion-col>
 
-        <ion-col size="3">
+        <ion-col size="2">
             <ion-list>
-                <ion-item>{{article.picture}}</ion-item>
+                <ion-item><ion-textarea [(ngModel)]="article.picture"></ion-textarea></ion-item>
             </ion-list>
+        </ion-col>
+        <ion-col size="2">
+        <ion-button color="secondary" (click)="editArticle(article)">Save</ion-button>
         </ion-col>
     </ion-row>
 

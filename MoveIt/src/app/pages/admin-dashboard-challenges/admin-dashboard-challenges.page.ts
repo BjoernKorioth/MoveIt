@@ -13,12 +13,18 @@ import {ChallengePopoverComponent} from 'src/app/challenge-popover/challenge-pop
 })
 export class AdminDashboardChallengesPage implements OnInit {
     challenges: Array<Challenge>;
-    challengesObserve: Observable<Array<Challenge>>;
+    challengesObserve: Challenge[];
 
 
     constructor(private challService: ChallengeService, public popoverController: PopoverController) {
-        this.challengesObserve = this.challService.getAllAvailableChallenges();
-        this.challengesObserve.subscribe(result => this.updateAllChallenges(result));
+        this.challService.getAllAvailableChallenges().subscribe(data => {
+            this.challenges = data;
+            this.challenges.forEach(function(challenge) {
+                challenge.startTimeIso = challenge.startTime.toISOString();
+                challenge.endTimeIso = challenge.endTime.toISOString();
+            })
+        });
+     //   this.challengesObserve.subscribe(result => this.updateAllChallenges(result));
 
         /*this.challenges= [
           {
@@ -36,6 +42,16 @@ export class AdminDashboardChallengesPage implements OnInit {
             price: '30 Euro Amazon Gift Card'
           },
         ]*/
+    }
+
+    editChallenge(challenge: Challenge) {
+        console.log(challenge);
+        challenge.startTime = new Date(challenge.startTimeIso);                                                       
+        challenge.endTime = new Date(challenge.endTimeIso);  
+        this.challService.editChallenge(challenge).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
     }
 
     async presentPopover(event) {

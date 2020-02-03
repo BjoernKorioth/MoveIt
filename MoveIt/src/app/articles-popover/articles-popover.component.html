@@ -1,19 +1,19 @@
 <ion-list>
   <ion-item>
-    <ion-label>Title:</ion-label>
-    <ion-input  [(ngModel)]="information.title" placeholder="Enter Title"></ion-input>
+    <ion-label>Title</ion-label>
+    <ion-input  [(ngModel)]="information.title" placeholder="Enter Title" text-right></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Description:</ion-label>
-    <ion-input  [(ngModel)]="information.content" placeholder="Enter Description"></ion-input>
+    <ion-label>Description</ion-label>
+    <ion-input  [(ngModel)]="information.content" placeholder="Enter Description" text-right></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Link:</ion-label>
-    <ion-input  [(ngModel)]="information.link" placeholder="Enter Link"></ion-input>
+    <ion-label>Link</ion-label>
+    <ion-input  [(ngModel)]="information.link" placeholder="Enter Link" text-right></ion-input>
   </ion-item>
   <ion-item>
-    <ion-label>Image:</ion-label>
-    <ion-input  [(ngModel)]="information.picture" placeholder="Upload image"></ion-input>
+    <ion-label>Image</ion-label>
+    <ion-input  [(ngModel)]="information.picture" placeholder="Upload image" text-right></ion-input>
   </ion-item>
   <ion-item>
     <ion-button (click)="addInformation()" color="secondary"  slot="end" float-right>Create</ion-button>

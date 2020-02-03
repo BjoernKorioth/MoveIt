@@ -58,34 +58,35 @@
   <ion-row *ngFor="let challenge of challenges">
     <ion-col size="2">
       <ion-list>
-        <ion-item><ion-label>{{challenge.title}}</ion-label></ion-item>
-      </ion-list>
-    </ion-col>
-
-    <ion-col size="3">
-      <ion-list>
-        <ion-item><ion-label>{{challenge.description}}</ion-label></ion-item>
+        <ion-item><ion-textarea [(ngModel)]="challenge.title"></ion-textarea></ion-item>
       </ion-list>
     </ion-col>
 
     <ion-col size="2">
       <ion-list>
-        <ion-item><ion-label>{{challenge.startDate}}</ion-label></ion-item>
+        <ion-item><ion-textarea [(ngModel)]="challenge.description"></ion-textarea></ion-item>
       </ion-list>
     </ion-col>
 
     <ion-col size="2">
       <ion-list>
-        <ion-item><ion-label>{{challenge.endDate}}</ion-label></ion-item>
+        <ion-item><ion-datetime [(ngModel)]="challenge.startTimeIso"></ion-datetime></ion-item>
       </ion-list>
     </ion-col>
-
-    <ion-col size="3">
+ <ion-col size="2">
       <ion-list>
-        <ion-item><ion-label>{{challenge.price}}</ion-label></ion-item>
+        <ion-item><ion-datetime  [(ngModel)]="challenge.endTimeIso"></ion-datetime></ion-item>
       </ion-list>
     </ion-col>
 
+    <ion-col size="2">
+      <ion-list>
+        <ion-item><ion-textarea [(ngModel)]="challenge.price"></ion-textarea></ion-item>
+      </ion-list>
+    </ion-col>
+    <ion-col size="2">
+      <ion-button color="secondary" (click)="editChallenge(challenge)">Save</ion-button>
+      </ion-col>
 
   </ion-row>
 </ion-content>
