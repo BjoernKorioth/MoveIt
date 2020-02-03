@@ -25,7 +25,7 @@ export class RewardsTrophiesPage implements OnInit {
     trophies: any;
     inactTrophies: any;
     activities: Array<Activity>;
-    goals: object;
+    goals: any;
     challenges: Array<Challenge>;
     challengesObserve: Observable<Array<Challenge>>;
     challengesActiveObserve: Observable<Array<Challenge>>;
@@ -78,21 +78,6 @@ export class RewardsTrophiesPage implements OnInit {
         this.activeChallenges = newActive;
     }
 
-
-    addToActiveList(challenge: Challenge) {
-        this.activeChallenges.push(challenge);
-        this.identifyChallenge(challenge);
-        // TODO fix this, returns an error on compilation
-        // this.challService.addChallengeToActive(this.activeChallenges);
-    }
-
-    removeFromActiveList(activeChallenge: Challenge) {
-        this.challenges.push(activeChallenge);
-        this.identifyActiveChallenge(activeChallenge);
-        // TODO fix this, returns an error on compilation
-        // this.challService.addChallengeToActive(this.activeChallenges);
-    }
-
     async presentPopover(trophy: Trophy, event) {
         const popover = await this.popoverController.create({
             component: TrophyPopover,
@@ -102,24 +87,6 @@ export class RewardsTrophiesPage implements OnInit {
             }
         });
         return await popover.present();
-    }
-
-    identifyChallenge(challenge: Challenge) {
-        console.log(challenge);
-        for (let i = 0; i < this.challenges.length; i++) {
-            if (this.challenges[i].title === challenge.title) {
-                this.challenges.splice(i, i + 1);
-            }
-        }
-    }
-
-    identifyActiveChallenge(challenge: Challenge) {
-        console.log(challenge);
-        for (let i = 0; i < this.activeChallenges.length; i++) {
-            if (this.activeChallenges[i].title === challenge.title) {
-                this.activeChallenges.splice(i, i + 1);
-            }
-        }
     }
 
     goBack() {
