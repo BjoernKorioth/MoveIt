@@ -5,6 +5,7 @@ import { Location } from  '@angular/common';
 
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
+//import { ConsoleReporter } from 'jasmine';
 
 
 @Component({
@@ -15,11 +16,19 @@ import { ToastController } from '@ionic/angular';
 export class EditActivityPage implements OnInit {
   activity: Activity;
   minutes: number;
+  date: string;
+  time: string;
   types: Array<string>;
   intensities: Array<string>;
 
   constructor(private activityService: ActivityService, private location: Location, private router: Router, private toastController: ToastController) { 
     this.activity = this.router.getCurrentNavigation().extras.state.activity; // TODO: display error message if empty
+    this.activity.startDateIso = this.activity.startTime.toISOString().split("T")[0];
+    this.activity.startTimeIso = this.activity.startTime.toISOString().split("T")[1];
+    this.activity.minutes = this.activity.getDuration();
+
+    console.log(this.activity.startTimeIso);
+    console.log(this.activity.startTime.toISOString());
     this.location = location;
     this.types = Activity.types;
     this.intensities = Activity.intensities;
@@ -53,14 +62,19 @@ export class EditActivityPage implements OnInit {
      * An updated activity object and the id of the activity to be updated must be provided
      */
     editActivity() {
-      /*const record = new Activity('-Lx_t1Ch4v1h7sox96XZ', {
-        unit: 'km',
-        value: 42.2,
-        intensity: this.activity.intensity,
-      });
-      console.log(this.activity);*/
 
-      // TODO replace with actual activity id
+      const t1: any = this.activity.startDateIso.split('T');
+      const t2: any = this.activity.startTimeIso.split('T');
+      const t3: any = t1[0].concat('T', t2);
+      var timezone_offset_min = new Date().getTimezoneOffset();
+      console.log(timezone_offset_min);
+      
+      this.activity.startTime = new Date((new Date(t3).getTime()) - timezone_offset_min*60000);
+      const newDateObj = new Date(this.activity.startTime.getTime() + this.activity.minutes * 60000);
+
+      this.activity.endTime = new Date(newDateObj);
+
+      console.log(this.activity);
       this.activityService.editActivity(this.activity.id, this.activity).then(
           res => console.log(res),
           err => console.log(err)

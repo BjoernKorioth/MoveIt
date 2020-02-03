@@ -8,6 +8,9 @@ interface FireBaseObject {
 }
 
 export class Activity {
+    startDateIso: string;
+    startTimeIso: string;
+    minutes: number;
 
     /**
      * Constructor to create Activity

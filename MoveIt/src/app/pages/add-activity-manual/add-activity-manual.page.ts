@@ -54,7 +54,7 @@ export class AddActivityManualPage implements OnInit {
     }
 
     addActivity() {
-        const date = this.date;
+    const date = this.date;
         const time = this.time;
         const t1: any = date.split('T');
         const t2: any = time.split('T');
