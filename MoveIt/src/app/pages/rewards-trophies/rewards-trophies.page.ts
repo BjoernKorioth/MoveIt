@@ -1,11 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 
-import {Challenge} from '../../model/challenge';
-
 import {ChallengeService} from '../../services/challenges/challenge.service';
-
-import {Observable} from 'rxjs';
 import {RewardsService} from '../../services/rewards/rewards.service';
 import {Trophy} from '../../model/trophy';
 import {ActivityService} from '../../services/activity/activity.service';
@@ -13,7 +9,6 @@ import {GoalService} from '../../services/goal/goal.service';
 import {Activity} from '../../model/activity';
 import {PopoverController} from '@ionic/angular';
 import {TrophyPopover} from 'src/app/trophy-popover/trophy-popover.component';
-import {Router} from '@angular/router';
 
 
 @Component({
@@ -26,25 +21,14 @@ export class RewardsTrophiesPage implements OnInit {
     inactTrophies: any;
     activities: Array<Activity>;
     goals: object;
-    challenges: Array<Challenge>;
-    challengesObserve: Observable<Array<Challenge>>;
-    challengesActiveObserve: Observable<Array<Challenge>>;
-    activeChallenges: Array<Challenge>;
 
-    constructor(private challService: ChallengeService, private location: Location, private rewardsService: RewardsService, private activityService: ActivityService, private goalService: GoalService, public popoverController: PopoverController, private router: Router) {
-        // this.challengesObserve = this.challService.getAllAvailableChallenges();
-        //
-        // this.challengesObserve.subscribe(result => this.updateAllChallenges(result));
-        //
-        // this.challengesActiveObserve = this.challService.getAllUserActiveChallenges();
-        //
-        // this.challengesActiveObserve.subscribe(result => {this.updateAllActiveChallenges(result);
-        //        for(var i = 0; i< this.activeChallenges.length; i++){
-        //   this.identifyChallenge(this.activeChallenges[i]);
-        // }});
+    constructor(private challService: ChallengeService, private location: Location, private rewardsService: RewardsService,
+                private activityService: ActivityService, private goalService: GoalService, public popoverController: PopoverController) {
         this.location = location;
-        this.rewardsService.getWonTrophies().subscribe(rewards => this.trophies = rewards);
-        this.rewardsService.getAvailableTrophies().subscribe(rewards => this.inactTrophies = rewards);
+        this.rewardsService.getWonTrophies().subscribe(
+            rewards => this.trophies = rewards.map(trophy => this.rewardsService.getTrophy(trophy)));
+        this.rewardsService.getAvailableTrophies().subscribe(
+            rewards => this.inactTrophies = rewards.map(trophy => this.rewardsService.getTrophy(trophy)));
         // this.trophies = Trophy.defaultTrophies;
         this.activityService.getAllUserActivities().subscribe(activities => this.activities = activities);
         this.goalService.getGoalWins().subscribe(goals => this.goals = goals);
@@ -70,56 +54,15 @@ export class RewardsTrophiesPage implements OnInit {
         );
     }
 
-    updateAllChallenges(newChallenges: Array<Challenge>) {
-        this.challenges = newChallenges;
-    }
-
-    updateAllActiveChallenges(newActive: Array<Challenge>) {
-        this.activeChallenges = newActive;
-    }
-
-
-    addToActiveList(challenge: Challenge) {
-        this.activeChallenges.push(challenge);
-        this.identifyChallenge(challenge);
-        // TODO fix this, returns an error on compilation
-        // this.challService.addChallengeToActive(this.activeChallenges);
-    }
-
-    removeFromActiveList(activeChallenge: Challenge) {
-        this.challenges.push(activeChallenge);
-        this.identifyActiveChallenge(activeChallenge);
-        // TODO fix this, returns an error on compilation
-        // this.challService.addChallengeToActive(this.activeChallenges);
-    }
-
     async presentPopover(trophy: Trophy, event) {
         const popover = await this.popoverController.create({
             component: TrophyPopover,
             event,
             componentProps: {
-                trophy: trophy
+                trophy
             }
         });
         return await popover.present();
-    }
-
-    identifyChallenge(challenge: Challenge) {
-        console.log(challenge);
-        for (let i = 0; i < this.challenges.length; i++) {
-            if (this.challenges[i].title === challenge.title) {
-                this.challenges.splice(i, i + 1);
-            }
-        }
-    }
-
-    identifyActiveChallenge(challenge: Challenge) {
-        console.log(challenge);
-        for (let i = 0; i < this.activeChallenges.length; i++) {
-            if (this.activeChallenges[i].title === challenge.title) {
-                this.activeChallenges.splice(i, i + 1);
-            }
-        }
     }
 
     goBack() {
