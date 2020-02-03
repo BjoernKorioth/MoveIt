@@ -17,6 +17,8 @@
     <ion-button type="button" (click)='getAllActivities()'>Get All</ion-button>
     <ion-button type="button" (click)='createGoals()'>Create Goals</ion-button>
     <ion-button type="button" (click)='adjustGoal()'>Adjust Goal</ion-button>
+
+    <ion-button type="button" (click)='loadHealthData()'>Load some Data</ion-button>
     
   <button ion-button full (click)="saveWorkout()">Set a Workout</button>
 
@@ -41,13 +43,12 @@
     </ion-col>
    </ion-row>
 
-  <ion-card class="welcome-card">
+ <!-- <ion-card class="welcome-card">
     <ion-card-header>
     </ion-card-header>
-    <ion-card-content>
-      <canvas #hrzLineChart></canvas>
-    </ion-card-content>
-  </ion-card>
+    <ion-card-content>-->
+      <canvas id="barChart" width="100%" #barChart></canvas>
+
 
  <!--<ion-item>  
     <ion-button routerLink="/menu/goals/goals/detail" color="secondary" slot="end" float-right>Edit goals</ion-button>

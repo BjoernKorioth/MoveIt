@@ -198,7 +198,7 @@ export class GoalService {
                         if (lastWin.getDate() === newWin.getDate()
                             && lastWin.getMonth() === newWin.getMonth()
                             && lastWin.getFullYear() === newWin.getFullYear()) {
-                            resolve('goal was already won for today');
+                            resolve('goal was already won');
                         } else {
                             // If not, append it to the wins list
                             wins.push((new Date()).getTime());
@@ -232,6 +232,8 @@ export class GoalService {
      * @param untilDate latest endTime of an activity
      */
     filterActivities(activities: Array<Activity>, intensity: string, fromDate: Date = new Date(0), untilDate: Date = new Date()) {
+        fromDate.setHours(0, 0, 0);
+        untilDate.setHours(23, 59, 59);
         return activities.filter((activity: Activity) => {
             if (activity.intensity !== intensity) {
                 return false;

@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { RewardsTrophiesPage } from './rewards-trophies.page';
+import { TrophyPopover } from 'src/app/trophy-popover/trophy-popover.component';
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [RewardsTrophiesPage],
+  entryComponents: [TrophyPopover],
+  declarations: [RewardsTrophiesPage, TrophyPopover],
   exports: [RewardsTrophiesPage]
 })
 export class RewardsTrophiesPageModule {}

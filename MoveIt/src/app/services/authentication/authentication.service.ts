@@ -38,9 +38,13 @@ export class AuthenticateService {
                                 this.registerOnDatabase(user).then(
                                     // If this is successful, resolve the promise
                                     () => {
-                                        this.rewardsService.initializeTrophies();
                                         this.goalService.initializeUserGoals().then(
-                                            () => resolve(userCredential),
+                                            () => {
+                                                this.rewardsService.initializeTrophies().then(
+                                                    () => resolve(userCredential),
+                                                    err => reject(err)
+                                                );
+                                            },
                                             err => reject(err)
                                         );
                                     },

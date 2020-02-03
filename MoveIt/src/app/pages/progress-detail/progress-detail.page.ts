@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivityService} from '../../services/activity/activity.service';
 import {Activity} from '../../model/activity';
-import {merge, Observable} from 'rxjs';
+import {merge, Observable, of} from 'rxjs';
 import {GoalService} from '../../services/goal/goal.service';
 import {Goal} from '../../model/goal';
 import {Location} from '@angular/common';
@@ -23,20 +23,24 @@ export class ProgressDetailPage implements OnInit {
     displayedActivities: Observable<Activity[]>;
     goals: Observable<any>;
     goalStorage: Array<Goal>;
+    public chartLabels               : any    = [];
+    public chartValues               : any    = []; 
+    public chartColours              : any    = [];
+    public chartHoverColours         : any    = [];
 
-    @ViewChild('hrzLineChart', {static: false}) hrzLineChart: { nativeElement: any; };
-    hrzLines: any;
+    @ViewChild('barChart', {static: false}) barChart: { nativeElement: any; };
+   // barChart: any;
 
 
     constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location,
-                private health: Health, private platform: Platform, private router: Router) {
+        private health: Health, private platform: Platform, private router: Router) {
         this.activities = this.activityService.getAllUserActivities();
 
         this.displayedActivities = this.activities.pipe(map(
             (data) => {
-                data.sort((a, b) => {
-                    return b.startTime.getTime() - a.startTime.getTime();
-                });
+               // data.sort((a, b) => {
+                 //   return b.startTime.getTime() - a.startTime.getTime();
+                //});
                 return data.slice(0, 5);
             }
         ));
@@ -69,25 +73,73 @@ export class ProgressDetailPage implements OnInit {
 
 
     ionViewDidEnter() {
-        this.createSimpleLineChart();
+        
+        this.defineChartData();
     }
 
+    defineChartData(){
+        let that = this;
+        let now = new Date();
+        this.activities.subscribe(activities => {
+            let todayActivities = activities.filter(function(activity){
+                return activity.startTime.getFullYear() == now.getFullYear() && 
+                activity.startTime.getMonth()           == now.getMonth()    &&
+                activity.startTime.getDay()             == now.getDay();
+            })
+            todayActivities.forEach(function(activity){
+                console.log(activity);
+
+                that.chartValues.push({
+                    x: activity.startTime, 
+                    y: activity.getDuration()
+                });
+                //that.chartLabels.push(activity.startTime.getHours());
+                //that.chartValues.push(activity.getDuration());
+            
+            });
+            that.createSimpleLineChart();
+    })
+
+           // this.chartLabels.push(active.intensity);
+          //  this.chartValues.push(active.type);
+          //  this.chartColours.push(tech.color);
+       
+       }   //  this.chartHoverColours.push(tech.hover);
+    
+
+
     createSimpleLineChart() {
-        this.hrzLines = new Chart(this.hrzLineChart.nativeElement, {
-            type: 'line',
+        
+        this.barChart = new Chart(this.barChart.nativeElement, {
+            type: 'bar',
             data: {
-                // labels: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'],
+                 labels: this.chartLabels,
                 datasets: [{
                     label: 'Active Minutes',
-                    data: [10, 20, 30, 30, 40, 50, 60, 70],
-                    backgroundColor: 'rgba(0, 0, 0, 0)',
+                    data: this.chartValues,
+                    backgroundColor: 'rgba(38, 194, 129, .7)',
                     borderColor: 'rgb(38, 194, 129)',
                     borderWidth: 1
                 }]
             },
             options: {
                 scales: {
+                    xAxes: [{
+                        gridLines: {
+                            display: false
+                        },
+                        type: 'time',
+                        time: {
+                            unit: 'hour',
+                            displayFormats: {
+                                hour: 'HH'
+                            }
+                        }
+                    }],
                     yAxes: [{
+                        gridLines: {
+                            display: true
+                        },
                         ticks: {
                             beginAtZero: true
                         }
@@ -116,9 +168,9 @@ export class ProgressDetailPage implements OnInit {
                         }
                     ])
                         .then(res => {
-                                console.log(res);
-                                this.loadHealthData();
-                            }
+                            console.log(res);
+                            this.loadHealthData();
+                        }
                         )
                         .catch(e => console.log(e));
                 })
@@ -140,12 +192,32 @@ export class ProgressDetailPage implements OnInit {
 
     loadHealthData() {
 
+        this.health.requestAuthorization([
+            'distance', 'nutrition', //read and write permissions
+            {
+                read: ['steps'], //read only permission
+                write: ['height', 'weight'] //write only permission
+            }
+        ])
+            .then(
+                res => console.log(res))
+            .catch(e => console.log(e));
         this.health.query({
             startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // three days ago
             endDate: new Date(), // now
-            dataType: 'steps'
-        }).then(res => console.log(res))
-            .catch(e => console.log(e));
+            dataType: 'steps',
+        }).then((value: []) => {
+            console.log('Value:', value);
+            // console.log('Before For loop');
+            // tslint:disable-next-line: forin
+            // for (const val in value) {
+            // console.log('HealthData data' + JSON.stringify(value[val].value));
+            // console.log('HealthData data' + JSON.stringify(value[val]));
+            // }
+        }).catch((e: any) => {
+            console.error('HealthData ERROR:---' + e);
+        });
+
     }
 
 
@@ -154,11 +226,11 @@ export class ProgressDetailPage implements OnInit {
     }
 
     routeToEditGoalPage(goal: Goal) {
-        this.router.navigateByUrl('/menu/goals/goals/detail', {state: {goal}});
+        this.router.navigateByUrl('/menu/goals/goals/detail', { state: { goal } });
     }
 
     routeToEditPage(activity: Activity) {
-        this.router.navigateByUrl('/menu/progress/progress/edit', {state: {activity}});
+        this.router.navigateByUrl('/menu/progress/progress/edit', { state: { activity } });
     }
 
     /**
@@ -180,7 +252,7 @@ export class ProgressDetailPage implements OnInit {
      * An updated activity object and the id of the activity to be updated must be provided
      */
     editActivity() {
-        const record = new Activity('-Lx_t1Ch4v1h7sox96XZ', {unit: 'km', value: 42.2});
+        const record = new Activity('-Lx_t1Ch4v1h7sox96XZ', { unit: 'km', value: 42.2 });
 
         // TODO replace with actual activity id
         this.activityService.editActivity('-Lx_t1Ch4v1h7sox96XZ', record).then(
