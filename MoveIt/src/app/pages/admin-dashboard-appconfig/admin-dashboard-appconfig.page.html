@@ -30,32 +30,9 @@
           </ion-list-header>
         </ion-list>
       </ion-col>
-  
-      <ion-col size="2">
-        <ion-list>
-          <ion-list-header>
-            <ion-label>Progress</ion-label>
-          </ion-list-header>
-        </ion-list>
-      </ion-col>
-  
-      <ion-col size="2">
-        <ion-list>
-          <ion-list-header>
-            <ion-label>Information</ion-label>
-          </ion-list-header>
-        </ion-list>
-      </ion-col>
-  
-      <ion-col size="2">
-        <ion-list>
-          <ion-list-header>
-            <ion-label>Rewards</ion-label>
-          </ion-list-header>
-        </ion-list>
-      </ion-col>
-  
-      <ion-col size="2">
+
+        
+      <ion-col size="3">
         <ion-list>
           <ion-list-header>
             <ion-label>Newsfeed</ion-label>
@@ -63,30 +40,53 @@
         </ion-list>
       </ion-col>
 
-      <ion-col size="2">
+      <ion-col size="3">
         <ion-list>
           <ion-list-header>
             <ion-label>Leaderboard</ion-label>
           </ion-list-header>
         </ion-list>
       </ion-col>
+  
+      <ion-col size="3">
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Rewards</ion-label>
+          </ion-list-header>
+        </ion-list>
+      </ion-col>
     </ion-row>
 
 
-  <ion-row *ngFor="let group of (groups | async)">
+  <ion-row *ngFor="let group of allGroups">
     <ion-col size="2">
       <ion-list>
         <ion-item>{{group.name}} </ion-item>
       </ion-list>
     </ion-col>
 
-    <!--ion-col size="2">
-      <ion-list>
-        <ion-item><ion-checkbox [checked]="group.featureVector[0]"></ion-checkbox></ion-item>
+ 
+    <ion-col size="3" *ngFor="let feature of group.featureVector">  
+    <ion-list  >
+        <ion-item>
+          <ion-checkbox [(ngModel)]="feature.isChecked"></ion-checkbox>
+          {{feature.val}}
+        </ion-item>
       </ion-list>
     </ion-col>
 
-    <ion-col size="2">
+    <ion-col size="1">
+      <ion-list>
+        <ion-item>
+          <ion-button color="secondary" (click)="editGroup(group)">Save</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+
+
+    <!--[checked]="group.featureVector.includes(feature.val)"-->
+
+    <!--<ion-col size="2">
       <ion-list>
         <ion-item><ion-checkbox [checked]="group.featureVector[1]"></ion-checkbox></ion-item>
       </ion-list>
