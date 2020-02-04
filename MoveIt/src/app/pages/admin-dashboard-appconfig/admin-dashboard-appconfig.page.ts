@@ -58,8 +58,8 @@ export class AdminDashboardAppconfigPage implements OnInit {
 
         let that = this;
         this.userService.getGroups().subscribe(val =>{ 
+          console.log(val);
             this.allGroups = val,
-            console.log(val)
             this.allGroups.forEach(function(group){
               //  group.featureVector = this.features;
 
@@ -71,17 +71,11 @@ export class AdminDashboardAppconfigPage implements OnInit {
                     that.checkedFeature.push(feature);
                 });
                 group.featureVector = that.checkedFeature;
-                
-                console.log(that.checkedFeature);
                 that.checkedFeature = [];
-                console.log(that.checkedFeature);
 
         })                    
        });
         this.otps.subscribe(val => console.log(val));
-
-
-
     }
 
     async presentPopoverGroup(event) {
@@ -107,7 +101,7 @@ export class AdminDashboardAppconfigPage implements OnInit {
         );
     }
 
-    changeUserGroup(userID = 'Z8JGy8blwFav6P8LzDlt5vh8ESJ3', groupID = '-LzlWHaBPXL4vdLrbEtF') {
+    editUserconfig(userID, groupID) {
         this.userService.changeUserGroup(userID, groupID).then(
             res => console.log(res),
             err => console.log(err)

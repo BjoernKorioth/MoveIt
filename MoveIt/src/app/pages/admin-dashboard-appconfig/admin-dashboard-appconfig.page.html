@@ -83,32 +83,6 @@
       </ion-list>
     </ion-col>
 
-
-    <!--[checked]="group.featureVector.includes(feature.val)"-->
-
-    <!--<ion-col size="2">
-      <ion-list>
-        <ion-item><ion-checkbox [checked]="group.featureVector[1]"></ion-checkbox></ion-item>
-      </ion-list>
-    </ion-col>
-
-    <ion-col size="2">
-      <ion-list>
-        <ion-item><ion-checkbox [checked]="group.featureVector[2]"></ion-checkbox></ion-item>
-      </ion-list>
-    </ion-col>
-
-    <ion-col size="2">
-      <ion-list>
-        <ion-item><ion-checkbox [checked]="group.featureVector[3]"></ion-checkbox></ion-item>
-      </ion-list>
-    </ion-col>
-
-    <ion-col size="2">
-      <ion-list>
-        <ion-item><ion-checkbox [checked]="group.featureVector[4]"></ion-checkbox></ion-item>
-      </ion-list>
-    </ion-col-->
   </ion-row>
 </div>
 
@@ -124,12 +98,41 @@
   <ion-row *ngFor="let user of (users | async)">
     <ion-col size="2">
       <ion-list>
-        <ion-list-header>
-          <ion-label></ion-label>
-        </ion-list-header>
         <ion-item> {{user.name}} </ion-item>
       </ion-list>
     </ion-col>
+
+    <ion-col size="8">
+       <ion-radio-group [(ngModel)]="user.group">
+        <ion-item  *ngFor="let group of allGroups">    
+          <ion-label>{{group.name}}</ion-label>
+          <ion-radio [value]="group.id"></ion-radio>
+        </ion-item>
+    </ion-radio-group>
+  </ion-col>
+
+  <ion-col size="1">
+    <ion-list>
+      <ion-item>
+        <ion-button color="secondary" (click)="editUserconfig(user.id, user.group)">Save</ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-col>
+</ion-row>
+</div>
+ 
+</ion-content>
+
+  <!--<ion-col size="1">
+    <ion-list>
+      <ion-item>
+        <ion-button color="secondary" (click)="editUserconfig(user.id, user.group)">Save</ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-col>-->
+
+
+
 
     <!--ion-col size="2">
       <ion-list>
@@ -175,7 +178,4 @@
         <ion-item lines="none"><ion-checkbox [checked]="user.groups[4]"></ion-checkbox></ion-item>
       </ion-list>
     </ion-col-->
-  </ion-row>
-</div>
- 
-</ion-content>
+
