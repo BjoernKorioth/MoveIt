@@ -1,172 +1,175 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start" >
-      <ion-back-button class="show-back-button" (click)="goBack()"></ion-back-button>
-  </ion-buttons>
-    <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Profile</ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-back-button class="show-back-button" (click)="goBack()"></ion-back-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Profile</ion-title>
+    </ion-toolbar>
 </ion-header>
+
+<ion-content>
+    <ion-card>
+        <ion-item>
+            <ion-avatar slot="start">
+                <img src="../assets/Profilbild.jpg">
+                <!--img [src]="post.image"-->
+            </ion-avatar>
+
+            <ion-label>
+                <h2>{{usertest}}</h2>
+                <p>{{usertestpath}}</p>
+                <p>Alter</p>
+            </ion-label>
+            <ion-label side="end">
+                <div class="fileUpload btn btn-primary">
+                    <span>Profilbild hochladen</span>
+                    <input
+                            id="uploadBtn"
+                            type="file"
+                            class="upload"
+                            (change)="uploadFile($event.target.files)"
+                    />
+                </div>
+
+                <ion-label>
+                    <h2>{{ (currentUser | async)?.name  }}</h2>
+                    <!-- <h2 *ngIf="(currentUser | async); let user">{{ user.name }} Username</h2> -->
+                    <p *ngIf="(currentUser | async); let user">{{ calculateAge(user.birthday) }} years old</p>
+                </ion-label>
+                <ion-label side="end">
+
+                </ion-label>
+            </ion-label>
+        </ion-item>
+    </ion-card>
+
   
-
- <ion-card>
-    <ion-item>
-      <ion-avatar slot="start">
-        <img src="../assets/Profilbild.jpg">
-        <!--img [src]="post.image"-->
-      </ion-avatar>
-      
-      <ion-label>
-        <h2>{{usertest}}</h2> 
-        <p>{{usertestpath}}</p>
-        <p>Alter</p>
-      </ion-label>
-      <ion-label side="end">
-        <div class="fileUpload btn btn-primary">
-          <span>Profilbild hochladen</span>
-          <input
-            id="uploadBtn"
-            type="file"
-            class="upload"
-            (change)="uploadFile($event.target.files)"
-          />
-        </div>
-        
-        <ion-label>
-        <h2>{{ (currentUser | async)?.name  }}</h2> 
-        <!-- <h2 *ngIf="(currentUser | async); let user">{{ user.name }} Username</h2> -->
-        <p *ngIf="(currentUser | async); let user">{{ calculateAge(user.birthday) }} years old</p>
-      </ion-label>
-      <ion-label side="end">  
-       
-      </ion-label>
-    </ion-item> 
-    
-</ion-card>
-
-<div *ngIf="percentage | async as pct">
-  Progress: {{ pct | number }}%
-  <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
-</div>
-<div *ngIf="snapshot | async as snap">
-  File Size: {{ snap.totalBytes | fileSizePipe }} Transfered:
-  {{ snap.bytesTransferred | fileSizePipe }}
-  <div *ngIf="snapshot && snap.bytesTransferred != snap.totalBytes">
-    <ion-button
-      color="warning"
-      size="small"
-      (click)="task.pause()"
-      class="button is-warning"
-      >Pause</ion-button
-    >
-    <ion-button
-      size="small"
-      (click)="task.resume()"
-      class="button is-info"
-      >Resume</ion-button
-    >
-    <ion-button
-      color="danger"
-      size="small"
-      (click)="task.cancel()"
-      class="button is-danger"
-      >Cancel</ion-button
-    >
-  </div>
-</div>
-
-
-<ion-card *ngIf="isUploading && !isUploaded">
- <!-- <ion-card-header>
-    <ion-card-title
-      >Selected File:<b>{{ fileName }}</b></ion-card-title>
-  </ion-card-header> -->
-
-  <ion-card-content>
-    
-  </ion-card-content>
-</ion-card>
-
-
-<ion-card *ngIf="!isUploading && isUploaded">
-  <ion-card-header>
-    <ion-card-title>
-      <b>{{ fileName }}</b> Uploaded!
-    </ion-card-title>
-  </ion-card-header>
-
-  <ion-card-content>
-    <div *ngIf="UploadedFileURL | async as url">
-      <img [src]="url" />
-      <a [href]="url" target="_blank" rel="noopener">Download</a>
+    <div *ngIf="percentage | async as pct">
+        Progress: {{ pct | number }}%
+        <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
     </div>
-    File Size: {{ fileSize | fileSizePipe }}
-    <ion-button
-      expand="full"
-      color="success"
-      (click)="isUploading = isUploaded = false"
-      >Upload More</ion-button
-    >
-  </ion-card-content>
-</ion-card>
+    <div *ngIf="snapshot | async as snap">
+        File Size: {{ snap.totalBytes | fileSizePipe }} Transfered:
+        {{ snap.bytesTransferred | fileSizePipe }}
+        <div *ngIf="snapshot && snap.bytesTransferred != snap.totalBytes">
+            <ion-button
+                    color="warning"
+                    size="small"
+                    (click)="task.pause()"
+                    class="button is-warning"
+            >Pause
+            </ion-button
+            >
+            <ion-button
+                    size="small"
+                    (click)="task.resume()"
+                    class="button is-info"
+            >Resume
+            </ion-button
+            >
+            <ion-button
+                    color="danger"
+                    size="small"
+                    (click)="task.cancel()"
+                    class="button is-danger"
+            >Cancel
+            </ion-button
+            >
+        </div>
+    </div>
 
 
-<h2>Uploaded Images</h2>
-<ion-card color="light" *ngFor="let item of images | async">
-  <ion-card-header>
-    <ion-card-title>
-      {{ item.name }}
-    </ion-card-title>
-  </ion-card-header>
+    <ion-card *ngIf="isUploading && !isUploaded">
+        <!-- <ion-card-header>
+           <ion-card-title
+             >Selected File:<b>{{ fileName }}</b></ion-card-title>
+         </ion-card-header> -->
 
-  <ion-card-content>
-    <img [src]="item.filepath" />
-  </ion-card-content>
-</ion-card>
+        <ion-card-content>
+
+        </ion-card-content>
+    </ion-card>
 
 
+    <ion-card *ngIf="!isUploading && isUploaded">
+        <ion-card-header>
+            <ion-card-title>
+                <b>{{ fileName }}</b> Uploaded!
+            </ion-card-title>
+        </ion-card-header>
 
-<ion-card>
-<ion-list-header>
-  Goals
-</ion-list-header>
-<ion-list *ngFor="let goal of (goals | async)">
+        <ion-card-content>
+            <div *ngIf="UploadedFileURL | async as url">
+                <img [src]="url"/>
+                <a [href]="url" target="_blank" rel="noopener">Download</a>
+            </div>
+            File Size: {{ fileSize | fileSizePipe }}
+            <ion-button
+                    expand="full"
+                    color="success"
+                    (click)="isUploading = isUploaded = false"
+            >Upload More
+            </ion-button
+            >
+        </ion-card-content>
+    </ion-card>
 
-  <ion-item>
-      <ion-label>
-        <h3> {{goal.type}} </h3>
-        <p> {{goal.name}}</p> 
-      </ion-label>
-        <ion-label side="end">
-          <h3>{{goal.current}} / {{goal.target}}</h3>
-      </ion-label>
-    </ion-item>
-  <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
 
-  <!-- Colorize Progressbar -->
-  <!-- <ion-item>
-    <ion-text slot="end">Goal 1</ion-text>
-    <ion-progress-bar color="primary" value="0.9"></ion-progress-bar></ion-item>
-   <ion-item> <ion-progress-bar color="primary" value="0.58"></ion-progress-bar></ion-item>
-   <ion-item> <ion-progress-bar color="primary" value="0.27"></ion-progress-bar></ion-item>-->
-</ion-list>
-</ion-card>
+    <h2>Uploaded Images</h2>
+    <ion-card color="light" *ngFor="let item of images | async">
+        <ion-card-header>
+            <ion-card-title>
+                {{ item.name }}
+            </ion-card-title>
+        </ion-card-header>
 
-<ion-card>
-<ion-list>
-<ion-list-header>
-    Activities
-</ion-list-header>
-<ion-item *ngFor="let activity of (activities | async)">
-    <ion-label>
-        <h3>{{ activity.startTime | date:'dd.MM.' }} {{activity.getDuration()}} minutes </h3>
+        <ion-card-content>
+            <img [src]="item.filepath"/>
+        </ion-card-content>
+    </ion-card>
 
-        <p>{{activity.type}}-{{activity.intensity}}</p> 
-    </ion-label>
-        
-    
-</ion-item>
-</ion-list>
-</ion-card>
+
+    <ion-card>
+        <ion-list-header>
+            Goals
+        </ion-list-header>
+        <ion-list *ngFor="let goal of (goals | async)">
+
+            <ion-item>
+                <ion-label>
+                    <h3> {{goal.type}} </h3>
+                    <p> {{goal.name}}</p>
+                </ion-label>
+                <ion-label side="end">
+                    <h3>{{goal.current}} / {{goal.target}}</h3>
+                </ion-label>
+            </ion-item>
+            <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
+
+            <!-- Colorize Progressbar -->
+            <!-- <ion-item>
+              <ion-text slot="end">Goal 1</ion-text>
+              <ion-progress-bar color="primary" value="0.9"></ion-progress-bar></ion-item>
+             <ion-item> <ion-progress-bar color="primary" value="0.58"></ion-progress-bar></ion-item>
+             <ion-item> <ion-progress-bar color="primary" value="0.27"></ion-progress-bar></ion-item>-->
+        </ion-list>
+    </ion-card>
+
+    <ion-card>
+        <ion-list>
+            <ion-list-header>
+                Activities
+            </ion-list-header>
+            <ion-item *ngFor="let activity of (activities | async)">
+                <ion-label>
+                    <h3>{{ activity.startTime | date:'dd.MM.' }} {{activity.getDuration()}} minutes </h3>
+
+                    <p>{{activity.type}}-{{activity.intensity}}</p>
+                </ion-label>
+            </ion-item>
+        </ion-list>
+    </ion-card>
+</ion-content>
