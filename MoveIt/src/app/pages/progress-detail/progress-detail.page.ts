@@ -202,12 +202,7 @@ export class ProgressDetailPage implements OnInit {
 
     loadHealthData() {
 
-        this.health.requestAuthorization([
-            /* 'distance', 'nutrition', //read and write permissions
-            {
-                read: ['steps'], //read only permission
-                write: ['height', 'weight'] //write only permission
-            } */
+        /* this.health.requestAuthorization([
             'activity'
         ])
             .then(
@@ -227,7 +222,11 @@ export class ProgressDetailPage implements OnInit {
             // }
         }).catch((e: any) => {
             console.error('HealthData ERROR:---' + e);
-        });
+        }); */
+        var startDate = new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000); // three days ago
+        var endDate = new Date(); // now
+        var acts = this.activityService.readFitnessApi(startDate, endDate);
+        console.log('ConvertedData: ' + acts);
 
     }
 

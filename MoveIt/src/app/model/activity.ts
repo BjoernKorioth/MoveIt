@@ -7,6 +7,21 @@ interface FireBaseObject {
     type: string;
 }
 
+interface ApiObject {
+    calories: number;
+    distance: number;
+    startDate: Date;
+    sourceBundleId: string;
+    endDate: Date;
+    unit: string;
+    value: string;
+}
+
+interface Distance {
+    unit: string,
+    value: number
+}
+
 export class Activity {
     startDateIso: string;
     startTimeIso: string;
@@ -18,7 +33,7 @@ export class Activity {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?: string, distance?: object, endTime?: Date, intensity?: string, startTime?: Date, type?: string) {
+    constructor(id?: string, distance?: Distance, endTime?: Date, intensity?: string, startTime?: Date, type?: string) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
         this.distance = distance || {unit: 'km', value: 0};
@@ -31,7 +46,7 @@ export class Activity {
     static types = ['basketball', 'biking', 'dancing','handball','football','running', 'swimming', 'volleyball', 'walking', 'other'];
     static intensities = ['moderate', 'vigorous', 'weight training'];
     id: string;
-    distance: object;
+    distance: Distance;
     endTime: Date;
     intensity: string;
     startTime: Date;
@@ -70,6 +85,51 @@ export class Activity {
             intensity: this.intensity,
             startTime: this.startTime.getTime(),
             type: this.type
+        };
+    }
+
+    /**
+     * Creates an Activity object from an Fitnes API Object
+     *
+     * This basically reconstructs the dates from the date strings
+     *
+     * @param ApiObject object from Fitness API
+     */
+
+    static fromFitApi(ApiObject: Array<ApiObject>) {
+        var ActMulit = [];
+        var ActSingle: Activity;
+        ApiObject.forEach(function (SingleEntry) {
+            console.log('Single Entry of Fitness API: ' + SingleEntry);
+            if (['basketball', 'biking', 'dancing','handball','football','running', 'swimming', 'volleyball', 'walking', 'other'].indexOf(SingleEntry.value) == -1){
+                SingleEntry.value = 'other'
+            }     
+
+            ActSingle = new Activity(
+                '',
+                {unit: 'm', value: SingleEntry.distance},          
+                SingleEntry.endDate,
+                '',
+                SingleEntry.startDate,
+                SingleEntry.value
+            );
+            ActMulit.push(ActSingle);
+        }); 
+        return ActMulit;
+    }
+
+     /**
+     * Converts the activity to upload it to Fitness API
+     */
+    toFitApi() {
+        return {
+            calories: 0,
+            distance: this.distance.value,
+            endDate: this.endTime,
+            sourceBundleId: 'com.moveitproject.www',
+            startDate: this.startTime,
+            unit: 'activityType',
+            value: this.type
         };
     }
 

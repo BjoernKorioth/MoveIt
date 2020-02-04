@@ -7,6 +7,7 @@ import {PostService} from '../post/post.service';
 import {Post} from '../../model/post';
 import {GoalService} from '../goal/goal.service';
 import {RewardsService} from '../rewards/rewards.service';
+import {Health} from '@ionic-native/health/ngx';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,7 @@ export class ActivityService {
     activityLocation = '/activities/';
 
     constructor(private fireDatabase: AngularFireDatabase, private postService: PostService, private goalService: GoalService,
-                private rewardsService: RewardsService) {
+                private rewardsService: RewardsService, private health: Health,) {
     }
 
     /**
@@ -117,5 +118,29 @@ export class ActivityService {
             .list<Activity>(this.activityLocation + firebase.auth().currentUser.uid, query => query.orderByChild('endTime'));
         return ref.snapshotChanges().pipe(map(activities => activities.map(
             activitySnapshot => Activity.fromFirebaseObject(activitySnapshot.key, activitySnapshot.payload.val())).reverse()));
+    }
+
+    readFitnessApi(startDate: Date, endDate: Date) {
+        this.health.requestAuthorization([
+            /* 'distance', 'nutrition', //read and write permissions
+            {
+                read: ['steps'], //read only permission
+                write: ['height', 'weight'] //write only permission
+            } */
+            'activity', 'distance' // we only need read and write permission
+        ])
+        .then(
+            res => console.log(res))
+        .catch(e => console.log(e));
+        this.health.query({
+            startDate: startDate,
+            endDate: endDate,
+            dataType: 'activity',
+        }).then((value: []) => {
+            console.log('Value of Health Data loaded: ', value);
+            return Activity.fromFitApi(value);
+        }).catch((e: any) => {
+            console.error('HealthData ERROR:---' + e);
+        });
     }
 }
