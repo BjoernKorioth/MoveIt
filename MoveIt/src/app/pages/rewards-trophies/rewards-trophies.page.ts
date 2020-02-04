@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 
 import {ChallengeService} from '../../services/challenges/challenge.service';
@@ -9,6 +9,8 @@ import {GoalService} from '../../services/goal/goal.service';
 import {Activity} from '../../model/activity';
 import {PopoverController} from '@ionic/angular';
 import {TrophyPopover} from 'src/app/trophy-popover/trophy-popover.component';
+import {ViewLog} from '../../model/viewLog';
+import {TrackingService} from '../../services/tracking/tracking.service';
 
 
 @Component({
@@ -16,14 +18,16 @@ import {TrophyPopover} from 'src/app/trophy-popover/trophy-popover.component';
     templateUrl: './rewards-trophies.page.html',
     styleUrls: ['./rewards-trophies.page.scss'],
 })
-export class RewardsTrophiesPage implements OnInit {
+export class RewardsTrophiesPage implements OnInit, OnDestroy {
     trophies: any;
     inactTrophies: any;
     activities: Array<Activity>;
     goals: object;
+    viewLog: ViewLog;
 
     constructor(private challService: ChallengeService, private location: Location, private rewardsService: RewardsService,
-                private activityService: ActivityService, private goalService: GoalService, public popoverController: PopoverController) {
+                private activityService: ActivityService, private goalService: GoalService, public popoverController: PopoverController,
+                private trackingService: TrackingService) {
         this.location = location;
         this.rewardsService.getWonTrophies().subscribe(
             rewards => this.trophies = rewards.map(trophy => this.rewardsService.getTrophy(trophy)));
@@ -34,8 +38,13 @@ export class RewardsTrophiesPage implements OnInit {
         this.goalService.getGoalWins().subscribe(goals => this.goals = goals);
     }
 
-    ngOnInit() {
 
+    ngOnInit() {
+        this.viewLog = this.trackingService.startRecordingViewTime('trophies');
+    }
+
+    ngOnDestroy() {
+        this.trackingService.stopRecordingViewTime(this.viewLog);
     }
 
     initializeTrophies() {

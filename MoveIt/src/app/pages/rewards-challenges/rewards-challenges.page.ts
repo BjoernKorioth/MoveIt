@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 
 import {Challenge} from '../../model/challenge';
@@ -6,27 +6,30 @@ import {Challenge} from '../../model/challenge';
 import {ChallengeService} from '../../services/challenges/challenge.service';
 
 import {Observable} from 'rxjs';
-import {connectableObservableDescriptor} from 'rxjs/internal/observable/ConnectableObservable';
+import {TrackingService} from '../../services/tracking/tracking.service';
+import {ViewLog} from '../../model/viewLog';
 
 @Component({
     selector: 'app-rewards-challenges',
     templateUrl: './rewards-challenges.page.html',
     styleUrls: ['./rewards-challenges.page.scss'],
 })
-export class RewardsChallengesPage implements OnInit {
+export class RewardsChallengesPage implements OnInit, OnDestroy {
     trophies: any;
     challenges: Array<Challenge>;
     challengesObserve: Observable<Array<Challenge>>;
-    challengesActiveObserve: Observable<Array<String>>;
-    keysOfActiveChallenges: Array<String>;
+    challengesActiveObserve: Observable<Array<string>>;
+    keysOfActiveChallenges: Array<string>;
     activeChallenges: Array<Challenge>;
 
     calculatedActive: boolean;
     calculatedAll: boolean;
 
     date: Date;
+    viewLog: ViewLog;
 
-    constructor(private challService: ChallengeService, private location: Location) {
+
+    constructor(private challService: ChallengeService, private location: Location, private trackingService: TrackingService) {
 
         this.challengesObserve = this.challService.getAllChallenges();
 
@@ -44,7 +47,7 @@ export class RewardsChallengesPage implements OnInit {
          * gets ALL challenges user participates in
          *
          this.challengesActiveObserve.subscribe(result => {
-      
+
       this.updateAllActiveChallenges(result);
 
 
@@ -77,10 +80,18 @@ export class RewardsChallengesPage implements OnInit {
                 title: '10 Daily Goals',
                 image: './assets/Trophy.png'
             }
-        ]
+        ];
+    }
+
+
+    ngOnDestroy() {
+        this.trackingService.stopRecordingViewTime(this.viewLog);
     }
 
     ngOnInit() {
+        this.viewLog = this.trackingService.startRecordingViewTime('challenges');
+
+
         this.challengesObserve = this.challService.getAllChallenges();
 
         /**
@@ -103,7 +114,7 @@ export class RewardsChallengesPage implements OnInit {
 
             this.identifyInvalidChallenges(this.challenges);
 
-            for (var i = 0; i < this.keysOfActiveChallenges.length; i++) {
+            for (let i = 0; i < this.keysOfActiveChallenges.length; i++) {
                 this.identifyChallengeFromAll(this.keysOfActiveChallenges[i]);
             }
 
@@ -127,9 +138,9 @@ export class RewardsChallengesPage implements OnInit {
      * @param newActive active array
      */
 
-    updateAllActiveChallenges(newActive: Array<String>) {
+    updateAllActiveChallenges(newActive: Array<string>) {
         this.keysOfActiveChallenges = newActive;
-        this.activeChallenges = new Array();
+        this.activeChallenges = [];
     }
 
     /**this adds an challenge if you want to participate
@@ -155,9 +166,9 @@ export class RewardsChallengesPage implements OnInit {
      * identify the challenges you participate in order to sort them out of the local all challenges array
      * @param id id for challenge for identification
      */
-    identifyChallengeFromAll(id: String) {
+    identifyChallengeFromAll(id: string) {
 
-        for (var i = 0; i < this.challenges.length; i++) {
+        for (let i = 0; i < this.challenges.length; i++) {
             if (this.challenges[i].id === id) {
                 this.activeChallenges.push(this.challenges[i]);
                 this.challenges.splice(i, i + 1);
@@ -171,9 +182,9 @@ export class RewardsChallengesPage implements OnInit {
      * @param id id for challenge for identification
      */
 
-    identifyChallengeFromActive(id: String) {
+    identifyChallengeFromActive(id: string) {
 
-        for (var i = 0; i < this.activeChallenges.length; i++) {
+        for (let i = 0; i < this.activeChallenges.length; i++) {
             if (this.activeChallenges[i].id === id) {
                 this.challenges.push(this.activeChallenges[i]);
                 this.activeChallenges.splice(i, i + 1);
@@ -187,10 +198,10 @@ export class RewardsChallengesPage implements OnInit {
      */
     identifyInvalidChallenges(challenges: Array<Challenge>) {
         this.date = new Date();
-        for (var i = 0; i < challenges.length; i++) {
+        for (let i = 0; i < challenges.length; i++) {
             if (challenges[i].endTime.getTime() < this.date.getTime() || challenges[i].finished) {
-                console.log("SYSTEM DATE: " + this.date);
-                console.log("Challenge date: " + challenges[i].endTime);
+                console.log('SYSTEM DATE: ' + this.date);
+                console.log('Challenge date: ' + challenges[i].endTime);
                 challenges.splice(i, i + 1);
             }
         }

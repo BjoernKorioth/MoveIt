@@ -12,8 +12,25 @@ export class TrackingService {
     constructor(private fireDatabase: AngularFireDatabase) {
     }
 
+    startRecordingViewTime(view: string) {
+        const viewLog = new ViewLog();
+        viewLog.view = view;
+        console.log(viewLog);
+        return viewLog;
+    }
+
+    stopRecordingViewTime(viewLog: ViewLog) {
+        viewLog.endTime = new Date();
+        this.logViewTime(viewLog);
+        console.log(viewLog);
+    }
+
     logViewTime(viewLog: ViewLog) {
-        this.fireDatabase.database.ref('/tracking/' + firebase.auth().currentUser.uid + '/viewLogs').push(viewLog.toFirebaseObject());
+        if (firebase.auth().currentUser) {
+            this.fireDatabase.database.ref('/tracking/' + firebase.auth().currentUser.uid + '/viewLogs').push(viewLog.toFirebaseObject());
+        } else {
+            console.log('no log created for ' + viewLog.view + ', because user is not logged in');
+        }
     }
 
     logAction(actionLog: ActionLog) {

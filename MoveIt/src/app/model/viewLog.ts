@@ -18,11 +18,11 @@ export class ViewLog {
         this.view = view || '';
         this.startTime = startTime || new Date();
         this.endTime = endTime || new Date();
-        this.completeTime = endTime.getTime() - startTime.getTime();
+        this.completeTime = this.endTime.getTime() - this.startTime.getTime();
     }
 
-    static views = ['registration', 'login', 'dashboard', 'progress', 'add-activity', 'information', 'socialfeed',
-        'rewards', 'trophies', 'challenges', 'leaderboard'];
+    static views = ['menu', 'dashboard', 'progress', 'add-activity', 'information', 'socialfeed',
+        'rewards', 'trophies', 'challenges', 'leaderboard', 'profile'];
     view: string;
     startTime: Date;
     endTime: Date;
@@ -50,7 +50,7 @@ export class ViewLog {
             view: this.view,
             startTime: this.startTime.getTime(),
             endTime: this.endTime.getTime(),
-            completeTime: this.completeTime
+            completeTime: this.endTime.getTime() - this.startTime.getTime()
         };
     }
 }
