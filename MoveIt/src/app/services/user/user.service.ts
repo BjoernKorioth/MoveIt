@@ -43,6 +43,10 @@ export class UserService {
         }
     }
 
+    getProfilePictureUrl() {
+        return this.db.database.ref('/users/' + firebase.auth().currentUser.uid + '/profilePictureUrl').once('value');
+    }
+
     /**
      * Creates a group
      *
@@ -108,6 +112,16 @@ export class UserService {
      */
     changeUserGroup(userID: string, groupID: string) {
         return this.db.database.ref('/users/' + userID + '/group').set(groupID);
+    }
+
+    /**
+     * Change the profile picture of a user
+     *
+     * @param userID id of the user
+     * @param profilePictureUrl url of pointing to the new profile picture
+     */
+    changeProfilePicture(userID: string, profilePictureUrl: string) {
+        return this.db.database.ref('/users/' + userID + '/profilePictureUrl').set(profilePictureUrl);
     }
 
     /**
