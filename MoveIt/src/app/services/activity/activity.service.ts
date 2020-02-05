@@ -120,6 +120,10 @@ export class ActivityService {
             activitySnapshot => Activity.fromFirebaseObject(activitySnapshot.key, activitySnapshot.payload.val())).reverse()));
     }
 
+
+    /**
+     * Retrieve all activities for a specific start and end date from the FitnessAPI
+     */
     readFitnessApi(startDate: Date, endDate: Date) {
         this.health.requestAuthorization([
             /* 'distance', 'nutrition', //read and write permissions
@@ -142,5 +146,31 @@ export class ActivityService {
         }).catch((e: any) => {
             console.error('HealthData ERROR:---' + e);
         });
+    }
+
+    /**
+     * writes an activity to the FitnessAPI
+     */
+    writeFitnessApi(activity: Activity) {
+        this.health.requestAuthorization([
+            /* 'distance', 'nutrition', //read and write permissions
+            {
+                read: ['steps'], //read only permission
+                write: ['height', 'weight'] //write only permission
+            } */
+            'activity', 'distance' // we only need read and write permission
+        ])
+        .then(
+            res => console.log(res))
+        .catch(e => console.log(e));
+        this.health.store({
+            startDate: activity.startTime,
+            endDate: activity.endTime,
+            dataType: 'activity',
+            value: activity.type,
+            sourceName: 'MoveIt_test',
+            sourceBundleId: 'com.moveitproject.www',
+        }).then(res => console.log('Response of API while writing' + res))
+            .catch(e => console.log('Response of API while writing ERROR:' + e));
     }
 }
