@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {parse} from 'json2csv';
 import {first, flatMap, map} from 'rxjs/operators';
-import {forkJoin, from, Observable, of} from 'rxjs';
+import {forkJoin, from, Observable} from 'rxjs';
 import {Trophy} from '../../model/trophy';
 import {Goal} from '../../model/goal';
 
@@ -28,7 +28,7 @@ export class ExportService {
                 break;
             }
             case 'challenges': {
-                fetchData = this.exportChallenges();
+                fetchData = this.exportChallenges().toPromise();
                 break;
             }
             default: {
@@ -95,6 +95,14 @@ export class ExportService {
                 params = this.exportWonTrophies(user);
                 break;
             }
+            case 'viewLogs': {
+                params = this.exportViewLogs(user);
+                break;
+            }
+            case 'actionLogs': {
+                params = this.exportActionLogs(user);
+                break;
+            }
         }
         if (!group) {
             group = await this.db.database.ref('/users/' + user + '/group').once('value').then(res => res.val(), err => console.log(err));
@@ -115,9 +123,9 @@ export class ExportService {
     exportGroupData(entity: string, group: string) {
         return this.db.list<any>('/users/').snapshotChanges().pipe(first(), flatMap(
             users => {
-                // @ts-ignore
-              return forkJoin(users.filter(user => user.payload.val().group === group).map(user => {
+                return forkJoin(users.filter(user => user.payload.val().group === group).map(user => {
                     return from(this.exportUserData(entity, user.key, user.payload.val().group)).pipe(flatMap(data => data));
+                    // @ts-ignore
                 })).pipe(map(results => results.flat()));
             }
         ));
@@ -129,9 +137,10 @@ export class ExportService {
 
         return this.db.list<any>('/users/').snapshotChanges().pipe(first(), flatMap(
             users => {
-                // @ts-ignore
-              return forkJoin(users.map(user => {
+
+                return forkJoin(users.map(user => {
                     return from(this.exportUserData(entity, user.key, user.payload.val().group)).pipe(flatMap(data => data));
+                    // @ts-ignore
                 })).pipe(map(results => results.flat()));
             }
         ));
@@ -148,11 +157,17 @@ export class ExportService {
     }
 
     exportUserGoals(user: string) {
-        return of({fields: [], data: []});
+        return this.db.list<any>('/goals/' + user).valueChanges().pipe(first());
     }
 
     exportGoalWins(user: string) {
-        return of({fields: [], data: []});
+        return this.db.list<any>('/wins/' + user).snapshotChanges().pipe(first(), map(
+            goals => goals.map(goal => {
+                const entry = goal.payload.val();
+                entry.goal = goal.key;
+                return entry;
+            })
+        ));
     }
 
     exportTrophies() {
@@ -162,11 +177,11 @@ export class ExportService {
     }
 
     exportWonTrophies(user: string) {
-        return of({fields: [], data: []});
+        return this.db.list<any>('/trophyStatus/' + user).valueChanges().pipe(first());
     }
 
     exportChallenges() {
-        return of({fields: [], data: []});
+        return this.db.list<any>('/challenges/').valueChanges().pipe(first());
     }
 
     exportWonChallenges(user: string) {
@@ -174,10 +189,12 @@ export class ExportService {
     }
 
     exportViewLogs(user: string) {
+        return this.db.list<any>('/tracking/' + user + '/viewLogs').valueChanges().pipe(first());
 
     }
 
     exportActionLogs(user: string) {
+        return this.db.list<any>('/tracking/' + user + '/actionLogs').valueChanges().pipe(first());
 
     }
 

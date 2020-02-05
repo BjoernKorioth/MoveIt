@@ -1,51 +1,77 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>Export</ion-title>
-  </ion-toolbar>
+    <ion-toolbar color="primary">
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title>Export</ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-button color="light" (click)="export('activities', 'user')">Download User Activities</ion-button>
-  <ion-button color="light" (click)="export('activities', 'group')">Download Group Activities</ion-button>
-  <ion-button color="light" (click)="export('activities', 'all')">Download All Activities</ion-button>
+    <ion-button color="light" (click)="export('activities', 'user')">Get User Activities</ion-button>
+    <ion-button color="light" (click)="export('activities', 'group')">Get Group Activities</ion-button>
+    <ion-button color="light" (click)="export('activities', 'all')">Get All Activities</ion-button>
+    <br/>
+    <ion-button color="light" (click)="export('goals', 'user')">Get User Goals</ion-button>
+    <ion-button color="light" (click)="export('goals', 'group')">Get Group Goals</ion-button>
+    <ion-button color="light" (click)="export('goals', 'all')">Get All Goals</ion-button>
+    <br/>
+    <ion-button color="light" (click)="export('goalWins', 'user')">Get User goalWins</ion-button>
+    <ion-button color="light" (click)="export('goalWins', 'group')">Get Group goalWins</ion-button>
+    <ion-button color="light" (click)="export('goalWins', 'all')">Get All goalWins</ion-button>
+    <br/>
+    <ion-button color="light" (click)="export('trophyWins', 'user')">Get User trophyWins</ion-button>
+    <ion-button color="light" (click)="export('trophyWins', 'group')">Get Group trophyWins</ion-button>
+    <ion-button color="light" (click)="export('trophyWins', 'all')">Get All trophyWins</ion-button>
+    <br/>
+    <ion-button color="light" (click)="export('viewLogs', 'user')">Get User viewLogs</ion-button>
+    <ion-button color="light" (click)="export('viewLogs', 'group')">Get Group viewLogs</ion-button>
+    <ion-button color="light" (click)="export('viewLogs', 'all')">Get All viewLogs</ion-button>
+    <br/>
+    <ion-button color="light" (click)="export('actionLogs', 'user')">Get User actionLogs</ion-button>
+    <ion-button color="light" (click)="export('actionLogs', 'group')">Get Group actionLogs</ion-button>
+    <ion-button color="light" (click)="export('actionLogs', 'all')">Get All actionLogs</ion-button>
+  <br/>
+  <ion-button color="light" (click)="export('trophies', '')">Get trophies</ion-button>
+  <ion-button color="light" (click)="export('defaultGoals', '')">Get goals</ion-button>
+  <ion-button color="light" (click)="export('challenges', '')">Get challenges</ion-button>
 
-  <h2 padding>Download the data</h2>
-  <section>
-    <ion-button color="secondary" padding>Download all</ion-button>
-    <ion-button color="secondary" padding>Download Group Data</ion-button>
-  </section>
-  <br>
+    <h2 padding>Download the data</h2>
+    <section>
+        <ion-button color="secondary" padding>Download all</ion-button>
+        <ion-button color="secondary" padding>Download Group Data</ion-button>
+    </section>
+    <br>
 
-  <ion-row *ngFor="let user of users">
-    <ion-col size="4">
-      <ion-list>
-        <ion-list-header>
-          <ion-label>User</ion-label>
-        </ion-list-header>
-        <ion-item> {{user.name}} </ion-item>
-      </ion-list>
-    </ion-col>
+    <ion-row *ngFor="let user of users">
+        <ion-col size="4">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>User</ion-label>
+                </ion-list-header>
+                <ion-item> {{user.name}} </ion-item>
+            </ion-list>
+        </ion-col>
 
-    <ion-col size="4">
-      <ion-list>
-        <ion-list-header>
-          <ion-label>Group</ion-label>
-        </ion-list-header>
-        <ion-item>{{user.group}}</ion-item>
-      </ion-list>
-    </ion-col>
+        <ion-col size="4">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Group</ion-label>
+                </ion-list-header>
+                <ion-item>{{user.group}}</ion-item>
+            </ion-list>
+        </ion-col>
 
-    <ion-col size="4">
-      <ion-list>
-        <ion-list-header>
-          <ion-label>Data</ion-label>
-        </ion-list-header>
-        <ion-item><ion-button color="light">Download</ion-button></ion-item>
-      </ion-list>
-    </ion-col>
-  </ion-row>
+        <ion-col size="4">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Data</ion-label>
+                </ion-list-header>
+                <ion-item>
+                    <ion-button color="light">Download</ion-button>
+                </ion-item>
+            </ion-list>
+        </ion-col>
+    </ion-row>
 </ion-content>
 
