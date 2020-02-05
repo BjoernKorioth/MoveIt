@@ -8,6 +8,10 @@
 </ion-header>
 
 <ion-content>
+  <ion-button color="light" (click)="export('activities', 'user')">Download User Activities</ion-button>
+  <ion-button color="light" (click)="export('activities', 'group')">Download Group Activities</ion-button>
+  <ion-button color="light" (click)="export('activities', 'all')">Download All Activities</ion-button>
+
   <h2 padding>Download the data</h2>
   <section>
     <ion-button color="secondary" padding>Download all</ion-button>
