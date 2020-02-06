@@ -60,8 +60,8 @@
         <ion-row>
         <ng-container *ngIf="post.likes.includes(user.id); else running">
             <ion-col center text-center>
-                <ion-button id="like" type="button" (click)='like(i)'>
-                    <ion-icon name="thumbs-up" color="secondary" id="icons"></ion-icon>
+                <ion-button id="like" color="secondary" type="button" (click)='like(i)'>
+                    <ion-icon name="thumbs-up"  id="icons"></ion-icon>
                     {{post.likes?.length || 0}} Likes
                 </ion-button>
             </ion-col>
