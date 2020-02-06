@@ -39,13 +39,18 @@ export class AdminDashboardExportPage implements OnInit {
     }
 
     export(entity, scope) {
+        console.log(scope);
+        console.log(entity);
         const user = 'v8lODvmpyeQGXY7Rc4EmrhlLUYP2';
         const group = '-M-EZZDttEtxhZCk-xGR';
         if (scope === 'user') {
           this.exportService.export(entity, scope, user);
-        } else {
+        } else if (scope === 'group'){
           this.exportService.export(entity, scope, group);
         }
+        else if (scope === 'all'){
+            this.exportService.export(entity, scope, 'all');
+          }
     }
 
 }
