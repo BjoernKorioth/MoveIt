@@ -28,6 +28,10 @@ export class LeaderboardDetailPage implements OnInit {
     persons: any;
     ranking = 'actMinutes';
 
+    rewards: boolean = false;
+    group: Observable<string>;
+    config: Observable<string>;
+
     trophies: any;
     activitiesModerate: Array<LeaderboardObject>;
     activitiesVigorous: Array<LeaderboardObject>;
@@ -62,10 +66,28 @@ export class LeaderboardDetailPage implements OnInit {
 
             // Observable2 in action
             this.trophiesObserve.subscribe(result2 => this.pushTrophyObjects(result2));
+
+
+            
+
         });
+        //set chart active if rewards group is assigned to group
+        this.group = this.userService.getUsergroup();
+        this.group.subscribe(group => this.updateGroup(group));
+    }
 
+    updateGroup(group) {
 
-        this.userService.getUser().subscribe(user => this.currentUser = user);
+        this.config = this.userService.getGroupconfig(group);
+        this.config.subscribe(config => this.setPages(config));
+
+    }
+
+    setPages(config) {
+        const array = JSON.parse(config);
+            if (array.indexOf('Rewards') > -1){
+                this.rewards = true;
+            };
     }
 
     /**

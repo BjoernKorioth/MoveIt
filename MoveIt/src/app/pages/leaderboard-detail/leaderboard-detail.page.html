@@ -14,13 +14,13 @@
 <ion-content padding>
 
     <ion-segment [(ngModel)]="ranking">
-      <ion-segment-button value="trophies">
+      <ion-segment-button value="trophies" *ngIf="rewards">
         trophies
       </ion-segment-button>
       <ion-segment-button value="actMinutes">
         active minutes
       </ion-segment-button>
-      <ion-segment-button value="challenges">
+      <ion-segment-button value="challenges" *ngIf="rewards">
         challenges
       </ion-segment-button>
     </ion-segment>
