@@ -1,15 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {TrackingService} from '../../services/tracking/tracking.service';
+import {ViewLog} from '../../model/viewLog';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.page.html',
-  styleUrls: ['./dashboard.page.scss'],
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.page.html',
+    styleUrls: ['./dashboard.page.scss'],
 })
-export class DashboardPage implements OnInit {
+export class DashboardPage implements OnInit, OnDestroy {
 
-  constructor() { }
+    constructor(private trackingService: TrackingService) {
+    }
 
-  ngOnInit() {
-  }
+    viewLog: ViewLog;
+
+    ngOnInit() {
+        this.viewLog = this.trackingService.startRecordingViewTime('dashboard');
+    }
+
+    ngOnDestroy() {
+        this.trackingService.stopRecordingViewTime(this.viewLog);
+    }
 
 }

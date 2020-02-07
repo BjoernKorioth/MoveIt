@@ -1,28 +1,21 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router, RouterEvent} from '@angular/router';
 
 import {AuthenticateService} from '../../services/authentication/authentication.service';
 import {Observable} from 'rxjs';
 import {UserService} from 'src/app/services/user/user.service';
+import {TrackingService} from '../../services/tracking/tracking.service';
+import {ViewLog} from '../../model/viewLog';
 
 @Component({
     selector: 'app-menu',
     templateUrl: './menu.page.html',
     styleUrls: ['./menu.page.scss'],
 })
-export class MenuPage implements OnInit {
-    pages = [
-        {
-            title: 'Dashboard',
-            url: '/menu/dashboard'
-        }
-    ];
+export class MenuPage implements OnInit, OnDestroy {
 
-
-    username: Observable<string>;
-    selectedPath = '';
-
-    constructor(private router: Router, private auth: AuthenticateService, private userService: UserService) {
+    constructor(private router: Router, private auth: AuthenticateService, private userService: UserService,
+                private trackingService: TrackingService) {
         this.router.events.subscribe((event: RouterEvent) => {
             if (event && event.url) {
                 this.selectedPath = event.url;
@@ -34,12 +27,32 @@ export class MenuPage implements OnInit {
         this.username.subscribe(username => this.updatePages(username));
     }
 
+
+    pages = [
+        {
+            title: 'Dashboard',
+            url: '/menu/dashboard'
+        }
+    ];
+
+
+    username: Observable<string>;
+    selectedPath = '';
+    viewLog: ViewLog;
+
+    ngOnInit() {
+        this.viewLog = this.trackingService.startRecordingViewTime('menu');
+    }
+
+    ngOnDestroy() {
+        this.trackingService.stopRecordingViewTime(this.viewLog);
+    }
+
     logout() {
+        this.trackingService.stopRecordingViewTime(this.viewLog);
         this.auth.logoutUser();
     }
 
-    ngOnInit() {
-    }
 
     /**
      * Update the pages of the menu

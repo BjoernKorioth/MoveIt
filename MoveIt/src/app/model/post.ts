@@ -1,7 +1,7 @@
 import {Comment} from './comment';
 
 interface FireBaseObject {
-    group: number;
+    group: string;
     id: string;
     activity: string;
     comments: Array<Comment>;
@@ -19,10 +19,10 @@ export class Post {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(group?: number, id?: string, activity?: string, comments?: Array<Comment>, content?: string,
+    constructor(group?: string, id?: string, activity?: string, comments?: Array<Comment>, content?: string,
                 createdAt?: Date, likes?: Array<string>, user?: string) {
         // Each parameter is optional, if it's not there, set the default value
-        this.group = group || 0;
+        this.group = group || '';
         this.id = id || '';
         this.activity = activity || '';
         this.comments = comments || [];
@@ -31,7 +31,7 @@ export class Post {
         this.likes = likes || [];
         this.user = user || '';
     }
-    group: number;
+    group: string;
     id: string;
     activity: string;
     comments: Array<Comment>;
@@ -50,14 +50,14 @@ export class Post {
      * @param firebaseObject result of the query
      */
 
-    static fromFirebaseObject(group: number, id: string, firebaseObject: FireBaseObject) {
+    static fromFirebaseObject(group: string, id: string, firebaseObject: FireBaseObject) {
         // @ts-ignore TS2339
         let comments = [];
         if (firebaseObject.comments && typeof firebaseObject.comments === 'object') {
             comments = Object.keys(firebaseObject.comments).map(key => Comment.fromFirebaseObject(id, key, firebaseObject.comments[key]));
         }
         return new Post(
-            group || 0,
+            group || '',
             id || '',
             firebaseObject.activity || '',
             comments || [],

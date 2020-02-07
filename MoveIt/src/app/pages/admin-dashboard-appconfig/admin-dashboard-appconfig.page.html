@@ -30,32 +30,9 @@
           </ion-list-header>
         </ion-list>
       </ion-col>
-  
-      <ion-col size="2">
-        <ion-list>
-          <ion-list-header>
-            <ion-label>Progress</ion-label>
-          </ion-list-header>
-        </ion-list>
-      </ion-col>
-  
-      <ion-col size="2">
-        <ion-list>
-          <ion-list-header>
-            <ion-label>Information</ion-label>
-          </ion-list-header>
-        </ion-list>
-      </ion-col>
-  
-      <ion-col size="2">
-        <ion-list>
-          <ion-list-header>
-            <ion-label>Rewards</ion-label>
-          </ion-list-header>
-        </ion-list>
-      </ion-col>
-  
-      <ion-col size="2">
+
+        
+      <ion-col size="3">
         <ion-list>
           <ion-list-header>
             <ion-label>Newsfeed</ion-label>
@@ -63,52 +40,49 @@
         </ion-list>
       </ion-col>
 
-      <ion-col size="2">
+      <ion-col size="3">
         <ion-list>
           <ion-list-header>
             <ion-label>Leaderboard</ion-label>
           </ion-list-header>
         </ion-list>
       </ion-col>
+  
+      <ion-col size="3">
+        <ion-list>
+          <ion-list-header>
+            <ion-label>Rewards</ion-label>
+          </ion-list-header>
+        </ion-list>
+      </ion-col>
     </ion-row>
 
 
-  <ion-row *ngFor="let group of (groups | async)">
+  <ion-row *ngFor="let group of allGroups">
     <ion-col size="2">
       <ion-list>
         <ion-item>{{group.name}} </ion-item>
       </ion-list>
     </ion-col>
 
-    <!--ion-col size="2">
-      <ion-list>
-        <ion-item><ion-checkbox [checked]="group.featureVector[0]"></ion-checkbox></ion-item>
+ 
+    <ion-col size="3" *ngFor="let feature of group.featureVector">  
+    <ion-list  >
+        <ion-item>
+          <ion-checkbox [(ngModel)]="feature.isChecked"></ion-checkbox>
+          {{feature.val}}
+        </ion-item>
       </ion-list>
     </ion-col>
 
-    <ion-col size="2">
+    <ion-col size="1">
       <ion-list>
-        <ion-item><ion-checkbox [checked]="group.featureVector[1]"></ion-checkbox></ion-item>
+        <ion-item>
+          <ion-button color="secondary" (click)="editGroup(group)">Save</ion-button>
+        </ion-item>
       </ion-list>
     </ion-col>
 
-    <ion-col size="2">
-      <ion-list>
-        <ion-item><ion-checkbox [checked]="group.featureVector[2]"></ion-checkbox></ion-item>
-      </ion-list>
-    </ion-col>
-
-    <ion-col size="2">
-      <ion-list>
-        <ion-item><ion-checkbox [checked]="group.featureVector[3]"></ion-checkbox></ion-item>
-      </ion-list>
-    </ion-col>
-
-    <ion-col size="2">
-      <ion-list>
-        <ion-item><ion-checkbox [checked]="group.featureVector[4]"></ion-checkbox></ion-item>
-      </ion-list>
-    </ion-col-->
   </ion-row>
 </div>
 
@@ -124,12 +98,41 @@
   <ion-row *ngFor="let user of (users | async)">
     <ion-col size="2">
       <ion-list>
-        <ion-list-header>
-          <ion-label></ion-label>
-        </ion-list-header>
         <ion-item> {{user.name}} </ion-item>
       </ion-list>
     </ion-col>
+
+    <ion-col size="8">
+       <ion-radio-group [(ngModel)]="user.group">
+        <ion-item  *ngFor="let group of allGroups">    
+          <ion-label>{{group.name}}</ion-label>
+          <ion-radio [value]="group.id"></ion-radio>
+        </ion-item>
+    </ion-radio-group>
+  </ion-col>
+
+  <ion-col size="1">
+    <ion-list>
+      <ion-item>
+        <ion-button color="secondary" (click)="editUserconfig(user.id, user.group)">Save</ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-col>
+</ion-row>
+</div>
+ 
+</ion-content>
+
+  <!--<ion-col size="1">
+    <ion-list>
+      <ion-item>
+        <ion-button color="secondary" (click)="editUserconfig(user.id, user.group)">Save</ion-button>
+      </ion-item>
+    </ion-list>
+  </ion-col>-->
+
+
+
 
     <!--ion-col size="2">
       <ion-list>
@@ -175,7 +178,4 @@
         <ion-item lines="none"><ion-checkbox [checked]="user.groups[4]"></ion-checkbox></ion-item>
       </ion-list>
     </ion-col-->
-  </ion-row>
-</div>
- 
-</ion-content>
+
