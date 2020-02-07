@@ -88,7 +88,6 @@ export class LeaderboardDetailPage implements OnInit {
         }
 
         this.trophiesList = testArray;
-
         this.sortArrays();
     }
 
@@ -137,6 +136,12 @@ export class LeaderboardDetailPage implements OnInit {
         }
 
     }
+
+    calculateAge(birthday: Date){
+        let bday = new Date(birthday);
+        let timeDiff = Math.abs(Date.now() - bday.getTime());
+        return Math.floor((timeDiff / (1000 * 3600 * 24))/365.25);
+      }
 
 
     goBack() {

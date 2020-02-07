@@ -30,17 +30,34 @@
 <div [ngSwitch]="ranking">
   <ion-list *ngSwitchCase="'trophies'">
   
-    <ion-item *ngFor="let user of trophiesList">
-      <ion-avatar slot="start">
+    <ion-item *ngFor="let user of trophiesList; let counter = index" [attr.data-index]="counter">
+      <ng-container *ngIf="user.id == currentUser.id; else running">
+        <p slot="start" class="self">{{counter+1}}</p>
+        <ion-avatar slot="start">
       <!--  <img [src]="person.image">-->
-      </ion-avatar>
-      <ion-label>
-        <h2>{{user.username}}</h2>
-        <h3> years old</h3>
-      </ion-label>
-      <ion-label side="end">
-        <p>{{user.activity}} won trophies</p>
-      </ion-label>
+       </ion-avatar>
+       <ion-label>
+          <h2 class="self"> You </h2>
+          <h3>{{ calculateAge(user.birthday) }} years old</h3>
+        </ion-label>
+    <ion-label side="end">
+      <p class="self">{{user.activity}} active minutes</p>
+    </ion-label>
+  </ng-container>
+  <ng-template #running>
+    <p slot="start">{{counter+1}}</p>
+    <ion-avatar slot="start">
+      <!--<img [src]="person.image">-->
+    </ion-avatar>
+    <ion-label>
+      <h2>{{user.username}}</h2>
+      <h3>{{ calculateAge(user.birthday) }} years old</h3>
+    </ion-label>
+    <ion-label side="end">
+      <p>{{user.activity}} active minutes</p>
+    </ion-label>
+
+  </ng-template>
     </ion-item>
   </ion-list>
 
@@ -54,7 +71,7 @@
         </ion-avatar>
         <ion-label>
           <h2 class="self"> You </h2>
-          <h3 class="self">{{user.age}} years old</h3>
+          <h3>{{ calculateAge(user.birthday) }} years old</h3>
         </ion-label>
         <ion-label side="end">
           <p class="self">{{user.activity}} active minutes</p>
@@ -67,7 +84,7 @@
         </ion-avatar>
         <ion-label>
           <h2>{{user.username}}</h2>
-          <h3>{{user.age}} years old</h3>
+          <h3>{{ calculateAge(user.birthday) }} years old</h3>
         </ion-label>
         <ion-label side="end">
           <p>{{user.activity}} active minutes</p>
