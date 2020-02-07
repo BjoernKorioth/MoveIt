@@ -8,6 +8,7 @@ import {Post} from '../../model/post';
 import {GoalService} from '../goal/goal.service';
 import {RewardsService} from '../rewards/rewards.service';
 import {Health} from '@ionic-native/health/ngx';
+import { Storage } from '@ionic/storage';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +17,7 @@ export class ActivityService {
     activityLocation = '/activities/';
 
     constructor(private fireDatabase: AngularFireDatabase, private postService: PostService, private goalService: GoalService,
-                private rewardsService: RewardsService, private health: Health,) {
+                private rewardsService: RewardsService, private health: Health, private storage: Storage) {
     }
 
     /**
@@ -124,7 +125,7 @@ export class ActivityService {
     /**
      * Retrieve all activities for a specific start and end date from the FitnessAPI
      */
-    readFitnessApi(startDate: Date, endDate: Date) {
+    readFitnessApi() {
         this.health.requestAuthorization([
             /* 'distance', 'nutrition', //read and write permissions
             {
@@ -136,15 +137,28 @@ export class ActivityService {
         .then(
             res => console.log(res))
         .catch(e => console.log(e));
-        this.health.query({
-            startDate: startDate,
-            endDate: endDate,
-            dataType: 'activity',
-        }).then((value: []) => {
-            console.log('Value of Health Data loaded: ', value);
-            return Activity.fromFitApi(value);
-        }).catch((e: any) => {
-            console.error('HealthData ERROR:---' + e);
+
+        
+        //get a key/value pair
+        this.storage.get('lastDate').then((startDate: Date) => {
+            console.log('last time read at :', startDate);
+
+            startDate = new Date(startDate.getTime() + 1); // last time read + 1 ms
+            var endDate = new Date(); // now
+
+            this.health.query({
+                startDate: startDate,
+                endDate: endDate,
+                dataType: 'activity',
+            }).then((value: []) => {
+                console.log('Value of Health Data loaded: ', value);
+                if (value.length > 0){
+                    this.storage.set('lastDate', endDate);
+                };
+                return Activity.fromFitApi(value);
+            }).catch((e: any) => {
+                console.error('HealthData ERROR:---' + e);
+            });
         });
     }
 

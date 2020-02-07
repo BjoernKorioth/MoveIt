@@ -177,13 +177,11 @@ export class ProgressDetailPage implements OnInit {
         }
     }
 
+   
     saveWorkout() {
+         /*
         this.health.requestAuthorization([
-            /* 'distance', 'nutrition', //read and write permissions
-            {
-                read: ['steps'], //read only permission
-                write: ['height', 'weight'] //write only permission
-            } */
+            
             'activity'
         ])
             .then(
@@ -198,7 +196,13 @@ export class ProgressDetailPage implements OnInit {
             sourceBundleId: 'com.moveitproject.www'
         }).then(res => console.log('Response of API while writing' + res))
             .catch(e => console.log('Response of API while writing ERROR:' + e));
-    }
+            */
+           var activity = new Activity();
+           activity.endTime = new Date();
+           activity.startTime = new Date(new Date().getTime() - 3 * 60 * 1000), // three minutes ago
+
+           this.activityService.writeFitnessApi(activity);
+    } 
 
     loadHealthData() {
 
@@ -223,9 +227,9 @@ export class ProgressDetailPage implements OnInit {
         }).catch((e: any) => {
             console.error('HealthData ERROR:---' + e);
         }); */
-        var startDate = new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000); // three days ago
-        var endDate = new Date(); // now
-        var acts = this.activityService.readFitnessApi(startDate, endDate);
+        //var startDate = new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000); // three days ago
+        //var endDate = new Date(); // now
+        var acts = this.activityService.readFitnessApi();
         console.log('ConvertedData: ' + acts);
 
     }

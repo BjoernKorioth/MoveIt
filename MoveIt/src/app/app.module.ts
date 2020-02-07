@@ -20,6 +20,7 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import {AuthenticateService} from './services/authentication/authentication.service';
 import {AngularFireAuthGuardModule} from '@angular/fire/auth-guard';
 import { Health } from '@ionic-native/health/ngx';
+import { IonicStorageModule } from '@ionic/storage';
 
 
 const firebaseConfig = {
@@ -48,7 +49,9 @@ const firebaseConfig = {
         AngularFireAuthGuardModule,
         AngularFireStorageModule,
         AngularFirestoreModule, // imports firebase/firestore, only needed for database features
-        AngularFireStorageModule // imports firebase/storage only needed for storage features
+        AngularFireStorageModule, // imports firebase/storage only needed for storage features
+        IonicStorageModule.forRoot() //used for saving data to device
+        
   
     ],
     providers: [
