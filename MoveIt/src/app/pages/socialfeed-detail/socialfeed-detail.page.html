@@ -103,7 +103,7 @@
                 <ion-item id="form">
                     <ion-input name="comment" type="text" [(ngModel)]="commentText[i]"
                                placeholder="your comment..."></ion-input>
-                    <ion-icon id="icons" name="send" (click)="newComment(post, commentText[i])"></ion-icon>
+                    <ion-icon id="icons" name="send" (click)="newComment(post, commentText[i], i)"></ion-icon>
                 </ion-item>
             </form>
         </ion-row>
