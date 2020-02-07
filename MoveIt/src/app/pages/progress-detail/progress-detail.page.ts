@@ -161,43 +161,49 @@ export class ProgressDetailPage implements OnInit {
                 .then((available: boolean) => {
                     console.log('HEALTH IS AVAILABLE :' + available);
                     this.health.requestAuthorization([
-                        'distance', 'nutrition',  // read and write permissions
+                        /* 'distance', 'nutrition', //read and write permissions
                         {
-                            read: ['steps'],       // read only permission
-                            write: ['height', 'weight']  // write only permission
-                        }
-                    ])
-                        .then(res => {
+                            read: ['steps'], //read only permission
+                            write: ['height', 'weight'] //write only permission
+                        } */
+                        'activity'
+                    ]).then(res => {
                             console.log(res);
                             this.loadHealthData();
                         }
-                        )
-                        .catch(e => console.log(e));
+                    ).catch(e => console.log(e));
                 })
                 .catch(e => console.log(e));
         }
     }
 
     saveWorkout() {
+        this.health.requestAuthorization([
+            /* 'distance', 'nutrition', //read and write permissions
+            {
+                read: ['steps'], //read only permission
+                write: ['height', 'weight'] //write only permission
+            } */
+            'activity'
+        ])
+            .then(
+                res => console.log(res))
+            .catch(e => console.log(e));
         this.health.store({
             startDate: new Date(new Date().getTime() - 3 * 60 * 1000), // three minutes ago
             endDate: new Date(),
-            dataType: 'steps',
-            value: '180',
+            dataType: 'activity',
+            value: 'walking',
             sourceName: 'MoveIt_test',
-            sourceBundleId: 'com.example.MoveIt_test'
-        }).then(res => console.log(res))
-            .catch(e => console.log(e));
+            sourceBundleId: 'com.moveitproject.www'
+        }).then(res => console.log('Response of API while writing' + res))
+            .catch(e => console.log('Response of API while writing ERROR:' + e));
     }
 
     loadHealthData() {
 
-        this.health.requestAuthorization([
-            'distance', 'nutrition', //read and write permissions
-            {
-                read: ['steps'], //read only permission
-                write: ['height', 'weight'] //write only permission
-            }
+        /* this.health.requestAuthorization([
+            'activity'
         ])
             .then(
                 res => console.log(res))
@@ -205,9 +211,9 @@ export class ProgressDetailPage implements OnInit {
         this.health.query({
             startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // three days ago
             endDate: new Date(), // now
-            dataType: 'steps',
+            dataType: 'activity',
         }).then((value: []) => {
-            console.log('Value:', value);
+            console.log('Value of Health Dataloaded:', value);
             // console.log('Before For loop');
             // tslint:disable-next-line: forin
             // for (const val in value) {
@@ -216,7 +222,11 @@ export class ProgressDetailPage implements OnInit {
             // }
         }).catch((e: any) => {
             console.error('HealthData ERROR:---' + e);
-        });
+        }); */
+        var startDate = new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000); // three days ago
+        var endDate = new Date(); // now
+        var acts = this.activityService.readFitnessApi(startDate, endDate);
+        console.log('ConvertedData: ' + acts);
 
     }
 
