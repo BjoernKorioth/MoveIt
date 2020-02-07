@@ -53,6 +53,7 @@ export class LoginPage implements OnInit {
                 this.errorMessage = '';
                 this.successMessage = 'Login was successful';
                 this.navCtrl.navigateForward('/menu/dashboard');
+                this.loginForm.reset();
             }, err => {
                 console.log(err);
                 this.errorMessage = err.message;
