@@ -4,7 +4,7 @@ interface FireBaseObject {
     id: string;
     name: string;
     challengesActive: Array<Challenge>;
-    group: number;
+    group: string;
     type: string;
     birthday: string;
     gender: string;
@@ -19,13 +19,13 @@ export class User {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?: string, name?: string, challengesActive?: Array<any>, group?: number, type?: string,
+    constructor(id?: string, name?: string, challengesActive?: Array<any>, group?: string, type?: string,
                 birthday?: Date, gender?: string, profilePictureUrl?: string) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '-1';
         this.name = name || 'No username';
         this.challengesActive = challengesActive || [];
-        this.group = group || -1;
+        this.group = group || '-1';
         this.type = type || 'user';
         this.birthday = birthday || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
         this.gender = gender;
@@ -34,7 +34,7 @@ export class User {
     id: string;
     name: string;
     challengesActive: Array<any>;
-    group: number;
+    group: string;
     type: string;
     birthday: Date;
     gender: string;
@@ -45,7 +45,7 @@ export class User {
             id || '',
             firebaseObject.name || 'Test Account',
             firebaseObject.challengesActive || [],
-            firebaseObject.group || 2,
+            firebaseObject.group || '-1',
             firebaseObject.type || '',
             new Date(firebaseObject.birthday) || new Date(),
             firebaseObject.gender || '',
@@ -70,7 +70,6 @@ export class User {
             type: this.type,
             birthday: this.birthday.toDateString(),
             gender: this.gender,
-            profilePictureUrl: this.profilePictureUrl
         };
     }
 }

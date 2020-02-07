@@ -1,40 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ExportService} from '../../services/export/export.service';
+import { UserService } from 'src/app/services/user/user.service';
+import { Group } from 'src/app/model/group';
+import { User } from 'src/app/model/user';
 
 @Component({
-  selector: 'app-admin-dashboard-export',
-  templateUrl: './admin-dashboard-export.page.html',
-  styleUrls: ['./admin-dashboard-export.page.scss'],
+    selector: 'app-admin-dashboard-export',
+    templateUrl: './admin-dashboard-export.page.html',
+    styleUrls: ['./admin-dashboard-export.page.scss'],
 })
 export class AdminDashboardExportPage implements OnInit {
-  users: any;
-  groups: any;
+    users: Array<User>;
+    groups: Array<Group>;
 
-  constructor() { 
-    this.users = [
-      {
-        name: "Furkan Temel",
-        group: 1
-      },
-      {
-        name: "Max Mustermann",
-        group: 2
-      },
-      {
-        name: "Max Mustermann",
-        group: 3
-      },
-      {
-        name: "Max Mustermann",
-        group: 4
-      },
-      {
-        name: "Max Mustermann",
-        group: 5
-      }
-    ]
-  }
+    constructor(private exportService: ExportService, private userService: UserService) {
+        this.userService.getGroups().subscribe(val => this.groups = val);
+        this.userService.getUsers().subscribe(val => this.users = val);
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
+
+    export(entity, scope, value) {
+        console.log(scope);
+        console.log(entity);
+        if (scope === 'user') {
+          this.exportService.export(entity, scope, value);
+        } else if (scope === 'group'){
+          this.exportService.export(entity, scope, value);
+        }
+        else if (scope === 'all'){
+            this.exportService.export(entity, scope, 'all');
+          }
+    }
 
 }
