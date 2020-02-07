@@ -140,11 +140,16 @@ export class ActivityService {
 
         
         //get a key/value pair
-        this.storage.get('lastDate').then((startDate: Date) => {
-            console.log('last time read at :', startDate);
+        this.storage.get('lastDate').then((lastDate: Date) => {
+            console.log('last time read at :', lastDate);
+            var startDate: Date;
 
-            startDate = new Date(startDate.getTime() + 1); // last time read + 1 ms
-            var endDate = new Date(); // now
+            if (lastDate != null){
+                startDate = new Date(new Date(lastDate).getTime() + 1); // last time read + 1 ms
+            } else{
+                startDate = new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000); // three days ago by  default if data has not been rad yet
+            }
+                var endDate = new Date(); // now
 
             this.health.query({
                 startDate: startDate,
