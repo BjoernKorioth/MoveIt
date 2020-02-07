@@ -24,7 +24,10 @@
     <ion-button type="button" (click)='getAllComments()'>Get All Comments</ion-button>
     -->
 
-    <ion-row>
+    <ion-card>
+        <ion-card-header>
+           <h2> What's up?</h2>
+        </ion-card-header>
         <form>
             <ion-item id="form">
                 <ion-input name="post" type="text" [(ngModel)]="postText"
@@ -32,7 +35,7 @@
                 <ion-icon name="send" id="icons" (click)="newPost(postText)" float-right></ion-icon>
             </ion-item>
         </form>
-    </ion-row>
+    </ion-card>
 
 
     <ion-card *ngFor="let post of (posts | async); let i = index;">
@@ -46,7 +49,7 @@
                 <h3>{{ post.username | async}}</h3>
                 <p>
                     <ion-icon name="time"></ion-icon>
-                    {{ post.createdAt.toString() }}
+                    {{ post.createdAt | date:'dd. MMM on HH:mm' }}
                 </p>
             </ion-label>
         </ion-item>
