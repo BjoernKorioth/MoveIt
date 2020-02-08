@@ -20,12 +20,12 @@ export class Challenge {
     constructor(id?: string, description?: string, endTime?: Date, price?: string, startTime?: Date, title?: string,
                 participantObject?: any, finished?: boolean) {
         // Each parameter is optional, if it's not there, set the default value
-        this.id = id || 'runMarathon';
-        this.description = description || 'You must walk 10km a day for 1 week';
-        this.endTime = endTime || new Date(2019, 0O5, 0O5, 17, 23, 42, 0);
-        this.price = price || '10$ amazon gift card';
-        this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
-        this.title = title || 'running';
+        this.id = id || '';
+        this.description = description || '';
+        this.endTime = endTime;
+        this.price = price || '';
+        this.startTime = startTime;
+        this.title = title || '';
         this.participants = [];
 
         for (const user of participantObject) {
@@ -76,9 +76,9 @@ export class Challenge {
     toFirebaseObject() {
         return {
             description: this.description,
-            endTime: this.endTime.toDateString(),
+            endTime: this.endTime,
             price: this.price,
-            startTime: this.startTime.toDateString(),
+            startTime: this.startTime,
             title: this.title,
             finished: this.finished,
             participants: this.participants
