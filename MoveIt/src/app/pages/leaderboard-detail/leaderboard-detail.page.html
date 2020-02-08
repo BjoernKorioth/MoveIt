@@ -26,7 +26,7 @@
     </ion-segment>
 
 
-<div *ngIf="(trophiesObserve  | async) && (activitiesObserve | async) && (currentUser !== undefined)">
+<div *ngIf="(trophiesObserve  | async) && (activitiesObserve | async) && (challengesObserve | async ) &&  (currentUser !== undefined)">
 <div [ngSwitch]="ranking">
   <ion-list *ngSwitchCase="'trophies'">
   
@@ -41,7 +41,7 @@
           <h3>{{ calculateAge(user.birthday) }} years old</h3>
         </ion-label>
     <ion-label side="end">
-      <p class="self">{{user.activity}} active minutes</p>
+      <p class="self">{{user.activity}} won trophies</p>
     </ion-label>
   </ng-container>
   <ng-template #running>
@@ -54,7 +54,7 @@
       <h3>{{ calculateAge(user.birthday) }} years old</h3>
     </ion-label>
     <ion-label side="end">
-      <p>{{user.activity}} active minutes</p>
+      <p>{{user.activity}} won trophies</p>
     </ion-label>
 
   </ng-template>
@@ -94,22 +94,41 @@
 
     </ion-item>
   </ion-list>
-<!--
+
   <ion-list *ngSwitchCase="'challenges'">
-    <ion-item *ngFor="let person of persons">
-      <ion-avatar slot="start">
-        <img [src]="person.image">
-      </ion-avatar>
-      <ion-label>
-        <h2>{{person.name}}</h2>
-        <h3>{{person.age}} years old</h3>
-      </ion-label>
-      <ion-label side="end">
-        <p>{{person.actMinutes}} active minutes</p>
-      </ion-label>
+    <ion-item *ngFor="let user of challengeList ; let counter = index" [attr.data-index]="counter">
+
+      <ng-container *ngIf="user.id == currentUser.id; else running">
+        <p slot="start" class="self">{{counter+1}}</p>
+        <ion-avatar slot="start">
+          <!--<img [src]="person.image">-->
+        </ion-avatar>
+        <ion-label>
+          <h2 class="self"> You </h2>
+          <h3>{{ calculateAge(user.birthday) }} years old</h3>
+        </ion-label>
+        <ion-label side="end">
+          <p class="self">{{user.activity}} won challenges</p>
+        </ion-label>
+      </ng-container>
+      <ng-template #running>
+        <p slot="start">{{counter+1}}</p>
+        <ion-avatar slot="start">
+          <!--<img [src]="person.image">-->
+        </ion-avatar>
+        <ion-label>
+          <h2>{{user.username}}</h2>
+          <h3>{{ calculateAge(user.birthday) }} years old</h3>
+        </ion-label>
+        <ion-label side="end">
+          <p>{{user.activity}} won challenges</p>
+        </ion-label>
+
+      </ng-template>
+
     </ion-item>
   </ion-list>
--->
+
   </div>
 </div>
   

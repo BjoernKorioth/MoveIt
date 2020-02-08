@@ -16,6 +16,10 @@ import {User} from '../../model/user';
 
 import {TrophyArray} from 'src/app/model/trophyArray';
 
+import {ChallengesArray} from 'src/app/model/challengesArray';
+
+import {ChallengeService} from '../../services/challenges/challenge.service';
+
 import {UserService} from '../../services/user/user.service';
 
 
@@ -40,13 +44,14 @@ export class LeaderboardDetailPage implements OnInit {
     trophiesList: Array<LeaderboardObject>;
     trophiesObserve: Observable<TrophyArray[]>;
 
-    challengesList: Array<LeaderboardObject>;
+    challengeList: Array<LeaderboardObject>;
+    challengesObserve: Observable<ChallengesArray[]>;
 
     tempUsername: string;
 
     currentUser: User;
 
-    constructor(private goalService: GoalService, private trophyService: TrophyService, private userService: UserService,
+    constructor(private challService: ChallengeService, private goalService: GoalService, private trophyService: TrophyService, private userService: UserService,
                 private location: Location) {
     }
 
@@ -60,15 +65,22 @@ export class LeaderboardDetailPage implements OnInit {
         // Observable2
         this.trophiesObserve = this.trophyService.getListOfAllUserAndTherWonTrophies();
 
+        this.challengesObserve = this.challService.getListOfAllUserAndTheirWonChallenges();
+
         // Observable1 in action
         this.activitiesObserve.subscribe(result => {
             this.pushMinuteObjects(result);
 
             // Observable2 in action
-            this.trophiesObserve.subscribe(result2 => this.pushTrophyObjects(result2));
+            this.trophiesObserve.subscribe(result2 => {this.pushTrophyObjects(result2);
 
-
+            this.challengesObserve.subscribe(result3 => { 
+                console.log(result3);
+                this.pushChallengeObjects(result3);
             
+            });
+
+            })
 
         });
         //set chart active if rewards group is assigned to group
@@ -117,6 +129,29 @@ export class LeaderboardDetailPage implements OnInit {
 
     /**
      * This method pushes the result of a query into the respective instances in order to make them visible on the UI
+     * @param result the param from the database query which gets the array of all trophies won per user
+     */
+    async pushChallengeObjects(result) {
+        const testArray = new Array<LeaderboardObject>();
+
+        for (let i = 0; i < result.length; i++) {
+            const oneResult = result[i];
+            if (oneResult) {
+
+                const entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length, this.userService);
+
+                console.log(entity1);
+
+                testArray.push(entity1);
+            }
+        }
+
+        this.challengeList = testArray;
+        this.sortArrays();
+    }
+
+    /**
+     * This method pushes the result of a query into the respective instances in order to make them visible on the UI
      * @param result the param from the database query which gets the array of all goalsprogress per user
      */
     async pushMinuteObjects(result) {
@@ -159,6 +194,10 @@ export class LeaderboardDetailPage implements OnInit {
 
         if (this.trophiesList !== undefined) {
             this.trophiesList.sort((a, b) => a.compareTo(b));
+        }
+
+        if (this.challengeList !== undefined) {
+            this.challengeList.sort((a, b) => a.compareTo(b));
         }
 
     }
