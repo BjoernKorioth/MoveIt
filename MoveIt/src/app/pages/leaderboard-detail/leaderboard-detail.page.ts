@@ -74,6 +74,8 @@ export class LeaderboardDetailPage implements OnInit {
         //set chart active if rewards group is assigned to group
         this.group = this.userService.getUsergroup();
         this.group.subscribe(group => this.updateGroup(group));
+
+        this.userService.getUser().subscribe(user => this.currentUser = user);
     }
 
     updateGroup(group) {
@@ -129,6 +131,8 @@ export class LeaderboardDetailPage implements OnInit {
                     const entity1 = await new LeaderboardObject(oneResult.id, oneResult.goal.current, this.userService);
 
                     testArray.push(entity1);
+
+                    console.log(entity1)
                 } else if (oneResult.goal.type === 'vigorous' && oneResult.goal.duraion === 'weekly') {
 
                     const entity2 = new LeaderboardObject(oneResult.id, oneResult.goal.current, this.userService);
