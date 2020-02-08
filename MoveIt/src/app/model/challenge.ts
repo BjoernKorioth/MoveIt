@@ -27,8 +27,8 @@ export class Challenge {
         this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
         this.title = title || 'running';
         this.participants = [];
-
-        for (const user of participantObject) {
+        console.log(participantObject);
+        for (var user of Object.keys(participantObject)) {
             this.participants.push(participantObject[user]);
         }
         this.finished = finished || false;
