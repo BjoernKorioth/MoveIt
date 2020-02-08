@@ -54,7 +54,7 @@ export class RegistrationPage implements OnInit {
             // surname: new FormControl('', Validators.required),
             birthday: new FormControl('', Validators.required),
             gender: new FormControl('', Validators.required),
-            terms: new FormControl('', Validators.required),
+            terms: new FormControl('', Validators.requiredTrue),
             code: new FormControl('', Validators.required)
         });
     }
