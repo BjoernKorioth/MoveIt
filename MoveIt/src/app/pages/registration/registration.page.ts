@@ -32,6 +32,7 @@ export class RegistrationPage implements OnInit {
         gender: [{type: 'required', message: 'Please choose your gender'}],
         terms: [{type: 'required', message: 'Please accept the terms'}]
     };
+    bday: Date;
 
     constructor(
         private navCtrl: NavController,
@@ -60,6 +61,11 @@ export class RegistrationPage implements OnInit {
     }
 
     tryRegister(value) {
+
+        if(this.calculateAge(this.bday) < 18){
+            return;
+        }
+
         // TODO check if terms are accepted
         const user = new User();
         user.name = value.username;
@@ -76,6 +82,13 @@ export class RegistrationPage implements OnInit {
                 this.errorMessage = err.message;
                 this.successMessage = '';
             });
+    }
+
+    calculateAge(birthday: Date) {
+        this.bday = new Date(birthday);
+        const timeDiff = Math.abs(Date.now() - bday.getTime());
+        return Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+
     }
 
     goLoginPage() {

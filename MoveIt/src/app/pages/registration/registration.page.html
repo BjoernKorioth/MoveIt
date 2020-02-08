@@ -50,7 +50,7 @@
 
         <ion-item>
             <ion-label position="floating">Birth Date</ion-label>
-            <ion-datetime formControlName="birthday" placeholder="Select Date"></ion-datetime>
+            <ion-datetime formControlName="birthday" [(ngModel)]="birthday" placeholder="Select Date"></ion-datetime>
         </ion-item>
         <div class="validation-errors">
             <ng-container *ngFor="let validation of validationMessages.birthday">
@@ -58,6 +58,14 @@
                      *ngIf="validationsForm.get('birthday').hasError(validation.type) && (validationsForm.get('birthday').dirty || validationsForm.get('birthday').touched)">
                     <ion-icon class="icon" name="close-circle-outline" size="small"></ion-icon>
                     <ion-label>{{ validation.message }}</ion-label>
+                </div>
+            </ng-container>
+        </div>
+        <div class="validation-errors">
+            <ng-container *ngIf="calculateAge(birthday) < 18">
+                <div class="error-message">
+                    <ion-icon class="icon" name="close-circle-outline" size="small"></ion-icon>
+                    <ion-label>You have to be older than 18</ion-label>
                 </div>
             </ng-container>
         </div>
