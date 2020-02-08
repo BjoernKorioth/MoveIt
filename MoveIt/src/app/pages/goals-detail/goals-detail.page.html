@@ -15,6 +15,7 @@
 <ion-content padding>
 
 
+  <h1>Here you can change your {{goal.duration}} {{goal.type}} goal!</h1>
   <!--<ion-segment [(ngModel)]="goals">
     <ion-segment-button value="trophies">
       moderate
@@ -29,9 +30,6 @@
 
 
   <ion-list>
-    <ion-list-header>
-      <ion-label>Goals</ion-label>
-    </ion-list-header>
 
   <ion-item>
     <ion-range min="0" max="1000" pin color="secondary" [(ngModel)]="goal.target">
