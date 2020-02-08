@@ -20,6 +20,8 @@ export class EditActivityPage implements OnInit {
   time: string;
   types: Array<string>;
   intensities: Array<string>;
+  todayA: Date = new Date();
+  today: string = new Date().toISOString();
 
   constructor(private activityService: ActivityService, private location: Location, private router: Router, private toastController: ToastController) { 
     this.activity = this.router.getCurrentNavigation().extras.state.activity; // TODO: display error message if empty
@@ -56,6 +58,16 @@ export class EditActivityPage implements OnInit {
     })
   }
   
+  convertDate(){
+    
+    const t1: any = this.activity.startDateIso.split('T');
+    const t2: any = this.activity.startTimeIso.split('T');
+    const t3: any = t1[0].concat('T', t2);
+    var timezone_offset_min = new Date().getTimezoneOffset();
+    console.log(timezone_offset_min);
+    
+    this.activity.startTime = new Date((new Date(t3).getTime()) - timezone_offset_min*60000);
+  }
       /**
      * Update an existing id
      *
@@ -73,6 +85,10 @@ export class EditActivityPage implements OnInit {
       const newDateObj = new Date(this.activity.startTime.getTime() + this.activity.minutes * 60000);
 
       this.activity.endTime = new Date(newDateObj);
+
+      if((this.todayA.getTime() - this.activity.startTime.getTime()) < 0){
+        return;
+      }
 
       console.log(this.activity);
       this.activityService.editActivity(this.activity.id, this.activity).then(
