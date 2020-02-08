@@ -50,7 +50,7 @@
 
         <ion-item>
             <ion-label position="floating">Birth Date</ion-label>
-            <ion-datetime formControlName="birthday" [(ngModel)]="birthday" placeholder="Select Date"></ion-datetime>
+            <ion-datetime formControlName="birthday" [(ngModel)]="birthday" [max]="maxDate" placeholder="Select Date"></ion-datetime>
         </ion-item>
         <div class="validation-errors">
             <ng-container *ngFor="let validation of validationMessages.birthday">

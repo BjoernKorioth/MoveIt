@@ -33,6 +33,7 @@ export class RegistrationPage implements OnInit {
         terms: [{type: 'required', message: 'Please accept the terms'}]
     };
     bday: Date;
+    maxDate: number = new Date().getFullYear() - 18;
 
     constructor(
         private navCtrl: NavController,
@@ -86,7 +87,7 @@ export class RegistrationPage implements OnInit {
 
     calculateAge(birthday: Date) {
         this.bday = new Date(birthday);
-        const timeDiff = Math.abs(Date.now() - bday.getTime());
+        const timeDiff = Math.abs(Date.now() - this.bday.getTime());
         return Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
 
     }
