@@ -27,7 +27,7 @@ export class Challenge {
         this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
         this.title = title || 'running';
         this.participants = [];
-        console.log(participantObject);
+        //to get the number iterates through the object of participants 
         for (var user of Object.keys(participantObject)) {
             this.participants.push(participantObject[user]);
         }
