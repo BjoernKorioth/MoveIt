@@ -113,10 +113,11 @@ export class AddActivityManualPage implements OnInit {
         this.activityService.createActivity(this.activity).then(
             (activity) => {
                 console.log(activity);
+                this.presentAlert();
             })
             .catch(err => console.error(err)
             );
-        this.presentAlert();
+        
     
 }
 

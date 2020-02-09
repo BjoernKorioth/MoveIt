@@ -16,6 +16,10 @@ import {User} from '../../model/user';
 
 import {TrophyArray} from 'src/app/model/trophyArray';
 
+import {ChallengesArray} from 'src/app/model/challengesArray';
+
+import {ChallengeService} from '../../services/challenges/challenge.service';
+
 import {UserService} from '../../services/user/user.service';
 
 
@@ -28,6 +32,10 @@ export class LeaderboardDetailPage implements OnInit {
     persons: any;
     ranking = 'actMinutes';
 
+    rewards: boolean = false;
+    group: Observable<string>;
+    config: Observable<string>;
+
     trophies: any;
     activitiesModerate: Array<LeaderboardObject>;
     activitiesVigorous: Array<LeaderboardObject>;
@@ -36,13 +44,14 @@ export class LeaderboardDetailPage implements OnInit {
     trophiesList: Array<LeaderboardObject>;
     trophiesObserve: Observable<TrophyArray[]>;
 
-    challengesList: Array<LeaderboardObject>;
+    challengeList: Array<LeaderboardObject>;
+    challengesObserve: Observable<ChallengesArray[]>;
 
     tempUsername: string;
 
     currentUser: User;
 
-    constructor(private goalService: GoalService, private trophyService: TrophyService, private userService: UserService,
+    constructor(private challService: ChallengeService, private goalService: GoalService, private trophyService: TrophyService, private userService: UserService,
                 private location: Location) {
     }
 
@@ -56,16 +65,43 @@ export class LeaderboardDetailPage implements OnInit {
         // Observable2
         this.trophiesObserve = this.trophyService.getListOfAllUserAndTherWonTrophies();
 
+        this.challengesObserve = this.challService.getListOfAllUserAndTheirWonChallenges();
+
         // Observable1 in action
         this.activitiesObserve.subscribe(result => {
             this.pushMinuteObjects(result);
 
             // Observable2 in action
-            this.trophiesObserve.subscribe(result2 => this.pushTrophyObjects(result2));
-        });
+            this.trophiesObserve.subscribe(result2 => {this.pushTrophyObjects(result2);
 
+            this.challengesObserve.subscribe(result3 => { 
+                console.log(result3);
+                this.pushChallengeObjects(result3);
+            
+            });
+
+            })
+
+        });
+        //set chart active if rewards group is assigned to group
+        this.group = this.userService.getUsergroup();
+        this.group.subscribe(group => this.updateGroup(group));
 
         this.userService.getUser().subscribe(user => this.currentUser = user);
+    }
+
+    updateGroup(group) {
+
+        this.config = this.userService.getGroupconfig(group);
+        this.config.subscribe(config => this.setPages(config));
+
+    }
+
+    setPages(config) {
+        const array = JSON.parse(config);
+            if (array.indexOf('Rewards') > -1){
+                this.rewards = true;
+            };
     }
 
     /**
@@ -88,7 +124,29 @@ export class LeaderboardDetailPage implements OnInit {
         }
 
         this.trophiesList = testArray;
+        this.sortArrays();
+    }
 
+    /**
+     * This method pushes the result of a query into the respective instances in order to make them visible on the UI
+     * @param result the param from the database query which gets the array of all trophies won per user
+     */
+    async pushChallengeObjects(result) {
+        const testArray = new Array<LeaderboardObject>();
+
+        for (let i = 0; i < result.length; i++) {
+            const oneResult = result[i];
+            if (oneResult) {
+
+                const entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length, this.userService);
+
+                console.log(entity1);
+
+                testArray.push(entity1);
+            }
+        }
+
+        this.challengeList = testArray;
         this.sortArrays();
     }
 
@@ -108,6 +166,8 @@ export class LeaderboardDetailPage implements OnInit {
                     const entity1 = await new LeaderboardObject(oneResult.id, oneResult.goal.current, this.userService);
 
                     testArray.push(entity1);
+
+                    console.log(entity1)
                 } else if (oneResult.goal.type === 'vigorous' && oneResult.goal.duraion === 'weekly') {
 
                     const entity2 = new LeaderboardObject(oneResult.id, oneResult.goal.current, this.userService);
@@ -136,7 +196,17 @@ export class LeaderboardDetailPage implements OnInit {
             this.trophiesList.sort((a, b) => a.compareTo(b));
         }
 
+        if (this.challengeList !== undefined) {
+            this.challengeList.sort((a, b) => a.compareTo(b));
+        }
+
     }
+
+    calculateAge(birthday: Date){
+        let bday = new Date(birthday);
+        let timeDiff = Math.abs(Date.now() - bday.getTime());
+        return Math.floor((timeDiff / (1000 * 3600 * 24))/365.25);
+      }
 
 
     goBack() {

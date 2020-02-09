@@ -57,6 +57,7 @@ export class SocialfeedDetailPage implements OnInit {
             res => console.log(res),
             err => console.log(err)
         );
+        this.postText = '';
     }
 
     editPost() {
@@ -100,13 +101,14 @@ export class SocialfeedDetailPage implements OnInit {
         );
     }
 
-    newComment(post: Post, text) {
+    newComment(post: Post, text, index: number) {
         if (this.commentText.length !== 0) {
             this.postService.createComment(post.id, text).then(
                 res => {
                     // @ts-ignore
                     this.userService.getUsername().pipe(first()).subscribe(username => post.usernames.push(username));
                     console.log(res);
+                    this.commentText[index] = '';
                 },
                 err => console.log(err)
             );

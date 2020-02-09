@@ -3,6 +3,8 @@ import * as firebase from 'firebase/app';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {Challenge} from '../../model/challenge';
 
+import {ChallengesArray} from '../../model/challengesArray';
+
 import {map} from 'rxjs/operators';
 
 @Injectable({
@@ -87,6 +89,14 @@ export class ChallengeService {
             map(challenges => challenges.map(goalPayload => (Challenge.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
 
     }
+
+    getListOfAllUserAndTheirWonChallenges(){
+        const ref = this.fireDatabase.list<ChallengesArray>('/challengesStatus/');
+        // Retrieve an array, but with its metadata. This is necesary to have the key available
+        // An array of Goals is reconstructed using the fromFirebaseObject method
+        return ref.snapshotChanges().pipe(
+            map(user => user.map(challengepayload => (ChallengesArray.fromFirebaseObject(challengepayload.key, challengepayload.payload.val())))));
+      }
 
 
     /**
@@ -180,5 +190,7 @@ export class ChallengeService {
             );
         });
     }
+
+
 
 }
