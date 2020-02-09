@@ -14,7 +14,7 @@
   <ion-card>
       <ion-item>
           <ion-avatar slot="start">
-              <img src="../assets/Profilbild.jpg">
+            <img src="{{ (currentUser | async)?.profilePictureUrl  }}">
               <!--img [src]="post.image"-->
           </ion-avatar>
 

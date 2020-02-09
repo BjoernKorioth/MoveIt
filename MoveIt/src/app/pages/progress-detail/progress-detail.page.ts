@@ -10,7 +10,6 @@ import {Platform} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {Chart} from 'chart.js';
 import {first, map} from 'rxjs/operators';
-import { ConsoleReporter } from 'jasmine';
 
 
 @Component({
