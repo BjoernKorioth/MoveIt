@@ -10,6 +10,11 @@
 
  <ion-content class="card-background-page">
 
+  <div *ngIf="rewardsB == false && leaderboardB == false && socialB == false">
+    <ion-img src="../assets/Logo.png" padding>
+    </ion-img>
+  </div>
+
   <ion-card *ngFor="let item of allServices" [routerLink]='item.routerLink'>
     <img [src]="item.image"/>
     <h2 class="card-title">{{item.label}}</h2>
