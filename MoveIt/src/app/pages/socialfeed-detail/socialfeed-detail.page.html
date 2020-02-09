@@ -85,13 +85,14 @@
             </ion-col>
         </ion-row>
         <div *ngIf="post.comments?.length != 0">
-            <div *ngFor="let c of post.comments">
-                <ion-item lines="none">
+            <div *ngFor="let c of post.comments; let i = index">                
+                <ion-item lines="none" *ngIf="i < (post.commentPage * 3)">
                     <!--<ion-label><h3>{{ (post.usernames[i] | async)}}</h3> -->
                         <ion-label><h3>{{ c.user}}</h3>
                         <p>{{c.text}}</p></ion-label>
                 </ion-item>
             </div>
+            <ion-button (click)="nextCommentPage(post)">More</ion-button>
             <!--
               <ion-item>
               <ion-label><p id="allComments">all comments</p></ion-label>

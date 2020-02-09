@@ -12,6 +12,7 @@ interface FireBaseObject {
 }
 
 export class Post {
+    commentPage: number;
 
     /**
      * Constructor to create Post
@@ -30,6 +31,7 @@ export class Post {
         this.createdAt = createdAt || new Date();
         this.likes = likes || [];
         this.user = user || '';
+        this.commentPage = 1; 
     }
     group: string;
     id: string;
@@ -55,6 +57,7 @@ export class Post {
         let comments = [];
         if (firebaseObject.comments && typeof firebaseObject.comments === 'object') {
             comments = Object.keys(firebaseObject.comments).map(key => Comment.fromFirebaseObject(id, key, firebaseObject.comments[key]));
+            comments = comments.reverse();
         }
         return new Post(
             group || '',

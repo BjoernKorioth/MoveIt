@@ -29,7 +29,7 @@ export class SocialfeedDetailPage implements OnInit {
         this.location = location;
     }
 
-    async ngOnInit() {
+    ngOnInit() {
         this.posts = this.postService.getAllPosts().pipe(map(posts => posts.map(post => {
             const pseudoPost = {
                 username: this.getUsername(post.user).pipe(first()),
@@ -46,6 +46,10 @@ export class SocialfeedDetailPage implements OnInit {
 
     goBack() {
         this.location.back();
+    }
+
+    nextCommentPage(post: Post){
+        post.commentPage++;
     }
 
     getTimeDifference(date: Date) {
