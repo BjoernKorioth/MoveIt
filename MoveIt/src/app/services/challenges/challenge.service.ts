@@ -20,7 +20,7 @@ export class ChallengeService {
      *
      * @param challenge an existing challenge object
      */
-    createChallenge(challenge: Challenge) {
+    createChallenge(challenge: Challenge, participants:object) {
         return new Promise<any>((resolve, reject) => {
             const id = firebase.database().ref().child('challenges').push().key;
             challenge.id = id;
@@ -30,6 +30,24 @@ export class ChallengeService {
             // Returns the information with the new id
             () => resolve(challenge),
             err => reject(err)
+            );
+
+            this.fireDatabase.database.ref('/challenges/').child(id)
+            .child("participants").set(participants).then(
+            // Returns the information with the new id
+            () => resolve(challenge),
+            err => reject(err)
+            );
+
+        });
+    }
+
+    setParticipants(challenge: Challenge, pa) {
+        return new Promise<any>((resolve, reject) => {
+            this.fireDatabase.database.ref('/challenges/' + challenge.id).child('participants')
+                .child(firebase.auth().currentUser.uid).set(firebase.auth().currentUser.uid).then(
+                res => resolve(res),
+                err => reject(err)
             );
         });
     }
