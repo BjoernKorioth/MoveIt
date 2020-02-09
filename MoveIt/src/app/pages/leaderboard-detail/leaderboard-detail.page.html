@@ -34,7 +34,7 @@
       <ng-container *ngIf="user.id == currentUser.id; else running">
         <p slot="start" class="self">{{counter+1}}</p>
         <ion-avatar slot="start">
-      <!--  <img [src]="person.image">-->
+          <img src="{{user.pictureProfileUrl | async}}">
        </ion-avatar>
        <ion-label>
           <h2 class="self"> You </h2>
@@ -47,7 +47,7 @@
   <ng-template #running>
     <p slot="start">{{counter+1}}</p>
     <ion-avatar slot="start">
-      <!--<img [src]="person.image">-->
+      <img src="{{user.pictureProfileUrl | async}}">
     </ion-avatar>
     <ion-label>
       <h2>{{user.username}}</h2>
@@ -67,7 +67,7 @@
       <ng-container *ngIf="user.id == currentUser.id; else running">
         <p slot="start" class="self">{{counter+1}}</p>
         <ion-avatar slot="start">
-          <!--<img [src]="person.image">-->
+          <img src="{{user.pictureProfileUrl | async}}">
         </ion-avatar>
         <ion-label>
           <h2 class="self"> You </h2>
@@ -80,7 +80,7 @@
       <ng-template #running>
         <p slot="start">{{counter+1}}</p>
         <ion-avatar slot="start">
-          <!--<img [src]="person.image">-->
+          <img src="{{user.pictureProfileUrl | async}}">
         </ion-avatar>
         <ion-label>
           <h2>{{user.username}}</h2>
@@ -101,7 +101,7 @@
       <ng-container *ngIf="user.id == currentUser.id; else running">
         <p slot="start" class="self">{{counter+1}}</p>
         <ion-avatar slot="start">
-          <!--<img [src]="person.image">-->
+          <img src="{{user.pictureProfileUrl | async}}">
         </ion-avatar>
         <ion-label>
           <h2 class="self"> You </h2>
@@ -114,7 +114,7 @@
       <ng-template #running>
         <p slot="start">{{counter+1}}</p>
         <ion-avatar slot="start">
-          <!--<img [src]="person.image">-->
+          <img src="{{user.pictureProfileUrl | async}}">
         </ion-avatar>
         <ion-label>
           <h2>{{user.username}}</h2>
