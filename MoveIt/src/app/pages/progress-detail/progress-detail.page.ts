@@ -10,6 +10,7 @@ import {Platform} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {Chart} from 'chart.js';
 import {first, map} from 'rxjs/operators';
+import { ConsoleReporter } from 'jasmine';
 
 
 @Component({
@@ -23,14 +24,21 @@ export class ProgressDetailPage implements OnInit {
     displayedActivities: Observable<Activity[]>;
     goals: Observable<any>;
     goalStorage: Array<Goal>;
+
+    weeklyActivities;
     public chartLabels               : any    = [];
-    public chartValues               : any    = []; 
+    public chartValuesModerate       : any    = [];
+    public chartValuesVigorous       : any    = [];
+    public chartValuesWeight         : any    = [];    
     public chartColours              : any    = [];
     public chartHoverColours         : any    = [];
 
     @ViewChild('barChart', {static: false}) barChart: { nativeElement: any; };
+    @ViewChild('hrzBarChart5', {static: false}) hrzBarChart5: { nativeElement: any; };
    // barChart: any;
 
+   hrzBars5: any;
+   
 
     constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location,
         private health: Health, private platform: Platform, private router: Router) {
@@ -71,44 +79,176 @@ export class ProgressDetailPage implements OnInit {
         );
     }
 
-
-    ionViewDidEnter() {
-        
-        this.defineChartData();
-    }
-
-    defineChartData(){
+    //Weekly 
+    /*defineChartData(){
         let that = this;
         let now = new Date();
         this.activities.subscribe(activities => {
+            // Daten für die Woche
             let todayActivities = activities.filter(function(activity){
                 return activity.startTime.getFullYear() == now.getFullYear() && 
                 activity.startTime.getMonth()           == now.getMonth()    &&
                 activity.startTime.getDay()             == now.getDay();
+                //activity.intensity                      == 'moderate';
             })
             todayActivities.forEach(function(activity){
                 console.log(activity);
 
-                that.chartValues.push({
-                    x: activity.startTime, 
-                    y: activity.getDuration()
-                });
+                if(activity.intensity === 'moderate'){
+                    that.chartValuesModerate.push(activity.getDuration());
+                }
+                else if(activity.intensity === 'vigorous'){
+                    that.chartValuesVigorous.push(activity.getDuration());
+                }
+                else{
+                    that.chartValuesWeight.push(activity.getDuration());
+                }
+                that.chartLabels.push(
+                    activity.startTime.getDate()
+                )
+                //this.chartLabels.push(activity.startTime.getDate());
                 //that.chartLabels.push(activity.startTime.getHours());
                 //that.chartValues.push(activity.getDuration());
             
             });
-            that.createSimpleLineChart();
+            that.createHrzBarChart5();
     })
 
            // this.chartLabels.push(active.intensity);
           //  this.chartValues.push(active.type);
           //  this.chartColours.push(tech.color);
        
-       }   //  this.chartHoverColours.push(tech.hover);
+       } */  //  this.chartHoverColours.push(tech.hover);*/
+
+       //daily
+       defineChartData(){
+        let that = this;
+        let now = new Date();
+        let lastWeek: Date = new Date();
+        // lastWeek.setDate(lastWeek.getDate() - 7);
+        console.log(lastWeek);        
+
+        this.activities.subscribe(activities => {
+            // Daten für die Woche
+            let weeklyActivities = [];
+                
+            for(let dayOfWeek = 6; dayOfWeek >= 0; dayOfWeek--) {
+                lastWeek.setDate(now.getDate() - dayOfWeek);
+                weeklyActivities.push(activities.filter(function(activity) {
+                    return activity.startTime.getDate() == lastWeek.getDate();
+                }));  
+
+                               
+                that.chartLabels.push(
+                    lastWeek.getDate()
+                );
+            }
+            console.log(weeklyActivities); 
+
+            const intensities = [
+                {id: 'vigorous', name: 'vigorous'},
+                {id: 'moderate', name: 'moderate'},
+                {id: 'weightTraining', name: 'weight training'}
+            ];
+
+            let weeklyActivityDurations = [];
+            weeklyActivities.forEach(function(weekly) {
+                let obj = {
+                    vigorous: [],
+                    moderate: [],
+                    weightTraining: []
+                };                
+                intensities.forEach(function(intensity) {
+                    obj[intensity.id] = weekly
+                        .filter((activity) => activity.intensity === intensity.name)
+                        .reduce(((totalDuration, activity) => totalDuration + activity.getDuration()), 0);
+                });
+
+                weeklyActivityDurations.push(obj);
+                console.log(weeklyActivities);   
+ 
+
+            /*let weeklyActivities = activities.filter(function(activity){
+                return activity.startTime.getDate() >= lastWeek.getDate();
+               /* getFullYear() == now.getFullYear() && 
+                activity.startTime.getMonth()           == now.getMonth()    &&
+                activity.startTime.getDay()             == now.getDay();
+                //activity.intensity                      == 'moderate';*/
+            });
+          this.weeklyActivities =  weeklyActivityDurations;
+          
+          console.log(weeklyActivityDurations);
+         
+            that.createHrzBarChart5();
+    })
+       }
     
+    ionViewDidEnter() {
+      //  this.createHrzBarChart5()
+        this.defineChartData();
+    }
+
+    createHrzBarChart5() {
+        let ctx = this.hrzBarChart5.nativeElement
+        ctx.height = 400;
+        this.hrzBars5 = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: this.chartLabels,
+            datasets: [{
+              label: 'moderate',
+              data: this.weeklyActivities.map((intensity) => intensity.moderate),
+              backgroundColor: 'rgb(245, 229, 27)', // array should have same number of elements as number of dataset
+              borderColor: 'rgb(245, 229, 27)',// array should have same number of elements as number of dataset
+              borderWidth: 1
+            },
+            {
+              label: 'vigorous',
+              data: this.weeklyActivities.map((intensity) => intensity.vigorous),
+              backgroundColor: 'rgb(63, 195, 128)', // array should have same number of elements as number of dataset
+              borderColor: 'rgb(63, 195, 128)',// array should have same number of elements as number of dataset
+              borderWidth: 1
+            },
+            {
+                label: 'weight training',
+                data: this.weeklyActivities.map((intensity) => intensity.weightTraining),
+                backgroundColor: 'rgb(33, 95, 68)', // array should have same number of elements as number of dataset
+                borderColor: 'rgb(33, 95, 68)',// array should have same number of elements as number of dataset
+                borderWidth: 1
+              }
+        ]
+          },
+          options: {
+            scales: {
+              xAxes: [{
+                /*type: 'time',
+                time: {
+                    unit: 'day',
+                    displayFormats: {
+                        day: 'DD'
+                    }
+                },*/
+                barPercentage: 0.9,
+                gridLines: {
+                  offsetGridLines: true
+                },
+                stacked: true
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                },
+                stacked: true
+              }]
+            }
+          }
+        });
+      }
 
 
-    createSimpleLineChart() {
+
+
+    /*createSimpleLineChart() {
         
         console.log(this.chartValues);
        // console.log(this.chartLabels);
@@ -161,7 +301,7 @@ export class ProgressDetailPage implements OnInit {
                 }
             }
         });
-    }
+    }*/
 
 
     ngOnInit() {

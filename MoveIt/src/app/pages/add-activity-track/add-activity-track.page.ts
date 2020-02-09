@@ -66,11 +66,14 @@ export class AddActivityTrackPage implements OnInit {
     this.activity.endTime = new Date(newDateObj);
     console.log(this.activity);
     this.activityService.createActivity(this.activity).then(
-        res => console.log(res),
+        res => {
+          console.log(res);
+          this.presentAlert();
+        },
         err => console.log(err)
     );
     this.stopTimer();
-    this.presentAlert();
+  
   }
 
   startTimer(){
