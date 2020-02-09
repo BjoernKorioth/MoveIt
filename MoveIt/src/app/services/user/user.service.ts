@@ -51,6 +51,11 @@ export class UserService {
         return this.db.database.ref('/users/' + firebase.auth().currentUser.uid + '/profilePictureUrl').once('value');
     }
 
+    getSpecificProfilePictureUrl(uid:any) {
+        console.log("This is uid " + uid);
+        return this.db.database.ref('/users/' + uid + '/profilePictureUrl').once('value');
+    }
+
     /**
      * Creates a group
      *
