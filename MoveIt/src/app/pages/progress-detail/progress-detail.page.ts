@@ -110,10 +110,14 @@ export class ProgressDetailPage implements OnInit {
 
     createSimpleLineChart() {
         
+        console.log(this.chartValues);
+       // console.log(this.chartLabels);
+
         this.barChart = new Chart(this.barChart.nativeElement, {
-            type: 'bar',
+            type: 'bar',       
             data: {
-                 labels: this.chartLabels,
+               // labels: this.chartValues.x,
+               
                 datasets: [{
                     label: 'Active Minutes',
                     data: this.chartValues,
@@ -125,12 +129,22 @@ export class ProgressDetailPage implements OnInit {
             options: {
                 scales: {
                     xAxes: [{
+                      //  display: true,
+                      //  beginAtZero: true,
+                      ticks: {
+                        beginAtZero: true,
+                        min: 0
+                    },
                         gridLines: {
                             display: false
                         },
+                        bounds: 'ticks',
+
                         type: 'time',
                         time: {
                             unit: 'hour',
+                            
+                            unitStepSize: 6,
                             displayFormats: {
                                 hour: 'HH'
                             }

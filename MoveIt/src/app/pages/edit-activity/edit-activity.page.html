@@ -30,7 +30,7 @@
 
       <ion-item>
         <ion-label>Start Date</ion-label>
-        <ion-datetime placeholder="Select Date"  [(ngModel)]="activity.startDateIso"></ion-datetime>
+        <ion-datetime placeholder="Select Date"  [(ngModel)]="activity.startDateIso" [max]="today" (ionChange)="convertDate()"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label>Start Time</ion-label>
@@ -49,8 +49,14 @@
     <section>
       <ion-button (click)=editActivity()  color="secondary" slot="end" float-right>Edit activity</ion-button>
       <!--<ion-button expand="block">Add activity</ion-button>-->
-      
     </section>
+
+    <div class="error-message" *ngIf='(todayA.getTime() - activity.startTime.getTime()) < 0' class="error-message">
+      <ion-icon class="icon" name="close-circle-outline" size="small"></ion-icon>
+      <ion-label> You cannot edit activities for the future </ion-label>
+    </div>
+   
+
   </ion-list>
 
 </ion-content>
