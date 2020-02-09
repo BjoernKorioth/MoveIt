@@ -160,8 +160,6 @@ export class RewardsChallengesPage implements OnInit, OnDestroy {
      * @param id id for challenge for identification
      */
     identifyChallengeFromAll(id: string) {
-        console.log("identify activechallenges");
-        console.log(this.activeChallenges);
         for (let i = 0; i < this.challenges.length; i++) {
             if (this.challenges[i].id === id) {
                 this.activeChallenges.push(this.challenges[i]);
@@ -177,8 +175,6 @@ export class RewardsChallengesPage implements OnInit, OnDestroy {
      */
 
     identifyChallengeFromActive(id: string) {
-        console.log("identify challenges");
-        console.log(this.challenges);
         for (let i = 0; i < this.activeChallenges.length; i++) {
             if (this.activeChallenges[i].id === id) {
                 this.challenges.push(this.activeChallenges[i]);

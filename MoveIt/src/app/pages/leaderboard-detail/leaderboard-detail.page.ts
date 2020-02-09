@@ -75,7 +75,6 @@ export class LeaderboardDetailPage implements OnInit {
             this.trophiesObserve.subscribe(result2 => {this.pushTrophyObjects(result2);
 
             this.challengesObserve.subscribe(result3 => { 
-                console.log(result3);
                 this.pushChallengeObjects(result3);
             
             });
