@@ -70,6 +70,7 @@ export class User {
             type: this.type,
             birthday: this.birthday.toDateString(),
             gender: this.gender,
+            profilePictureUrl: this.profilePictureUrl,
         };
     }
 }

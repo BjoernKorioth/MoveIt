@@ -33,9 +33,11 @@ export class AuthenticateService {
                             (userCredential) => {
                                 user.id = userCredential.user.uid;
                                 user.group = group;
+                                user.profilePictureUrl="https://firebasestorage.googleapis.com/v0/b/moveit-2019.appspot.com/o/profilePic%2FdefaultPic?alt=media&token=77281e2a-9855-4b8a-b8dc-74ee60092cc4";       
                                 this.removeOTP(otp);
                                 // Try to create the user on the database
                                 this.registerOnDatabase(user).then(
+                                    
                                     // If this is successful, resolve the promise
                                     () => {
                                         this.goalService.initializeUserGoals().then(

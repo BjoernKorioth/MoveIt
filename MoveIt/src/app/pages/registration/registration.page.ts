@@ -62,7 +62,6 @@ export class RegistrationPage implements OnInit {
     }
 
     tryRegister(value) {
-
         if(this.calculateAge(this.bday) < 18){
             return;
         }
@@ -71,6 +70,7 @@ export class RegistrationPage implements OnInit {
         const user = new User();
         user.name = value.username;
         user.gender = value.gender;
+        user.profilePictureUrl="https://firebasestorage.googleapis.com/v0/b/moveit-2019.appspot.com/o/profilePic%2FdefaultPic?alt=media&token=77281e2a-9855-4b8a-b8dc-74ee60092cc4";       
         user.birthday = new Date(value.birthday);
         this.authService.registerUser(value.code, value.email, value.password, user)
             .then(res => {
