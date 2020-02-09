@@ -24,13 +24,18 @@ export class ProgressDetailPage implements OnInit {
     goals: Observable<any>;
     goalStorage: Array<Goal>;
     public chartLabels               : any    = [];
-    public chartValues               : any    = []; 
+    public chartValuesModerate       : any    = [];
+    public chartValuesVigorous       : any    = [];
+    public chartValuesWeight         : any    = [];    
     public chartColours              : any    = [];
     public chartHoverColours         : any    = [];
 
     @ViewChild('barChart', {static: false}) barChart: { nativeElement: any; };
+    @ViewChild('hrzBarChart5', {static: false}) hrzBarChart5: { nativeElement: any; };
    // barChart: any;
 
+   hrzBars5: any;
+   
 
     constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location,
         private health: Health, private platform: Platform, private router: Router) {
@@ -71,44 +76,154 @@ export class ProgressDetailPage implements OnInit {
         );
     }
 
-
-    ionViewDidEnter() {
-        
-        this.defineChartData();
-    }
-
-    defineChartData(){
+    //Weekly 
+    /*defineChartData(){
         let that = this;
         let now = new Date();
         this.activities.subscribe(activities => {
+            // Daten für die Woche
             let todayActivities = activities.filter(function(activity){
                 return activity.startTime.getFullYear() == now.getFullYear() && 
                 activity.startTime.getMonth()           == now.getMonth()    &&
                 activity.startTime.getDay()             == now.getDay();
+                //activity.intensity                      == 'moderate';
             })
             todayActivities.forEach(function(activity){
                 console.log(activity);
 
-                that.chartValues.push({
-                    x: activity.startTime, 
-                    y: activity.getDuration()
-                });
+                if(activity.intensity === 'moderate'){
+                    that.chartValuesModerate.push(activity.getDuration());
+                }
+                else if(activity.intensity === 'vigorous'){
+                    that.chartValuesVigorous.push(activity.getDuration());
+                }
+                else{
+                    that.chartValuesWeight.push(activity.getDuration());
+                }
+                that.chartLabels.push(
+                    activity.startTime.getDate()
+                )
+                //this.chartLabels.push(activity.startTime.getDate());
                 //that.chartLabels.push(activity.startTime.getHours());
                 //that.chartValues.push(activity.getDuration());
             
             });
-            that.createSimpleLineChart();
+            that.createHrzBarChart5();
     })
 
            // this.chartLabels.push(active.intensity);
           //  this.chartValues.push(active.type);
           //  this.chartColours.push(tech.color);
        
-       }   //  this.chartHoverColours.push(tech.hover);
+       } */  //  this.chartHoverColours.push(tech.hover);*/
+
+       //daily
+       defineChartData(){
+        let that = this;
+        let now = new Date();
+        this.activities.subscribe(activities => {
+            // Daten für die Woche
+            let todayActivities = activities.filter(function(activity){
+                return activity.startTime.getFullYear() == now.getFullYear() && 
+                activity.startTime.getMonth()           == now.getMonth()    &&
+                activity.startTime.getDay()             == now.getDay();
+                //activity.intensity                      == 'moderate';
+            })
+            todayActivities.forEach(function(activity){
+                console.log(activity);
+
+                if(activity.intensity === 'moderate'){
+                    that.chartValuesModerate.push(activity.getDuration());
+                }
+                else if(activity.intensity === 'vigorous'){
+                    that.chartValuesVigorous.push(activity.getDuration());
+                }
+                else{
+                    that.chartValuesWeight.push(activity.getDuration());
+                }
+                that.chartLabels.push(
+                    activity.startTime.getDate()
+                )
+                //this.chartLabels.push(activity.startTime.getDate());
+                //that.chartLabels.push(activity.startTime.getHours());
+                //that.chartValues.push(activity.getDuration());
+            
+            });
+            that.createHrzBarChart5();
+    })
+
+           // this.chartLabels.push(active.intensity);
+          //  this.chartValues.push(active.type);
+          //  this.chartColours.push(tech.color);
+       
+       }
     
+    ionViewDidEnter() {
+        this.createHrzBarChart5()
+        this.defineChartData();
+    }
+
+    createHrzBarChart5() {
+        let ctx = this.hrzBarChart5.nativeElement
+        ctx.height = 400;
+        this.hrzBars5 = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: this.chartLabels,
+            datasets: [{
+              label: 'moderate',
+              data: this.chartValuesModerate,
+              backgroundColor: 'rgb(245, 229, 27)', // array should have same number of elements as number of dataset
+              borderColor: 'rgb(245, 229, 27)',// array should have same number of elements as number of dataset
+              borderWidth: 1
+            },
+            {
+              label: 'vigorous',
+              data: this.chartValuesVigorous,
+              backgroundColor: 'rgb(63, 195, 128)', // array should have same number of elements as number of dataset
+              borderColor: 'rgb(63, 195, 128)',// array should have same number of elements as number of dataset
+              borderWidth: 1
+            },
+            {
+                label: 'weight training',
+                data: this.chartValuesWeight,
+                backgroundColor: 'rgb(33, 95, 68)', // array should have same number of elements as number of dataset
+                borderColor: 'rgb(33, 95, 68)',// array should have same number of elements as number of dataset
+                borderWidth: 1
+              }
+        ]
+          },
+          options: {
+            scales: {
+              xAxes: [{
+                /*type: 'time',
+                time: {
+                    unit: 'day',
+                    displayFormats: {
+                        day: 'DD'
+                    }
+                },*/
+                barPercentage: 0.9,
+                gridLines: {
+                  offsetGridLines: true
+                },
+                stacked: true
+              }],
+              yAxes: [{
+                ticks: {
+                  beginAtZero: true
+                },
+                stacked: true
+              }]
+            }
+          }
+        });
+      }
 
 
-    createSimpleLineChart() {
+
+
+    /*createSimpleLineChart() {
         
         this.barChart = new Chart(this.barChart.nativeElement, {
             type: 'bar',
@@ -147,7 +262,7 @@ export class ProgressDetailPage implements OnInit {
                 }
             }
         });
-    }
+    }*/
 
 
     ngOnInit() {
