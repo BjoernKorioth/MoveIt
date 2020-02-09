@@ -52,8 +52,8 @@ export class UserService {
     }
 
     getSpecificProfilePictureUrl(uid:any) {
-        console.log("This is uid " + uid);
-        return this.db.database.ref('/users/' + uid + '/profilePictureUrl').once('value');
+        return this.db.object<string>('/users/' + uid + '/profilePictureUrl').valueChanges();
+
     }
 
     /**
