@@ -104,11 +104,10 @@ export class ProfileDetailPage implements OnInit {
         this.isUploading = true;
         this.isUploaded = false;
 
-
         this.fileName = file.name;
 
         // The storage path
-        const path = `profilePic/${firebase.auth().currentUser.uid}`;
+        const path = `profilePic/${firebase.auth().currentUser.uid}/${firebase.auth().currentUser.uid}`;
 
 
         // File reference
@@ -125,11 +124,11 @@ export class ProfileDetailPage implements OnInit {
                 this.UploadedFileURL = fileRef.getDownloadURL();
 
                 this.UploadedFileURL.subscribe(resp => {
-                    this.addImagetoDB({
-                        name: file.name,
-                        filepath: resp,
-                        size: this.fileSize
-                    });
+                    this.userService.changeProfilePicture(
+                        firebase.auth().currentUser.uid,
+                        resp
+                    
+                    );
                     this.isUploading = false;
                     this.isUploaded = true;
                 }, error => {
@@ -142,17 +141,7 @@ export class ProfileDetailPage implements OnInit {
         );
     }
 
-    addImagetoDB(image: MyData) {
-        // Create an ID for document
-        const id = this.database.createId();
-
-        // Set document id with value in database
-        this.imageCollection.doc(id).set(image).then(resp => {
-            console.log(resp);
-        }).catch(error => {
-            console.log('error ' + error);
-        });
-    }
+   
 
 
     ngOnInit() {
