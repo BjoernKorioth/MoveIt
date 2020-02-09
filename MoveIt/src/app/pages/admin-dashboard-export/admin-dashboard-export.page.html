@@ -176,7 +176,7 @@
 </ion-row>
 
 
-  <ion-row  *ngFor="let user of users">
+  <ion-row class="ion-align-items-end" *ngFor="let user of users">
 
   <ion-col size="4">
     <ion-list>
@@ -188,6 +188,7 @@
 
 <ion-col size="4">
     <ion-list>
+        <ion-item>
         <ion-select [(ngModel)]="user.select" placeholder="Select One">
           <ion-select-option value="activities">Activities</ion-select-option>
           <ion-select-option value="goals">Goals</ion-select-option>
@@ -196,6 +197,7 @@
           <ion-select-option value="viewLogs">View Logs</ion-select-option>
           <ion-select-option value="actionLogs">Action Logs</ion-select-option>
         </ion-select>
+    </ion-item>
     </ion-list>
 </ion-col>
 
