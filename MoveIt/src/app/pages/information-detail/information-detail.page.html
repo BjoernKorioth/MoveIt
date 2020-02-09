@@ -18,7 +18,7 @@
     <ion-button type="button" (click)='getAllInformation()'>Get All</ion-button>-->
 
     <ion-card *ngFor="let info of static; let i = index;">
-        <img src="img/nin-live.png"/>
+        <img src="../../assets/{{info.picture}}"/>
         <ion-card-header>
             <ion-card-title>{{info.title}} </ion-card-title>
         </ion-card-header>
@@ -30,7 +30,7 @@
     </ion-card>
 
     <ion-card *ngFor="let info of dynamic">
-        <img src="../../assets/{{info.picture}}"/>
+        <img src="{{info.picture }}"/>
         <ion-card-header>
             <ion-card-title>{{info.title}} </ion-card-title>
         </ion-card-header>
