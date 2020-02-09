@@ -22,11 +22,15 @@ export class InformationDetailPage implements OnInit {
         this.static = [
             {
                 title: 'moderate vs. vigorous',
-                description: 'moderate activity'
+                description: 'This is a short description. To view the full text, please click the button below',
+                content: 'moderate activity',
+                picture: 'Stopwatch.jpg'
             },
             {
                 title: 'WHO Guidelines',
-                description: 'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum '
+                description: 'This is a short description. To view the full text, please click the button below',
+                content: 'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum ',
+                picture: 'Stopwatch.jpg'
             },
         ];
     }
