@@ -34,6 +34,10 @@ export class UserService {
         return this.db.database.ref('/users/' + uid + '/name').once('value');
     }
 
+    getSpecificUserBirthday(uid) {
+        return this.db.database.ref('/users/' + uid + '/birthday').once('value');
+    }
+
     getUser() {
         if (firebase.auth().currentUser) {
             return this.db.object<any>('/users/' + firebase.auth().currentUser.uid).snapshotChanges()

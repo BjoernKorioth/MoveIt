@@ -1,9 +1,6 @@
 interface FireBaseObject {
     id: string;
     won: any;
-    // endTime: string;
-    // price: string;
-    // startTime: string;
 }
 
 export class TrophyArray {

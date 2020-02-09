@@ -4,11 +4,16 @@ export class LeaderboardObject {
     id: string;
     username;
     activity: number;
+    birthday;
 
     constructor(username: string, activity: number, private userService: UserService) {
         this.id = username;
         this.setUsername(username, userService);
         this.activity = activity || 0;
+        userService.getSpecificUserBirthday(username).then
+            (val => {
+            this.birthday = val.val();
+        });
     }
 
     compareTo(compare: LeaderboardObject): number {
