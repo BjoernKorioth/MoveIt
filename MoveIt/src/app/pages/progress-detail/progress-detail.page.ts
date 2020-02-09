@@ -225,22 +225,22 @@ export class ProgressDetailPage implements OnInit {
                 datasets: [{
                     label: 'moderate',
                     data: this.dailyActivities.map((intensity) => intensity.moderate),
-                    backgroundColor: 'rgb(245, 229, 27)', // array should have same number of elements as number of dataset
-                    borderColor: 'rgb(245, 229, 27)',// array should have same number of elements as number of dataset
+                    backgroundColor: '#F61067', // array should have same number of elements as number of dataset
+                    borderColor: '#F61067',// array should have same number of elements as number of dataset
                     borderWidth: 1
                 },
                 {
                     label: 'vigorous',
                     data: this.dailyActivities.map((intensity) => intensity.vigorous),
-                    backgroundColor: 'rgb(63, 195, 128)', // array should have same number of elements as number of dataset
-                    borderColor: 'rgb(63, 195, 128)',// array should have same number of elements as number of dataset
+                    backgroundColor: '#6DECAF', // array should have same number of elements as number of dataset
+                    borderColor: '#6DECAF',// array should have same number of elements as number of dataset
                     borderWidth: 1
                 },
                 {
                     label: 'weight training',
                     data: this.dailyActivities.map((intensity) => intensity.weightTraining),
-                    backgroundColor: 'rgb(33, 95, 68)', // array should have same number of elements as number of dataset
-                    borderColor: 'rgb(33, 95, 68)',// array should have same number of elements as number of dataset
+                    backgroundColor: '#656866', // array should have same number of elements as number of dataset
+                    borderColor: '#656866',// array should have same number of elements as number of dataset
                     borderWidth: 1
                 }
                 ]
@@ -283,22 +283,22 @@ export class ProgressDetailPage implements OnInit {
                 datasets: [{
                     label: 'moderate',
                     data: this.weeklyActivities.map((intensity) => intensity.moderate),
-                    backgroundColor: 'rgb(245, 229, 27)', // array should have same number of elements as number of dataset
-                    borderColor: 'rgb(245, 229, 27)',// array should have same number of elements as number of dataset
+                    backgroundColor: '#F61067', // array should have same number of elements as number of dataset
+                    borderColor: '#F61067',// array should have same number of elements as number of dataset
                     borderWidth: 1
                 },
                 {
                     label: 'vigorous',
                     data: this.weeklyActivities.map((intensity) => intensity.vigorous),
-                    backgroundColor: 'rgb(63, 195, 128)', // array should have same number of elements as number of dataset
-                    borderColor: 'rgb(63, 195, 128)',// array should have same number of elements as number of dataset
+                    backgroundColor: '#6DECAF', // array should have same number of elements as number of dataset
+                    borderColor: '#6DECAF',// array should have same number of elements as number of dataset
                     borderWidth: 1
                 },
                 {
                     label: 'weight training',
                     data: this.weeklyActivities.map((intensity) => intensity.weightTraining),
-                    backgroundColor: 'rgb(33, 95, 68)', // array should have same number of elements as number of dataset
-                    borderColor: 'rgb(33, 95, 68)',// array should have same number of elements as number of dataset
+                    backgroundColor: '#656866', // array should have same number of elements as number of dataset
+                    borderColor: '#656866',// array should have same number of elements as number of dataset
                     borderWidth: 1
                 }
                 ]
