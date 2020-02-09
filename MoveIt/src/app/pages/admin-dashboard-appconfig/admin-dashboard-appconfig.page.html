@@ -95,7 +95,7 @@
 <br><br><br>
 
   <div>
-  <ion-row *ngFor="let user of (users | async)">
+  <ion-row class="ion-align-items-center"  *ngFor="let user of (users | async)">
     <ion-col size="4">
       <ion-list>
         <ion-item> {{user.name}} </ion-item>
