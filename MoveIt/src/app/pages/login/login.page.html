@@ -43,16 +43,12 @@
     </div>
 
 
-    <ion-button slot="end" color="secondary" class="submit-btn" type="submit" [disabled]="!loginForm.valid" float-right>Login</ion-button>
+    
+  <ion-item>
+    <a (click)="goToRegisterPage()">Not a member yet?</a>
+    <ion-button size="big" slot="end" color="secondary" class="submit-btn" type="submit" [disabled]="!loginForm.valid" float-right>Login</ion-button>
     <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>
-  </form>
-
-  <ion-item>
-  <p class="go-to-register">
-  <a (click)="goToRegisterPage()">Not a member yet?</a>
-  </p>
 </ion-item>
-
-
+</form>
 </ion-content>

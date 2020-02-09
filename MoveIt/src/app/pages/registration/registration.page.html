@@ -50,7 +50,7 @@
 
         <ion-item>
             <ion-label position="floating">Birth Date</ion-label>
-            <ion-datetime formControlName="birthday" placeholder="Select Date"></ion-datetime>
+            <ion-datetime formControlName="birthday" [(ngModel)]="birthday" [max]="maxDate" placeholder="Select Date"></ion-datetime>
         </ion-item>
         <div class="validation-errors">
             <ng-container *ngFor="let validation of validationMessages.birthday">
@@ -58,6 +58,14 @@
                      *ngIf="validationsForm.get('birthday').hasError(validation.type) && (validationsForm.get('birthday').dirty || validationsForm.get('birthday').touched)">
                     <ion-icon class="icon" name="close-circle-outline" size="small"></ion-icon>
                     <ion-label>{{ validation.message }}</ion-label>
+                </div>
+            </ng-container>
+        </div>
+        <div class="validation-errors">
+            <ng-container *ngIf="calculateAge(birthday) < 18">
+                <div class="error-message">
+                    <ion-icon class="icon" name="close-circle-outline" size="small"></ion-icon>
+                    <ion-label>You have to be older than 18</ion-label>
                 </div>
             </ng-container>
         </div>
@@ -144,17 +152,13 @@
             <ion-input formControlName="code" type="text"></ion-input>
         </ion-item>
 
-        <ion-button expand="block" color="secondary" class="submit-btn" type="submit"
-                    [disabled]="!validationsForm.valid" slot="end" float-right>Register
-        </ion-button>
-        <label class="error-message">{{errorMessage}}</label>
-        <label class="success-message">{{successMessage}}</label>
-        <ion-item style="margin-top: 40px">
-            <p class="go-to-login"><a (click)="goLoginPage()">Already have an account?</a></p>
-        </ion-item>
-
-
+        <ion-item>
+        <p class="go-to-login"><a (click)="goLoginPage()">Already have an account?</a></p>
+        <ion-button size="big" expand="block" color="secondary" class="submit-btn" type="submit"
+        [disabled]="!validationsForm.valid" slot="end" float-right>Register
+    </ion-button>
+    <label class="error-message">{{errorMessage}}</label>
+    <label class="success-message">{{successMessage}}</label>
+    </ion-item>
     </form>
-
-
 </ion-content>
