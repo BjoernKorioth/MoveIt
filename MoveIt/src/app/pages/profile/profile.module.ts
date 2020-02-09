@@ -21,6 +21,10 @@ const routes: Routes = [
       {
         path: 'detail',
         loadChildren: '../profile-detail/profile-detail.module#ProfileDetailPageModule'
+      },
+      {
+        path: 'view',
+        loadChildren: '../profile-view/profile-view.module#ProfileViewPageModule'
       }
       ]
   },

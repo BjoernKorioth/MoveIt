@@ -7,6 +7,7 @@ import {Location} from '@angular/common';
 import {UserService} from '../../services/user/user.service';
 import {first, map} from 'rxjs/operators';
 import { User } from 'src/app/model/user';
+import {Router, NavigationExtras} from '@angular/router';
 
 @Component({
     selector: 'app-socialfeed-detail',
@@ -23,7 +24,7 @@ export class SocialfeedDetailPage implements OnInit {
     post: Post;
     user:User; 
 
-    constructor(private postService: PostService, private location: Location, private userService: UserService) {
+    constructor(private router: Router, private postService: PostService, private location: Location, private userService: UserService) {
         this.location = location;
     }
 
@@ -43,6 +44,20 @@ export class SocialfeedDetailPage implements OnInit {
 
     goBack() {
         this.location.back();
+    }
+
+    viewProfile(i){
+        const postid = document.getElementsByName('userPlace')[i].id;
+        this.postService.getPost(postid).then(
+            res => {
+                let navigationExtras: NavigationExtras = {
+                    queryParams: {
+                        special: JSON.stringify(res.user)
+                    }
+                }
+                this.router.navigate(['/menu/profile/profile/view'], navigationExtras);
+            }
+        );
     }
 
     getTimeDifference(date: Date) {

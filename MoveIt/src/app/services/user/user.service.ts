@@ -47,6 +47,15 @@ export class UserService {
         }
     }
 
+    getUserById(userId: string) {
+        if (firebase.auth().currentUser) {
+            return this.db.object<any>('/users/' + userId).snapshotChanges()
+                .pipe(map(userSnapshot => User.fromFirebaseObject(userId, userSnapshot.payload.val())));
+        } else {
+            return of(new User());
+        }
+    }
+
     getProfilePictureUrl() {
         return this.db.database.ref('/users/' + firebase.auth().currentUser.uid + '/profilePictureUrl').once('value');
     }
