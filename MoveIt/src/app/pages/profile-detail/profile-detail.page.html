@@ -14,34 +14,27 @@
     <ion-card>
         <ion-item>
             <ion-avatar slot="start">
-                <img src="../assets/Profilbild.jpg">
+                <img src="{{ (currentUser | async)?.profilePictureUrl  }}">
                 <!--img [src]="post.image"-->
             </ion-avatar>
 
             <ion-label>
-                <h2>{{usertest}}</h2>
-                <p>{{usertestpath}}</p>
-                <p>Alter</p>
+                <h2>{{ (currentUser | async)?.name  }}</h2>
+                    <!-- <h2 *ngIf="(currentUser | async); let user">{{ user.name }} Username</h2> -->
+                    <p *ngIf="(currentUser | async); let user">{{ calculateAge(user.birthday) }} years old</p>
             </ion-label>
             <ion-label side="end">
                 <div class="fileUpload btn btn-primary">
-                    <span>Profilbild hochladen</span>
-                    <input
-                            id="uploadBtn"
-                            type="file"
-                            class="upload"
-                            (change)="uploadFile($event.target.files)"
-                    />
+                    <span>Select profile picture</span>
+                   
                 </div>
-
-                <ion-label>
-                    <h2>{{ (currentUser | async)?.name  }}</h2>
-                    <!-- <h2 *ngIf="(currentUser | async); let user">{{ user.name }} Username</h2> -->
-                    <p *ngIf="(currentUser | async); let user">{{ calculateAge(user.birthday) }} years old</p>
-                </ion-label>
-                <ion-label side="end">
-
-                </ion-label>
+                <input
+                id="uploadBtn"
+                type="file"
+                class="upload"
+                (change)="uploadFile($event.target.files)"
+        />
+               
             </ion-label>
         </ion-item>
     </ion-card>
@@ -82,18 +75,7 @@
     </div>
 
 
-    <ion-card *ngIf="isUploading && !isUploaded">
-        <!-- <ion-card-header>
-           <ion-card-title
-             >Selected File:<b>{{ fileName }}</b></ion-card-title>
-         </ion-card-header> -->
-
-        <ion-card-content>
-
-        </ion-card-content>
-    </ion-card>
-
-
+<!--
     <ion-card *ngIf="!isUploading && isUploaded">
         <ion-card-header>
             <ion-card-title>
@@ -129,7 +111,7 @@
         <ion-card-content>
             <img [src]="item.filepath"/>
         </ion-card-content>
-    </ion-card>
+    </ion-card>-->
 
 
     <ion-card>
@@ -143,7 +125,7 @@
                     <h3> {{goal.type}} </h3>
                     <p> {{goal.name}}</p>
                 </ion-label>
-                <ion-label text-right>
+                <ion-label class="ion-text-right">
                     <h3>{{goal.current}} / {{goal.target}}</h3>
                 </ion-label>
             </ion-item>
@@ -163,7 +145,7 @@
             <ion-list-header>
                 Activities
             </ion-list-header>
-            <ion-item *ngFor="let activity of (activities | async)">
+            <ion-item *ngFor="let activity of (displayedActivities | async)">
                 <ion-label>
                     <h3>{{ activity.startTime | date:'dd.MM.' }} {{activity.getDuration()}} minutes </h3>
 
@@ -171,5 +153,8 @@
                 </ion-label>
             </ion-item>
         </ion-list>
+
+        <ion-button expand="block" color="secondary" (click)="loadMoreActivities()">Read more</ion-button>
+
     </ion-card>
 </ion-content>

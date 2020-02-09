@@ -5,11 +5,11 @@ import {Activity} from 'src/app/model/activity';
 import {ActivityService} from 'src/app/services/activity/activity.service';
 import {Goal} from '../../model/goal';
 import {User} from '../../model/user';
-import {Observable} from 'rxjs';
+import {Observable, merge} from 'rxjs';
 import {AlertController} from '@ionic/angular';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
-import {finalize, tap} from 'rxjs/operators';
+import {finalize, tap, map} from 'rxjs/operators';
 import * as firebase from 'firebase';
 import {UserService} from '../../services/user/user.service';
 
@@ -29,6 +29,7 @@ export interface MyData {
 export class ProfileDetailPage implements OnInit {
     currentUser: Observable<User>;
     activities: Observable<Activity[]>;
+    displayedActivities: Observable<Activity[]>;
     goals: Observable<any>;
     goalStorage: Array<Goal>;
     private imageCollection: AngularFirestoreCollection<MyData>;
@@ -56,6 +57,15 @@ export class ProfileDetailPage implements OnInit {
         this.usertestpath = `profilePic/${firebase.auth().currentUser.uid}`;
         // this.router = router;
         this.currentUser = this.userService.getUser();
+
+        this.displayedActivities = this.activities.pipe(map(
+            (data) => {
+               // data.sort((a, b) => {
+                 //   return b.startTime.getTime() - a.startTime.getTime();
+                //});
+                return data.slice(0, 5);
+            }
+        ));
 
     }
 
@@ -88,6 +98,22 @@ export class ProfileDetailPage implements OnInit {
 
     }
 
+    loadMoreActivities() {
+        let currentlyDisplayed = 0;
+        this.displayedActivities.subscribe(
+            c => currentlyDisplayed = c.length
+        );
+
+        const newDisplayedActivities = this.activities.pipe(
+            map(data => data.slice(0, currentlyDisplayed + 5))
+        );
+
+        this.displayedActivities = merge(
+            this.displayedActivities,
+            newDisplayedActivities
+        );
+    }
+
 
     uploadFile(event: FileList) {
 
@@ -104,11 +130,10 @@ export class ProfileDetailPage implements OnInit {
         this.isUploading = true;
         this.isUploaded = false;
 
-
         this.fileName = file.name;
 
         // The storage path
-        const path = `profilePic/${firebase.auth().currentUser.uid}`;
+        const path = `profilePic/${firebase.auth().currentUser.uid}/${firebase.auth().currentUser.uid}`;
 
 
         // File reference
@@ -125,11 +150,11 @@ export class ProfileDetailPage implements OnInit {
                 this.UploadedFileURL = fileRef.getDownloadURL();
 
                 this.UploadedFileURL.subscribe(resp => {
-                    this.addImagetoDB({
-                        name: file.name,
-                        filepath: resp,
-                        size: this.fileSize
-                    });
+                    this.userService.changeProfilePicture(
+                        firebase.auth().currentUser.uid,
+                        resp
+                    
+                    );
                     this.isUploading = false;
                     this.isUploaded = true;
                 }, error => {
@@ -142,17 +167,7 @@ export class ProfileDetailPage implements OnInit {
         );
     }
 
-    addImagetoDB(image: MyData) {
-        // Create an ID for document
-        const id = this.database.createId();
-
-        // Set document id with value in database
-        this.imageCollection.doc(id).set(image).then(resp => {
-            console.log(resp);
-        }).catch(error => {
-            console.log('error ' + error);
-        });
-    }
+   
 
 
     ngOnInit() {
