@@ -14,7 +14,9 @@ export class ChallengePopoverComponent implements OnInit {
   challenge: Challenge;
 
   constructor(public popoverController: PopoverController, private challengeService: ChallengeService, public alertController: AlertController) {
-      this.challenge = new Challenge();
+     this.challenge = new Challenge();
+     console.log(this.challenge);
+      
    }
 
   ngOnInit() {}
@@ -33,6 +35,7 @@ export class ChallengePopoverComponent implements OnInit {
 
   addChallenge() {
     console.log(this.challenge);
+    this.challenge.participants = [];
     this.challengeService.createChallenge(this.challenge).then(
       (challenge) => {
           console.log(challenge);
