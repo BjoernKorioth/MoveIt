@@ -1,17 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {Location} from '@angular/common';
-import {GoalService} from 'src/app/services/goal/goal.service';
-import {Activity} from 'src/app/model/activity';
-import {ActivityService} from 'src/app/services/activity/activity.service';
-import {Goal} from '../../model/goal';
-import {User} from '../../model/user';
-import {Observable} from 'rxjs';
-import {AlertController} from '@ionic/angular';
-import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { GoalService } from 'src/app/services/goal/goal.service';
+import { Activity } from 'src/app/model/activity';
+import { ActivityService } from 'src/app/services/activity/activity.service';
+import { Goal } from '../../model/goal';
+import { User } from '../../model/user';
+import { Observable, merge } from 'rxjs';
+import { AlertController } from '@ionic/angular';
+import { AngularFireStorage, AngularFireUploadTask } from '@angular/fire/storage';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
-import {UserService} from '../../services/user/user.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import { UserService } from '../../services/user/user.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 export interface MyData {
   name: string;
@@ -41,12 +42,13 @@ export class ProfileViewPage implements OnInit {
   test: Observable<string>;
   usertest: string;
   usertestpath: string;
+  displayedActivities: Observable<Activity[]>;
 
 
-  constructor(private route:ActivatedRoute, private router:Router, private location: Location, private userService: UserService, private goalService: GoalService, private activityService: ActivityService, public alertController: AlertController, private storage: AngularFireStorage, private database: AngularFirestore) {
-    
-    this.route.queryParams.subscribe(params=>{
-      var userid= JSON.parse(params.special)
+  constructor(private route: ActivatedRoute, private router: Router, private location: Location, private userService: UserService, private goalService: GoalService, private activityService: ActivityService, public alertController: AlertController, private storage: AngularFireStorage, private database: AngularFirestore) {
+
+    this.route.queryParams.subscribe(params => {
+      var userid = JSON.parse(params.special)
       this.activities = this.activityService.getThisUsersActivities(userid);
       this.goals = this.goalService.getGoalsFromUser(userid);
       this.goals.subscribe(goals => this.goalStorage = goals);
@@ -58,43 +60,69 @@ export class ProfileViewPage implements OnInit {
       this.usertestpath = `profilePic/${userid}`;
       // this.router = router;
       this.currentUser = this.userService.getUserById(userid);
+
+      this.displayedActivities = this.activities.pipe(map(
+        (data) => {
+          // data.sort((a, b) => {
+          //   return b.startTime.getTime() - a.startTime.getTime();
+          //});
+          return data.slice(0, 5);
+        }
+      ));
     })
   }
 
-// Upload Task
+  // Upload Task
   task: AngularFireUploadTask;
 
-// Progress in percentage
+  // Progress in percentage
   percentage: Observable<number>;
 
-// Snapshot of uploading file
+  // Snapshot of uploading file
   snapshot: Observable<any>;
 
-// Uploaded File URL
+  // Uploaded File URL
   UploadedFileURL: Observable<string>;
 
-// Uploaded Image List
+  // Uploaded Image List
   images: Observable<MyData[]>;
 
-// File details
+  // File details
   fileName: string;
   fileSize: number;
 
-// Status check
+  // Status check
   isUploading: boolean;
   isUploaded: boolean;
 
   calculateAge(birthday: Date) {
-      const timeDiff = Math.abs(Date.now() - birthday.getTime());
-      return Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
+    const timeDiff = Math.abs(Date.now() - birthday.getTime());
+    return Math.floor((timeDiff / (1000 * 3600 * 24)) / 365.25);
 
   }
 
   ngOnInit() {
   }
 
+
+  loadMoreActivities() {
+    let currentlyDisplayed = 0;
+    this.displayedActivities.subscribe(
+      c => currentlyDisplayed = c.length
+    );
+
+    const newDisplayedActivities = this.activities.pipe(
+      map(data => data.slice(0, currentlyDisplayed + 5))
+    );
+
+    this.displayedActivities = merge(
+      this.displayedActivities,
+      newDisplayedActivities
+    );
+  }
+
   goBack() {
-      this.location.back();
+    this.location.back();
   }
 
 }

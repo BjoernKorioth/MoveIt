@@ -66,7 +66,7 @@
           <ion-list-header>
               Activities
           </ion-list-header>
-          <ion-item *ngFor="let activity of (activities | async)">
+          <ion-item *ngFor="let activity of (displayedActivities | async)">
               <ion-label>
                   <h3>{{ activity.startTime | date:'dd.MM.' }} {{activity.getDuration()}} minutes </h3>
 
@@ -74,5 +74,7 @@
               </ion-label>
           </ion-item>
       </ion-list>
+      <ion-button expand="block" color="secondary" (click)="loadMoreActivities()">Read more</ion-button>
+
   </ion-card>
 </ion-content>
