@@ -45,11 +45,14 @@ export class GoalsDetailPage implements OnInit {
     editGoal() {
 
         this.goalService.adjustGoal(this.goal, this.goal.target).then(
-            res => console.log(res),
+            res => {
+              console.log(res);
+              this.presentAlert();
+            },
             err => console.log(err)
         );
 
-        this.presentAlert();
+        
 
         /*moderate(){
           this.goalService.getGoal('dailyModerate').then(

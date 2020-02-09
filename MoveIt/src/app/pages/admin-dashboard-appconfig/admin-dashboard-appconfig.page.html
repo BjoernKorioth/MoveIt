@@ -95,27 +95,33 @@
 <br><br><br>
 
   <div>
-  <ion-row *ngFor="let user of (users | async)">
-    <ion-col size="2">
+  <ion-row class="ion-align-items-center"  *ngFor="let user of (users | async)">
+    <ion-col size="4">
       <ion-list>
         <ion-item> {{user.name}} </ion-item>
       </ion-list>
     </ion-col>
 
-    <ion-col size="8">
-       <ion-radio-group [(ngModel)]="user.group">
+    <ion-col size="4">
+
+      <ion-item>
+      <ion-select placeholder="Select One" [(ngModel)]="user.group">
+        <ion-select-option  *ngFor="let group of allGroups" [value]="group.id">{{group.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+      <!--<ion-radio-group [(ngModel)]="user.group">
         <ion-item  *ngFor="let group of allGroups">    
           <ion-label>{{group.name}}</ion-label>
           <ion-radio [value]="group.id"></ion-radio>
         </ion-item>
-    </ion-radio-group>
+    </ion-radio-group>-->
   </ion-col>
 
-  <ion-col size="1">
+  <ion-col size="4">
     <ion-list>
-      <ion-item>
-        <ion-button color="secondary" (click)="editUserconfig(user.id, user.group)">Save</ion-button>
-      </ion-item>
+   
+        <ion-button size="big" color="secondary" (click)="editUserconfig(user.id, user.group)" float-right>Save</ion-button>
+
     </ion-list>
   </ion-col>
 </ion-row>

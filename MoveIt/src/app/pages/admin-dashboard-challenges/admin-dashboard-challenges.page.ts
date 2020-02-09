@@ -73,7 +73,7 @@ export class AdminDashboardChallengesPage implements OnInit {
         console.log(challenge);
         for (let i = 0; i < this.challenges.length; i++) {
             if (this.challenges[i].title === challenge.title) {
-                this.challenges.splice(i, i + 1);
+                this.challenges.splice(i, 1);
             }
         }
     }

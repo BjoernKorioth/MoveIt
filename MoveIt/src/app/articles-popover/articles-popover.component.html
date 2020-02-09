@@ -13,7 +13,9 @@
   </ion-item>
   <ion-item>
     <ion-label>Image</ion-label>
-    <ion-input  [(ngModel)]="information.picture" placeholder="Upload image" text-right></ion-input>
+    <ion-input  [(ngModel)]="information.picture" placeholder="Upload image" text-right><div class="fileUpload btn btn-primary">
+      
+  </div></ion-input>
   </ion-item>
   <ion-item>
     <ion-button (click)="addInformation()" color="secondary"  slot="end" float-right>Create</ion-button>

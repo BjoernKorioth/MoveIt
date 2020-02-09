@@ -28,8 +28,10 @@ export class Challenge {
         this.title = title || '';
         this.participants = [];
         //to get the number iterates through the object of participants 
-        for (var user of Object.keys(participantObject)) {
-            this.participants.push(participantObject[user]);
+        if(participantObject !== undefined){
+            for (var user of Object.keys(participantObject)) {
+                this.participants.push(participantObject[user]);
+            }
         }
         this.finished = finished || false;
     }

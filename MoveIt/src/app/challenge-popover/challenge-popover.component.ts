@@ -35,8 +35,18 @@ export class ChallengePopoverComponent implements OnInit {
 
   addChallenge() {
     console.log(this.challenge);
+    var participantsArray = [];
+    var participants = {};
+
+    var random = Math.random()*30;
+
+
+    for(var i = 0; i<random; i++){
+      participants["test"+i] = i;
+    }
+    
     this.challenge.participants = [];
-    this.challengeService.createChallenge(this.challenge).then(
+    this.challengeService.createChallenge(this.challenge, participants).then(
       (challenge) => {
           console.log(challenge);
         })

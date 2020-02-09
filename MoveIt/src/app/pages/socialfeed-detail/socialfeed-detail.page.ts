@@ -22,7 +22,9 @@ export class SocialfeedDetailPage implements OnInit {
     commentText = [];
     now = new Date();
     post: Post;
-    user:User; 
+    user:User;
+
+    link: Observable<string>;
 
     constructor(private router: Router, private postService: PostService, private location: Location, private userService: UserService) {
         this.location = location;
@@ -32,6 +34,7 @@ export class SocialfeedDetailPage implements OnInit {
         this.posts = this.postService.getAllPosts().pipe(map(posts => posts.map(post => {
             const pseudoPost = {
                 username: this.getUsername(post.user).pipe(first()),
+                profilePictureUrl: this.getSpecificProfilePictureUrl(post.user).pipe(first()),
                 usernames: [],
                 ...post
             };
@@ -150,5 +153,9 @@ export class SocialfeedDetailPage implements OnInit {
 
     getUsername(id) {
         return this.userService.getUsernameById(id);
+    }
+
+    getSpecificProfilePictureUrl(id){
+        return this.userService.getSpecificProfilePictureUrl(id);
     }
 }

@@ -47,23 +47,25 @@
 
 
 <section>
-  <ion-button (click)=addActivity() color="secondary" slot="end" float-right>Add activity</ion-button>
+  <ion-button class="watch" (click)=addActivity() color="secondary" slot="end" float-right>Add activity</ion-button>
 </section>
 
-<ion-button (click)="stopTimer()" float-right>
-  <ion-icon size="large" name="square"></ion-icon>
-</ion-button>
-
 <ng-container *ngIf="overallTimer == false; else running">
-  <ion-button (click)="startAgain()" float-right>
-    <ion-icon size="large" name="play" ></ion-icon>
+  <ion-button class="watch" (click)="startAgain()" float-right>
+    Start
   </ion-button>
 </ng-container>
 <ng-template #running>
-  <ion-button (click)="pauseTimer()" float-right> 
-    <ion-icon size="large" name="pause"></ion-icon>
+  <ion-button class="watch" (click)="pauseTimer()" float-right> 
+    Pause
   </ion-button>
 </ng-template>
+
+<ion-button class="watch" (click)="stopTimer()" float-right>
+  Cancel
+</ion-button>
+
+
 
 
 

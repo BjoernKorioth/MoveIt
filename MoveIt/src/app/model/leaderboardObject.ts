@@ -1,10 +1,13 @@
 import {UserService} from '../services/user/user.service';
 
+import {first} from 'rxjs/operators';
+
 export class LeaderboardObject {
     id: string;
     username;
     activity: number;
     birthday;
+    pictureProfileUrl;
 
     constructor(username: string, activity: number, private userService: UserService) {
         this.id = username;
@@ -14,6 +17,8 @@ export class LeaderboardObject {
             (val => {
             this.birthday = val.val();
         });
+
+        this.pictureProfileUrl = userService.getSpecificProfilePictureUrl(this.id).pipe(first());
     }
 
     compareTo(compare: LeaderboardObject): number {
