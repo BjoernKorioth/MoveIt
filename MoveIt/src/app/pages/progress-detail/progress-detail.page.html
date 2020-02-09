@@ -28,14 +28,14 @@
     </ion-col>
     <ion-col size="8">
         <ion-item>
-        <ion-segment>
-            <ion-segment-button value="trophies">
+        <ion-segment [(ngModel)]="duration">
+            <ion-segment-button value="day" (click)="defineChartDataDaily()">
             day
             </ion-segment-button>
-            <ion-segment-button value="actMinutes">
+            <ion-segment-button value="week" (click)="defineChartData()">
             week
             </ion-segment-button>
-            <ion-segment-button value="challenges">
+            <ion-segment-button value="month">
             month
             </ion-segment-button>
     </ion-segment>
@@ -49,12 +49,25 @@
     <ion-card-content>-->
      <!--<canvas id="barChart" width="100%" #barChart></canvas>--> 
 
+     <div [ngSwitch]="duration">
 
-      <ion-card class="welcome-card">
+      <ion-card *ngSwitchCase="'day'" class="welcome-card">
         <ion-card-content>
           <canvas #hrzBarChart5></canvas>
         </ion-card-content>
       </ion-card>
+
+      
+      <ion-card *ngSwitchCase="'week'" class="welcome-card">
+        <ion-card-content>
+            <canvas #weeklyChart></canvas>
+          </ion-card-content>
+      </ion-card>
+
+    </div>
+
+      
+ 
  <!--<ion-item>  
     <ion-button routerLink="/menu/goals/goals/detail" color="secondary" slot="end" float-right>Edit goals</ion-button>
 </ion-item>-->
