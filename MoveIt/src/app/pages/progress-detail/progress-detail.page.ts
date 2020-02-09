@@ -10,6 +10,7 @@ import {Platform} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {Chart} from 'chart.js';
 import {first, map} from 'rxjs/operators';
+import { ConsoleReporter } from 'jasmine';
 
 
 @Component({
@@ -23,6 +24,8 @@ export class ProgressDetailPage implements OnInit {
     displayedActivities: Observable<Activity[]>;
     goals: Observable<any>;
     goalStorage: Array<Goal>;
+
+    weeklyActivities;
     public chartLabels               : any    = [];
     public chartValuesModerate       : any    = [];
     public chartValuesVigorous       : any    = [];
@@ -121,45 +124,67 @@ export class ProgressDetailPage implements OnInit {
        defineChartData(){
         let that = this;
         let now = new Date();
+        let lastWeek: Date = new Date();
+        // lastWeek.setDate(lastWeek.getDate() - 7);
+        console.log(lastWeek);        
+
         this.activities.subscribe(activities => {
             // Daten für die Woche
-            let todayActivities = activities.filter(function(activity){
-                return activity.startTime.getFullYear() == now.getFullYear() && 
+            let weeklyActivities = [];
+                
+            for(let dayOfWeek = 6; dayOfWeek >= 0; dayOfWeek--) {
+                lastWeek.setDate(now.getDate() - dayOfWeek);
+                weeklyActivities.push(activities.filter(function(activity) {
+                    return activity.startTime.getDate() == lastWeek.getDate();
+                }));  
+
+                               
+                that.chartLabels.push(
+                    lastWeek.getDate()
+                );
+            }
+            console.log(weeklyActivities); 
+
+            const intensities = [
+                {id: 'vigorous', name: 'vigorous'},
+                {id: 'moderate', name: 'moderate'},
+                {id: 'weightTraining', name: 'weight training'}
+            ];
+
+            let weeklyActivityDurations = [];
+            weeklyActivities.forEach(function(weekly) {
+                let obj = {
+                    vigorous: [],
+                    moderate: [],
+                    weightTraining: []
+                };                
+                intensities.forEach(function(intensity) {
+                    obj[intensity.id] = weekly
+                        .filter((activity) => activity.intensity === intensity.name)
+                        .reduce(((totalDuration, activity) => totalDuration + activity.getDuration()), 0);
+                });
+
+                weeklyActivityDurations.push(obj);
+                console.log(weeklyActivities);   
+ 
+
+            /*let weeklyActivities = activities.filter(function(activity){
+                return activity.startTime.getDate() >= lastWeek.getDate();
+               /* getFullYear() == now.getFullYear() && 
                 activity.startTime.getMonth()           == now.getMonth()    &&
                 activity.startTime.getDay()             == now.getDay();
-                //activity.intensity                      == 'moderate';
-            })
-            todayActivities.forEach(function(activity){
-                console.log(activity);
-
-                if(activity.intensity === 'moderate'){
-                    that.chartValuesModerate.push(activity.getDuration());
-                }
-                else if(activity.intensity === 'vigorous'){
-                    that.chartValuesVigorous.push(activity.getDuration());
-                }
-                else{
-                    that.chartValuesWeight.push(activity.getDuration());
-                }
-                that.chartLabels.push(
-                    activity.startTime.getDate()
-                )
-                //this.chartLabels.push(activity.startTime.getDate());
-                //that.chartLabels.push(activity.startTime.getHours());
-                //that.chartValues.push(activity.getDuration());
-            
+                //activity.intensity                      == 'moderate';*/
             });
+          this.weeklyActivities =  weeklyActivityDurations;
+          
+          console.log(weeklyActivityDurations);
+         
             that.createHrzBarChart5();
     })
-
-           // this.chartLabels.push(active.intensity);
-          //  this.chartValues.push(active.type);
-          //  this.chartColours.push(tech.color);
-       
        }
     
     ionViewDidEnter() {
-        this.createHrzBarChart5()
+      //  this.createHrzBarChart5()
         this.defineChartData();
     }
 
@@ -172,21 +197,21 @@ export class ProgressDetailPage implements OnInit {
             labels: this.chartLabels,
             datasets: [{
               label: 'moderate',
-              data: this.chartValuesModerate,
+              data: this.weeklyActivities.map((intensity) => intensity.moderate),
               backgroundColor: 'rgb(245, 229, 27)', // array should have same number of elements as number of dataset
               borderColor: 'rgb(245, 229, 27)',// array should have same number of elements as number of dataset
               borderWidth: 1
             },
             {
               label: 'vigorous',
-              data: this.chartValuesVigorous,
+              data: this.weeklyActivities.map((intensity) => intensity.vigorous),
               backgroundColor: 'rgb(63, 195, 128)', // array should have same number of elements as number of dataset
               borderColor: 'rgb(63, 195, 128)',// array should have same number of elements as number of dataset
               borderWidth: 1
             },
             {
                 label: 'weight training',
-                data: this.chartValuesWeight,
+                data: this.weeklyActivities.map((intensity) => intensity.weightTraining),
                 backgroundColor: 'rgb(33, 95, 68)', // array should have same number of elements as number of dataset
                 borderColor: 'rgb(33, 95, 68)',// array should have same number of elements as number of dataset
                 borderWidth: 1
