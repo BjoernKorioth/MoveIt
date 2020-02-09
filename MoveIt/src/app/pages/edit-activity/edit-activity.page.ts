@@ -92,10 +92,13 @@ export class EditActivityPage implements OnInit {
 
       console.log(this.activity);
       this.activityService.editActivity(this.activity.id, this.activity).then(
-          res => console.log(res),
+          res => {
+            console.log(res);
+            this.presentAlert();
+          },
           err => console.log(err)
       );
-      this.presentAlert();
+     
   }
 
 
