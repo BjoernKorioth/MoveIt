@@ -5,9 +5,7 @@
     </ion-buttons>
     <ion-title>Challenges</ion-title>
   </ion-toolbar>
-</ion-header>
 
-<ion-content>
   <section>
     <ion-button color="secondary"  slot="end" float-right padding (click)="presentPopover($event)">Create Challenge</ion-button>
   </section>
@@ -22,7 +20,7 @@
       </ion-list>
     </ion-col>
 
-    <ion-col size="3">
+    <ion-col size="2">
       <ion-list>
         <ion-list-header>
           <ion-label>Description</ion-label>
@@ -46,16 +44,21 @@
       </ion-list>
     </ion-col>
 
-    <ion-col size="3">
+    <ion-col size="2">
       <ion-list>
         <ion-list-header>
           <ion-label>Prize</ion-label>
         </ion-list-header>
       </ion-list>
     </ion-col>
-  </ion-row>
+  </ion-row> 
 
-  <ion-row *ngFor="let challenge of challenges">
+</ion-header>
+
+<ion-content>
+ 
+
+  <ion-row class="ion-align-items-end" *ngFor="let challenge of challenges">
     <ion-col size="2">
       <ion-list>
         <ion-item><ion-textarea [(ngModel)]="challenge.title"></ion-textarea></ion-item>
@@ -75,7 +78,9 @@
     </ion-col>
  <ion-col size="2">
       <ion-list>
-        <ion-item><ion-datetime  [(ngModel)]="challenge.endTimeIso"></ion-datetime></ion-item>
+        <ion-item>
+          <ion-datetime  [(ngModel)]="challenge.endTimeIso"></ion-datetime>
+        </ion-item>
       </ion-list>
     </ion-col>
 
