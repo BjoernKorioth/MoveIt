@@ -139,11 +139,11 @@
         <ion-list *ngFor="let goal of (goals | async)">
 
             <ion-item>
-                <ion-label>
+                <ion-label side="start">
                     <h3> {{goal.type}} </h3>
                     <p> {{goal.name}}</p>
                 </ion-label>
-                <ion-label side="end">
+                <ion-label text-right>
                     <h3>{{goal.current}} / {{goal.target}}</h3>
                 </ion-label>
             </ion-item>
