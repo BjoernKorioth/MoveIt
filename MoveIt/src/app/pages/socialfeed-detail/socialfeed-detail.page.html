@@ -38,7 +38,7 @@
     </ion-card>
 
 
-    <ion-card *ngFor="let post of (posts | async); let i = index;">
+    <ion-card *ngFor="let post of (displayedPosts | async); let i = index;">
 
         <ion-item>
             <ion-avatar slot="start">
@@ -109,6 +109,8 @@
             </form>
         </ion-row>
     </ion-card>
+    <ion-button expand="block" color="secondary" (click)="loadMorePosts()">Read more</ion-button>
+
 
 </ion-content>
 

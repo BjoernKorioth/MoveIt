@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Post} from '../../model/post';
 import {Comment} from '../../model/comment';
 import {PostService} from '../../services/post/post.service';
-import {Observable} from 'rxjs';
+import {Observable, merge} from 'rxjs';
 import {Location} from '@angular/common';
 import {UserService} from '../../services/user/user.service';
 import {first, map} from 'rxjs/operators';
@@ -22,6 +22,8 @@ export class SocialfeedDetailPage implements OnInit {
     now = new Date();
     post: Post;
     user:User;
+    displayedPosts: Observable<any[]>;
+
 
     link: Observable<string>;
 
@@ -42,6 +44,32 @@ export class SocialfeedDetailPage implements OnInit {
         })));
         this.posts.subscribe(r => console.log(r));
         this.userService.getUser().subscribe(user => this.user = user);
+
+        this.displayedPosts = this.posts.pipe(map(
+            (data) => {
+               // data.sort((a, b) => {
+                 //   return b.startTime.getTime() - a.startTime.getTime();
+                //});
+                return data.slice(0, 10);
+            }
+        ));
+        console.log(this.displayedPosts);
+    }
+
+    loadMorePosts(){
+        let currentlyDisplayed = 0;
+        this.displayedPosts.subscribe(
+            c => currentlyDisplayed = c.length
+        );
+
+        const newDisplayedActivities = this.posts.pipe(
+            map(data => data.slice(0, currentlyDisplayed + 5))
+        );
+
+        this.displayedPosts = merge(
+            this.displayedPosts,
+            newDisplayedActivities
+        );
     }
 
     goBack() {
