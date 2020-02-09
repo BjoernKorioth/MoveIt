@@ -18,6 +18,8 @@ export class InformationDetailPage implements OnInit {
     constructor(private informationService: InformationService, private location: Location, private router: Router) {
         this.location = location;
         informationService.getAllInformation().subscribe(dynamic => this.dynamic = dynamic);
+        informationService.getAllInformation().subscribe(dynamic => console.log(dynamic));
+
 
         this.static = [
             {
