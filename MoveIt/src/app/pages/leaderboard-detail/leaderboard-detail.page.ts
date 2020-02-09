@@ -22,6 +22,8 @@ import {ChallengeService} from '../../services/challenges/challenge.service';
 
 import {UserService} from '../../services/user/user.service';
 
+import {Router, NavigationExtras} from '@angular/router';
+
 
 @Component({
     selector: 'app-leaderboard-detail',
@@ -51,7 +53,7 @@ export class LeaderboardDetailPage implements OnInit {
 
     currentUser: User;
 
-    constructor(private challService: ChallengeService, private goalService: GoalService, private trophyService: TrophyService, private userService: UserService,
+    constructor(private router:Router, private challService: ChallengeService, private goalService: GoalService, private trophyService: TrophyService, private userService: UserService,
                 private location: Location) {
     }
 
@@ -88,6 +90,15 @@ export class LeaderboardDetailPage implements OnInit {
         this.group.subscribe(group => this.updateGroup(group));
 
         this.userService.getUser().subscribe(user => this.currentUser = user);
+    }
+
+    viewProfile(counter, list){
+        let navigationExtras: NavigationExtras = {
+            queryParams: {
+                special: JSON.stringify(list[counter].id)
+            }
+        }
+        this.router.navigate(['/menu/profile/profile/view'], navigationExtras);
     }
 
     updateGroup(group) {
