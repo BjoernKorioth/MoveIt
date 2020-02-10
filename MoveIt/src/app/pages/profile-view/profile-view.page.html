@@ -1,0 +1,80 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+          <ion-back-button class="show-back-button" (click)="goBack()"></ion-back-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+          <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Profile</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+      <ion-item>
+          <ion-avatar slot="start">
+            <img src="{{ (currentUser | async)?.profilePictureUrl  }}">
+              <!--img [src]="post.image"-->
+          </ion-avatar>
+
+          <ion-label>
+              <h2>{{ (currentUser | async)?.name  }}</h2>
+              <p *ngIf="(currentUser | async); let user">{{ calculateAge(user.birthday) }} years old</p>
+      
+          </ion-label>
+      </ion-item>
+  </ion-card>
+
+
+  <div *ngIf="percentage | async as pct">
+      Progress: {{ pct | number }}%
+      <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
+  </div>
+  
+
+
+
+  <ion-card>
+      <ion-list-header>
+          Goals
+      </ion-list-header>
+      <ion-list *ngFor="let goal of (goals | async)">
+
+          <ion-item>
+              <ion-label side="start">
+                  <h3> {{goal.type}} </h3>
+                  <p> {{goal.name}}</p>
+              </ion-label>
+              <ion-label text-right>
+                  <h3>{{goal.current}} / {{goal.target}}</h3>
+              </ion-label>
+          </ion-item>
+          <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
+
+          <!-- Colorize Progressbar -->
+          <!-- <ion-item>
+            <ion-text slot="end">Goal 1</ion-text>
+            <ion-progress-bar color="primary" value="0.9"></ion-progress-bar></ion-item>
+           <ion-item> <ion-progress-bar color="primary" value="0.58"></ion-progress-bar></ion-item>
+           <ion-item> <ion-progress-bar color="primary" value="0.27"></ion-progress-bar></ion-item>-->
+      </ion-list>
+  </ion-card>
+
+  <ion-card>
+      <ion-list>
+          <ion-list-header>
+              Activities
+          </ion-list-header>
+          <ion-item *ngFor="let activity of (displayedActivities | async)">
+              <ion-label>
+                  <h3>{{ activity.startTime | date:'dd.MM.' }} {{activity.getDuration()}} minutes </h3>
+
+                  <p>{{activity.type}}-{{activity.intensity}}</p>
+              </ion-label>
+          </ion-item>
+      </ion-list>
+      <ion-button expand="block" color="secondary" (click)="loadMoreActivities()">Read more</ion-button>
+
+  </ion-card>
+</ion-content>

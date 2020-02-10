@@ -42,7 +42,7 @@
 
         <ion-item>
             <ion-avatar slot="start">
-                <img src="{{post.profilePictureUrl | async}}" >
+                <img src="{{post.profilePictureUrl | async}}" (click)="viewProfile(i)">
                 <!--img [src]="post.image"-->
             </ion-avatar>
             <ion-label id="{{post.id}}" name="userPlace">

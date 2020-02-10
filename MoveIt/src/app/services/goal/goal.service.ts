@@ -110,6 +110,14 @@ export class GoalService {
             map(goals => goals.map(goalPayload => (Goal.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
     }
 
+    getGoalsFromUser(userId: String) {
+        const ref = this.fireDatabase.list<Goal>('/goals/' + userId);
+        // Retrieve an array, but with its metadata. This is necesary to have the key available
+        // An array of Goals is reconstructed using the fromFirebaseObject method
+        return ref.snapshotChanges().pipe(
+            map(goals => goals.map(goalPayload => (Goal.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
+    }
+
     getAllOtherAvailableGoals() {
         return this.fireDatabase.list<GoalArray>('/goals/').snapshotChanges().pipe(
             map(goals => goals.map(goalPayload => (GoalArray.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));

@@ -34,6 +34,9 @@ export class DashboardDetailPage implements OnInit {
     group: Observable<string>;
     config: Observable<string>;
     selectedPath = '';
+    leaderboardB: boolean = false;
+    socialB: boolean = false;
+    rewardsB: boolean = false;
     constructor(private userService: UserService) {
 
         this.group = userService.getUsergroup();
@@ -66,14 +69,17 @@ export class DashboardDetailPage implements OnInit {
             switch (i) {
                 case 'Leaderboard': {
                     this.allServices.push(this.leaderboard);
+                   this.leaderboardB = true;
                     break;
                 }
                 case 'Social': {
                     this.allServices.push(this.social);
+                    this.socialB = true;
                     break;
                 }
                 case 'Rewards': {
                     this.allServices.push(this.rewards);
+                   this.rewardsB = true;
                     break;
                 }
                 default: {

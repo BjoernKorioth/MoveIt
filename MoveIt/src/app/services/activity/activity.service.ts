@@ -121,6 +121,13 @@ export class ActivityService {
             activitySnapshot => Activity.fromFirebaseObject(activitySnapshot.key, activitySnapshot.payload.val())).reverse()));
     }
 
+    getThisUsersActivities(userId: String) {
+        const ref = this.fireDatabase
+            .list<Activity>(this.activityLocation + userId, query => query.orderByChild('endTime'));
+        return ref.snapshotChanges().pipe(map(activities => activities.map(
+            activitySnapshot => Activity.fromFirebaseObject(activitySnapshot.key, activitySnapshot.payload.val())).reverse()));
+    }
+
 
     /**
      * Retrieve all activities for a specific start and end date from the FitnessAPI
