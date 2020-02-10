@@ -38,7 +38,7 @@
     </ion-card>
 
 
-    <ion-card *ngFor="let post of (posts | async); let i = index;">
+    <ion-card *ngFor="let post of (displayedPosts | async); let i = index;">
 
         <ion-item>
             <ion-avatar slot="start">
@@ -85,13 +85,14 @@
             </ion-col>
         </ion-row>
         <div *ngIf="post.comments?.length != 0">
-            <div *ngFor="let c of post.comments">
-                <ion-item lines="none">
+            <div *ngFor="let c of post.comments; let i = index">                
+                <ion-item lines="none" *ngIf="i < (post.commentPage * 3)">
                     <!--<ion-label><h3>{{ (post.usernames[i] | async)}}</h3> -->
                         <ion-label><h3>{{ c.user}}</h3>
                         <p>{{c.text}}</p></ion-label>
                 </ion-item>
             </div>
+            <p class="more" (click)="nextCommentPage(post)">Show more comments</p>
             <!--
               <ion-item>
               <ion-label><p id="allComments">all comments</p></ion-label>
@@ -108,6 +109,8 @@
             </form>
         </ion-row>
     </ion-card>
+    <ion-button expand="block" color="secondary" (click)="loadMorePosts()">Read more</ion-button>
+
 
 </ion-content>
 

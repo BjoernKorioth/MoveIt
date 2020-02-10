@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Post} from '../../model/post';
 import {Comment} from '../../model/comment';
 import {PostService} from '../../services/post/post.service';
-import {Observable} from 'rxjs';
+import {Observable, merge} from 'rxjs';
 import {Location} from '@angular/common';
 import {UserService} from '../../services/user/user.service';
 import {first, map} from 'rxjs/operators';
@@ -22,6 +22,8 @@ export class SocialfeedDetailPage implements OnInit {
     now = new Date();
     post: Post;
     user:User;
+    displayedPosts: Observable<any[]>;
+
 
     link: Observable<string>;
 
@@ -29,7 +31,7 @@ export class SocialfeedDetailPage implements OnInit {
         this.location = location;
     }
 
-    async ngOnInit() {
+    ngOnInit() {
         this.posts = this.postService.getAllPosts().pipe(map(posts => posts.map(post => {
             const pseudoPost = {
                 username: this.getUsername(post.user).pipe(first()),
@@ -42,10 +44,40 @@ export class SocialfeedDetailPage implements OnInit {
         })));
         this.posts.subscribe(r => console.log(r));
         this.userService.getUser().subscribe(user => this.user = user);
+
+        this.displayedPosts = this.posts.pipe(map(
+            (data) => {
+               // data.sort((a, b) => {
+                 //   return b.startTime.getTime() - a.startTime.getTime();
+                //});
+                return data.slice(0, 10);
+            }
+        ));
+        console.log(this.displayedPosts);
+    }
+
+    loadMorePosts(){
+        let currentlyDisplayed = 0;
+        this.displayedPosts.subscribe(
+            c => currentlyDisplayed = c.length
+        );
+
+        const newDisplayedActivities = this.posts.pipe(
+            map(data => data.slice(0, currentlyDisplayed + 5))
+        );
+
+        this.displayedPosts = merge(
+            this.displayedPosts,
+            newDisplayedActivities
+        );
     }
 
     goBack() {
         this.location.back();
+    }
+
+    nextCommentPage(post: Post){
+        post.commentPage++;
     }
 
     getTimeDifference(date: Date) {
