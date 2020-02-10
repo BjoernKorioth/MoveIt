@@ -108,7 +108,7 @@ export class AdminDashboardArticlesPage implements OnInit {
         this.fileName = file.name;
 
         // The storage path
-        const path = `AdminDashboard/${this.fileName}`;
+        const path = `AdminDashboard/${id}`;
 
         // File reference
         const fileRef = this.storage.ref(path);
