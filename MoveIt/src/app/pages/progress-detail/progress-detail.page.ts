@@ -94,11 +94,12 @@ export class ProgressDetailPage implements OnInit {
         let now = new Date();
         let lastWeek: Date = new Date();
         // lastWeek.setDate(lastWeek.getDate() - 7);
-        console.log(lastWeek);
+        console.log(lastWeek);        
 
         this.activities.subscribe(activities => {
             // Daten für die Woche
             let dailyActivities = [];
+            this.chartLabels = [];
 
             for (let hour = 0; hour < 24; hour++) {
                 //  lastWeek.setDate(now.getDate() - dayOfWeek);
@@ -158,8 +159,10 @@ export class ProgressDetailPage implements OnInit {
         let lastWeek: Date = new Date();
         // lastWeek.setDate(lastWeek.getDate() - 7);
         console.log(lastWeek);
+        
 
         this.activities.subscribe(activities => {
+            this.chartLabelsWeekly = [];
             // Daten für die Woche
             let weeklyActivities = [];
 
