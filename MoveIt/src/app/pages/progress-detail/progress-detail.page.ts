@@ -39,6 +39,7 @@ export class ProgressDetailPage implements OnInit {
     // barChart: any;
 
     hrzBars5: any;
+    weeklyBarChart: any;
     dailyActivities: any[];
     public chartLabelsWeekly: any = [];
 
@@ -94,7 +95,7 @@ export class ProgressDetailPage implements OnInit {
         let now = new Date();
         let lastWeek: Date = new Date();
         // lastWeek.setDate(lastWeek.getDate() - 7);
-        console.log(lastWeek);        
+        console.log(lastWeek);
 
         this.activities.subscribe(activities => {
             // Daten für die Woche
@@ -158,8 +159,7 @@ export class ProgressDetailPage implements OnInit {
         let now = new Date();
         let lastWeek: Date = new Date();
         // lastWeek.setDate(lastWeek.getDate() - 7);
-        console.log(lastWeek);
-        
+        console.log(lastWeek);        
 
         this.activities.subscribe(activities => {
             this.chartLabelsWeekly = [];
@@ -219,8 +219,13 @@ export class ProgressDetailPage implements OnInit {
 
 
     createHrzBarChart5Daily() {
+        if(this.hrzBars5) {
+            this.hrzBars5.destroy();            
+        }
+
         let ctx = this.hrzBarChart5.nativeElement;
-        ctx.height = 400;
+        // ctx.height = 400;
+   
         this.hrzBars5 = new Chart(ctx, {
             type: 'bar',
             data: {
@@ -249,6 +254,7 @@ export class ProgressDetailPage implements OnInit {
                 ]
             },
             options: {
+                responsive: true,
                 scales: {
                     xAxes: [{
                         /*type: 'time',
@@ -276,10 +282,16 @@ export class ProgressDetailPage implements OnInit {
     }
 
 
-    createWeeklyChart() {
+    createWeeklyChart() {   
+    
+        if(this.weeklyBarChart) {
+            this.weeklyBarChart.destroy();            
+        }
+
         let ctx = this.weeklyChart.nativeElement
-        ctx.height = 400;
-        this.hrzBars5 = new Chart(ctx, {
+        // ctx.height = 400;
+
+        this.weeklyBarChart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: this.chartLabelsWeekly,

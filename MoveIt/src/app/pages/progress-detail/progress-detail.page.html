@@ -35,9 +35,6 @@
             <ion-segment-button value="week" (click)="defineChartData()">
             week
             </ion-segment-button>
-            <ion-segment-button value="month">
-            month
-            </ion-segment-button>
     </ion-segment>
     </ion-item>
     </ion-col>
@@ -51,16 +48,16 @@
 
      <div [ngSwitch]="duration">
 
-      <ion-card *ngSwitchCase="'day'" class="welcome-card">
+      <ion-card *ngSwitchCase="'day'">
         <ion-card-content>
-          <canvas #hrzBarChart5></canvas>
+          <canvas #hrzBarChart5 height="400"></canvas>
         </ion-card-content>
       </ion-card>
 
       
-      <ion-card *ngSwitchCase="'week'" class="welcome-card">
+      <ion-card *ngSwitchCase="'week'" >
         <ion-card-content>
-            <canvas #weeklyChart></canvas>
+            <canvas #weeklyChart height="400"></canvas>
           </ion-card-content>
       </ion-card>
 
