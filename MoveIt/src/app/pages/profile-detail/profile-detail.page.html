@@ -35,6 +35,7 @@
                 (change)="uploadFile($event.target.files)"
         />
                
+    
             </ion-label>
         </ion-item>
     </ion-card>
@@ -74,46 +75,6 @@
         </div>
     </div>
 
-
-<!--
-    <ion-card *ngIf="!isUploading && isUploaded">
-        <ion-card-header>
-            <ion-card-title>
-                <b>{{ fileName }}</b> Uploaded!
-            </ion-card-title>
-        </ion-card-header>
-
-        <ion-card-content>
-            <div *ngIf="UploadedFileURL | async as url">
-                <img [src]="url"/>
-                <a [href]="url" target="_blank" rel="noopener">Download</a>
-            </div>
-            File Size: {{ fileSize | fileSizePipe }}
-            <ion-button
-                    expand="full"
-                    color="success"
-                    (click)="isUploading = isUploaded = false"
-            >Upload More
-            </ion-button
-            >
-        </ion-card-content>
-    </ion-card>
-
-
-    <h2>Uploaded Images</h2>
-    <ion-card color="light" *ngFor="let item of images | async">
-        <ion-card-header>
-            <ion-card-title>
-                {{ item.name }}
-            </ion-card-title>
-        </ion-card-header>
-
-        <ion-card-content>
-            <img [src]="item.filepath"/>
-        </ion-card-content>
-    </ion-card>-->
-
-
     <ion-card>
         <ion-list-header>
             Goals
@@ -131,12 +92,7 @@
             </ion-item>
             <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
 
-            <!-- Colorize Progressbar -->
-            <!-- <ion-item>
-              <ion-text slot="end">Goal 1</ion-text>
-              <ion-progress-bar color="primary" value="0.9"></ion-progress-bar></ion-item>
-             <ion-item> <ion-progress-bar color="primary" value="0.58"></ion-progress-bar></ion-item>
-             <ion-item> <ion-progress-bar color="primary" value="0.27"></ion-progress-bar></ion-item>-->
+           
         </ion-list>
     </ion-card>
 
