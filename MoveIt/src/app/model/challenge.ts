@@ -76,14 +76,18 @@ export class Challenge {
      * Basically just replaces the dates with date strings
      */
     toFirebaseObject() {
+        console.log(this.endTime);
+        console.log(this.startTime);
+
         return {
             description: this.description,
-            endTime: this.endTime,
+            endTime: this.endTime.toString(),
             price: this.price,
-            startTime: this.startTime,
+            startTime: this.startTime.toString(),
             title: this.title,
             finished: this.finished,
             participants: this.participants
         };
+        
     }
 }

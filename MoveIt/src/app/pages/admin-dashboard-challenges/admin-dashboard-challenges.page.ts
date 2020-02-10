@@ -20,6 +20,7 @@ export class AdminDashboardChallengesPage implements OnInit {
         this.challService.getAllAvailableChallenges().subscribe(data => {
             this.challenges = data;
             this.challenges.forEach(function(challenge) {
+                
                 challenge.startTimeIso = challenge.startTime.toISOString();
                 challenge.endTimeIso = challenge.endTime.toISOString();
             })
@@ -49,7 +50,9 @@ export class AdminDashboardChallengesPage implements OnInit {
         challenge.startTime = new Date(challenge.startTimeIso);                                                       
         challenge.endTime = new Date(challenge.endTimeIso);  
         this.challService.editChallenge(challenge).then(
-            res => console.log(res),
+            res => {
+                console.log(res);
+            },
             err => console.log(err)
         );
     }
