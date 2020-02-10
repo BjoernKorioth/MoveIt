@@ -1,15 +1,15 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ActivityService} from '../../services/activity/activity.service';
-import {Activity} from '../../model/activity';
-import {merge, Observable, of} from 'rxjs';
-import {GoalService} from '../../services/goal/goal.service';
-import {Goal} from '../../model/goal';
-import {Location} from '@angular/common';
-import {Health} from '@ionic-native/health/ngx';
-import {Platform} from '@ionic/angular';
-import {Router} from '@angular/router';
-import {Chart} from 'chart.js';
-import {first, map} from 'rxjs/operators';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivityService } from '../../services/activity/activity.service';
+import { Activity } from '../../model/activity';
+import { merge, Observable, of } from 'rxjs';
+import { GoalService } from '../../services/goal/goal.service';
+import { Goal } from '../../model/goal';
+import { Location } from '@angular/common';
+import { Health } from '@ionic-native/health/ngx';
+import { Platform } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { Chart } from 'chart.js';
+import { first, map } from 'rxjs/operators';
 
 
 @Component({
@@ -23,21 +23,25 @@ export class ProgressDetailPage implements OnInit {
     displayedActivities: Observable<Activity[]>;
     goals: Observable<any>;
     goalStorage: Array<Goal>;
+    duration = 'day';
 
     weeklyActivities;
-    public chartLabels               : any    = [];
-    public chartValuesModerate       : any    = [];
-    public chartValuesVigorous       : any    = [];
-    public chartValuesWeight         : any    = [];    
-    public chartColours              : any    = [];
-    public chartHoverColours         : any    = [];
+    public chartLabels: any = [];
+    public chartValuesModerate: any = [];
+    public chartValuesVigorous: any = [];
+    public chartValuesWeight: any = [];
+    public chartColours: any = [];
+    public chartHoverColours: any = [];
 
-    @ViewChild('barChart', {static: false}) barChart: { nativeElement: any; };
-    @ViewChild('hrzBarChart5', {static: false}) hrzBarChart5: { nativeElement: any; };
-   // barChart: any;
+    @ViewChild('barChart', { static: false }) barChart: { nativeElement: any; };
+    @ViewChild('hrzBarChart5', { static: false }) hrzBarChart5: { nativeElement: any; };
+    @ViewChild('weeklyChart', { static: false }) weeklyChart: { nativeElement: any; }; 
+    // barChart: any;
 
-   hrzBars5: any;
-   
+    hrzBars5: any;
+    dailyActivities: any[];
+    public chartLabelsWeekly: any = [];
+
 
     constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location,
         private health: Health, private platform: Platform, private router: Router) {
@@ -45,8 +49,8 @@ export class ProgressDetailPage implements OnInit {
 
         this.displayedActivities = this.activities.pipe(map(
             (data) => {
-               // data.sort((a, b) => {
-                 //   return b.startTime.getTime() - a.startTime.getTime();
+                // data.sort((a, b) => {
+                //   return b.startTime.getTime() - a.startTime.getTime();
                 //});
                 return data.slice(0, 5);
             }
@@ -59,8 +63,14 @@ export class ProgressDetailPage implements OnInit {
                 this.goalService.updateGoals(goals, activities);
             });
         });
+        this.defineChartDataDaily();
     }
 
+    ionViewDidEnter() {
+        //  this.createHrzBarChart5()
+       // this.defineChartDataDaily();
+        //this.defineChartData();
+    }
 
     loadMoreActivities() {
         let currentlyDisplayed = 0;
@@ -78,171 +88,247 @@ export class ProgressDetailPage implements OnInit {
         );
     }
 
-    //Weekly 
-    /*defineChartData(){
-        let that = this;
-        let now = new Date();
-        this.activities.subscribe(activities => {
-            // Daten für die Woche
-            let todayActivities = activities.filter(function(activity){
-                return activity.startTime.getFullYear() == now.getFullYear() && 
-                activity.startTime.getMonth()           == now.getMonth()    &&
-                activity.startTime.getDay()             == now.getDay();
-                //activity.intensity                      == 'moderate';
-            })
-            todayActivities.forEach(function(activity){
-                console.log(activity);
-
-                if(activity.intensity === 'moderate'){
-                    that.chartValuesModerate.push(activity.getDuration());
-                }
-                else if(activity.intensity === 'vigorous'){
-                    that.chartValuesVigorous.push(activity.getDuration());
-                }
-                else{
-                    that.chartValuesWeight.push(activity.getDuration());
-                }
-                that.chartLabels.push(
-                    activity.startTime.getDate()
-                )
-                //this.chartLabels.push(activity.startTime.getDate());
-                //that.chartLabels.push(activity.startTime.getHours());
-                //that.chartValues.push(activity.getDuration());
-            
-            });
-            that.createHrzBarChart5();
-    })
-
-           // this.chartLabels.push(active.intensity);
-          //  this.chartValues.push(active.type);
-          //  this.chartColours.push(tech.color);
-       
-       } */  //  this.chartHoverColours.push(tech.hover);*/
-
-       //daily
-       defineChartData(){
+    //daily
+    defineChartDataDaily() {
         let that = this;
         let now = new Date();
         let lastWeek: Date = new Date();
         // lastWeek.setDate(lastWeek.getDate() - 7);
-        console.log(lastWeek);        
+        console.log(lastWeek);
 
         this.activities.subscribe(activities => {
             // Daten für die Woche
-            let weeklyActivities = [];
-                
-            for(let dayOfWeek = 6; dayOfWeek >= 0; dayOfWeek--) {
-                lastWeek.setDate(now.getDate() - dayOfWeek);
-                weeklyActivities.push(activities.filter(function(activity) {
-                    return activity.startTime.getDate() == lastWeek.getDate();
-                }));  
+            let dailyActivities = [];
 
-                               
+            for (let hour = 0; hour < 24; hour++) {
+                //  lastWeek.setDate(now.getDate() - dayOfWeek);
+                dailyActivities.push(activities.filter(function (activity) {
+                    return activity.startTime.getDate() == now.getDate() && activity.startTime.getHours() == hour
+                }));
+
+
                 that.chartLabels.push(
-                    lastWeek.getDate()
+                    hour
                 );
             }
-            console.log(weeklyActivities); 
+            console.log(dailyActivities);
 
             const intensities = [
-                {id: 'vigorous', name: 'vigorous'},
-                {id: 'moderate', name: 'moderate'},
-                {id: 'weightTraining', name: 'weight training'}
+                { id: 'vigorous', name: 'vigorous' },
+                { id: 'moderate', name: 'moderate' },
+                { id: 'weightTraining', name: 'weight training' }
             ];
 
-            let weeklyActivityDurations = [];
-            weeklyActivities.forEach(function(weekly) {
+            let dailyActivitiesDurations = [];
+            dailyActivities.forEach(function (weekly) {
                 let obj = {
                     vigorous: [],
                     moderate: [],
                     weightTraining: []
-                };                
-                intensities.forEach(function(intensity) {
+                };
+                intensities.forEach(function (intensity) {
+                    obj[intensity.id] = weekly
+                        .filter((activity) => activity.intensity === intensity.name)
+                        .reduce(((totalDuration, activity) => totalDuration + activity.getDuration()), 0);
+                });
+
+                dailyActivitiesDurations.push(obj);
+                console.log(dailyActivities);
+
+
+                /*let weeklyActivities = activities.filter(function(activity){
+                    return activity.startTime.getDate() >= lastWeek.getDate();
+                   /* getFullYear() == now.getFullYear() && 
+                    activity.startTime.getMonth()           == now.getMonth()    &&
+                    activity.startTime.getDay()             == now.getDay();
+                    //activity.intensity                      == 'moderate';*/
+            });
+            this.dailyActivities = dailyActivitiesDurations;
+
+            console.log(dailyActivitiesDurations);
+
+            that.createHrzBarChart5Daily();
+        })
+    }
+
+    //weekly
+    defineChartData() {
+        let that = this;
+        let now = new Date();
+        let lastWeek: Date = new Date();
+        // lastWeek.setDate(lastWeek.getDate() - 7);
+        console.log(lastWeek);
+
+        this.activities.subscribe(activities => {
+            // Daten für die Woche
+            let weeklyActivities = [];
+
+            for (let dayOfWeek = 6; dayOfWeek >= 0; dayOfWeek--) {
+                lastWeek.setDate(now.getDate() - dayOfWeek);
+                weeklyActivities.push(activities.filter(function (activity) {
+                    return activity.startTime.getDate() == lastWeek.getDate();
+                }));
+
+
+                that.chartLabelsWeekly.push(
+                    lastWeek.getDate()
+                );
+            }
+            console.log(weeklyActivities);
+
+            const intensities = [
+                { id: 'vigorous', name: 'vigorous' },
+                { id: 'moderate', name: 'moderate' },
+                { id: 'weightTraining', name: 'weight training' }
+            ];
+
+            let weeklyActivityDurations = [];
+            weeklyActivities.forEach(function (weekly) {
+                let obj = {
+                    vigorous: [],
+                    moderate: [],
+                    weightTraining: []
+                };
+                intensities.forEach(function (intensity) {
                     obj[intensity.id] = weekly
                         .filter((activity) => activity.intensity === intensity.name)
                         .reduce(((totalDuration, activity) => totalDuration + activity.getDuration()), 0);
                 });
 
                 weeklyActivityDurations.push(obj);
-                console.log(weeklyActivities);   
- 
+                console.log(weeklyActivities);
 
-            /*let weeklyActivities = activities.filter(function(activity){
-                return activity.startTime.getDate() >= lastWeek.getDate();
-               /* getFullYear() == now.getFullYear() && 
-                activity.startTime.getMonth()           == now.getMonth()    &&
-                activity.startTime.getDay()             == now.getDay();
-                //activity.intensity                      == 'moderate';*/
+
+                /*let weeklyActivities = activities.filter(function(activity){
+                    return activity.startTime.getDate() >= lastWeek.getDate();
+                   /* getFullYear() == now.getFullYear() && 
+                    activity.startTime.getMonth()           == now.getMonth()    &&
+                    activity.startTime.getDay()             == now.getDay();
+                    //activity.intensity                      == 'moderate';*/
             });
-          this.weeklyActivities =  weeklyActivityDurations;
-          
-          console.log(weeklyActivityDurations);
-         
-            that.createHrzBarChart5();
-    })
-       }
-    
-    ionViewDidEnter() {
-      //  this.createHrzBarChart5()
-        this.defineChartData();
+            this.weeklyActivities = weeklyActivityDurations;
+
+            console.log(weeklyActivityDurations);
+
+            that.createWeeklyChart();
+        })
     }
 
-    createHrzBarChart5() {
-        let ctx = this.hrzBarChart5.nativeElement
+
+    createHrzBarChart5Daily() {
+        let ctx = this.hrzBarChart5.nativeElement;
         ctx.height = 400;
         this.hrzBars5 = new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: this.chartLabels,
-            datasets: [{
-              label: 'moderate',
-              data: this.weeklyActivities.map((intensity) => intensity.moderate),
-              backgroundColor: 'rgb(245, 229, 27)', // array should have same number of elements as number of dataset
-              borderColor: 'rgb(245, 229, 27)',// array should have same number of elements as number of dataset
-              borderWidth: 1
-            },
-            {
-              label: 'vigorous',
-              data: this.weeklyActivities.map((intensity) => intensity.vigorous),
-              backgroundColor: 'rgb(63, 195, 128)', // array should have same number of elements as number of dataset
-              borderColor: 'rgb(63, 195, 128)',// array should have same number of elements as number of dataset
-              borderWidth: 1
-            },
-            {
-                label: 'weight training',
-                data: this.weeklyActivities.map((intensity) => intensity.weightTraining),
-                backgroundColor: 'rgb(33, 95, 68)', // array should have same number of elements as number of dataset
-                borderColor: 'rgb(33, 95, 68)',// array should have same number of elements as number of dataset
-                borderWidth: 1
-              }
-        ]
-          },
-          options: {
-            scales: {
-              xAxes: [{
-                /*type: 'time',
-                time: {
-                    unit: 'day',
-                    displayFormats: {
-                        day: 'DD'
-                    }
-                },*/
-                barPercentage: 0.9,
-                gridLines: {
-                  offsetGridLines: true
+            type: 'bar',
+            data: {
+                labels: this.chartLabels,
+                datasets: [{
+                    label: 'moderate',
+                    data: this.dailyActivities.map((intensity) => intensity.moderate),
+                    backgroundColor: '#F61067', // array should have same number of elements as number of dataset
+                    borderColor: '#F61067',// array should have same number of elements as number of dataset
+                    borderWidth: 1
                 },
-                stacked: true
-              }],
-              yAxes: [{
-                ticks: {
-                  beginAtZero: true
+                {
+                    label: 'vigorous',
+                    data: this.dailyActivities.map((intensity) => intensity.vigorous),
+                    backgroundColor: '#6DECAF', // array should have same number of elements as number of dataset
+                    borderColor: '#6DECAF',// array should have same number of elements as number of dataset
+                    borderWidth: 1
                 },
-                stacked: true
-              }]
+                {
+                    label: 'weight training',
+                    data: this.dailyActivities.map((intensity) => intensity.weightTraining),
+                    backgroundColor: '#656866', // array should have same number of elements as number of dataset
+                    borderColor: '#656866',// array should have same number of elements as number of dataset
+                    borderWidth: 1
+                }
+                ]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        /*type: 'time',
+                        time: {
+                            unit: 'day',
+                            displayFormats: {
+                                day: 'DD'
+                            }
+                        },*/
+                        barPercentage: 0.9,
+                        gridLines: {
+                            offsetGridLines: true
+                        },
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        stacked: true
+                    }]
+                }
             }
-          }
         });
-      }
+    }
+
+
+    createWeeklyChart() {
+        let ctx = this.weeklyChart.nativeElement
+        ctx.height = 400;
+        this.hrzBars5 = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: this.chartLabelsWeekly,
+                datasets: [{
+                    label: 'moderate',
+                    data: this.weeklyActivities.map((intensity) => intensity.moderate),
+                    backgroundColor: '#F61067', // array should have same number of elements as number of dataset
+                    borderColor: '#F61067',// array should have same number of elements as number of dataset
+                    borderWidth: 1
+                },
+                {
+                    label: 'vigorous',
+                    data: this.weeklyActivities.map((intensity) => intensity.vigorous),
+                    backgroundColor: '#6DECAF', // array should have same number of elements as number of dataset
+                    borderColor: '#6DECAF',// array should have same number of elements as number of dataset
+                    borderWidth: 1
+                },
+                {
+                    label: 'weight training',
+                    data: this.weeklyActivities.map((intensity) => intensity.weightTraining),
+                    backgroundColor: '#656866', // array should have same number of elements as number of dataset
+                    borderColor: '#656866',// array should have same number of elements as number of dataset
+                    borderWidth: 1
+                }
+                ]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        /*type: 'time',
+                        time: {
+                            unit: 'day',
+                            displayFormats: {
+                                day: 'DD'
+                            }
+                        },*/
+                        barPercentage: 0.9,
+                        gridLines: {
+                            offsetGridLines: true
+                        },
+                        stacked: true
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        stacked: true
+                    }]
+                }
+            }
+        });
+    }
 
 
 
@@ -321,41 +407,41 @@ export class ProgressDetailPage implements OnInit {
                         } */
                         'activity'
                     ]).then(res => {
-                            console.log(res);
-                            this.loadHealthData();
-                        }
+                        console.log(res);
+                        this.loadHealthData();
+                    }
                     ).catch(e => console.log(e));
                 })
                 .catch(e => console.log(e));
         }
     }
 
-   
-    saveWorkout() {
-         /*
-        this.health.requestAuthorization([
-            
-            'activity'
-        ])
-            .then(
-                res => console.log(res))
-            .catch(e => console.log(e));
-        this.health.store({
-            startDate: new Date(new Date().getTime() - 3 * 60 * 1000), // three minutes ago
-            endDate: new Date(),
-            dataType: 'activity',
-            value: 'walking',
-            sourceName: 'MoveIt_test',
-            sourceBundleId: 'com.moveitproject.www'
-        }).then(res => console.log('Response of API while writing' + res))
-            .catch(e => console.log('Response of API while writing ERROR:' + e));
-            */
-           var activity = new Activity();
-           activity.endTime = new Date();
-           activity.startTime = new Date(new Date().getTime() - 3 * 60 * 1000), // three minutes ago
 
-           this.activityService.writeFitnessApi(activity);
-    } 
+    saveWorkout() {
+        /*
+       this.health.requestAuthorization([
+           
+           'activity'
+       ])
+           .then(
+               res => console.log(res))
+           .catch(e => console.log(e));
+       this.health.store({
+           startDate: new Date(new Date().getTime() - 3 * 60 * 1000), // three minutes ago
+           endDate: new Date(),
+           dataType: 'activity',
+           value: 'walking',
+           sourceName: 'MoveIt_test',
+           sourceBundleId: 'com.moveitproject.www'
+       }).then(res => console.log('Response of API while writing' + res))
+           .catch(e => console.log('Response of API while writing ERROR:' + e));
+           */
+        var activity = new Activity();
+        activity.endTime = new Date();
+        activity.startTime = new Date(new Date().getTime() - 3 * 60 * 1000), // three minutes ago
+
+            this.activityService.writeFitnessApi(activity);
+    }
 
     loadHealthData() {
 
