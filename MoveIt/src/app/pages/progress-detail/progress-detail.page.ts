@@ -9,7 +9,7 @@ import { Health } from '@ionic-native/health/ngx';
 import { Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
-import { first, map } from 'rxjs/operators';
+import { first, map, last } from 'rxjs/operators';
 
 
 @Component({
@@ -172,11 +172,13 @@ export class ProgressDetailPage implements OnInit {
                     return activity.startTime.getDate() == lastWeek.getDate();
                 }));
 
+                let days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
                 that.chartLabelsWeekly.push(
-                    lastWeek.getDate()
+                    days[ lastWeek.getDay()]
                 );
             }
-            console.log(weeklyActivities);
+            console.log(this.chartLabelsWeekly);
 
             const intensities = [
                 { id: 'vigorous', name: 'vigorous' },
@@ -198,15 +200,6 @@ export class ProgressDetailPage implements OnInit {
                 });
 
                 weeklyActivityDurations.push(obj);
-                console.log(weeklyActivities);
-
-
-                /*let weeklyActivities = activities.filter(function(activity){
-                    return activity.startTime.getDate() >= lastWeek.getDate();
-                   /* getFullYear() == now.getFullYear() && 
-                    activity.startTime.getMonth()           == now.getMonth()    &&
-                    activity.startTime.getDay()             == now.getDay();
-                    //activity.intensity                      == 'moderate';*/
             });
             this.weeklyActivities = weeklyActivityDurations;
 
@@ -269,7 +262,7 @@ export class ProgressDetailPage implements OnInit {
                         },*/
                         barPercentage: 0.9,
                         gridLines: {
-                            offsetGridLines: true
+                            display: false
                         },
                         stacked: true
                     }],
@@ -341,7 +334,7 @@ export class ProgressDetailPage implements OnInit {
                         },*/
                         barPercentage: 0.9,
                         gridLines: {
-                            offsetGridLines: true
+                            display: false
                         },
                         stacked: true
                     }],
@@ -359,65 +352,6 @@ export class ProgressDetailPage implements OnInit {
             }
         });
     }
-
-
-
-
-    /*createSimpleLineChart() {
-        
-        console.log(this.chartValues);
-       // console.log(this.chartLabels);
-
-        this.barChart = new Chart(this.barChart.nativeElement, {
-            type: 'bar',       
-            data: {
-               // labels: this.chartValues.x,
-               
-                datasets: [{
-                    label: 'Active Minutes',
-                    data: this.chartValues,
-                    backgroundColor: 'rgba(38, 194, 129, .7)',
-                    borderColor: 'rgb(38, 194, 129)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    xAxes: [{
-                      //  display: true,
-                      //  beginAtZero: true,
-                      ticks: {
-                        beginAtZero: true,
-                        min: 0
-                    },
-                        gridLines: {
-                            display: false
-                        },
-                        bounds: 'ticks',
-
-                        type: 'time',
-                        time: {
-                            unit: 'hour',
-                            
-                            unitStepSize: 6,
-                            displayFormats: {
-                                hour: 'HH'
-                            }
-                        }
-                    }],
-                    yAxes: [{
-                        gridLines: {
-                            display: true
-                        },
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-    }*/
-
 
     ngOnInit() {
         this.checkPlatformReady();
