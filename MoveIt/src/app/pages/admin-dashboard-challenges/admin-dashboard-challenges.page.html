@@ -56,9 +56,11 @@
 </ion-header>
 
 <ion-content>
- 
 
-  <ion-row class="ion-align-items-end" *ngFor="let challenge of challenges">
+  <h2 padding>All open challenges!</h2>
+ 
+  <ng-container  *ngFor="let challenge of challenges">
+  <ion-row class="ion-align-items-end"  *ngIf="challenge.finished == false">
     <ion-col size="2">
       <ion-list>
         <ion-item><ion-textarea [(ngModel)]="challenge.title"></ion-textarea></ion-item>
@@ -90,8 +92,68 @@
       </ion-list>
     </ion-col>
     <ion-col size="2">
+      <ion-list>
+        <ion-item>
       <ion-button color="secondary" (click)="editChallenge(challenge)">Save</ion-button>
+      <ion-button color="secondary" (click)="endChallenge(challenge)">End</ion-button>
+    </ion-item>
+    </ion-list>
+      </ion-col>
+  </ion-row>
+</ng-container>
+
+<h2 padding>All finished Challenges!</h2>
+<ng-container  *ngFor="let challengeF of challenges">
+  <ion-row class="ion-align-items-end"  *ngIf="challengeF.finished">
+    <ion-col size="2">
+      <ion-list>
+        <ion-item><ion-textarea [(ngModel)]="challengeF.title"></ion-textarea></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-item><ion-textarea [(ngModel)]="challengeF.description"></ion-textarea></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-item><ion-datetime [(ngModel)]="challengeF.startTimeIso"></ion-datetime></ion-item>
+      </ion-list>
+    </ion-col>
+ <ion-col size="2">
+      <ion-list>
+        <ion-item>
+          <ion-datetime  [(ngModel)]="challengeF.endTimeIso"></ion-datetime>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="1">
+      <ion-list>
+        <ion-item><ion-textarea [(ngModel)]="challengeF.price"></ion-textarea></ion-item>
+      </ion-list>
+    </ion-col>
+    <ion-col size="2">
+      <ion-list>
+          <ion-select placeholder="Select Winner" [(ngModel)]="winnerId">
+          <ion-select-option  *ngFor="let user of users" [value]="user.id">{{user.name}}</ion-select-option>
+          </ion-select>
+      </ion-list>
       </ion-col>
 
+
+      <ion-col size="1">
+        <ion-list>
+          <ion-item>
+            <ion-button color="secondary" (click)="selectWinner(challengeF, winnerId)">Select</ion-button>
+
+          </ion-item>
+        </ion-list>
+        </ion-col>
   </ion-row>
+</ng-container>
+
+
 </ion-content>
