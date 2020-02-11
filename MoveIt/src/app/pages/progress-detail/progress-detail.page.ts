@@ -6,7 +6,7 @@ import { GoalService } from '../../services/goal/goal.service';
 import { Goal } from '../../model/goal';
 import { Location } from '@angular/common';
 import { Health } from '@ionic-native/health/ngx';
-import { Platform } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
 import { first, map, last } from 'rxjs/operators';
@@ -45,7 +45,7 @@ export class ProgressDetailPage implements OnInit {
 
 
     constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location,
-        private health: Health, private platform: Platform, private router: Router) {
+        private health: Health, private platform: Platform, private router: Router, private navCtrl: NavController) {
         this.activities = this.activityService.getAllUserActivities();
 
         this.displayedActivities = this.activities.pipe(map(
@@ -58,7 +58,10 @@ export class ProgressDetailPage implements OnInit {
         ));
 
         this.goals = this.goalService.getGoals();
-        this.goals.subscribe(goals => this.goalStorage = goals);
+        this.goals.subscribe(goals => {
+            this.goalStorage = goals;
+            console.log(this.goalStorage);
+        });
         this.goals.pipe(first()).subscribe(goals => {
             this.activities.pipe(first()).subscribe(activities => {
                 this.goalService.updateGoals(goals, activities);
@@ -95,7 +98,6 @@ export class ProgressDetailPage implements OnInit {
         let now = new Date();
         let lastWeek: Date = new Date();
         // lastWeek.setDate(lastWeek.getDate() - 7);
-        console.log(lastWeek);
 
         this.activities.subscribe(activities => {
             // Daten für die Woche
@@ -113,7 +115,6 @@ export class ProgressDetailPage implements OnInit {
                     hour
                 );
             }
-            console.log(dailyActivities);
 
             const intensities = [
                 { id: 'vigorous', name: 'vigorous' },
@@ -135,7 +136,6 @@ export class ProgressDetailPage implements OnInit {
                 });
 
                 dailyActivitiesDurations.push(obj);
-                console.log(dailyActivities);
 
 
                 /*let weeklyActivities = activities.filter(function(activity){
@@ -147,8 +147,6 @@ export class ProgressDetailPage implements OnInit {
             });
             this.dailyActivities = dailyActivitiesDurations;
 
-            console.log(dailyActivitiesDurations);
-
             that.createHrzBarChart5Daily();
         })
     }
@@ -159,7 +157,6 @@ export class ProgressDetailPage implements OnInit {
         let now = new Date();
         let lastWeek: Date = new Date();
         // lastWeek.setDate(lastWeek.getDate() - 7);
-        console.log(lastWeek);        
 
         this.activities.subscribe(activities => {
             this.chartLabelsWeekly = [];
@@ -178,7 +175,6 @@ export class ProgressDetailPage implements OnInit {
                     days[ lastWeek.getDay()]
                 );
             }
-            console.log(this.chartLabelsWeekly);
 
             const intensities = [
                 { id: 'vigorous', name: 'vigorous' },
@@ -202,8 +198,6 @@ export class ProgressDetailPage implements OnInit {
                 weeklyActivityDurations.push(obj);
             });
             this.weeklyActivities = weeklyActivityDurations;
-
-            console.log(weeklyActivityDurations);
 
             that.createWeeklyChart();
         })
@@ -519,5 +513,10 @@ export class ProgressDetailPage implements OnInit {
             err => console.log(err) // Fetching the goal failed
         );
     }
+
+    
+  goToOldGoalsPage() {
+    this.navCtrl.navigateForward('/menu/progress/progress/goals-old');
+}
 }
 

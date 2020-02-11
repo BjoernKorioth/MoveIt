@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+          <ion-back-button class="show-back-button" (click)="goBack()"></ion-back-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+          <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Old goals</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-list>
+        <ion-list-header>Daily Moderate</ion-list-header>
+        <ion-item *ngFor="let goal of goals">
+            <ion-label>{{goal.history}}</ion-label>
+
+        </ion-item>
+    </ion-list>
+
+</ion-content>

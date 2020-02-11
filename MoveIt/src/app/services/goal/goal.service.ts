@@ -126,8 +126,25 @@ export class GoalService {
     /**
      * Get all goalsWins of the current user
      */
+    getGoalWinsName() {
+        //return this.fireDatabase.list<number>('/wins/' + firebase.auth().currentUser.uid).valueChanges();
+
+        const ref = this.fireDatabase.list<number>('/wins/' + firebase.auth().currentUser.uid);
+        // Retrieve an array, but with its metadata. This is necesary to have the key available
+        // An array of Goals is reconstructed using the fromFirebaseObject method
+        return ref.snapshotChanges().pipe(
+            map(goals => goals.map(goalPayload => (goalPayload.key))));
+    }
+
     getGoalWins() {
-        return this.fireDatabase.object('/wins/' + firebase.auth().currentUser.uid).valueChanges();
+     //   return ref.snapshotChanges().pipe(
+       //     map(goals => goals.map(goalPayload => (Goal.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
+
+
+        return this.fireDatabase.list<number>('/wins/' + firebase.auth().currentUser.uid).valueChanges();
+      //  return ref.snapshotChanges().pipe(
+        //    map(wonGoals => wonGoals.map(wonPayload => (Date(wonPayload.key, wonPayload.payload.val()))));
+        
     }
 
     /**

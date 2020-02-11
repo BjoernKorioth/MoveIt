@@ -68,7 +68,8 @@
 
     <ion-card>
         <ion-list-header>
-            Goals
+            Goals 
+            <a (click)="goToOldGoalsPage()">old goals</a>
         </ion-list-header>
 
         <ion-list *ngFor="let goal of (goals | async)">
