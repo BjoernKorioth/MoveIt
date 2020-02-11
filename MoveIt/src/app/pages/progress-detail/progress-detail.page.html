@@ -49,16 +49,12 @@
      <div [ngSwitch]="duration">
 
       <ion-card *ngSwitchCase="'day'">
-        <ion-card-content>
           <canvas #hrzBarChart5 height="400"></canvas>
-        </ion-card-content>
       </ion-card>
 
       
       <ion-card *ngSwitchCase="'week'" >
-        <ion-card-content>
             <canvas #weeklyChart height="400"></canvas>
-          </ion-card-content>
       </ion-card>
 
     </div>

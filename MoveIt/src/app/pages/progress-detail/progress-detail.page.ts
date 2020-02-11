@@ -172,7 +172,6 @@ export class ProgressDetailPage implements OnInit {
                     return activity.startTime.getDate() == lastWeek.getDate();
                 }));
 
-
                 that.chartLabelsWeekly.push(
                     lastWeek.getDate()
                 );
@@ -256,7 +255,11 @@ export class ProgressDetailPage implements OnInit {
             options: {
                 responsive: true,
                 scales: {
-                    xAxes: [{
+                    xAxes: [{      
+                        scaleLabel: {
+                        display: true,
+                        labelString: 'Hour'
+                      },
                         /*type: 'time',
                         time: {
                             unit: 'day',
@@ -271,6 +274,10 @@ export class ProgressDetailPage implements OnInit {
                         stacked: true
                     }],
                     yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Minutes'
+                          },
                         ticks: {
                             beginAtZero: true
                         },
@@ -321,6 +328,10 @@ export class ProgressDetailPage implements OnInit {
             options: {
                 scales: {
                     xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                          },
                         /*type: 'time',
                         time: {
                             unit: 'day',
@@ -335,6 +346,10 @@ export class ProgressDetailPage implements OnInit {
                         stacked: true
                     }],
                     yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Minutes'
+                          },
                         ticks: {
                             beginAtZero: true
                         },
