@@ -11,8 +11,14 @@
  <ion-content class="card-background-page">
 
   <div *ngIf="rewardsB == false && leaderboardB == false && socialB == false">
-    <ion-img src="../assets/Logo.png" padding>
+    <ion-img width="20" src="../assets/Logo.png" >
     </ion-img>
+    <div class="ion-text-center">
+
+      <h2>You like to....</h2>
+    <h1>MoveIt!!</h1>
+    </div>
+    
   </div>
 
   <ion-card *ngFor="let item of allServices" [routerLink]='item.routerLink'>
