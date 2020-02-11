@@ -83,11 +83,11 @@
 
             <ion-item>
                 <ion-label side="start">
-                    <h3> {{goal.type}} </h3>
-                    <p> {{goal.name}}</p>
+                    <h3> {{goal.duration}} </h3>
+                    <p> {{goal.type}}</p>
                 </ion-label>
                 <ion-label class="ion-text-right">
-                    <h3>{{goal.current}} / {{goal.target}}</h3>
+                    <h3>{{goal.current}} / {{goal.target}} min</h3>
                 </ion-label>
             </ion-item>
             <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
