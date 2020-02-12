@@ -40,7 +40,6 @@ export class LeaderboardDetailPage implements OnInit {
 
     trophies: any;
     activitiesModerate: Array<LeaderboardObject>;
-    activitiesVigorous: Array<LeaderboardObject>;
     activitiesObserve: Observable<GoalArray[]>;
 
     trophiesList: Array<LeaderboardObject>;
@@ -164,31 +163,25 @@ export class LeaderboardDetailPage implements OnInit {
      * This method pushes the result of a query into the respective instances in order to make them visible on the UI
      * @param result the param from the database query which gets the array of all goalsprogress per user
      */
-    async pushMinuteObjects(result) {
+    pushMinuteObjects(result) {
         const testArray = new Array<LeaderboardObject>();
         const testArray2 = new Array<LeaderboardObject>();
 
         for (let i = 0; i < result.length; i++) {
             const oneResult = result[i];
+            console.log(oneResult);
             if (oneResult) {
-                if (oneResult.goal.type === 'moderate' && oneResult.goal.duration === 'weekly') {
+                if (oneResult.type ==='weekly') {
 
-                    const entity1 = await new LeaderboardObject(oneResult.id, oneResult.goal.current, this.userService);
+                    const entity1 = new LeaderboardObject(oneResult.id, oneResult.activity, this.userService);
 
                     testArray.push(entity1);
 
-                    console.log(entity1)
-                } else if (oneResult.goal.type === 'vigorous' && oneResult.goal.duraion === 'weekly') {
-
-                    const entity2 = new LeaderboardObject(oneResult.id, oneResult.goal.current, this.userService);
-
-                    testArray2.push(entity2);
                 }
             }
         }
 
         this.activitiesModerate = testArray;
-        this.activitiesVigorous = testArray2;
 
         this.sortArrays();
     }
@@ -199,7 +192,6 @@ export class LeaderboardDetailPage implements OnInit {
     sortArrays() {
         if (this.activitiesModerate !== undefined) {
             this.activitiesModerate.sort((a, b) => a.compareTo(b));
-            this.activitiesVigorous.sort((a, b) => a.compareTo(b));
         }
 
         if (this.trophiesList !== undefined) {
