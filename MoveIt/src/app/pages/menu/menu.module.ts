@@ -26,10 +26,13 @@ const routes: Routes = [
                 {path: 'dashboard', loadChildren: '../dashboard/dashboard.module#DashboardPageModule'},
                 {path: 'add-activity', loadChildren: '../add-activity/add-activity.module#AddActivityPageModule'},
                 {path: 'edit-activity', loadChildren: '../edit-activity/edit-activity.module#EditActivityPageModule'},
+                {path: 'credits', loadChildren: '../credits/credits.module#CreditsPageModule'},
 
                 {path: 'goals', loadChildren: '../goals/goals.module#GoalsPageModule'},
 
                 {path: 'profile', loadChildren: '../profile/profile.module#ProfilePageModule'}
+               
+
 
             ]
     }

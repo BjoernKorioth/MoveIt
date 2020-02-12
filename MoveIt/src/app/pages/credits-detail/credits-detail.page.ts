@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-credits-detail',
@@ -7,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreditsDetailPage implements OnInit {
 
-  constructor() { }
+  constructor(private location: Location, private router: Router) { }
 
   ngOnInit() {
   }
 
+  goBack() {
+    this.location.back();
+  }
+
 }
+
+

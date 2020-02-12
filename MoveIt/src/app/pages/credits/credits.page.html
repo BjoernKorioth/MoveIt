@@ -1,38 +1,16 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>credits</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
-
-    <ion-img width="20" src="../assets/Logo.png" >
-    </ion-img>
-    <div class="ion-text-center">
-
-        <h2>You like to....</h2>
-      <h1>MoveIt!!</h1>
-    </div>
-
-    <ion-card>
-      <ion-list-header>
-        Credits
-    </ion-list-header>
-      <ion-list>
-         
-          <ion-item>
-              <ion-label>
-                  <p>Icon made by <a href="https://www.flaticon.com/authors/eucalyp">Eucalyp </a>from www.flaticon.com</p>
-                  <p>Icon made by <a href="https://www.flaticon.com/authors/payungkead">Payungkead </a>from www.flaticon.com</p>
-                  <p>Icon made by <a href="https://www.flaticon.com/authors/flat-icons">flat-icons </a>from www.flaticon.com</p>
-                  <p>Icon made by <a href="https://www.flaticon.com/authors/freepik">Freepik </a>from www.flaticon.com</p>
-
-              </ion-label>
-          </ion-item>
-      </ion-list>
-  </ion-card>
-
-
-
-</ion-content>
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button routerLink="/menu/progress" routerDirection="root">
+      <ion-icon name="analytics"></ion-icon>
+      <ion-label>Progress</ion-label>
+    </ion-tab-button>
+    <ion-tab-button routerLink="/menu/add-activity" routerDirection="root">
+      <ion-icon name="add"></ion-icon>
+      <ion-label>Add Activity</ion-label>
+    </ion-tab-button>
+    <ion-tab-button routerLink="/menu/information" routerDirection="root">
+      <ion-icon name="information-circle-outline"></ion-icon>
+      <ion-label>Information</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
