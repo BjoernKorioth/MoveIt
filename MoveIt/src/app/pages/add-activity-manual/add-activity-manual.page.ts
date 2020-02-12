@@ -102,6 +102,9 @@ export class AddActivityManualPage implements OnInit {
 
         this.activity.endTime = new Date(newDateObj);
 
+        this.activity.source = 'moveItApp';
+
+        console.log(this.activity);
         
             if((this.todayA.getTime() - this.activity.startTime.getTime()) < 0){
                 this.error = true;

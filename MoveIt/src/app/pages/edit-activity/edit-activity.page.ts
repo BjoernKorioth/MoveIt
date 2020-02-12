@@ -90,6 +90,8 @@ export class EditActivityPage implements OnInit {
         return;
       }
 
+      this.activity.source = 'moveItApp';
+
       console.log(this.activity);
       this.activityService.editActivity(this.activity.id, this.activity).then(
           res => {
