@@ -6,6 +6,7 @@ import {Observable} from 'rxjs';
 import {PopoverController} from '@ionic/angular';
 import {ChallengePopoverComponent} from 'src/app/challenge-popover/challenge-popover.component';
 import { UserService } from 'src/app/services/user/user.service';
+import { RewardsService } from 'src/app/services/rewards/rewards.service';
 import { User } from 'src/app/model/user';
 
 @Component({
@@ -20,7 +21,7 @@ export class AdminDashboardChallengesPage implements OnInit {
     winnerId: string;
 
 
-    constructor(private challService: ChallengeService, public popoverController: PopoverController, private userService: UserService) {
+    constructor(private rewardsService: RewardsService, private challService: ChallengeService, public popoverController: PopoverController, private userService: UserService) {
         this.challService.getAllAvailableChallenges().subscribe(data => {
             this.challenges = data;
             this.challenges.forEach(function(challenge) {
@@ -77,6 +78,11 @@ export class AdminDashboardChallengesPage implements OnInit {
 
     selectWinner(challenge: Challenge, userId:string){
         this.challService.setWinner(challenge, userId).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
+
+        this.rewardsService.winChallenge(challenge.id,userId).then(
             res => console.log(res),
             err => console.log(err)
         );
