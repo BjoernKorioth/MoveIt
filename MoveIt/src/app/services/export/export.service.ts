@@ -104,6 +104,10 @@ export class ExportService {
                 params = this.exportActionLogs(user);
                 break;
             }
+            case 'reactions': {
+                params = this.exportReactions(user);
+                break;
+            }
         }
         if (!group) {
             group = await this.db.database.ref('/users/' + user + '/group').once('value').then(res => res.val(), err => console.log(err));
@@ -197,6 +201,10 @@ export class ExportService {
     exportActionLogs(user: string) {
         return this.db.list<any>('/tracking/' + user + '/actionLogs').valueChanges().pipe(first());
 
+    }
+
+    exportReactions(user: string) {
+        return this.db.list<any>('/tracking/' + user + '/reactions').valueChanges().pipe(first());
     }
 
     download(filename, text) {
