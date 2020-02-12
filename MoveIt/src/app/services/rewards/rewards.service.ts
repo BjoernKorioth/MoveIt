@@ -221,4 +221,13 @@ export class RewardsService {
             );
         });
     }
+
+
+    winChallenge(challengeId: string, uid : string) {
+        return new Promise<any>((resolve, reject) => {
+            this.fireDatabase.database.ref('/challengesStatus/' + uid + "/won").child(challengeId).set(challengeId).then(
+                res => resolve(res),
+                err => reject(err)
+        )});
+    }
 }
