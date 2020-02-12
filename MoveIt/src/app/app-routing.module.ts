@@ -38,6 +38,7 @@ const routes: Routes = [
     },
   { path: 'admin-dashboard-notifications', loadChildren: './pages/admin-dashboard-notifications/admin-dashboard-notifications.module#AdminDashboardNotificationsPageModule' },
   { path: 'admin-dashboard-articles', loadChildren: './pages/admin-dashboard-articles/admin-dashboard-articles.module#AdminDashboardArticlesPageModule' },  { path: 'credits', loadChildren: './pages/credits/credits.module#CreditsPageModule' },
+  { path: 'credits-detail', loadChildren: './pages/credits-detail/credits-detail.module#CreditsDetailPageModule' },
 
   
     // { path: 'admin-dashboard', loadChildren: './pages/<path-to-admin-dashboard>', canActivate: [AngularFireAuthGuard],
