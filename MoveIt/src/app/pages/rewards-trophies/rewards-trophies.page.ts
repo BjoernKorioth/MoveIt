@@ -30,7 +30,7 @@ export class RewardsTrophiesPage implements OnInit, OnDestroy {
                 private trackingService: TrackingService) {
         this.location = location;
         this.rewardsService.getWonTrophies().subscribe(
-            rewards => this.trophies = rewards.map(trophy => this.rewardsService.getTrophy(trophy)));
+            rewards => this.trophies = rewards.map(trophy => this.rewardsService.getTrophy(trophy.id)));
         this.rewardsService.getAvailableTrophies().subscribe(
             rewards => this.inactTrophies = rewards.map(trophy => this.rewardsService.getTrophy(trophy)));
         // this.trophies = Trophy.defaultTrophies;
