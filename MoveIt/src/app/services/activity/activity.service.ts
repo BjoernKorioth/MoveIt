@@ -8,7 +8,7 @@ import {Post} from '../../model/post';
 import {GoalService} from '../goal/goal.service';
 import {RewardsService} from '../rewards/rewards.service';
 import {Health} from '@ionic-native/health/ngx';
-import { Storage } from '@ionic/storage';
+import {Storage} from '@ionic/storage';
 
 @Injectable({
     providedIn: 'root'
@@ -30,17 +30,25 @@ export class ActivityService {
             const id = firebase.database().ref(this.activityLocation + firebase.auth().currentUser.uid).push().key;
             activity.id = id;
 
-            this.fireDatabase.database.ref('/activities/' + firebase.auth().currentUser.uid).child(id)
-                .set(activity.toFirebaseObject()).then(
-                // Returns the activity with the new id
+            this.synchronizeApi().then(
                 () => {
-                    this.runUpdates(activity).then(
-                        () => resolve(activity),
+                    this.fireDatabase.database.ref('/activities/' + firebase.auth().currentUser.uid).child(id)
+                        .set(activity.toFirebaseObject()).then(
+                        // Returns the activity with the new id
+                        () => {
+                            this.writeFitnessApi(activity);
+                            this.updateLastDate();
+                            this.runUpdates(activity).then(
+                                () => resolve(activity),
+                                err => reject(err)
+                            );
+                        },
                         err => reject(err)
                     );
                 },
                 err => reject(err)
             );
+
         });
     }
 
@@ -121,7 +129,7 @@ export class ActivityService {
             activitySnapshot => Activity.fromFirebaseObject(activitySnapshot.key, activitySnapshot.payload.val())).reverse()));
     }
 
-    getThisUsersActivities(userId: String) {
+    getThisUsersActivities(userId: string) {
         const ref = this.fireDatabase
             .list<Activity>(this.activityLocation + userId, query => query.orderByChild('endTime'));
         return ref.snapshotChanges().pipe(map(activities => activities.map(
@@ -141,38 +149,64 @@ export class ActivityService {
             } */
             'activity', 'distance' // we only need read and write permission
         ])
-        .then(
-            res => console.log(res))
-        .catch(e => console.log(e));
+            .then(
+                res => console.log(res))
+            .catch(e => console.log(e));
 
-        
-        //get a key/value pair
-        this.storage.get('lastDate').then((lastDate: Date) => {
-            console.log('last time read at :', lastDate);
-            var startDate: Date;
 
-            if (lastDate != null){
-                startDate = new Date(new Date(lastDate).getTime() + 1); // last time read + 1 ms
-            } else{
-                startDate = new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000); // three days ago by  default if data has not been rad yet
-            }
-                var endDate = new Date(); // now
+        // get a key/value pair
+        return this.storage.get('lastDate').then((lastDate: Date) => {
+                console.log('last time read at :', lastDate);
+                let startDate: Date;
 
-            this.health.query({
-                startDate: startDate,
-                endDate: endDate,
-                dataType: 'activity',
-            }).then((value: []) => {
-                console.log('Value of Health Data loaded: ', value);
-                if (value.length > 0){
-                    this.storage.set('lastDate', endDate);
-                };
-                return Activity.fromFitApi(value);
-            }).catch((e: any) => {
-                console.error('HealthData ERROR:---' + e);
-            });
+                if (lastDate != null) {
+                    startDate = new Date(new Date(lastDate).getTime() + 1); // last time read + 1 ms
+                } else {
+                    // three days ago by default if data has not been read yet
+                    startDate = new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000);
+                }
+                const endDate = new Date(); // now
+
+                return this.health.query({
+                    startDate: startDate,
+                    endDate: endDate,
+                    dataType: 'activity',
+                }).then((value: []) => {
+                    console.log('Value of Health Data loaded: ', value);
+                    if (value.length > 0) {
+                        this.storage.set('lastDate', endDate);
+                    }
+                    return Activity.fromFitApi(value);
+                }).catch((e: any) => {
+                    console.error('HealthData ERROR:---' + e);
+                });
+            },
+            err => console.error(err));
+    }
+
+    synchronizeApi() {
+        return new Promise<any>((resolve, reject) => {
+            this.readFitnessApi().then((activities: Activity[]) => {
+                    for (const activity of activities) {
+                        this.createActivity(activity).then(
+                            () => null,
+                            err => reject(err)
+                        );
+                    }
+                    resolve();
+                },
+                err => reject(err));
         });
     }
+
+    getLastDate() {
+        return this.storage.get('lastDate');
+    }
+
+    updateLastDate(date: Date = new Date()) {
+        return this.storage.set('lastDate', date);
+    }
+
 
     /**
      * writes an activity to the FitnessAPI
@@ -186,9 +220,9 @@ export class ActivityService {
             } */
             'activity', 'distance' // we only need read and write permission
         ])
-        .then(
-            res => console.log(res))
-        .catch(e => console.log(e));
+            .then(
+                res => console.log(res))
+            .catch(e => console.log(e));
         this.health.store({
             startDate: activity.startTime,
             endDate: activity.endTime,
