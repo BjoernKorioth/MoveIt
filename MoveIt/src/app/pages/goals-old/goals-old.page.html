@@ -12,12 +12,42 @@
 
 <ion-content>
 
-    <ion-list>
-        <ion-list-header>Daily Moderate</ion-list-header>
-        <ion-item *ngFor="let goal of goals">
-            <ion-label>{{goal.history}}</ion-label>
+    <ion-card>
+        <ion-list-header>
+            Goals 
+        </ion-list-header>
 
-        </ion-item>
+        <ion-list>
+            <ion-item>
+            <ion-label side="start">
+                Last Week Moderate
+            </ion-label>
+            </ion-item>
+    <ion-progress-bar color="primary" [value]="relative"></ion-progress-bar>
     </ion-list>
+
+    <ion-list-header>
+        Goals 
+    </ion-list-header>
+
+    <ion-list>
+        <ion-item>
+        <ion-label side="start">
+            Last Week Vigorous
+        </ion-label>
+        </ion-item>
+    <ion-progress-bar color="primary" [value]="relativeV"></ion-progress-bar>
+    </ion-list>
+
+    <ion-list>
+        <ion-item>
+        <ion-label side="start">
+            Last Week Weight
+        </ion-label>
+        </ion-item>
+    <ion-progress-bar color="primary" [value]="relativeW"></ion-progress-bar>
+    </ion-list>
+    </ion-card>
+
 
 </ion-content>
