@@ -78,7 +78,14 @@ export class SocialfeedDetailPage implements OnInit {
     }
 
     nextCommentPage(post: Post){
-        post.commentPage++;
+        if(post.commentPage == post.comments.length){
+            post.commentPage = 1;
+            document.getElementById("showAll").innerText = "Show all comments";
+        }else{
+            post.commentPage = post.comments.length;
+            document.getElementById("showAll").innerText = "Show less comments";
+        }
+        
     }
 
     viewProfile(i){
