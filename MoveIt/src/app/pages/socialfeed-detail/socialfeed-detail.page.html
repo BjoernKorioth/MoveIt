@@ -46,8 +46,8 @@
                 <!--img [src]="post.image"-->
             </ion-avatar>
             <ion-label id="{{post.id}}" name="userPlace">
-                <h3>{{ post.username | async}}</h3>
-                <p>
+                <h3 (click)="viewProfile(i)">{{ post.username | async}}</h3>
+                <p (click)="viewProfile(i)">
                     <ion-icon name="time"></ion-icon>
                     {{ post.createdAt | date:'dd. MMM on HH:mm' }}
                 </p>
