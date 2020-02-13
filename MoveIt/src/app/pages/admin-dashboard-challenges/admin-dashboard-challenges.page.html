@@ -135,23 +135,20 @@
         <ion-item><ion-textarea [(ngModel)]="challengeF.price"></ion-textarea></ion-item>
       </ion-list>
     </ion-col>
-    <ion-col size="2">
+
+    <ion-col size="3">
       <ion-list>
           <ion-select placeholder="Select Winner" [(ngModel)]="winnerId">
           <ion-select-option  *ngFor="let user of users" [value]="user.id">{{user.name}}</ion-select-option>
           </ion-select>
       </ion-list>
-      </ion-col>
 
-
-      <ion-col size="1">
-        <ion-list>
-          <ion-item>
-            <ion-button color="secondary" (click)="selectWinner(challengeF, winnerId)">Select</ion-button>
-
-          </ion-item>
-        </ion-list>
-        </ion-col>
+      <ion-list>
+        <ion-item>
+          <ion-button color="secondary" (click)="selectWinner(challengeF, winnerId)">Select</ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-col>
   </ion-row>
 </ng-container>
 
