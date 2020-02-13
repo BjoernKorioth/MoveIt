@@ -126,6 +126,21 @@
   </ion-col>
 </ion-row>
 </div>
+
+<div>
+  <section>
+    <h4 padding>Available One Time Passwords</h4>
+  </section>
+
+  <ion-row class="ion-align-items-center"  *ngFor="let otp of (otps | async)">
+    <ion-col size="4">
+      <ion-list>
+        <ion-item> {{otp.otp}} </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+
+</div>
  
 </ion-content>
 
