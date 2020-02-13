@@ -87,7 +87,7 @@ export class GoalService {
         return new Promise<any>((resolve, reject) => {
             // Create a new history entry with the current date as key and the previous target as value
             const newHistoryEntry = {};
-            newHistoryEntry[1581185754100] = goal.target;
+            //newHistoryEntry[1581185754100] = goal.target;
           // newHistoryEntry[new Date().getTime()] = goal.target;
 
             goal.history.push(newHistoryEntry); // Add the value to the history

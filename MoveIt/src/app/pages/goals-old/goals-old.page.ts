@@ -29,6 +29,7 @@ export class GoalsOldPage implements OnInit {
     let that = this;
     this.goalService.getGoals().subscribe(data => {
       this.goals = data;
+
       
     this.goals.forEach(function (goal) {
 
@@ -53,41 +54,38 @@ export class GoalsOldPage implements OnInit {
     let latestGoalTimeW: number = 0;  
     let today: Date = new Date();
     let day: number = today.getDay();
-    let lastSunday: any = today.setDate(today.getDate() - day);
-    let lastWeekSunday = new Date(lastSunday);
+    let lastSunday: Date = new Date();//any = today.setDate(today.getDate() - day);
+    //let lastWeekSunday = new Date(lastSunday);
     console.log(lastSunday);
     console.log(this.allInfo);
     
     this.allInfo.forEach(function(changedGoal) {
+      
+      for (let weekNumber = 0; weekNumber < 5; weekNumber++) {
+        lastSunday.setDate(today.getDate() - day - weekNumber);
+      
+ 
 
       if(changedGoal.time < lastSunday){
       //  console.log(changedGoal.val);
         console.log(changedGoal.time);
 
-        if (changedGoal.time > latestGoalTimeM)
-        { 
-          if(changedGoal.name == "weeklyModerate"){
+        if (changedGoal.time > latestGoalTimeM && changedGoal.name == "weeklyModerate"){
           latestGoalTimeM = changedGoal.time;
           that.lastGoalM = changedGoal.val;
           }
-        }
-
-        if (changedGoal.time > latestGoalTimeV)
-        { 
-          if(changedGoal.name == "weeklyVigorous"){
+        
+        if (changedGoal.time > latestGoalTimeV && changedGoal.name == "weeklyVigorous"){
           latestGoalTimeV = changedGoal.time;
           that.lastGoalV = changedGoal.val;
           }
-        }
+        
 
-        if (changedGoal.time > latestGoalTimeV)
-        { 
-          if(changedGoal.name == "weeklyWeight"){
+        if (changedGoal.time > latestGoalTimeV && changedGoal.name == "weeklyWeight"){
           latestGoalTimeW = changedGoal.time;
           that.lastGoalW = changedGoal.val;
-          }
-        }
-      }
+          } 
+        }     
       if(that.lastGoalV == null) {
         that.lastGoalV = 600;
       }if(that.lastGoalW == null) {
@@ -95,8 +93,10 @@ export class GoalsOldPage implements OnInit {
       }if(that.lastGoalM == null) {
         that.lastGoalM = 600;
       }
-      console.log(that.lastGoalM);
+
+    };
     });
+    console.log(that.lastGoalM);
     });
 
     this.activitiesFromLastWeek();
