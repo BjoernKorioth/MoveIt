@@ -13,18 +13,22 @@
 <ion-content>
 
     <ion-content class="card-background-page">
-        <ion-card routerLink='/menu/add-activity/add/track'>
-            <img src="../assets/stopwatch.png"/>
-            <div class="card-title">Track your activity!</div>
-        </ion-card>
 
         <ion-card routerLink='/menu/add-activity/add/manual'>
             <img src="../assets/manually.png"/>
             <div class="card-title">Add activity manually!</div>
         </ion-card>
 
+
+        <ion-card routerLink='/menu/add-activity/add/track'>
+            <img src="../assets/stopwatch.png"/>
+            <div class="card-title">Track your activity!</div>
+        </ion-card>
+
+        
+
         <ion-card (click)='synchronizeActivities()'>
-            <img src="../assets/manually.png"/>
+            <img src="../assets/sync.png"/>
             <div class="card-title">Synchronize activities</div>
             <div class="">Last synchronized {{ lastDate }}</div>
         </ion-card>
