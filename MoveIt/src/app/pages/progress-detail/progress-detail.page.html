@@ -119,7 +119,7 @@
                 <h3>{{ activity.startTime | date:'dd.MM.' }} {{activity.getDuration()}} minutes</h3>
                 <p>{{activity.type}} - {{activity.intensity}}</p>
             </ion-label>
-            <ion-icon name="create" slot="end" (click)='routeToEditPage(activity)'>
+            <ion-icon *ngIf="activity.source === 'moveItApp'" name="create" slot="end" (click)='routeToEditPage(activity)'>
             </ion-icon>
         </ion-item>
     </ion-list>
