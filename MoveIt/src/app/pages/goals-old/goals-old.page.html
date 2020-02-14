@@ -17,33 +17,21 @@
             Goals 
         </ion-list-header>
 
-        <ion-list>
+        <ion-list *ngFor="let goal of oldGoals">
             <ion-item>
             <ion-label side="start">
-                Last Week Moderate
+                <h3>{{goal.name}} </h3>
             </ion-label>
-            </ion-item>
-    <ion-progress-bar color="primary" [value]="relative"></ion-progress-bar>
-    </ion-list>
+            
+            
+            <ion-label side="end"><h3>{{goal.duration}} / {{goal.weekGoal}} min</h3></ion-label>
 
-    <ion-list>
-        <ion-item>
-        <ion-label side="start">
-            Last Week Vigorous
-        </ion-label>
         </ion-item>
-    <ion-progress-bar color="primary" [value]="relativeV"></ion-progress-bar>
-    </ion-list>
+        <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
 
-    <ion-list>
-        <ion-item>
-        <ion-label side="start">
-            Last Week Weight
-        </ion-label>
-        </ion-item>
-    <ion-progress-bar color="primary" [value]="relativeW"></ion-progress-bar>
     </ion-list>
     </ion-card>
+
 
 
 </ion-content>
