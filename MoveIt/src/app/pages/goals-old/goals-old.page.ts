@@ -29,7 +29,6 @@ export class GoalsOldPage implements OnInit {
 
   constructor(private goalService: GoalService, private activityService: ActivityService) {
     let that = this;
-    console.log(new Date(1578051105399));
     this.allInfo = that.allInfo;
     let latestGoalTimeM: number = 0;
     let latestGoalTimeV: number = 0; 
