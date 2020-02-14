@@ -230,12 +230,6 @@ export class GoalsOldPage implements OnInit {
     });
     console.log(this.oldGoals);
 
-
-
-    this.relative = moderate / that.lastGoalM;
-    this.relativeV = vigorous / that.lastGoalV;
-    this.relativeW = weight / that.lastGoalW;
-
   }
   })
 
