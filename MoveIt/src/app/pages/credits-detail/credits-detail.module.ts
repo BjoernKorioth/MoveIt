@@ -10,7 +10,7 @@ import { CreditsDetailPage } from './credits-detail.page';
 const routes: Routes = [
   {
     path: '',
-    component: CreditsDetailPage
+    component: CreditsDetailPage,
   }
 ];
 

@@ -15,8 +15,6 @@ const routes: Routes = [
   {
     path: 'credits',
     component: CreditsPage,
-    canActivate: [AngularFireAuthGuard],
-    data: {authGuardPipe: redirectUnauthorizedToLogin},
     children: [
       {
         path: 'detail',

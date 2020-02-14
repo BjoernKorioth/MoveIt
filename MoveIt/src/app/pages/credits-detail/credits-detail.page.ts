@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
-import { Router } from '@angular/router';
+import { Router, NavigationExtras} from '@angular/router';
 
 @Component({
   selector: 'app-credits-detail',
@@ -10,7 +10,10 @@ import { Router } from '@angular/router';
 })
 export class CreditsDetailPage implements OnInit {
 
-  constructor(private location: Location, private router: Router) { }
+  constructor(private location: Location, private router: Router) { 
+
+    this.location = location;
+  }
 
   ngOnInit() {
   }
