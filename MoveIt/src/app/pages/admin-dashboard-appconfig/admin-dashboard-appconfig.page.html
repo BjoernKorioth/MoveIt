@@ -109,12 +109,6 @@
         <ion-select-option  *ngFor="let group of allGroups" [value]="group.id">{{group.name}}</ion-select-option>
       </ion-select>
     </ion-item>
-      <!--<ion-radio-group [(ngModel)]="user.group">
-        <ion-item  *ngFor="let group of allGroups">    
-          <ion-label>{{group.name}}</ion-label>
-          <ion-radio [value]="group.id"></ion-radio>
-        </ion-item>
-    </ion-radio-group>-->
   </ion-col>
 
   <ion-col size="4">
@@ -132,10 +126,34 @@
     <h4 padding>Available One Time Passwords</h4>
   </section>
 
-  <ion-row class="ion-align-items-center"  *ngFor="let otp of (otps | async)">
+  <ion-row>
+    <ion-col size="4">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>OTP</ion-label>
+        </ion-list-header>
+      </ion-list>
+    </ion-col>
+
+      
+    <ion-col size="4">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Group</ion-label>
+        </ion-list-header>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+
+  <ion-row class="ion-align-items-center"  *ngFor="let otp of otps">
     <ion-col size="4">
       <ion-list>
         <ion-item> {{otp.otp}} </ion-item>
+      </ion-list>
+    </ion-col>
+    <ion-col size="4">
+      <ion-list>
+        <ion-item> {{otp.group}} </ion-item>
       </ion-list>
     </ion-col>
   </ion-row>
@@ -144,59 +162,4 @@
  
 </ion-content>
 
-  <!--<ion-col size="1">
-    <ion-list>
-      <ion-item>
-        <ion-button color="secondary" (click)="editUserconfig(user.id, user.group)">Save</ion-button>
-      </ion-item>
-    </ion-list>
-  </ion-col>-->
-
-
-
-
-    <!--ion-col size="2">
-      <ion-list>
-        <ion-list-header>
-          <ion-label>Group 1</ion-label>
-        </ion-list-header>
-        <ion-item lines="none"><ion-checkbox [checked]="user.groups[0]"></ion-checkbox></ion-item>
-      </ion-list>
-    </ion-col>
-
-    <ion-col size="2">
-      <ion-list>
-        <ion-list-header>
-          <ion-label>Group 2</ion-label>
-        </ion-list-header>
-        <ion-item lines="none"><ion-checkbox [checked]="user.groups[1]"></ion-checkbox></ion-item>
-      </ion-list>
-    </ion-col>
-
-    <ion-col size="2">
-      <ion-list>
-        <ion-list-header>
-          <ion-label>Group 3</ion-label>
-        </ion-list-header>
-        <ion-item lines="none"><ion-checkbox [checked]="user.groups[2]"></ion-checkbox></ion-item>
-      </ion-list>
-    </ion-col>
-
-    <ion-col size="2">
-      <ion-list>
-        <ion-list-header>
-          <ion-label>Group 4</ion-label>
-        </ion-list-header>
-        <ion-item lines="none"><ion-checkbox [checked]="user.groups[3]"></ion-checkbox></ion-item>
-      </ion-list>
-    </ion-col>
-
-    <ion-col size="2">
-      <ion-list>
-        <ion-list-header>
-          <ion-label>Group 5</ion-label>
-        </ion-list-header>
-        <ion-item lines="none"><ion-checkbox [checked]="user.groups[4]"></ion-checkbox></ion-item>
-      </ion-list>
-    </ion-col-->
-
+ 
