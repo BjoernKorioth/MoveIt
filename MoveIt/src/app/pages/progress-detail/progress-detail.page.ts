@@ -18,6 +18,7 @@ import { first, map, last } from 'rxjs/operators';
     styleUrls: ['./progress-detail.page.scss'],
 })
 export class ProgressDetailPage implements OnInit {
+
     activities: Observable<Activity[]>;
     // Array which contains the displayed activities
     displayedActivities: Observable<Activity[]>;
@@ -42,6 +43,24 @@ export class ProgressDetailPage implements OnInit {
     weeklyBarChart: any;
     dailyActivities: any[];
     public chartLabelsWeekly: any = [];
+
+    slideOpts = {
+        initialSlide: 4
+      };
+      wonGoals : any;
+      wonGoalsName: any;
+      allInfo: any[] = [];
+      goalsHistory: Array<Goal>;
+      lastGoalM: number = 0;
+      lastGoalV: number = 0;
+      lastGoalW: number = 0;
+      activitiesGoals: Array<Activity>;
+      relative: number;
+      wholeDuration: any[];
+      relativeV: number;
+      relativeW: number;
+    
+      oldGoals: any[] = [];
 
 
     constructor(private activityService: ActivityService, private goalService: GoalService, private location: Location,
@@ -68,12 +87,10 @@ export class ProgressDetailPage implements OnInit {
             });
         });
         this.defineChartDataDaily();
+        this.loadOldGoals();
     }
 
     ionViewDidEnter() {
-        //  this.createHrzBarChart5()
-       // this.defineChartDataDaily();
-        //this.defineChartData();
     }
 
     loadMoreActivities() {
@@ -518,5 +535,196 @@ export class ProgressDetailPage implements OnInit {
   goToOldGoalsPage() {
     this.navCtrl.navigateForward('/menu/progress/progress/goals-old');
 }
+
+loadOldGoals(){
+    let that = this;
+    this.allInfo = that.allInfo;
+    let latestGoalTimeM: number = 0;
+    let latestGoalTimeV: number = 0; 
+    let latestGoalTimeW: number = 0;  
+
+    this.goalService.getGoals().subscribe(data => {
+      this.goalsHistory = data;
+
+      
+    this.goalsHistory.forEach(function (goal) {
+
+      goal.history.forEach(function (history){
+        for (var hist in history){
+          if (history.hasOwnProperty(hist)){ 
+        
+            let obj = {
+              name: goal.name,
+              val: history[hist],
+              time: hist
+            }
+            that.allInfo.push(obj);
+          }
+        }
+      })
+    });
+
+ for (let weekNumber = 3; weekNumber >= 0; weekNumber--) {
+  let lastSunday = new Date();
+  lastSunday.setDate(lastSunday.getDate() - (7 * weekNumber) - lastSunday.getDay());
+
+
+   latestGoalTimeW = 0;
+   latestGoalTimeV = 0;
+   latestGoalTimeM = 0;
+   that.lastGoalM = 0;
+   that.lastGoalV = 0;
+   that.lastGoalW = 0;
+    this.allInfo.forEach(function(changedGoal) {
+      
+      if(changedGoal.time < lastSunday.getTime()){
+      //  console.log(changedGoal.val);
+
+
+        if (changedGoal.time > latestGoalTimeM && changedGoal.name == "weeklyModerate"){
+          latestGoalTimeM = changedGoal.time;
+          that.lastGoalM = changedGoal.val;
+
+          }
+        
+        if (changedGoal.time > latestGoalTimeV && changedGoal.name == "weeklyVigorous"){
+          latestGoalTimeV = changedGoal.time;
+          that.lastGoalV = changedGoal.val;
+          }
+        
+
+        if (changedGoal.time > latestGoalTimeW && changedGoal.name == "weeklyWeight"){
+          latestGoalTimeW = changedGoal.time;
+          that.lastGoalW = changedGoal.val;
+          } 
+        }     
+      if(that.lastGoalV == 0) {
+        that.lastGoalV = 600;
+      }if(that.lastGoalW == 0) {
+        that.lastGoalW = 600;
+      }if(that.lastGoalM == 0) {
+        that.lastGoalM = 600;
+      }
+    });
+    let oldGoalM:any = {
+      name: '',
+      intensiy: '',
+      weekNumber: 0,
+      weekGoal: 0,
+      duration: 0,
+      relative: 0
+    }
+    let oldGoalV:any = {
+      name: '',
+      intensiy: '',
+      weekNumber: 0,
+      weekGoal: 0,
+      duration: 0,
+      relative: 0
+    }
+    let oldGoalW:any = {
+      name: '',
+      intensiy: '',
+      weekNumber: 0,
+      weekGoal: 0,
+      duration: 0,
+      relative: 0
+    }
+    oldGoalM.name = "weekly " + (weekNumber+1) + " ago";
+    oldGoalM.weekNumber = weekNumber;
+    oldGoalM.intensity = "moderate"
+    oldGoalM.weekGoal = that.lastGoalM;
+    that.oldGoals.push(oldGoalM);
+
+    oldGoalV.name =  "weekly " + (weekNumber+1) + " ago";
+    oldGoalV.weekNumber = weekNumber;
+    oldGoalV.intensity = "vigorous"
+    oldGoalV.weekGoal = that.lastGoalV;
+    that.oldGoals.push(oldGoalV);
+
+    oldGoalW.name =  "weekly " + (weekNumber+1) + " ago";
+    oldGoalW.weekNumber = weekNumber;
+    oldGoalW.intensity = "weight training"
+    oldGoalW.weekGoal = that.lastGoalW;
+    that.oldGoals.push(oldGoalW);
+
+    console.log(that.oldGoals);
+  };
+
+    });
+    this.activitiesFromLastWeek();
+}
+
+activitiesFromLastWeek(){
+    let that = this;
+    let lastWekkActivities = [];
+
+    this.activityService.getAllUserActivities().subscribe( data =>{
+      console.log(data);
+    for (let weekNumber = 3; weekNumber >= 0; weekNumber--) {
+      this.activitiesGoals = [];
+      lastWekkActivities = [];
+      let lastSunday = new Date();
+      let lastSecSunday = new Date();
+      lastSunday.setDate(lastSunday.getDate() - (7 * weekNumber) - lastSunday.getDay());
+      lastSecSunday.setDate(lastSecSunday.getDate() - (7 * weekNumber ) - lastSecSunday.getDay() - 7);
+
+
+      lastWekkActivities.push(data.filter(function (activity){
+        return activity.startTime.getTime() < lastSunday.getTime() && activity.startTime.getTime() > lastSecSunday.getTime();
+      }));
+      this.activitiesGoals = lastWekkActivities;
+
+      const intensities = [
+        { id: 'vigorous', name: 'vigorous' },
+        { id: 'moderate', name: 'moderate' },
+        { id: 'weightTraining', name: 'weight training' }
+    ];
+
+    let weeklyActivityDurations = [];
+    lastWekkActivities.forEach(function (weekly) {
+        let obj = {
+            vigorous: [],
+            moderate: [],
+            weightTraining: []
+        };
+        intensities.forEach(function (intensity) {
+            obj[intensity.id] = weekly
+                .filter((activity) => activity.intensity === intensity.name)
+                .reduce(((totalDuration, activity) => totalDuration + activity.getDuration()), 0);
+        });
+
+        weeklyActivityDurations.push(obj);
+    });
+    this.wholeDuration = weeklyActivityDurations;
+    let moderate: any;
+    let vigorous: any;
+    let weight: any;
+    moderate = this.wholeDuration.map((intensity) => intensity.moderate);
+    vigorous = this.wholeDuration.map((intensity) => intensity.vigorous);
+    weight = this.wholeDuration.map((intensity) => intensity.weightTraining);
+    console.log(weight);
+
+    this.oldGoals.forEach( function(goal){
+      if(goal.intensity == "moderate" && goal.weekNumber == weekNumber){
+        goal.duration = moderate;
+        goal.relative = goal.duration / goal.weekGoal;
+      }
+      if(goal.intensity == "vigorous" && goal.weekNumber == weekNumber){
+        goal.duration = vigorous;
+        goal.relative = goal.duration / goal.weekGoal;
+      }
+      if(goal.intensity == "weight training" && goal.weekNumber == weekNumber){
+        goal.duration = weight;
+        goal.relative = goal.duration / goal.weekGoal;
+      }
+
+    });
+    console.log(this.oldGoals);
+
+  }
+  })
+}
+
 }
 

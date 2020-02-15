@@ -19,18 +19,17 @@ export class GoalsOldPage implements OnInit {
   wonGoals : any;
   wonGoalsName: any;
   allInfo: any[] = [];
-  goals: Array<Goal>;
+  goalsHistory: Array<Goal>;
   lastGoalM: number = 0;
   lastGoalV: number = 0;
   lastGoalW: number = 0;
-  activities: Array<Activity>;
+  activitiesGoals: Array<Activity>;
   relative: number;
   wholeDuration: any[];
   relativeV: number;
   relativeW: number;
 
   oldGoals: any[] = [];
-  displayedShownGoals: any[] = [];
 
   constructor(private goalService: GoalService, private activityService: ActivityService, private location: Location) {
     let that = this;
@@ -40,10 +39,10 @@ export class GoalsOldPage implements OnInit {
     let latestGoalTimeW: number = 0;  
 
     this.goalService.getGoals().subscribe(data => {
-      this.goals = data;
+      this.goalsHistory = data;
 
       
-    this.goals.forEach(function (goal) {
+    this.goalsHistory.forEach(function (goal) {
 
       goal.history.forEach(function (history){
         for (var hist in history){
@@ -173,7 +172,7 @@ export class GoalsOldPage implements OnInit {
      // console.log(lastSecSunday);
  //     let wholeDuration = [];
     for (let weekNumber = 3; weekNumber >= 0; weekNumber--) {
-      this.activities = [];
+      this.activitiesGoals = [];
       lastWekkActivities = [];
       let lastSunday = new Date();
       let lastSecSunday = new Date();
@@ -184,8 +183,7 @@ export class GoalsOldPage implements OnInit {
       lastWekkActivities.push(data.filter(function (activity){
         return activity.startTime.getTime() < lastSunday.getTime() && activity.startTime.getTime() > lastSecSunday.getTime();
       }));
-      this.activities = lastWekkActivities;
-      console.log(this.activities);
+      this.activitiesGoals = lastWekkActivities;
 
       const intensities = [
         { id: 'vigorous', name: 'vigorous' },
@@ -235,20 +233,9 @@ export class GoalsOldPage implements OnInit {
     console.log(this.oldGoals);
 
   }
-  this.displayedShownGoals = this.oldGoals.slice(0, 3);
-  console.log(this.displayedShownGoals);
   })
   }
 
-  loadMoreActivities() {
-    let currentlyDisplayed = 0;
-    currentlyDisplayed = this.displayedShownGoals.length;
-    
-
-    const newDisplayedActivities = this.activities.slice(currentlyDisplayed, currentlyDisplayed + 3);
-
-    this.displayedShownGoals = newDisplayedActivities;
-}
 
 goBack() {
   this.location.back();
