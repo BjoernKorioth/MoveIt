@@ -82,7 +82,7 @@
             <ion-label side="end"><h3>{{goalStorage[i].current}} / {{goalStorage[i].target}} min</h3></ion-label>
           <ion-icon name="create" id="edit" (click)='routeToEditGoalPage(goalStorage[i])'></ion-icon>
         </ion-item>
-        <ion-progress-bar color="primary" [value]="goalStorage[i].relative"></ion-progress-bar>
+        <ion-progress-bar color="secondary" [value]="goalStorage[i].relative"></ion-progress-bar>
     </ion-list>
     <ion-list>
         <ion-item>
@@ -104,11 +104,12 @@
         <ion-label side="end"><h3>{{goalStorage[i+2].current}} / {{goalStorage[i+2].target}} min</h3></ion-label>
     <ion-icon name="create" id="edit" (click)='routeToEditGoalPage(goalStorage[i+2])'></ion-icon>
     </ion-item>
-    <ion-progress-bar color="primary" [value]="goalStorage[i+2].relative"></ion-progress-bar>
+    <ion-progress-bar color="tertiary" [value]="goalStorage[i+2].relative"></ion-progress-bar>
     </ion-list>
 </ng-container>
 </ng-container>
 </ion-card>
+
 
 <ion-slides [options]="slideOpts">
     <ng-container *ngFor="let goal of oldGoals, let i = index" >
@@ -128,7 +129,7 @@
             </h3></ion-label>
 
         </ion-item>
-        <ion-progress-bar color="primary" [value]="oldGoals[i].relative"></ion-progress-bar>
+        <ion-progress-bar color="secondary" [value]="oldGoals[i].relative"></ion-progress-bar>
     </ion-list>
 
     <ion-list>
@@ -156,7 +157,7 @@
     <ion-label><h3 text-right>{{oldGoals[i+2].duration}} / {{oldGoals[i+2].weekGoal}} min</h3></ion-label>
 
 </ion-item>
-<ion-progress-bar color="primary" [value]="oldGoals[i+2].relative"></ion-progress-bar>
+<ion-progress-bar color="tertiary" [value]="oldGoals[i+2].relative"></ion-progress-bar>
 </ion-list>
 
     </ion-card>
@@ -179,7 +180,7 @@
           <ion-icon name="create" id="edit" (click)='routeToEditGoalPage(goalStorage[i])'></ion-icon>
 
         </ion-item>
-        <ion-progress-bar color="primary" [value]="goalStorage[i].relative"></ion-progress-bar>
+        <ion-progress-bar color="secondary" [value]="goalStorage[i].relative"></ion-progress-bar>
     </ion-list>
     <ion-list >
         <ion-item>
@@ -203,7 +204,7 @@
   <ion-icon name="create" id="edit" (click)='routeToEditGoalPage(goalStorage[i+2])'></ion-icon>
 
 </ion-item>
-<ion-progress-bar color="primary" [value]="goalStorage[i+2].relative"></ion-progress-bar>
+<ion-progress-bar color="tertiary" [value]="goalStorage[i+2].relative"></ion-progress-bar>
 </ion-list>
 </ion-card>
 </ion-slide>
