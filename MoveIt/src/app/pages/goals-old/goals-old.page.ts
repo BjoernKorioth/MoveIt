@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { GoalService } from 'src/app/services/goal/goal.service';
 import { Goal } from 'src/app/model/goal';
+import { Location } from '@angular/common';
 import { ActivityService } from 'src/app/services/activity/activity.service';
 import { Activity } from 'src/app/model/activity';
 //import { ConsoleReporter } from 'jasmine';
@@ -12,6 +13,9 @@ import { Activity } from 'src/app/model/activity';
   styleUrls: ['./goals-old.page.scss'],
 })
 export class GoalsOldPage implements OnInit {
+  slideOpts = {
+    initialSlide: 3
+  };
   wonGoals : any;
   wonGoalsName: any;
   allInfo: any[] = [];
@@ -26,8 +30,9 @@ export class GoalsOldPage implements OnInit {
   relativeW: number;
 
   oldGoals: any[] = [];
+  displayedShownGoals: any[] = [];
 
-  constructor(private goalService: GoalService, private activityService: ActivityService) {
+  constructor(private goalService: GoalService, private activityService: ActivityService, private location: Location) {
     let that = this;
     this.allInfo = that.allInfo;
     let latestGoalTimeM: number = 0;
@@ -55,7 +60,7 @@ export class GoalsOldPage implements OnInit {
       })
     });
 
- for (let weekNumber = 0; weekNumber < 4; weekNumber++) {
+ for (let weekNumber = 3; weekNumber >= 0; weekNumber--) {
   let lastSunday = new Date();
   lastSunday.setDate(lastSunday.getDate() - (7 * weekNumber) - lastSunday.getDay());
 
@@ -167,7 +172,7 @@ export class GoalsOldPage implements OnInit {
 
      // console.log(lastSecSunday);
  //     let wholeDuration = [];
-    for (let weekNumber = 0; weekNumber < 4; weekNumber++) {
+    for (let weekNumber = 3; weekNumber >= 0; weekNumber--) {
       this.activities = [];
       lastWekkActivities = [];
       let lastSunday = new Date();
@@ -230,9 +235,24 @@ export class GoalsOldPage implements OnInit {
     console.log(this.oldGoals);
 
   }
+  this.displayedShownGoals = this.oldGoals.slice(0, 3);
+  console.log(this.displayedShownGoals);
   })
-
-
   }
+
+  loadMoreActivities() {
+    let currentlyDisplayed = 0;
+    currentlyDisplayed = this.displayedShownGoals.length;
+    
+
+    const newDisplayedActivities = this.activities.slice(currentlyDisplayed, currentlyDisplayed + 3);
+
+    this.displayedShownGoals = newDisplayedActivities;
+}
+
+goBack() {
+  this.location.back();
+}
+
 
 }
