@@ -24,19 +24,20 @@
                     <p *ngIf="(currentUser | async); let user">{{ calculateAge(user.birthday) }} years old</p>
             </ion-label>
             <ion-label side="end">
-                <div class="fileUpload btn btn-primary">
+                <!--<div class="fileUpload btn btn-primary">
                     <span>Select profile picture</span>
                    
-                </div>
-                <input
+                </div>-->
+
+                <ion-button color="secondary" (click)="uploadBtn.click()" float-right>
+                    Select file
+               </ion-button>
+                <input  #uploadBtn id="uploadBtn"
                 id="uploadBtn"
                 type="file"
                 class="upload"
-                (change)="uploadFile($event.target.files)"
-        />
-               
-    
-            </ion-label>
+                (change)="uploadFile($event.target.files)"/>
+           </ion-label>
         </ion-item>
     </ion-card>
 
