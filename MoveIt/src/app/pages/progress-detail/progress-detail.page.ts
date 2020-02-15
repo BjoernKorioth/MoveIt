@@ -10,12 +10,14 @@ import { Platform, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
 import { first, map, last } from 'rxjs/operators';
-
+import { IonSlides } from '@ionic/angular';
 
 @Component({
     selector: 'app-progress-detail',
     templateUrl: './progress-detail.page.html',
     styleUrls: ['./progress-detail.page.scss'],
+
+    
 })
 export class ProgressDetailPage implements OnInit {
 
@@ -34,9 +36,12 @@ export class ProgressDetailPage implements OnInit {
     public chartColours: any = [];
     public chartHoverColours: any = [];
 
+   
+      @ViewChild('slides', { static: false }) slides: IonSlides;
     @ViewChild('barChart', { static: false }) barChart: { nativeElement: any; };
     @ViewChild('hrzBarChart5', { static: false }) hrzBarChart5: { nativeElement: any; };
     @ViewChild('weeklyChart', { static: false }) weeklyChart: { nativeElement: any; }; 
+
     // barChart: any;
 
     hrzBars5: any;
@@ -724,6 +729,13 @@ activitiesFromLastWeek(){
 
   }
   })
+}
+
+slidePrev(){
+    this.slides.slidePrev();
+}
+slideNext(){
+    this.slides.slideNext();
 }
 
 }

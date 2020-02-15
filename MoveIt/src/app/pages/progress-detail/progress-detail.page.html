@@ -111,13 +111,16 @@
 </ion-card>
 
 
-<ion-slides [options]="slideOpts">
+
+<ion-slides  [options]="slideOpts"  #slides>
     <ng-container *ngFor="let goal of oldGoals, let i = index" >
     <ion-slide  class="slide" *ngIf="i % 3 === 0" >
 
         <ion-card>
             <ion-list-header>
+                <ion-button size="small" (click)="slidePrev()"><ion-icon size="small" name="arrow-back"></ion-icon></ion-button>
                 Weekly Goals 
+                <ion-button size="small" (click)="slideNext()"><ion-icon size="small" name="arrow-forward"></ion-icon></ion-button>
              </ion-list-header>
         <ion-list>
             <ion-item>
@@ -168,7 +171,9 @@
 <ion-slide *ngIf="i === 3">
     <ion-card>
         <ion-list-header>
+            <ion-button size="small" (click)="slidePrev()"><ion-icon size="small" name="arrow-back"></ion-icon></ion-button>
             Weekly Goals 
+            <ion-button size="small" (click)="slideNext()"><ion-icon size="small" name="arrow-forward"></ion-icon></ion-button>
          </ion-list-header>
         <ion-list >
             <ion-item>
