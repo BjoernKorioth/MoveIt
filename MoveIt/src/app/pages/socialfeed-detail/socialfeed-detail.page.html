@@ -61,22 +61,22 @@
 
 
         <ion-row>
-        <ng-container *ngIf="post.likes.includes(user.id); else running">
+       
             <ion-col center text-center>
+                <ng-container *ngIf="post.likes.includes(user.id); else running">
                 <ion-button id="like" color="secondary" type="button" (click)='like(i)'>
                     <ion-icon name="thumbs-up"  id="icons"></ion-icon>
                     {{post.likes?.length || 0}} Likes
                 </ion-button>
-            </ion-col>
-        </ng-container>
-        <ng-template #running>
-            <ion-col center text-center>
-                <ion-button id="like" type="button" (click)='like(i)'>
+            </ng-container>
+            <ng-template #running>
+                <ion-button id="like" color="primary" type="button" (click)='like(i)'>
                     <ion-icon name="thumbs-up" id="icons"></ion-icon>
                     {{post.likes?.length || 0}} Likes
                 </ion-button>
+            </ng-template>    
             </ion-col>
-        </ng-template>
+
             <ion-col center text-center>
                 <ion-button id="comment" type="button">
                     <ion-icon name="text" id="icons"></ion-icon>

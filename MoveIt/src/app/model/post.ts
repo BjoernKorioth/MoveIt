@@ -112,7 +112,7 @@ export class Post {
     toFirebaseObject() {
         return {
             activity: this.activity,
-            comments: this.comments,
+            comments: this.comments.reverse(),
             content: this.content,
             createdAt: this.createdAt.getTime(),
             likes: this.likes,
