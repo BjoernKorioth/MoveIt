@@ -25,8 +25,12 @@ export class EditActivityPage implements OnInit {
 
   constructor(private activityService: ActivityService, private location: Location, private router: Router, private toastController: ToastController) { 
     this.activity = this.router.getCurrentNavigation().extras.state.activity; // TODO: display error message if empty
+    console.log(this.activity.startTime.toTimeString());
+    var timezone_offset_min = new Date().getTimezoneOffset();
     this.activity.startDateIso = this.activity.startTime.toISOString().split("T")[0];
-    this.activity.startTimeIso = this.activity.startTime.toISOString().split("T")[1];
+ //   var timezone_offset_min = new Date().getTimezoneOffset();
+  //    this.activity.startTime = new Date((new Date(t3).getTime()) - timezone_offset_min*60000);
+    this.activity.startTimeIso = this.activity.startTime.toLocaleTimeString();
     this.activity.minutes = this.activity.getDuration();
 
     console.log(this.activity.startTimeIso);
@@ -36,6 +40,8 @@ export class EditActivityPage implements OnInit {
     this.intensities = Activity.intensities;
 
     this.router = router;    
+    console.log(this.activity.startTime);
+
   }
 
   ngOnInit() {
@@ -80,8 +86,9 @@ export class EditActivityPage implements OnInit {
       const t3: any = t1[0].concat('T', t2);
       var timezone_offset_min = new Date().getTimezoneOffset();
       console.log(timezone_offset_min);
+      console.log(this.activity.startTime);
       
-      this.activity.startTime = new Date((new Date(t3).getTime()) - timezone_offset_min*60000);
+      this.activity.startTime = new Date((new Date(t3).getTime()));
       const newDateObj = new Date(this.activity.startTime.getTime() + this.activity.minutes * 60000);
 
       this.activity.endTime = new Date(newDateObj);
