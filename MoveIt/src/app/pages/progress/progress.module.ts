@@ -24,7 +24,11 @@ const routes: Routes = [
             {
                 path: 'edit',
                 loadChildren: '../edit-activity/edit-activity.module#EditActivityPageModule'
-            }
+            },
+            {
+                path: 'goals-old',
+                loadChildren: '../goals-old/goals-old.module#GoalsOldPageModule'
+            },
 
         ]
     },

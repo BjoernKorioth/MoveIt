@@ -5,6 +5,7 @@ interface FireBaseObject {
     intensity: string;
     startTime: Date;
     type: string;
+    source:string;
 }
 
 interface ApiObject {
@@ -15,6 +16,7 @@ interface ApiObject {
     endDate: Date;
     unit: string;
     value: string;
+    source: string;
 }
 
 interface Distance {
@@ -33,7 +35,7 @@ export class Activity {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?: string, distance?: Distance, endTime?: Date, intensity?: string, startTime?: Date, type?: string) {
+    constructor(id?: string, distance?: Distance, endTime?: Date, intensity?: string, startTime?: Date, type?: string, source?:string) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
         this.distance = distance || {unit: 'km', value: 0};
@@ -41,6 +43,7 @@ export class Activity {
         this.intensity = intensity || 'moderate';
         this.startTime = startTime || new Date(2019, 0O5, 0O5, 17, 55, 42, 0);
         this.type = type || 'running';
+        this.source = source || 'unknown'
     }
 
     static types = ['basketball', 'biking', 'dancing','handball','football','running', 'swimming', 'volleyball', 'walking', 'other'];
@@ -51,6 +54,7 @@ export class Activity {
     intensity: string;
     startTime: Date;
     type: string;
+    source:string;
 
     /**
      * Creates an Activity object from a firebase query
@@ -69,7 +73,8 @@ export class Activity {
             new Date(activity.endTime) || new Date(),
             activity.intensity || '',
             new Date(activity.startTime) || new Date(), // new Date(firebaseObject.startTime) || new Date(),
-            activity.type || ''
+            activity.type || '',
+            activity.source || 'unknown'
         );
     }
 
@@ -84,7 +89,8 @@ export class Activity {
             endTime: this.endTime.getTime(),
             intensity: this.intensity,
             startTime: this.startTime.getTime(),
-            type: this.type
+            type: this.type,
+            source: this.source,
         };
     }
 
@@ -111,7 +117,8 @@ export class Activity {
                 SingleEntry.endDate,
                 '',
                 SingleEntry.startDate,
-                SingleEntry.value
+                SingleEntry.value,
+                SingleEntry.source,
             );
             ActMulit.push(ActSingle);
         }); 
@@ -129,7 +136,8 @@ export class Activity {
             sourceBundleId: 'com.moveitproject.www',
             startDate: this.startTime,
             unit: 'activityType',
-            value: this.type
+            value: this.type,
+            source: this.source,
         };
     }
 

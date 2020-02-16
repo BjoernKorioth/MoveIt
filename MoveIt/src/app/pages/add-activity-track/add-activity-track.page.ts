@@ -64,6 +64,7 @@ export class AddActivityTrackPage implements OnInit {
     var newDateObj = new Date(this.activity.startTime.getTime() + this.elapsed.m*60000 + this.elapsed.s*1000 + this.elapsed.h*3600000);
     
     this.activity.endTime = new Date(newDateObj);
+    this.activity.source = 'moveItApp';
     console.log(this.activity);
     this.activityService.createActivity(this.activity).then(
         res => {

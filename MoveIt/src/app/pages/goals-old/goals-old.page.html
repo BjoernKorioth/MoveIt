@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar color="primary">
+      <ion-buttons slot="start">
+          <ion-back-button class="show-back-button" (click)="goBack()"></ion-back-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+          <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Old goals</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <!--<ng-container *ngFor = "let i = index">-->
+
+    <ion-slides [options]="slideOpts">
+        <ng-container *ngFor="let goal of oldGoals, let i = index" >
+        <ion-slide  class="slide" *ngIf="i % 3 === 0" >
+
+            <ion-card>
+            <ion-list>
+                <ion-item>
+                    <ion-label side="start">
+                        <h3>{{oldGoals[i].name}} </h3>
+                    </ion-label>
+                <ion-label side="end"><h3>{{oldGoals[i].duration}} / {{oldGoals[i].weekGoal}} min
+                </h3></ion-label>
+
+            </ion-item>
+            <ion-progress-bar color="primary" [value]="oldGoals[i].relative"></ion-progress-bar>
+        </ion-list>
+
+        <ion-list>
+            <ion-item>
+            <ion-label side="start">
+                <h3>{{oldGoals[i+1].name}} </h3>
+            </ion-label>
+            
+            
+            <ion-label side="end"><h3>{{oldGoals[i+1].duration}} / {{oldGoals[i+1].weekGoal}} min</h3></ion-label>
+
+        </ion-item>
+        <ion-progress-bar color="primary" [value]="oldGoals[i+1].relative"></ion-progress-bar>
+    </ion-list>
+
+    <ion-list>
+        <ion-item>
+        <ion-label side="start">
+            <h3>{{oldGoals[i+2].name}} </h3>
+        </ion-label>
+        
+        
+        <ion-label side="end"><h3>{{oldGoals[i+2].duration}} / {{oldGoals[i+2].weekGoal}} min</h3></ion-label>
+
+    </ion-item>
+    <ion-progress-bar color="primary" [value]="oldGoals[i+2].relative"></ion-progress-bar>
+</ion-list>
+
+        </ion-card>
+        </ion-slide>
+        </ng-container>
+    </ion-slides>
+
+    <!--<ion-card>
+        <ion-list-header>
+            Goals 
+        </ion-list-header>
+
+        <ion-list *ngFor="let goal of displayedShownGoals">
+            <ion-item>
+            <ion-label side="start">
+                <h3>{{goal.name}} </h3>
+            </ion-label>
+            
+            
+            <ion-label side="end"><h3>{{goal.duration}} / {{goal.weekGoal}} min</h3></ion-label>
+
+        </ion-item>
+        <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
+
+    </ion-list>
+    <ion-button (click) = "loadMoreActivities()">Read more</ion-button>
+    </ion-card>-->
+
+
+
+</ion-content>

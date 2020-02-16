@@ -11,7 +11,7 @@
 </ion-header>
 
 <ion-content padding>
-    <ion-button type="button" (click)='createActivity()'>Create</ion-button>
+    <!--<ion-button type="button" (click)='createActivity()'>Create</ion-button>
     <ion-button type="button" (click)='editActivity()'>Edit</ion-button>
     <ion-button type="button" (click)='getActivity()'>Get</ion-button>
     <ion-button type="button" (click)='getAllActivities()'>Get All</ion-button>
@@ -19,7 +19,7 @@
     <ion-button type="button" (click)='adjustGoal()'>Adjust Goal</ion-button>
 
     <ion-button type="button" (click)='loadHealthData()'>Load some Health Data</ion-button>
-    <ion-button type="button" (click)='saveWorkout()'>Save some Health Data</ion-button>
+    <ion-button type="button" (click)='saveWorkout()'>Save some Health Data</ion-button>-->
     
 
   <ion-row>
@@ -35,9 +35,6 @@
             <ion-segment-button value="week" (click)="defineChartData()">
             week
             </ion-segment-button>
-            <ion-segment-button value="month">
-            month
-            </ion-segment-button>
     </ion-segment>
     </ion-item>
     </ion-col>
@@ -51,17 +48,13 @@
 
      <div [ngSwitch]="duration">
 
-      <ion-card *ngSwitchCase="'day'" class="welcome-card">
-        <ion-card-content>
-          <canvas #hrzBarChart5></canvas>
-        </ion-card-content>
+      <ion-card *ngSwitchCase="'day'">
+          <canvas #hrzBarChart5 height="400"></canvas>
       </ion-card>
 
       
-      <ion-card *ngSwitchCase="'week'" class="welcome-card">
-        <ion-card-content>
-            <canvas #weeklyChart></canvas>
-          </ion-card-content>
+      <ion-card *ngSwitchCase="'week'" >
+            <canvas #weeklyChart height="400"></canvas>
       </ion-card>
 
     </div>
@@ -73,17 +66,158 @@
 </ion-item>-->
 
 
-    <ion-list *ngFor="let goal of (goals | async)">
+    <ion-card>
         <ion-list-header>
-            <ion-label>{{goal.duration}} - {{goal.type}}</ion-label>
-            <ion-label side="end">{{goal.current}} / {{goal.target}} min</ion-label>
-          <ion-icon name="create" id="edit" (click)='routeToEditGoalPage(goal)'></ion-icon>
-
+           Daily Goals 
         </ion-list-header>
-        <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
+        <ng-container *ngFor="let goal of goalStorage, let i = index" >
+        <ng-container *ngIf="i === 0" >
 
+        <ion-list>
+            <ion-item>
+            <ion-label side="start">
+                <h3>{{goalStorage[i].duration}} </h3>
+                <p>{{goalStorage[i].type}}</p>
+            </ion-label>
+            <ion-label side="end"><h3>{{goalStorage[i].current}} / {{goalStorage[i].target}} min</h3></ion-label>
+          <ion-icon name="create" id="edit" (click)='routeToEditGoalPage(goalStorage[i])'></ion-icon>
+        </ion-item>
+        <ion-progress-bar color="secondary" [value]="goalStorage[i].relative"></ion-progress-bar>
+    </ion-list>
+    <ion-list>
+        <ion-item>
+            <ion-label side="start">
+                <h3>{{goalStorage[i+1].duration}} </h3>
+                <p>{{goalStorage[i+1].type}}</p>
+            </ion-label>
+            <ion-label side="end"><h3>{{goalStorage[i+1].current}} / {{goalStorage[i+1].target}} min</h3></ion-label>
+        <ion-icon name="create" id="edit" (click)='routeToEditGoalPage(goalStorage[i+1])'></ion-icon>
+        </ion-item>
+        <ion-progress-bar color="primary" [value]="goalStorage[i+1].relative"></ion-progress-bar>
+    </ion-list>
+    <ion-list>
+        <ion-item>
+        <ion-label side="start">
+            <h3>{{goalStorage[i+2].duration}} </h3>
+            <p>{{goalStorage[i+2].type}}</p>
+        </ion-label>
+        <ion-label side="end"><h3>{{goalStorage[i+2].current}} / {{goalStorage[i+2].target}} min</h3></ion-label>
+    <ion-icon name="create" id="edit" (click)='routeToEditGoalPage(goalStorage[i+2])'></ion-icon>
+    </ion-item>
+    <ion-progress-bar color="tertiary" [value]="goalStorage[i+2].relative"></ion-progress-bar>
+    </ion-list>
+</ng-container>
+</ng-container>
+</ion-card>
+
+
+
+<ion-slides  [options]="slideOpts"  #slides>
+    <ng-container *ngFor="let goal of oldGoals, let i = index" >
+    <ion-slide  class="slide" *ngIf="i % 3 === 0" >
+
+        <ion-card>
+            <ion-list-header>
+                <ion-button size="small" (click)="slidePrev()"><ion-icon size="small" name="arrow-back"></ion-icon></ion-button>
+                Weekly Goals 
+                <ion-button size="small" (click)="slideNext()"><ion-icon size="small" name="arrow-forward"></ion-icon></ion-button>
+             </ion-list-header>
+        <ion-list>
+            <ion-item>
+                <ion-label side="start">
+                    <h3>{{oldGoals[i].name}} </h3>
+                    <p>{{oldGoals[i].intensity}}</p>
+                </ion-label>
+            <ion-label side="end"><h3 text-right>{{oldGoals[i].duration}} / {{oldGoals[i].weekGoal}} min
+            </h3></ion-label>
+
+        </ion-item>
+        <ion-progress-bar color="secondary" [value]="oldGoals[i].relative"></ion-progress-bar>
     </ion-list>
 
+    <ion-list>
+        <ion-item>
+        <ion-label side="start">
+            <h3>{{oldGoals[i+1].name}} </h3>
+            <p>{{oldGoals[i+1].intensity}}</p>
+        </ion-label>
+        
+        
+        <ion-label side="end"><h3 text-right>{{oldGoals[i+1].duration}} / {{oldGoals[i+1].weekGoal}} min</h3></ion-label>
+
+    </ion-item>
+    <ion-progress-bar color="primary" [value]="oldGoals[i+1].relative"></ion-progress-bar>
+</ion-list>
+
+<ion-list>
+    <ion-item>
+    <ion-label side="start">
+        <h3>{{oldGoals[i+2].name}} </h3>
+        <p>{{oldGoals[i+2].intensity}}</p>
+    </ion-label>
+    
+    
+    <ion-label><h3 text-right>{{oldGoals[i+2].duration}} / {{oldGoals[i+2].weekGoal}} min</h3></ion-label>
+
+</ion-item>
+<ion-progress-bar color="tertiary" [value]="oldGoals[i+2].relative"></ion-progress-bar>
+</ion-list>
+
+    </ion-card>
+    </ion-slide>
+    </ng-container>
+
+<ng-container *ngFor="let goal of goalStorage; let i = index">
+<ion-slide *ngIf="i === 3">
+    <ion-card>
+        <ion-list-header>
+            <ion-button size="small" (click)="slidePrev()"><ion-icon size="small" name="arrow-back"></ion-icon></ion-button>
+            Weekly Goals 
+            <ion-button size="small" (click)="slideNext()"><ion-icon size="small" name="arrow-forward"></ion-icon></ion-button>
+         </ion-list-header>
+        <ion-list >
+            <ion-item>
+            <ion-label side="start">
+                <h3>{{goalStorage[i].duration}} </h3>
+                <p>{{goalStorage[i].type}}</p>
+            </ion-label>      
+            <ion-label side="end"><h3>{{goalStorage[i].current}} / {{goalStorage[i].target}} min</h3></ion-label>
+          <ion-icon name="create" id="edit" (click)='routeToEditGoalPage(goalStorage[i])'></ion-icon>
+
+        </ion-item>
+        <ion-progress-bar color="secondary" [value]="goalStorage[i].relative"></ion-progress-bar>
+    </ion-list>
+    <ion-list >
+        <ion-item>
+        <ion-label side="start">
+            <h3>{{goalStorage[i+1].duration}} </h3>
+            <p>{{goalStorage[i+1].type}}</p>
+        </ion-label>      
+        <ion-label side="end"><h3>{{goalStorage[i+1].current}} / {{goalStorage[i+1].target}} min</h3></ion-label>
+      <ion-icon name="create" id="edit" (click)='routeToEditGoalPage(goalStorage[i+1])'></ion-icon>
+
+        </ion-item>
+        <ion-progress-bar color="primary" [value]="goalStorage[i+1].relative"></ion-progress-bar>
+    </ion-list>
+    <ion-list >
+    <ion-item>
+    <ion-label side="start">
+        <h3>{{goalStorage[i+2].duration}} </h3>
+        <p>{{goalStorage[i+2].type}}</p>
+    </ion-label>      
+    <ion-label side="end"><h3>{{goalStorage[i+2].current}} / {{goalStorage[i+2].target}} min</h3></ion-label>
+  <ion-icon name="create" id="edit" (click)='routeToEditGoalPage(goalStorage[i+2])'></ion-icon>
+
+</ion-item>
+<ion-progress-bar color="tertiary" [value]="goalStorage[i+2].relative"></ion-progress-bar>
+</ion-list>
+</ion-card>
+</ion-slide>
+</ng-container>
+
+
+
+</ion-slides>
 
 
     <!--<ion-list>
@@ -101,6 +235,7 @@
         </ion-item>
     </ion-list>-->
 
+    <ion-card>
     <ion-list>
         <ion-list-header>
             Activities
@@ -109,13 +244,14 @@
         <ion-item *ngFor="let activity of (displayedActivities | async)">
             <ion-label>
                 <!-- {{ activity.startTime != null ? activity.startTime : '20.10.'  }}-->
-                <h2>{{ activity.startTime | date:'dd.MM.' }} {{activity.getDuration()}} minutes<br> {{activity.type}} - {{activity.intensity}}</h2>
+                <h3>{{ activity.startTime | date:'dd.MM.' }} {{activity.getDuration()}} minutes</h3>
+                <p>{{activity.type}} - {{activity.intensity}}</p>
             </ion-label>
-            <ion-icon name="create" slot="end" (click)='routeToEditPage(activity)'>
+            <ion-icon *ngIf="activity.source === 'moveItApp'" name="create" slot="end" (click)='routeToEditPage(activity)'>
             </ion-icon>
         </ion-item>
     </ion-list>
     <ion-button expand="block" color="secondary" (click)="loadMoreActivities()">Read more</ion-button>
-    
+</ion-card>
 
 </ion-content>
