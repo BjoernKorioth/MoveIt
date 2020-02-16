@@ -24,6 +24,7 @@
       <ion-label side="start"><h2>{{challenge.title}}</h2>
         <p>Until {{challenge.endTime  | date:'dd. MMM' }}</p>
         <p>Participants: {{challenge.participants.length}}</p>
+        <p>Prize: {{challenge.price}}</p>
       </ion-label>
       <ion-button side="end" color="secondary" size="small" (click)="addToActiveList(challenge)" float-right>I'm in</ion-button>
     
@@ -45,6 +46,7 @@
         <h2>{{activeChallenge.title}}</h2>
         <p> Until {{activeChallenge.endTime  | date:'dd. MMM' }} </p>
         <p> Participants: {{activeChallenge.participants.length}}</p>
+        <p>Prize: {{activeChallenge.price}}</p>
       </ion-label>
       <ion-button color="secondary" size="small" (click)= "removeFromActiveList(activeChallenge)" float-right>I'm out</ion-button>
     </ng-container>
