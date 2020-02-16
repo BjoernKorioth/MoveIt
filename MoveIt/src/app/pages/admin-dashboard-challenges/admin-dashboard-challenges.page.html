@@ -60,7 +60,7 @@
   <h2 padding>All open challenges!</h2>
  
   <ng-container  *ngFor="let challenge of challenges">
-  <ion-row class="ion-align-items-end"  *ngIf="challenge.finished == false">
+  <ion-row class="ion-align-items-center"  *ngIf="challenge.finished == false">
     <ion-col size="2">
       <ion-list>
         <ion-item><ion-textarea [(ngModel)]="challenge.title"></ion-textarea></ion-item>
@@ -92,12 +92,10 @@
       </ion-list>
     </ion-col>
     <ion-col size="2">
-      <ion-list>
-        <ion-item>
+
       <ion-button color="secondary" (click)="editChallenge(challenge)">Save</ion-button>
       <ion-button color="secondary" (click)="endChallenge(challenge)">End</ion-button>
-    </ion-item>
-    </ion-list>
+   
       </ion-col>
   </ion-row>
 </ng-container>
@@ -138,14 +136,14 @@
 
     <ion-col size="3">
       <ion-list>
-          <ion-select placeholder="Select Winner" [(ngModel)]="winnerId">
+          <ion-select placeholder="Select One" [(ngModel)]="challengeF.winner">
           <ion-select-option  *ngFor="let user of users" [value]="user.id">{{user.name}}</ion-select-option>
           </ion-select>
       </ion-list>
 
       <ion-list>
         <ion-item>
-          <ion-button color="secondary" (click)="selectWinner(challengeF, winnerId)">Select</ion-button>
+          <ion-button color="secondary" (click)="selectWinner(challengeF, challengeF.winner)">Select</ion-button>
         </ion-item>
       </ion-list>
     </ion-col>

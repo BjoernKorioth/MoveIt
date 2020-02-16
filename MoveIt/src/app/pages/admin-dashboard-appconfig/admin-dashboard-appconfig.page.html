@@ -8,17 +8,17 @@
 </ion-header>
 
 <ion-content>
-  <ion-button padding (click)="createGroup()">Create Group</ion-button>
+  <!--<ion-button padding (click)="createGroup()">Create Group</ion-button>
   <ion-button padding (click)="editGroup()">Edit Group</ion-button>
   <ion-button padding (click)="createUser()">Create User</ion-button>
-  <ion-button padding (click)="changeUserGroup()">Change User Group</ion-button>
+  <ion-button padding (click)="changeUserGroup()">Change User Group</ion-button>-->
+  <ion-button id="group" color="secondary" padding (click)="presentPopoverGroup($event)" float-right>New Group</ion-button>
 
-
-  <section>
+  <ion-row>
     <h4 padding>Manage the groups</h4>
-    <ion-button id="group" color="secondary" padding (click)="presentPopoverGroup($event)">New Group</ion-button>
-  </section>
-  <br><br><br>
+      
+  </ion-row>
+
 
   <div style="border-bottom:1px solid black">
   
@@ -58,7 +58,7 @@
     </ion-row>
 
 
-  <ion-row *ngFor="let group of allGroups">
+  <ion-row class="ion-align-items-center" *ngFor="let group of allGroups">
     <ion-col size="2">
       <ion-list>
         <ion-item>{{group.name}} </ion-item>
@@ -77,22 +77,22 @@
 
     <ion-col size="1">
       <ion-list>
-        <ion-item>
+        
           <ion-button color="secondary" (click)="editGroup(group)">Save</ion-button>
-        </ion-item>
+   
       </ion-list>
     </ion-col>
 
   </ion-row>
 </div>
 
-
-
 <section>
-  <h4 padding>Manage the users</h4>
-  <ion-button id="user" color="secondary"  slot="end" padding (click)="presentPopover($event)">New User</ion-button>
+<ion-button id="user" color="secondary"  slot="end" padding (click)="presentPopover($event)" float-right>New User</ion-button>
 </section>
-<br><br><br>
+
+<ion-row>
+  <h4 padding>Manage the users</h4>
+</ion-row>
 
   <div>
   <ion-row class="ion-align-items-center"  *ngFor="let user of (users | async)">

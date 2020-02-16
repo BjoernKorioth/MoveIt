@@ -24,12 +24,14 @@ export class AdminDashboardChallengesPage implements OnInit {
     constructor(private rewardsService: RewardsService, private challService: ChallengeService, public popoverController: PopoverController, private userService: UserService) {
         this.challService.getAllAvailableChallenges().subscribe(data => {
             this.challenges = data;
+            console.log(this.challenges);
             this.challenges.forEach(function(challenge) {
                 
                 challenge.startTimeIso = challenge.startTime.toISOString();
                 challenge.endTimeIso = challenge.endTime.toISOString();
             })
         });
+       
         this.userService.getUsers().subscribe(data => this.users = data);
     }
 
@@ -77,6 +79,7 @@ export class AdminDashboardChallengesPage implements OnInit {
     }
 
     selectWinner(challenge: Challenge, userId:string){
+        console.log(userId);
         this.challService.setWinner(challenge, userId).then(
             res => console.log(res),
             err => console.log(err)

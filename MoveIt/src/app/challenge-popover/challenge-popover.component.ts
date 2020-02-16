@@ -49,11 +49,11 @@ export class ChallengePopoverComponent implements OnInit {
     this.challengeService.createChallenge(this.challenge, participants).then(
       (challenge) => {
           console.log(challenge);
+          this.presentAlert();
         })
         .catch(err => console.error(err)
         
     );
-   this.presentAlert();
   }
 
 
