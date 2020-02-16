@@ -8,6 +8,7 @@ interface FireBaseObject {
     title: string;
     participants: any;
     registered: number;
+    winner: string;
 }
 
 export class Challenge {
@@ -18,7 +19,7 @@ export class Challenge {
      *
      */
     constructor(id?: string, description?: string, endTime?: Date, price?: string, startTime?: Date, title?: string,
-                participantObject?: any, finished?: boolean) {
+                participantObject?: any, finished?: boolean, winner?: string) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
         this.description = description || '';
@@ -34,6 +35,7 @@ export class Challenge {
             }
         }
         this.finished = finished || false;
+        this.winner = winner;
     }
 
     static types = ['running', 'swimming', 'workout'];
@@ -48,6 +50,7 @@ export class Challenge {
     participants: Array<any>;
     startTimeIso: string;
     endTimeIso: string;
+    winner: string;
 
     /**
      * Creates an Challenge object from a firebase query
@@ -66,7 +69,8 @@ export class Challenge {
             new Date(firebaseObject.startTime) || new Date(),
             firebaseObject.title || '',
             firebaseObject.participants || 0,
-            firebaseObject.finished
+            firebaseObject.finished,
+            firebaseObject.winner
         );
     }
 
@@ -76,14 +80,19 @@ export class Challenge {
      * Basically just replaces the dates with date strings
      */
     toFirebaseObject() {
+        console.log(this.endTime);
+        console.log(this.startTime);
+
         return {
             description: this.description,
-            endTime: this.endTime,
+            endTime: this.endTime.toString(),
             price: this.price,
-            startTime: this.startTime,
+            startTime: this.startTime.toString(),
             title: this.title,
             finished: this.finished,
-            participants: this.participants
+            participants: this.participants,
+          //  winner: this.winner
         };
+        
     }
 }

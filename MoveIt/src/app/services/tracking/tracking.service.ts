@@ -3,6 +3,7 @@ import {AngularFireDatabase} from '@angular/fire/database';
 import * as firebase from 'firebase/app';
 import {ViewLog} from '../../model/viewLog';
 import {ActionLog} from '../../model/actionLog';
+import {Reaction} from '../../model/reaction';
 
 @Injectable({
     providedIn: 'root'
@@ -35,5 +36,10 @@ export class TrackingService {
 
     logAction(actionLog: ActionLog) {
         this.fireDatabase.database.ref('/tracking/' + firebase.auth().currentUser.uid + '/actionLogs').push(actionLog.toFirebaseObject());
+    }
+
+    logReaction(notification: string, response: string) {
+        const reaction = new Reaction(notification, response);
+        this.fireDatabase.database.ref('/tracking/' + firebase.auth().currentUser.uid + '/reactions').push(reaction.toFirebaseObject());
     }
 }

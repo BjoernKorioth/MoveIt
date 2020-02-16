@@ -5,6 +5,9 @@ import {ChallengeService} from '../../services/challenges/challenge.service';
 import {Observable} from 'rxjs';
 import {PopoverController} from '@ionic/angular';
 import {ChallengePopoverComponent} from 'src/app/challenge-popover/challenge-popover.component';
+import { UserService } from 'src/app/services/user/user.service';
+import { RewardsService } from 'src/app/services/rewards/rewards.service';
+import { User } from 'src/app/model/user';
 
 @Component({
     selector: 'app-admin-dashboard-challenges',
@@ -14,34 +17,22 @@ import {ChallengePopoverComponent} from 'src/app/challenge-popover/challenge-pop
 export class AdminDashboardChallengesPage implements OnInit {
     challenges: Array<Challenge>;
     challengesObserve: Challenge[];
+    users: Array<User>;
+    winnerId: string;
 
 
-    constructor(private challService: ChallengeService, public popoverController: PopoverController) {
+    constructor(private rewardsService: RewardsService, private challService: ChallengeService, public popoverController: PopoverController, private userService: UserService) {
         this.challService.getAllAvailableChallenges().subscribe(data => {
             this.challenges = data;
+            console.log(this.challenges);
             this.challenges.forEach(function(challenge) {
+                
                 challenge.startTimeIso = challenge.startTime.toISOString();
                 challenge.endTimeIso = challenge.endTime.toISOString();
             })
         });
-     //   this.challengesObserve.subscribe(result => this.updateAllChallenges(result));
-
-        /*this.challenges= [
-          {
-            description: 'Run the equivalent of a marathon during one week',
-            title: 'Run 100 km within a week',
-            startDate: 33,
-            endDate: 55,
-            price: '30 Euro Amazon Gift Card'
-          },
-          {
-            description: 'Run the equivalent of a marathon during one week',
-            title: 'Run 150 km within a week',
-            startDate: 33,
-            endDate: 55,
-            price: '30 Euro Amazon Gift Card'
-          },
-        ]*/
+       
+        this.userService.getUsers().subscribe(data => this.users = data);
     }
 
     editChallenge(challenge: Challenge) {
@@ -49,7 +40,9 @@ export class AdminDashboardChallengesPage implements OnInit {
         challenge.startTime = new Date(challenge.startTimeIso);                                                       
         challenge.endTime = new Date(challenge.endTimeIso);  
         this.challService.editChallenge(challenge).then(
-            res => console.log(res),
+            res => {
+                console.log(res);
+            },
             err => console.log(err)
         );
     }
@@ -78,5 +71,23 @@ export class AdminDashboardChallengesPage implements OnInit {
         }
     }
 
+    endChallenge(challenge: Challenge){
+        this.challService.finishChallenge(challenge).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
+    }
 
+    selectWinner(challenge: Challenge, userId:string){
+        console.log(userId);
+        this.challService.setWinner(challenge, userId).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
+
+        this.rewardsService.winChallenge(challenge.id,userId).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
+    }
 }

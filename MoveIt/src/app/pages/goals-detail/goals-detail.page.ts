@@ -4,6 +4,7 @@ import {Location} from '@angular/common';
 
 import {Router} from '@angular/router';
 import {AlertController} from '@ionic/angular';
+import {TrackingService} from '../../services/tracking/tracking.service';
 
 @Component({
     selector: 'app-goals-detail',
@@ -15,7 +16,8 @@ export class GoalsDetailPage implements OnInit {
 
     goal: any;
 
-    constructor(private goalService: GoalService, private location: Location, private router: Router, private alertController: AlertController) {
+    constructor(private goalService: GoalService, private location: Location, private router: Router,
+                private alertController: AlertController, private trackingService: TrackingService) {
         this.goal = this.router.getCurrentNavigation().extras.state.goal; // TODO: display error message if empty
 
         // this.goals = this.goalService.getGoals();
@@ -34,7 +36,18 @@ export class GoalsDetailPage implements OnInit {
         const alert = await this.alertController.create({
             header: 'Success',
             message: 'Were the previous goal too easy?',
-            buttons: ['YES', 'No'],
+            buttons: [
+                {
+                    text: 'YES', handler: () => {
+                        this.trackingService.logReaction('goal-adjustment-too-easy', 'yes');
+                    }
+                },
+                {
+                    text: 'No', handler: () => {
+                        this.trackingService.logReaction('goal-adjustment-too-easy', 'yes');
+                    }
+                }
+            ],
         });
 
         await alert.present();
@@ -43,16 +56,14 @@ export class GoalsDetailPage implements OnInit {
     }
 
     editGoal() {
-
         this.goalService.adjustGoal(this.goal, this.goal.target).then(
             res => {
-              console.log(res);
-              this.presentAlert();
+                console.log(res);
+                this.presentAlert();
             },
             err => console.log(err)
         );
 
-        
 
         /*moderate(){
           this.goalService.getGoal('dailyModerate').then(

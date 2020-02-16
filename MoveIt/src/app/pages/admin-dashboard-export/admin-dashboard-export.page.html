@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-button color="light" (click)="export('activities', 'user')">Get User Activities</ion-button>
+    <!--<ion-button color="light" (click)="export('activities', 'user')">Get User Activities</ion-button>
     <ion-button color="light" (click)="export('activities', 'group')">Get Group Activities</ion-button>
     <ion-button color="light" (click)="export('activities', 'all')">Get All Activities</ion-button>
     <br/>
@@ -34,7 +34,7 @@
   <br/>
   <ion-button color="light" (click)="export('trophies', '')">Get trophies</ion-button>
   <ion-button color="light" (click)="export('defaultGoals', '')">Get goals</ion-button>
-  <ion-button color="light" (click)="export('challenges', '')">Get challenges</ion-button>
+  <ion-button color="light" (click)="export('challenges', '')">Get challenges</ion-button>-->
 
     <!--<h2 padding>Download the data</h2>
     <section>
@@ -62,14 +62,19 @@
               <ion-list-header>
                   <ion-label>Entity</ion-label>
               </ion-list-header>
+              <ion-item>
               <ion-select [(ngModel)]="select" placeholder="Select One">
                 <ion-select-option value="activities">Activities</ion-select-option>
+                <ion-select-option value="challenges">Challenges</ion-select-option>
                 <ion-select-option value="goals">Goals</ion-select-option>
                 <ion-select-option value="goalWins">Won Goals</ion-select-option>
+                <ion-select-option value="trophies">Trophies</ion-select-option>
                 <ion-select-option value="trophyWins">Won Trophies</ion-select-option>
                 <ion-select-option value="viewLogs">View Logs</ion-select-option>
                 <ion-select-option value="actionLogs">Action Logs</ion-select-option>
+                <ion-select-option value="reactions">Reactions</ion-select-option>
               </ion-select>
+            </ion-item>
           </ion-list>
       </ion-col>
 
@@ -78,9 +83,9 @@
               <ion-list-header>
                   <ion-label>Data</ion-label>
               </ion-list-header>
-              <ion-item>
-                <ion-button color="secondary" (click)="export(select, 'all')">Download</ion-button>
-              </ion-item>
+   
+                <ion-button color="secondary" (click)="export(select, 'all')" float-rigth>Download</ion-button>
+  
           </ion-list>
       </ion-col>
   </ion-row>
@@ -114,7 +119,7 @@
     </ion-col>
 </ion-row>
 
-    <ion-row  *ngFor="let group of groups">
+    <ion-row class="ion-align-items-center" *ngFor="let group of groups">
 
     <ion-col size="4">
       <ion-list>
@@ -126,6 +131,7 @@
   
   <ion-col size="4">
       <ion-list>
+          <ion-item>
           <ion-select [(ngModel)]="group.select" placeholder="Select One">
             <ion-select-option value="activities">Activities</ion-select-option>
             <ion-select-option value="goals">Goals</ion-select-option>
@@ -134,16 +140,14 @@
             <ion-select-option value="viewLogs">View Logs</ion-select-option>
             <ion-select-option value="actionLogs">Action Logs</ion-select-option>
           </ion-select>
+        </ion-item>
       </ion-list>
   </ion-col>
   
   <ion-col size="4">
-      <ion-list>
 
-          <ion-item>
             <ion-button color="secondary" (click)="export(group.select, 'group', group.id)">Download</ion-button>
-          </ion-item>
-      </ion-list>
+
   </ion-col>
   </ion-row>
 
@@ -176,7 +180,7 @@
 </ion-row>
 
 
-  <ion-row class="ion-align-items-end" *ngFor="let user of users">
+  <ion-row class="ion-align-items-center" *ngFor="let user of users">
 
   <ion-col size="4">
     <ion-list>
@@ -203,9 +207,7 @@
 
 <ion-col size="4">
     <ion-list>
-        <ion-item>
           <ion-button color="secondary" (click)="export(user.select, 'user', user.id)">Download</ion-button>
-        </ion-item>
     </ion-list>
 </ion-col>
 </ion-row>
@@ -213,36 +215,4 @@
 
 
 </ion-content>
-
-    <!--<ion-row *ngFor="let user of users">
-        <ion-col size="4">
-            <ion-list>
-                <ion-list-header>
-                    <ion-label>User</ion-label>
-                </ion-list-header>
-                <ion-item> {{user.name}} </ion-item>
-            </ion-list>
-        </ion-col>
-
-        <ion-col size="4">
-            <ion-list>
-                <ion-list-header>
-                    <ion-label>Group</ion-label>
-                </ion-list-header>
-                <ion-item>{{user.group}}</ion-item>
-            </ion-list>
-        </ion-col>
-
-        <ion-col size="4">
-            <ion-list>
-                <ion-list-header>
-                    <ion-label>Data</ion-label>
-                </ion-list-header>
-                <ion-item>
-                    <ion-button color="light">Download</ion-button>
-                </ion-item>
-            </ion-list>
-        </ion-col>
-    </ion-row>
-</ion-content>-->
 

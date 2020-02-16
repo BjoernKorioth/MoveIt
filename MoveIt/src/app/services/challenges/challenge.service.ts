@@ -53,6 +53,7 @@ export class ChallengeService {
     }
 
     editChallenge(challenge: Challenge) {
+        console.log(challenge);
         return firebase.database().ref('/challenges/' + challenge.id).set(challenge.toFirebaseObject());
     }
 

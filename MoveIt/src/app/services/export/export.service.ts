@@ -43,6 +43,7 @@ export class ExportService {
                     // const csv = parse(params.data, opts);
                     console.log(params);
                     const csv = parse(params);
+                    this.download(entity + '_' + scope + '_' + id + '.csv', csv);
                     console.log(csv);
                 } catch (err) {
                     console.error(err);
@@ -101,6 +102,10 @@ export class ExportService {
             }
             case 'actionLogs': {
                 params = this.exportActionLogs(user);
+                break;
+            }
+            case 'reactions': {
+                params = this.exportReactions(user);
                 break;
             }
         }
@@ -196,6 +201,23 @@ export class ExportService {
     exportActionLogs(user: string) {
         return this.db.list<any>('/tracking/' + user + '/actionLogs').valueChanges().pipe(first());
 
+    }
+
+    exportReactions(user: string) {
+        return this.db.list<any>('/tracking/' + user + '/reactions').valueChanges().pipe(first());
+    }
+
+    download(filename, text) {
+        const element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
     }
 
 }

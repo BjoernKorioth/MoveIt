@@ -77,4 +77,13 @@ export class InformationService {
         return ref.snapshotChanges().pipe(map(information => information.map(
             infoSnapshot => Information.fromFirebaseObject(infoSnapshot.key, infoSnapshot.payload.val()))));
     }
+
+    /**
+     * Deletes an information from firebase
+     *
+     * @param informationId id of the information
+     */
+    deleteInformation(informationId) {
+        return this.fireDatabase.database.ref('/information/' + informationId).remove();
+    }
 }

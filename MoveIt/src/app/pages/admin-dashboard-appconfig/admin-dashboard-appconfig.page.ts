@@ -17,7 +17,8 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 export class AdminDashboardAppconfigPage implements OnInit {
     groups: Observable<Array<any>>;
     allGroups: Group[];
-    otps: Observable<Array<any>>;
+ //   otps: Observable<Array<any>>;
+    otps: any[];
     users: Observable<Array<User>>;
     //feature: string;
     checkedFeature: any[] =[];
@@ -34,25 +35,15 @@ export class AdminDashboardAppconfigPage implements OnInit {
           val: 'Rewards',
           isChecked: false
         }
-      ];/* Array<any> = [
-        {
-          val: 'Leaderboard',
-          isChecked: false
-        },
-        {
-          val: 'Social',
-          isChecked: false
-        },
-        {
-          val: 'Rewards',
-          isChecked: false
-        }
-      ];*/
+      ];
 
     constructor(public popoverController: PopoverController, private userService: UserService) {
         this.users = this.userService.getUsers();
         //this.groups = this.userService.getGroups();
-        this.otps = this.userService.getOTPs();
+        this.userService.getOTPs().subscribe(data =>{
+           this.otps = data;
+           console.log(this.otps);
+          });
         // For debugging observables:
         this.users.subscribe(val => console.log(val));
 
@@ -75,7 +66,7 @@ export class AdminDashboardAppconfigPage implements OnInit {
 
         })                    
        });
-        this.otps.subscribe(val => console.log(val));
+      //  this.otps.subscribe(val => console.log(val));
     }
 
     async presentPopoverGroup(event) {
