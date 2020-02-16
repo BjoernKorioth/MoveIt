@@ -19,9 +19,10 @@
     <ion-item *ngFor="let challenge of challenges">
       <ng-container *ngIf="challenge.endTime.getTime() > date.getTime() || !challenge.finished">
         <ion-icon class="trophy" name="trophy"></ion-icon>
-      <ion-label side="start"><h2>{{challenge.title}}
-        <br> Until {{challenge.endTime  | date:'dd. MMM' }}
-        <br> Participants: {{challenge.participants.length}}</h2>
+      <ion-label side="start">
+        <h2><b>{{challenge.title}}</b>
+        <br> <h5>Until {{challenge.endTime  | date:'dd. MMM' }}
+        <br> Participants: {{challenge.participants.length}}</h5></h2>
       </ion-label>
       <ion-button side="end" color="secondary" size="medium" (click)="addToActiveList(challenge)" float-right>I'm in</ion-button>
     </ng-container>
@@ -39,9 +40,9 @@
       <ng-container *ngIf="activeChallenge.endTime.getTime() > date.getTime() || !activeChallenge.finished">
       <ion-icon class="trophy" name="trophy"></ion-icon>
       <ion-label side="start">
-        <h2>{{activeChallenge.title}}
-        <br> Until {{activeChallenge.endTime  | date:'dd. MMM' }}
-        <br> Participants: {{activeChallenge.participants.length}}</h2>
+        <h2><b>{{activeChallenge.title}}</b>
+        <br> <h5>Until {{activeChallenge.endTime  | date:'dd. MMM' }}
+        <br> Participants: {{activeChallenge.participants.length}}</h5></h2>
       </ion-label>
       <ion-button color="secondary" size="medium" (click)= "removeFromActiveList(activeChallenge)" float-right>I'm out</ion-button>
     </ng-container>

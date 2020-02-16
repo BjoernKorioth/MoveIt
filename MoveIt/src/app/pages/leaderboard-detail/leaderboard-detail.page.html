@@ -32,9 +32,9 @@
   
     <ion-item *ngFor="let user of trophiesList; let counter = index" [attr.data-index]="counter">
       <ng-container *ngIf="user.id == currentUser.id; else running">
-        <p slot="start" class="self">{{counter+1}}</p>
+        <p id="space" slot="start" class="self">{{counter+1}}</p>
         <ion-avatar slot="start">
-          <img src="{{user.pictureProfileUrl | async}}" (click)="viewProfile(counter, trophiesList)">
+          <img src="{{user.pictureProfileUrl | async}}">
        </ion-avatar>
        <ion-label>
           <h2 class="self"> You </h2>
@@ -45,11 +45,11 @@
     </ion-label>
   </ng-container>
   <ng-template #running>
-    <p slot="start">{{counter+1}}</p>
+    <p id="space" slot="start">{{counter+1}}</p>
     <ion-avatar slot="start">
       <img src="{{user.pictureProfileUrl | async}}" (click)="viewProfile(counter, trophiesList)">
     </ion-avatar>
-    <ion-label>
+    <ion-label (click)="viewProfile(counter, trophiesList)">
       <h2>{{user.username}}</h2>
       <h3>{{ calculateAge(user.birthday) }} years old</h3>
     </ion-label>
@@ -65,9 +65,9 @@
     <ion-item *ngFor="let user of activitiesModerate ; let counter = index" [attr.data-index]="counter">
 
       <ng-container *ngIf="user.id == currentUser.id; else running">
-        <p slot="start" class="self">{{counter+1}}</p>
+        <p id="space" slot="start" class="self">{{counter+1}}</p>
         <ion-avatar slot="start">
-          <img src="{{user.pictureProfileUrl | async}}" (click)="viewProfile(counter, activitiesModerate)">
+          <img src="{{user.pictureProfileUrl | async}}">
         </ion-avatar>
         <ion-label>
           <h2 class="self"> You </h2>
@@ -78,11 +78,11 @@
         </ion-label>
       </ng-container>
       <ng-template #running>
-        <p slot="start">{{counter+1}}</p>
+        <p id="space" slot="start">{{counter+1}}</p>
         <ion-avatar slot="start">
           <img src="{{user.pictureProfileUrl | async}}" (click)="viewProfile(counter, activitiesModerate)">
         </ion-avatar>
-        <ion-label>
+        <ion-label (click)="viewProfile(counter, activitiesModerate)">
           <h2>{{user.username}}</h2>
           <h3>{{ calculateAge(user.birthday) }} years old</h3>
         </ion-label>
@@ -99,9 +99,9 @@
     <ion-item *ngFor="let user of challengeList ; let counter = index" [attr.data-index]="counter">
 
       <ng-container *ngIf="user.id == currentUser.id; else running">
-        <p slot="start" class="self">{{counter+1}}</p>
+        <p id="space" slot="start" class="self">{{counter+1}}</p>
         <ion-avatar slot="start">
-          <img src="{{user.pictureProfileUrl | async}}" (click)="viewProfile(counter, challengeList)">
+          <img src="{{user.pictureProfileUrl | async}}">
         </ion-avatar>
         <ion-label>
           <h2 class="self"> You </h2>
@@ -112,11 +112,11 @@
         </ion-label>
       </ng-container>
       <ng-template #running>
-        <p slot="start">{{counter+1}}</p>
+        <p id="space" slot="start">{{counter+1}}</p>
         <ion-avatar slot="start">
           <img src="{{user.pictureProfileUrl | async}}" (click)="viewProfile(counter, challengeList)">
         </ion-avatar>
-        <ion-label>
+        <ion-label (click)="viewProfile(counter, challengeList)">
           <h2>{{user.username}}</h2>
           <h3>{{ calculateAge(user.birthday) }} years old</h3>
         </ion-label>

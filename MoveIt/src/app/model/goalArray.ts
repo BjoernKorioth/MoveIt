@@ -13,14 +13,16 @@ export class GoalArray {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?:string, goal?: Goal){
+    constructor(id?:string, activity?: number, type?:string){
         this.id = id || 'No Id';
-        this.goal = goal || new Goal();
+        this.activity = activity|| 0;
+        this.type = type || '';
     }
 
     
     id: string;
-    goal: Goal;
+    activity: number;
+    type: string;
 
     /**
      * Reconstruct the Goal from a firebase result
@@ -32,12 +34,13 @@ export class GoalArray {
      */
     static fromFirebaseObject(id, firebaseObject: any) {
 
-        if(firebaseObject.weeklyModerate !== undefined){
-        //console.log(firebaseObject.weeklyModerate);
-        
-        var goal = Goal.fromAnyObject(id, firebaseObject.weeklyModerate);
+        if(firebaseObject.weeklyModerate !== undefined || firebaseObject.weeklyVigorous !== undefined){
+       
+        var moderate = Goal.fromAnyObject(id, firebaseObject.weeklyModerate);
+
+        var vigorous = Goal.fromAnyObject(id, firebaseObject.weeklyVigorous);
     
-        return new GoalArray(id, goal);
+        return new GoalArray(id, moderate.current + (vigorous.current*2), 'weekly');
         }
         
     }
