@@ -4,6 +4,7 @@ import {ActivityService} from '../../services/activity/activity.service';
 import {Location} from '@angular/common';
 import {AlertController, ToastController} from '@ionic/angular';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 //import { ConsoleReporter } from 'jasmine';
 
 @Component({
@@ -28,7 +29,7 @@ export class AddActivityManualPage implements OnInit {
     error: boolean = false;
 
 
-    constructor(private activityService: ActivityService, private location: Location, public toastController: ToastController, private formBuilder: FormBuilder) {
+    constructor(private activityService: ActivityService, private location: Location, public toastController: ToastController, private formBuilder: FormBuilder, private router: Router) {
         this.activity = new Activity();
         this.location = location;
         this.types = Activity.types;
@@ -117,6 +118,7 @@ export class AddActivityManualPage implements OnInit {
             (activity) => {
                 console.log(activity);
                 this.presentAlert();
+                this.router.navigateByUrl('/menu/progress');
             })
             .catch(err => console.error(err)
             );

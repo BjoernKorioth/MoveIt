@@ -4,6 +4,8 @@ import {ActivityService} from '../../services/activity/activity.service';
 import { Location } from  '@angular/common';
 import { count } from 'rxjs/operators';
 import { ToastController} from '@ionic/angular';
+import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -34,7 +36,7 @@ export class AddActivityTrackPage implements OnInit {
   overallTimer: any = false;
 
 
-  constructor(private activityService: ActivityService, private location: Location, private toastController: ToastController) {
+  constructor(private activityService: ActivityService, private location: Location, private toastController: ToastController, private router: Router) {
     this.activity = new Activity();
     this.location = location;
     this.types = Activity.types;
@@ -70,6 +72,7 @@ export class AddActivityTrackPage implements OnInit {
         res => {
           console.log(res);
           this.presentAlert();
+          this.router.navigateByUrl('/menu/progress');
         },
         err => console.log(err)
     );
