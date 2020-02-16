@@ -61,9 +61,13 @@ export class RewardsService {
             trophyStatusSnapshot => {
                 const trophyStatus = trophyStatusSnapshot.val();
                 const newAvailable = [];
+                if (!('won' in trophyStatus)) {
+                    trophyStatus.won = [];
+                }
                 // Iterate over trophies
                 // Use only trophies that aren't won yet?
-                for (const trophy of trophyStatus.available) {
+                for (const trophyId of trophyStatus.available) {
+                    const trophy = Trophy.defaultTrophies.find(element => element.id === trophyId);
                     // Determine for each trophy if it is won or not
                     const won = this.calculateTrophyStatus(trophy, activities, goalWins);
                     // Add it to the respective list
@@ -230,11 +234,12 @@ export class RewardsService {
     }
 
 
-    winChallenge(challengeId: string, uid : string) {
+    winChallenge(challengeId: string, uid: string) {
         return new Promise<any>((resolve, reject) => {
-            this.fireDatabase.database.ref('/challengesStatus/' + uid + "/won").child(challengeId).set(challengeId).then(
+            this.fireDatabase.database.ref('/challengesStatus/' + uid + '/won').child(challengeId).set(challengeId).then(
                 res => resolve(res),
                 err => reject(err)
-        )});
+            );
+        });
     }
 }
