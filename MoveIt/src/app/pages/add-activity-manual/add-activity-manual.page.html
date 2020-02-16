@@ -43,7 +43,7 @@
     <ion-label *ngIf="check == true && minutes == null"  class="error-message">Duration is required</ion-label>
 
     <ion-item>
-      <a routerLink = "/menu/information">*get infos</a>
+      <a (click)="routeToInfoSingle()">*get infos</a>
       <!--<ion-button expand="block">Add activity</ion-button>-->
   </ion-item>
   <ion-button (click)=addActivity() color="secondary" slot="end" float-right>Add activity</ion-button>

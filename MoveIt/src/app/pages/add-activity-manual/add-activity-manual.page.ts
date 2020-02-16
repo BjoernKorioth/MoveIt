@@ -4,7 +4,7 @@ import {ActivityService} from '../../services/activity/activity.service';
 import {Location} from '@angular/common';
 import {AlertController, ToastController} from '@ionic/angular';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 //import { ConsoleReporter } from 'jasmine';
 
 @Component({
@@ -52,6 +52,17 @@ export class AddActivityManualPage implements OnInit {
     checkInput(){
         this.check = true;
     }
+
+    routeToInfoSingle(){       
+
+        let navigationExtras: NavigationExtras = {
+            queryParams: {
+                infoId: 0
+            }
+        }
+        this.router.navigate(['/menu/information'], navigationExtras);
+    }
+
 
     convertDate(){
         const date = this.date;

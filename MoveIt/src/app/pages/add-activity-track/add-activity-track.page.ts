@@ -5,7 +5,7 @@ import { Location } from  '@angular/common';
 import { count } from 'rxjs/operators';
 import { ToastController} from '@ionic/angular';
 import { Route } from '@angular/compiler/src/core';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 
 
 @Component({
@@ -79,6 +79,16 @@ export class AddActivityTrackPage implements OnInit {
     this.stopTimer();
   
   }
+
+  routeToInfoSingle(){       
+
+    let navigationExtras: NavigationExtras = {
+        queryParams: {
+            infoId: 0
+        }
+    }
+    this.router.navigate(['/menu/information'], navigationExtras);
+}
 
   startTimer(){
 

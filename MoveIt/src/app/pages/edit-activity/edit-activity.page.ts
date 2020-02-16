@@ -3,7 +3,7 @@ import {Activity} from '../../model/activity';
 import {ActivityService} from '../../services/activity/activity.service';
 import { Location } from  '@angular/common';
 
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 //import { ConsoleReporter } from 'jasmine';
 
@@ -110,6 +110,16 @@ export class EditActivityPage implements OnInit {
       );
      
   }
+
+  routeToInfoSingle(){       
+
+    let navigationExtras: NavigationExtras = {
+        queryParams: {
+            infoId: 0
+        }
+    }
+    this.router.navigate(['/menu/information'], navigationExtras);
+}
 
 
 }
