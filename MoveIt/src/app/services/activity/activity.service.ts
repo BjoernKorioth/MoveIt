@@ -141,48 +141,53 @@ export class ActivityService {
      * Retrieve all activities for a specific start and end date from the FitnessAPI
      */
     readFitnessApi() {
-        this.health.requestAuthorization([
-            /* 'distance', 'nutrition', //read and write permissions
-            {
-                read: ['steps'], //read only permission
-                write: ['height', 'weight'] //write only permission
-            } */
-            'activity', 'distance' // we only need read and write permission
-        ])
-            .then(
-                res => console.log(res))
-            .catch(e => console.log(e));
+        return new Promise<any>((resolve, reject) => {
+            this.health.requestAuthorization([
+                /* 'distance', 'nutrition', //read and write permissions
+                {
+                    read: ['steps'], //read only permission
+                    write: ['height', 'weight'] //write only permission
+                } */
+                'activity', 'distance' // we only need read and write permission
+            ])
+                .then(
+                    res => console.log(res))
+                .catch(e => console.log(e));
 
 
-        // get a key/value pair
-        return this.storage.get('lastDate').then((lastDate: Date) => {
-                console.log('last time read at :', lastDate);
-                let startDate: Date;
+            // get a key/value pair
+            return this.storage.get('lastDate').then((lastDate: Date) => {
+                    console.log('last time read at :', lastDate);
+                    let startDate: Date;
 
-                if (lastDate != null) {
-                    startDate = new Date(new Date(lastDate).getTime() + 1); // last time read + 1 ms
-                } else {
-                    // three days ago by default if data has not been read yet
-                    startDate = new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000);
-                }
-                const endDate = new Date(); // now
-
-                return this.health.query({
-                    startDate: startDate,
-                    endDate: endDate,
-                    dataType: 'activity',
-                }).then((value: []) => {
-                    console.log('Value of Health Data loaded: ', value);
-                    if (value.length > 0) {
-                        this.storage.set('lastDate', endDate);
+                    if (lastDate != null) {
+                        startDate = new Date(new Date(lastDate).getTime() + 1); // last time read + 1 ms
+                    } else {
+                        // three days ago by default if data has not been read yet
+                        startDate = new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000);
                     }
-                    return Activity.fromFitApi(value);
-                }).catch((e: any) => {
-                    console.error('HealthData ERROR:---' + e);
-                });
-            },
-            err => console.error(err));
+                    const endDate = new Date(); // now
+
+                    return this.health.query({
+                        startDate: startDate,
+                        endDate: endDate,
+                        dataType: 'activity',
+                    }).then((value: []) => {
+                        console.log('Value of Health Data loaded: ', value);
+                        if (value.length > 0) {
+                            this.storage.set('lastDate', endDate);
+                        }
+                        resolve(Activity.fromFitApi(value));
+                    }).catch((e: any) => {
+                        console.log('HealthData ERROR:---' + e);
+                        // TODO: reject(e);
+                        resolve([]);
+                    });
+                },
+                err => reject(err));
+        });
     }
+
 
     synchronizeApi() {
         return new Promise<any>((resolve, reject) => {
@@ -203,7 +208,10 @@ export class ActivityService {
         return this.storage.get('lastDate');
     }
 
-    updateLastDate(date: Date = new Date()) {
+    updateLastDate(date
+                       :
+                       Date = new Date()
+    ) {
         return this.storage.set('lastDate', date);
     }
 
@@ -211,7 +219,10 @@ export class ActivityService {
     /**
      * writes an activity to the FitnessAPI
      */
-    writeFitnessApi(activity: Activity) {
+    writeFitnessApi(activity
+                        :
+                        Activity
+    ) {
         this.health.requestAuthorization([
             /* 'distance', 'nutrition', //read and write permissions
             {
