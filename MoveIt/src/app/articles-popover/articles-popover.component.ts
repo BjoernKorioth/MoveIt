@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {PopoverController} from '@ionic/angular';
+import {PopoverController, ToastController} from '@ionic/angular';
 import {Information} from '../model/information';
 import {InformationService} from '../services/information/information.service';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
@@ -28,7 +28,7 @@ export class ArticlesPopoverComponent implements OnInit {
     public testUrl: Observable <String>
    
 
-    constructor(private storage: AngularFireStorage, private database: AngularFirestore, public popoverController: PopoverController, private informationService: InformationService) {
+    constructor(private storage: AngularFireStorage, private database: AngularFirestore, public popoverController: PopoverController, private informationService: InformationService, public toastController: ToastController) {
         this.information = new Information();
         this.isUploading = false;
         this.isUploaded = false;
@@ -61,6 +61,17 @@ export class ArticlesPopoverComponent implements OnInit {
 // Status check
     isUploading: boolean;
     isUploaded: boolean;
+
+    async presentToast() {
+        const controller = await this.toastController.create({
+            color: 'dark',
+            duration: 2000,
+            message: 'Article added successfully!',
+            showCloseButton: true
+        }).then(toast => {
+            toast.present();
+        });
+      }
 
 
 
@@ -138,6 +149,7 @@ export class ArticlesPopoverComponent implements OnInit {
             (information) => {
                 console.log(information);
                 console.log(this.UploadedFileURL);
+                this.presentToast();
             })
             .catch(err => console.error(err)
             );

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Information} from '../../model/information';
 import {Observable, of} from 'rxjs';
 import {InformationService} from '../../services/information/information.service';
-import {AlertController} from '@ionic/angular';
+import {AlertController, ToastController} from '@ionic/angular';
 import {AngularFireStorage, AngularFireUploadTask} from '@angular/fire/storage';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {finalize, tap, catchError} from 'rxjs/operators';
@@ -33,7 +33,7 @@ export class AdminDashboardArticlesPage implements OnInit {
  
     infoID: String;
 
-    constructor(private storage: AngularFireStorage, private database: AngularFirestore, private db: AngularFireDatabase, private informationService: InformationService, public popoverController: PopoverController) {
+    constructor(private storage: AngularFireStorage, private toastController: ToastController, private database: AngularFirestore, private db: AngularFireDatabase, private informationService: InformationService, public popoverController: PopoverController) {
         this.articlesObserve = this.informationService.getAllInformation();
         this.articlesObserve.subscribe(result => this.updateAllInformation(result));
         this.isUploading = false;
@@ -68,11 +68,24 @@ export class AdminDashboardArticlesPage implements OnInit {
     isUploading: boolean;
     isUploaded: boolean;
 
+    async presentToast() {
+        const controller = await this.toastController.create({
+            color: 'dark',
+            duration: 2000,
+            message: 'Article edited successfully!',
+            showCloseButton: true
+        }).then(toast => {
+            toast.present();
+        });
+      }
 
     editArticle(article: Information) {
         console.log(article);
         this.informationService.editInformation(article.id, article).then(
-            res => console.log(res),
+            res => {
+                console.log(res);
+                this.presentToast();
+            },
             err => console.log(err)
         );
     }

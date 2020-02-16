@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { Challenge } from '../model/challenge';
 import { ChallengeService } from '../services/challenges/challenge.service';
@@ -13,13 +13,24 @@ export class ChallengePopoverComponent implements OnInit {
 
   challenge: Challenge;
 
-  constructor(public popoverController: PopoverController, private challengeService: ChallengeService, public alertController: AlertController) {
+  constructor(public popoverController: PopoverController, private challengeService: ChallengeService, public alertController: AlertController, public toastController: ToastController) {
      this.challenge = new Challenge();
      console.log(this.challenge);
       
    }
 
   ngOnInit() {}
+
+  async presentToast() {
+    const controller = await this.toastController.create({
+        color: 'dark',
+        duration: 2000,
+        message: 'Challenge added successfully!',
+        showCloseButton: true
+    }).then(toast => {
+        toast.present();
+    });
+  }
 
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -49,7 +60,7 @@ export class ChallengePopoverComponent implements OnInit {
     this.challengeService.createChallenge(this.challenge, participants).then(
       (challenge) => {
           console.log(challenge);
-          this.presentAlert();
+          this.presentToast();
         })
         .catch(err => console.error(err)
         
