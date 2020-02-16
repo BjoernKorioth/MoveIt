@@ -39,9 +39,8 @@
                 (change)="uploadFile($event.target.files)"/>
            </ion-label>
         </ion-item>
-    </ion-card>
 
-  
+          
     <div *ngIf="percentage | async as pct">
         Progress: {{ pct | number }}%
         <ion-progress-bar value="{{ pct / 100 }}"></ion-progress-bar>
@@ -75,6 +74,9 @@
             >
         </div>
     </div>
+    </ion-card>
+
+
 
     <ion-card>
         <ion-list-header>
