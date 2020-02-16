@@ -31,7 +31,7 @@ export class RewardsService {
     }
 
     getWonTrophies() {
-        return this.fireDatabase.list<string>('/trophyStatus/' + firebase.auth().currentUser.uid + '/won').valueChanges();
+        return this.fireDatabase.list<any>('/trophyStatus/' + firebase.auth().currentUser.uid + '/won').valueChanges();
     }
 
     getAvailableTrophies() {
@@ -46,6 +46,10 @@ export class RewardsService {
         return Trophy.defaultTrophies;
     }
 
+    getAllUserTrophies() {
+        return this.fireDatabase.database.ref('/trophyStatus/' + firebase.auth().currentUser.uid).once('value');
+    }
+
     /**
      * Update the trophies and determine if they are won or not
      *
@@ -53,25 +57,32 @@ export class RewardsService {
      * @param goalWins list of goal wins of the relevant user
      */
     updateTrophies(activities: Array<Activity>, goalWins: object) {
-        const trophyStatus = {
-            available: [],
-            won: []
-        };
-
-        // Iterate over trophies
-        // Use only trophies that aren't won yet?
-        for (const trophy of this.getAllTrophies()) {
-            // Determine for each trophy if it is won or not
-            const won = this.calculateTrophyStatus(trophy, activities, goalWins);
-            // Add it to the respective list
-            if (won) {
-                trophyStatus.won.push(trophy.id);
-            } else {
-                trophyStatus.available.push(trophy.id);
-            }
-        }
-        // Update the trophies in the database
-        return this.setTrophies(trophyStatus);
+        return this.getAllUserTrophies().then(
+            trophyStatusSnapshot => {
+                const trophyStatus = trophyStatusSnapshot.val();
+                const newAvailable = [];
+                if (!('won' in trophyStatus)) {
+                    trophyStatus.won = [];
+                }
+                // Iterate over trophies
+                // Use only trophies that aren't won yet?
+                for (const trophyId of trophyStatus.available) {
+                    const trophy = Trophy.defaultTrophies.find(element => element.id === trophyId);
+                    // Determine for each trophy if it is won or not
+                    const won = this.calculateTrophyStatus(trophy, activities, goalWins);
+                    // Add it to the respective list
+                    if (won) {
+                        trophyStatus.won.push({id: trophy.id, time: (new Date()).getTime()});
+                    } else {
+                        newAvailable.push(trophy.id);
+                    }
+                }
+                trophyStatus.available = newAvailable;
+                // Update the trophies in the database
+                return this.setTrophies(trophyStatus);
+            },
+            err => console.log(err)
+        );
     }
 
     /**
@@ -217,6 +228,16 @@ export class RewardsService {
                         reject('Received available trophies in different format than array');
                     }
                 },
+                err => reject(err)
+            );
+        });
+    }
+
+
+    winChallenge(challengeId: string, uid: string) {
+        return new Promise<any>((resolve, reject) => {
+            this.fireDatabase.database.ref('/challengesStatus/' + uid + '/won').child(challengeId).set(challengeId).then(
+                res => resolve(res),
                 err => reject(err)
             );
         });
