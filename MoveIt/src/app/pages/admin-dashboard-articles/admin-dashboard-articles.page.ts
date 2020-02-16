@@ -77,6 +77,14 @@ export class AdminDashboardArticlesPage implements OnInit {
         );
     }
 
+    deleteArticle(article: Information) {
+        console.log(article);
+        this.informationService.deleteInformation(article.id).then(
+            res => console.log(res),
+            err => console.log(err)
+        );
+    }
+
     updateAllInformation(newInformation: Array<Information>) {
         this.articles = newInformation;
     }
