@@ -5,7 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { FCM } from '@ionic-native/fcm/ngx';
-import { Router } from '@angular/router';
+import {NavController} from '@ionic/angular';
 
 
 @Component({
@@ -21,7 +21,7 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private fcm: FCM,
-    private router: Router,
+    private navCtrl: NavController,
   ) {
     this.initializeApp();
   }
@@ -41,11 +41,11 @@ export class AppComponent {
         if (data.wasTapped) {
           console.log('Received in background');
           //this.router.navigate([data.landing_page, data.price]);
-          this.router.navigate(['/menu/dashboard']);
+          this.navCtrl.navigateForward('/menu/dashboard');
         } else {
           console.log('Received in foreground');
           //this.router.navigate([data.landing_page, data.price]);
-          this.router.navigate(['/menu/dashboard']);
+          this.navCtrl.navigateForward('/menu/dashboard');
         }
         });
           
