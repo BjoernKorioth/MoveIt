@@ -16,19 +16,19 @@ export class DashboardDetailPage implements OnInit {
     social = {
         label: 'Socialfeed',
         routerLink: '/menu/socialfeed',
-        image: './assets/Socialfeed.png'
+        image: './assets/socialfeed2.png'
     };
 
     leaderboard = {
         label: 'Leaderboard',
         routerLink: '/menu/leaderboard',
-        image: './assets/Leaderboard.png'
+        image: './assets/leaderboard2.png'
     };
 
     rewards = {
         label: 'Rewards',
         routerLink: '/menu/rewards',
-        image: './assets/Rewards.png'
+        image: './assets/rewards2.png'
     };
 
     group: Observable<string>;
