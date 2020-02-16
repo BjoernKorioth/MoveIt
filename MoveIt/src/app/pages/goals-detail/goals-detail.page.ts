@@ -60,6 +60,7 @@ export class GoalsDetailPage implements OnInit {
             res => {
                 console.log(res);
                 this.presentAlert();
+                this.router.navigateByUrl('/menu/progress');
             },
             err => console.log(err)
         );

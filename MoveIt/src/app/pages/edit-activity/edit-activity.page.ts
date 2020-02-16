@@ -104,6 +104,7 @@ export class EditActivityPage implements OnInit {
           res => {
             console.log(res);
             this.presentAlert();
+            this.router.navigateByUrl('/menu/progress');
           },
           err => console.log(err)
       );
