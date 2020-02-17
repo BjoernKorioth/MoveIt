@@ -133,6 +133,15 @@ export class UserService {
     }
 
     /**
+     * Change the token of the user for FCM
+     *
+     * @param token the token
+     */
+    changeUserToken(token: string) {
+        return this.db.database.ref('/users/' + firebase.auth().currentUser.uid + '/token').set(token);
+    }
+
+    /**
      * Change the profile picture of a user
      *
      * @param userID id of the user
