@@ -9,6 +9,7 @@ interface FireBaseObject {
     birthday: string;
     gender: string;
     profilePictureUrl: string;
+    token: string;
 }
 
 export class User {
@@ -39,6 +40,7 @@ export class User {
     birthday: Date;
     gender: string;
     profilePictureUrl: string;
+    token: string;
 
     static fromFirebaseObject(id: string, firebaseObject: FireBaseObject) {
         return new User(
