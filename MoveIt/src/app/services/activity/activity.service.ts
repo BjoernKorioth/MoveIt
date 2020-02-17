@@ -38,7 +38,8 @@ export class ActivityService {
                         () => {
                             this.writeFitnessApi(activity);
                             this.updateLastDate();
-                            this.runUpdates(activity).then(
+                            const message = 'Look, I did ' + activity.getDuration() + ' minutes of ' + activity.type;
+                            this.runUpdates(activity, message).then(
                                 () => resolve(activity),
                                 err => reject(err)
                             );
@@ -63,7 +64,8 @@ export class ActivityService {
             this.fireDatabase.database.ref(this.activityLocation + firebase.auth().currentUser.uid).child(activityId)
                 .set(activity.toFirebaseObject()).then(
                 () => {
-                    this.runUpdates(activity).then(
+                    const message = 'I edited my activity, I did ' + activity.getDuration() + ' minutes of ' + activity.type;
+                    this.runUpdates(activity, message).then(
                         () => resolve(activity),
                         err => reject(err)
                     );
@@ -73,7 +75,7 @@ export class ActivityService {
         });
     }
 
-    runUpdates(activity: Activity) {
+    runUpdates(activity: Activity, message?: string) {
         return new Promise<any>((resolve, reject) => {
             this.getAllUserActivities().pipe(first()).subscribe(activities => {
                 this.goalService.getGoals().pipe(first()).subscribe(goals => {
@@ -84,7 +86,11 @@ export class ActivityService {
                                 () => {
                                     const post = new Post();
                                     post.activity = activity.id;
-                                    post.content = 'Look, I did ' + activity.getDuration() + ' minutes of ' + activity.type;
+                                    if (message) {
+                                        post.content = message;
+                                    } else {
+                                        post.content = 'Look, I did ' + activity.getDuration() + ' minutes of ' + activity.type;
+                                    }
                                     this.postService.createPost(post).then(
                                         () => resolve(activity),
                                         err => reject(err)

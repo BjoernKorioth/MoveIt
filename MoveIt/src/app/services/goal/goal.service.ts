@@ -5,13 +5,15 @@ import * as firebase from 'firebase/app';
 import {Activity} from '../../model/activity';
 import {GoalArray} from '../../model/goalArray';
 import {map} from 'rxjs/operators';
+import {PostService} from '../post/post.service';
+import {Post} from '../../model/post';
 
 @Injectable({
     providedIn: 'root'
 })
 export class GoalService {
 
-    constructor(private fireDatabase: AngularFireDatabase) {
+    constructor(private fireDatabase: AngularFireDatabase, private postService: PostService) {
     }
 
     /**
@@ -87,7 +89,7 @@ export class GoalService {
         return new Promise<any>((resolve, reject) => {
             // Create a new history entry with the current date as key and the previous target as value
             const newHistoryEntry = {};
-            //newHistoryEntry[new Date().setDate(new Date().getDate() - 23)] = goal.target;
+            // newHistoryEntry[new Date().setDate(new Date().getDate() - 23)] = goal.target;
             newHistoryEntry[new Date().getTime()] = goal.target;
 
             goal.history.push(newHistoryEntry); // Add the value to the history
@@ -111,7 +113,7 @@ export class GoalService {
             map(goals => goals.map(goalPayload => (Goal.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
     }
 
-    getGoalsFromUser(userId: String) {
+    getGoalsFromUser(userId: string) {
         const ref = this.fireDatabase.list<Goal>('/goals/' + userId);
         // Retrieve an array, but with its metadata. This is necesary to have the key available
         // An array of Goals is reconstructed using the fromFirebaseObject method
@@ -128,7 +130,7 @@ export class GoalService {
      * Get all goalsWins of the current user
      */
     getGoalWinsName() {
-        //return this.fireDatabase.list<number>('/wins/' + firebase.auth().currentUser.uid).valueChanges();
+        // return this.fireDatabase.list<number>('/wins/' + firebase.auth().currentUser.uid).valueChanges();
 
         const ref = this.fireDatabase.list<number>('/wins/' + firebase.auth().currentUser.uid);
         // Retrieve an array, but with its metadata. This is necesary to have the key available
@@ -138,14 +140,14 @@ export class GoalService {
     }
 
     getGoalWins() {
-     //   return ref.snapshotChanges().pipe(
-       //     map(goals => goals.map(goalPayload => (Goal.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
+        //   return ref.snapshotChanges().pipe(
+        //     map(goals => goals.map(goalPayload => (Goal.fromFirebaseObject(goalPayload.key, goalPayload.payload.val())))));
 
 
         return this.fireDatabase.list<number>('/wins/' + firebase.auth().currentUser.uid).valueChanges();
-      //  return ref.snapshotChanges().pipe(
+        //  return ref.snapshotChanges().pipe(
         //    map(wonGoals => wonGoals.map(wonPayload => (Date(wonPayload.key, wonPayload.payload.val()))));
-        
+
     }
 
     /**
@@ -190,7 +192,7 @@ export class GoalService {
             startDate = new Date(startDate.setDate(startOfWeek));
         }
 
-        // Filter the activites based on the goals type (e.g. 'moderate') and duration (e.g. 'weekly')
+        // Filter the activities based on the goals type (e.g. 'moderate') and duration (e.g. 'weekly')
         const filteredActivities = this.filterActivities(activities, goal.type, startDate);
 
         // Get the duration for each activity
@@ -198,7 +200,7 @@ export class GoalService {
 
         // Check if there are elements in the array, that passed the filtering
         if (times.length > 0) {
-            // Return the sum of the durations. This comes in milliseconds. The division by 1000*60 converts it to minutes
+            // Return the sum of the durations.
             return times.reduce((accumulator, currentValue) => accumulator + currentValue);
         } else {
             return 0;
@@ -216,7 +218,7 @@ export class GoalService {
             this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
                 .once('value').then(
                 (winsSnapshot) => {
-                    const wins = winsSnapshot.val();
+                    let wins = winsSnapshot.val();
                     if (Array.isArray(wins)) {
                         // If the list exists, check if the goals was already won today
                         const lastWin = new Date(wins.slice(-1)[0]);
@@ -228,19 +230,22 @@ export class GoalService {
                         } else {
                             // If not, append it to the wins list
                             wins.push((new Date()).getTime());
-                            this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
-                                .set(wins).then(
-                                (res) => resolve(res),
-                                (err) => reject(err));
                         }
                     } else {
                         // If it doesn't exist, create a new array with the current win
-                        const newWins = [(new Date()).getTime()];
-                        this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
-                            .set(newWins).then(
-                            (res) => resolve(res),
-                            (err) => reject(err));
+                        wins = [(new Date()).getTime()];
                     }
+                    this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
+                        .set(wins).then(
+                        (res) => {
+                            const post = new Post();
+                            post.content = 'Hooray, I\'ve achieved my ' + goal.duration + ' goal for ' + goal.type;
+                            this.postService.createPost(post).then(
+                                () => resolve(res),
+                                err => reject(err)
+                            );
+                        },
+                        (err) => reject(err));
                 },
                 (err) => reject(err));
         });
