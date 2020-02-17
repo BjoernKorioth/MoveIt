@@ -14,10 +14,14 @@ let admin = require('firebase-admin');
 
 admin.initializeApp(functions.config().firebase);
 
-exports.sendNotificationTrophyWin = functions.database.ref('/wins/{userId}').onCreate((event: { params: { userId: any; }; }) => {
+exports.sendNotificationTrophyWin = functions.database.ref('/wins/{userId}').onWrite((event: any, context: any) => {
 	
-	//get the userId of the person receiving the notification because we need to get their token
-	const winnerId = event.params.userId;
+    //get the userId of the person receiving the notification because we need to get their token
+    console.log("context: ");
+    console.log(context);
+    console.log("event: ");
+    console.log(event);
+	const winnerId = context.params.userId;
 	console.log("winnerId: ", winnerId);
 	
     //get the token of the user receiving the message
@@ -29,9 +33,15 @@ exports.sendNotificationTrophyWin = functions.database.ref('/wins/{userId}').onC
         //Build the message payload and send the message
         console.log("Construction the notification message.");
         const payload = {
-            data: {
-                data_type: "direct_message",
-                title: "You won a new Trophy"
+            notification:{
+                title:"Cloud Function Message",
+                body:"This notification sent from Cloud Function",
+                sound:"default",
+                click_action:"FCM_PLUGIN_ACTIVITY"
+            },
+            data:{
+                landing_page:"second",
+                price:"$3,000.00"
             }
         };   
         return admin.messaging().sendToDevice(token, payload)
