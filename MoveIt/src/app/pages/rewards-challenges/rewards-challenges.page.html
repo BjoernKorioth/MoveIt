@@ -39,8 +39,8 @@
       <h4>Your Active Challenges</h4>
     </ion-row>
     <div *ngIf="(challengesActiveObserve | async) && (challengesObserve | async) && calculatedActive">
-    <ion-item *ngFor="let activeChallenge of activeChallenges">
-      <ng-container *ngIf="activeChallenge.endTime.getTime() > date.getTime() && !activeChallenge.finished">
+    <ng-container *ngFor="let activeChallenge of activeChallenges">
+      <ion-item *ngIf="activeChallenge.endTime.getTime() > date.getTime() && !activeChallenge.finished">
       <ion-icon class="trophy" name="trophy"></ion-icon>
       <ion-label side="start">
         <h2>{{activeChallenge.title}}</h2>
@@ -49,8 +49,9 @@
         <p>Prize: {{activeChallenge.price}}</p>
       </ion-label>
       <ion-button color="secondary" size="small" (click)= "removeFromActiveList(activeChallenge)" float-right>I'm out</ion-button>
-    </ng-container>
+
     </ion-item>
+  </ng-container>
 
   </div>
 </div>
