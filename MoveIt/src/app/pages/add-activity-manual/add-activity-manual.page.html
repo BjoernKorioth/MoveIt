@@ -49,6 +49,7 @@
   <ion-button (click)=addActivity() color="secondary" slot="end" float-right>Add activity</ion-button>
 
     <label *ngIf='(todayA.getTime() - activity.startTime.getTime()) < 0' class="error-message">You cannot add activities for the future</label>
+    <label *ngIf='minutes <= 0' class="error-message">Please fill in the duration</label>
     <label *ngIf='this.error == true' class="error-message">Please do not leave fields empty</label>
 
   </ion-list>

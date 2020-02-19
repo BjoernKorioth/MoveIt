@@ -97,6 +97,10 @@ export class AddActivityManualPage implements OnInit {
     }
 
     addActivity() {
+        if(this.minutes <= 0){
+            return;
+        }
+   
         if(this.time == null || this.date == null || this.minutes == null){
             this.error = true;
             let that = this;
@@ -123,7 +127,7 @@ export class AddActivityManualPage implements OnInit {
                 setTimeout(function(){ this.error=false; }, 3000);
                 return;
             }
-       
+
 
         this.activityService.createActivity(this.activity).then(
             (activity) => {
