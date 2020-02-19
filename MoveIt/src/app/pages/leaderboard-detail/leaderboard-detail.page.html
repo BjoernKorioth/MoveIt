@@ -18,7 +18,7 @@
         trophies
       </ion-segment-button>
       <ion-segment-button value="actMinutes">
-        active minutes
+        minutes
       </ion-segment-button>
       <ion-segment-button value="challenges" *ngIf="rewards">
         challenges
@@ -41,7 +41,7 @@
           <h3>{{ calculateAge(user.birthday) }} years old</h3>
         </ion-label>
     <ion-label side="end">
-      <p class="self">{{user.activity}} won trophies</p>
+      <p class="self" text-right>{{user.activity}} won</p>
     </ion-label>
   </ng-container>
   <ng-template #running>
@@ -54,7 +54,7 @@
       <h3>{{ calculateAge(user.birthday) }} years old</h3>
     </ion-label>
     <ion-label side="end">
-      <p>{{user.activity}} won trophies</p>
+      <p text-right>{{user.activity}} won</p>
     </ion-label>
 
   </ng-template>
@@ -74,7 +74,7 @@
           <h3>{{ calculateAge(user.birthday) }} years old</h3>
         </ion-label>
         <ion-label side="end">
-          <p class="self">{{user.activity}} active minutes</p>
+          <p class="self" text-right>{{user.activity}} min</p>
         </ion-label>
       </ng-container>
       <ng-template #running>
@@ -87,7 +87,7 @@
           <h3>{{ calculateAge(user.birthday) }} years old</h3>
         </ion-label>
         <ion-label side="end">
-          <p>{{user.activity}} active minutes</p>
+          <p text-right>{{user.activity}} min</p>
         </ion-label>
 
       </ng-template>
@@ -108,7 +108,7 @@
           <h3>{{ calculateAge(user.birthday) }} years old</h3>
         </ion-label>
         <ion-label side="end">
-          <p class="self">{{user.activity}} won challenges</p>
+          <p class="self" text-right>{{user.activity}} won</p>
         </ion-label>
       </ng-container>
       <ng-template #running>
@@ -121,7 +121,7 @@
           <h3>{{ calculateAge(user.birthday) }} years old</h3>
         </ion-label>
         <ion-label side="end">
-          <p>{{user.activity}} won challenges</p>
+          <p text-right>{{user.activity}} won</p>
         </ion-label>
 
       </ng-template>

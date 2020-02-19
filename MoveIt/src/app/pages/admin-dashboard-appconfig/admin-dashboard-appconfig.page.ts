@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {PopoverController} from '@ionic/angular';
+import {PopoverController, ToastController} from '@ionic/angular';
 import {AppconfigPopoverComponent} from 'src/app/appconfig-popover/appconfig-popover.component';
 import {AppconfigGroupPopoverComponent} from 'src/app/appconfig-group-popover/appconfig-group-popover.component';
 import {UserService} from '../../services/user/user.service';
@@ -37,7 +37,7 @@ export class AdminDashboardAppconfigPage implements OnInit {
         }
       ];
 
-    constructor(public popoverController: PopoverController, private userService: UserService) {
+    constructor(public popoverController: PopoverController, private userService: UserService, private toastController: ToastController) {
         this.users = this.userService.getUsers();
         //this.groups = this.userService.getGroups();
         this.userService.getOTPs().subscribe(data =>{
@@ -69,6 +69,29 @@ export class AdminDashboardAppconfigPage implements OnInit {
       //  this.otps.subscribe(val => console.log(val));
     }
 
+    
+    async presentToastGroup() {
+        const controller = await this.toastController.create({
+            color: 'dark',
+            duration: 2000,
+            message: 'Group edited successfully!',
+            showCloseButton: true
+        }).then(toast => {
+            toast.present();
+        });
+      }
+
+      async presentToast() {
+        const controller = await this.toastController.create({
+            color: 'dark',
+            duration: 2000,
+            message: 'Userconfig edited successfully!',
+            showCloseButton: true
+        }).then(toast => {
+            toast.present();
+        });
+      }
+
     async presentPopoverGroup(event) {
         const popover = await this.popoverController.create({
             component: AppconfigGroupPopoverComponent,
@@ -94,7 +117,11 @@ export class AdminDashboardAppconfigPage implements OnInit {
 
     editUserconfig(userID, groupID) {
         this.userService.changeUserGroup(userID, groupID).then(
-            res => console.log(res),
+            res => 
+            {
+                console.log(res);
+                this.presentToast();
+            },
             err => console.log(err)
         );
     }
@@ -125,7 +152,10 @@ export class AdminDashboardAppconfigPage implements OnInit {
 
         console.log(group);
         this.userService.editGroup(group).then(
-            res => console.log(res),
+            res => {
+                console.log(res);
+                this.presentToastGroup();
+            },
             err => console.log(err)
         );
     }

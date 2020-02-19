@@ -118,9 +118,9 @@
 
         <ion-card>
             <ion-list-header>
-                <ion-button size="small" (click)="slidePrev()"><ion-icon size="small" name="arrow-back"></ion-icon></ion-button>
+                <ion-icon size="small" name="arrow-back" (click)="slidePrev()"></ion-icon>
                 Weekly Goals 
-                <ion-button size="small" (click)="slideNext()"><ion-icon size="small" name="arrow-forward"></ion-icon></ion-button>
+                <ion-icon class="right" size="small" name="arrow-forward" (click)="slideNext()"></ion-icon>
              </ion-list-header>
         <ion-list>
             <ion-item>
@@ -171,9 +171,9 @@
 <ion-slide *ngIf="i === 3">
     <ion-card>
         <ion-list-header>
-            <ion-button size="small" (click)="slidePrev()"><ion-icon size="small" name="arrow-back"></ion-icon></ion-button>
+            <ion-icon size="small" name="arrow-back" (click)="slidePrev()"></ion-icon>
             Weekly Goals 
-            <ion-button size="small" (click)="slideNext()"><ion-icon size="small" name="arrow-forward"></ion-icon></ion-button>
+            <ion-icon size="small" name="arrow-forward" (click)="slideNext()" class="right"></ion-icon>
          </ion-list-header>
         <ion-list >
             <ion-item>

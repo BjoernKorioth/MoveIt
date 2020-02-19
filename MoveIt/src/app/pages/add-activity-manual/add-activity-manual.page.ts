@@ -4,6 +4,7 @@ import {ActivityService} from '../../services/activity/activity.service';
 import {Location} from '@angular/common';
 import {AlertController, ToastController} from '@ionic/angular';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Router, NavigationExtras } from '@angular/router';
 //import { ConsoleReporter } from 'jasmine';
 
 @Component({
@@ -28,7 +29,7 @@ export class AddActivityManualPage implements OnInit {
     error: boolean = false;
 
 
-    constructor(private activityService: ActivityService, private location: Location, public toastController: ToastController, private formBuilder: FormBuilder) {
+    constructor(private activityService: ActivityService, private location: Location, public toastController: ToastController, private formBuilder: FormBuilder, private router: Router) {
         this.activity = new Activity();
         this.location = location;
         this.types = Activity.types;
@@ -51,6 +52,17 @@ export class AddActivityManualPage implements OnInit {
     checkInput(){
         this.check = true;
     }
+
+    routeToInfoSingle(){       
+
+        let navigationExtras: NavigationExtras = {
+            queryParams: {
+                infoId: 0
+            }
+        }
+        this.router.navigate(['/menu/information'], navigationExtras);
+    }
+
 
     convertDate(){
         const date = this.date;
@@ -85,6 +97,10 @@ export class AddActivityManualPage implements OnInit {
     }
 
     addActivity() {
+        if(this.minutes <= 0){
+            return;
+        }
+   
         if(this.time == null || this.date == null || this.minutes == null){
             this.error = true;
             let that = this;
@@ -111,12 +127,13 @@ export class AddActivityManualPage implements OnInit {
                 setTimeout(function(){ this.error=false; }, 3000);
                 return;
             }
-       
+
 
         this.activityService.createActivity(this.activity).then(
             (activity) => {
                 console.log(activity);
                 this.presentAlert();
+                this.router.navigateByUrl('/menu/progress');
             })
             .catch(err => console.error(err)
             );

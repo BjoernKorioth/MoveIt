@@ -93,7 +93,12 @@
                     <h3>{{goal.current}} / {{goal.target}} min</h3>
                 </ion-label>
             </ion-item>
-            <ion-progress-bar color="primary" [value]="goal.relative"></ion-progress-bar>
+            
+            <ng-container *ngIf="goal.type == 'moderate'" >
+            <ion-progress-bar color="secondary" [value]="goal.relative"></ion-progress-bar>
+            </ng-container>
+            <ion-progress-bar *ngIf="goal.type == 'vigorous'" color="primary" [value]="goal.relative"></ion-progress-bar> 
+            <ion-progress-bar *ngIf="goal.type == 'weight training'" color="tertiary" [value]="goal.relative"></ion-progress-bar>
 
            
         </ion-list>

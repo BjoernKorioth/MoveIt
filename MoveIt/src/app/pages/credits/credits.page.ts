@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from  '@angular/common';
 
 
 @Component({
@@ -8,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CreditsPage implements OnInit {
 
-  constructor() { }
+  constructor(private location: Location) {
+    this.location = location;
+   }
 
   ngOnInit() {
+  }
+
+  
+  goBack(){
+    this.location.back();
   }
 
 }

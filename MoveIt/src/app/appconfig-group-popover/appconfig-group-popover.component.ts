@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
+import { PopoverController, ToastController } from '@ionic/angular';
 import { UserService } from '../services/user/user.service';
 import { Group } from '../model/group';
 
@@ -26,7 +26,7 @@ export class AppconfigGroupPopoverComponent implements OnInit {
     }
   ];
 
-  constructor(public popoverController: PopoverController, private userService: UserService) { 
+  constructor(public popoverController: PopoverController, private userService: UserService, private toastController: ToastController) { 
     this.group = new Group();
   }
 
@@ -44,9 +44,24 @@ export class AppconfigGroupPopoverComponent implements OnInit {
     });
 
     this.userService.createGroup(this.group).then(
-      res => console.log(res),
+      res => {
+        console.log(res);
+        this.presentToast();
+      },
       err => console.log(err)
   );
 }
+
+async presentToast() {
+  const controller = await this.toastController.create({
+      color: 'dark',
+      duration: 2000,
+      message: 'Group created successfully!',
+      showCloseButton: true
+  }).then(toast => {
+      toast.present();
+  });
+}
+
 
 }

@@ -19,6 +19,7 @@ export class AdminDashboardChallengesPage implements OnInit {
     challengesObserve: Challenge[];
     users: Array<User>;
     winnerId: string;
+    today: Date = new Date();
 
 
     constructor(private rewardsService: RewardsService, private challService: ChallengeService, public popoverController: PopoverController, private userService: UserService) {

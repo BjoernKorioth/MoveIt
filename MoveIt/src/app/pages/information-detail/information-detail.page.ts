@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {InformationService} from '../../services/information/information.service';
 import {Information} from '../../model/information';
 import {Location} from '@angular/common';
-import {Router, NavigationExtras} from '@angular/router';
+import {Router, NavigationExtras, ActivatedRoute} from '@angular/router';
 
 
 
@@ -15,7 +15,7 @@ export class InformationDetailPage implements OnInit {
     static: any;
     dynamic: any;
 
-    constructor(private informationService: InformationService, private location: Location, private router: Router) {
+    constructor(private informationService: InformationService, private location: Location, private router: Router, private route: ActivatedRoute) {
         this.location = location;
         informationService.getAllInformation().subscribe(dynamic => this.dynamic = dynamic);
         informationService.getAllInformation().subscribe(dynamic => console.log(dynamic));
@@ -35,6 +35,26 @@ export class InformationDetailPage implements OnInit {
                 picture: 'Stopwatch.jpg'
             },
         ];
+
+        let infoId;
+        this.route.queryParams.subscribe(params=>{
+            if(params.infoId == null) {
+                return;
+            }
+            infoId = JSON.parse(params.infoId);            
+
+            if(infoId !== null && infoId !== undefined) {            
+                const object = this.static[infoId];
+    
+                let navigationExtras: NavigationExtras = {
+                    queryParams: {
+                        special: JSON.stringify(object)
+                    },
+                    replaceUrl: true
+                }
+                this.router.navigate(['/menu/information/information/single'], navigationExtras);
+            }
+        });                
     }
 
     ngOnInit() {
