@@ -4,6 +4,8 @@ import {Observable} from 'rxjs';
 import {TrackingService} from '../../services/tracking/tracking.service';
 import {ViewLog} from '../../model/viewLog';
 
+import { FCM } from '@ionic-native/fcm/ngx';
+
 @Component({
     selector: 'app-dashboard-detail',
     templateUrl: './dashboard-detail.page.html',
@@ -37,10 +39,20 @@ export class DashboardDetailPage implements OnInit {
     leaderboardB: boolean = false;
     socialB: boolean = false;
     rewardsB: boolean = false;
-    constructor(private userService: UserService) {
+    constructor(private userService: UserService, private fcm: FCM,) {
 
         this.group = userService.getUsergroup();
         this.group.subscribe(group => this.updateGroup(group));
+
+        this.fcm.getToken().then(token => {
+            console.log(token);
+            this.userService.changeUserToken(token);
+        });
+        this.fcm.onTokenRefresh().subscribe(token => {
+            console.log(token);
+            this.userService.changeUserToken(token);
+        });      
+        
 
     }
 
