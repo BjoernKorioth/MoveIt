@@ -12,6 +12,8 @@ import { ChallengeService } from '../services/challenges/challenge.service';
 export class ChallengePopoverComponent implements OnInit {
 
   challenge: Challenge;
+  startTime: any;
+  endTime: any;
 
   constructor(public popoverController: PopoverController, private challengeService: ChallengeService, public alertController: AlertController) {
      this.challenge = new Challenge();
@@ -33,6 +35,17 @@ export class ChallengePopoverComponent implements OnInit {
     console.log(result);
   }
 
+  convertStartDate(){
+    
+    this.challenge.startTime = new Date(this.startTime);
+
+  }
+  convertEndDate(){
+    
+    this.challenge.endTime = new Date(this.endTime);
+
+  }
+
   addChallenge() {
     console.log(this.challenge);
     var participantsArray = [];
@@ -40,12 +53,20 @@ export class ChallengePopoverComponent implements OnInit {
 
     var random = Math.random()*30;
 
+    this.challenge.startTime.setHours(0,0,0,0);
+    this.challenge.endTime.setHours(23,59,59,999);
+
 
     for(var i = 0; i<random; i++){
       participants["test"+i] = i;
     }
     
     this.challenge.participants = [];
+
+    if(this.challenge.startTime.getTime() - this.challenge.endTime.getTime() > 0){
+      return;
+    }
+
     this.challengeService.createChallenge(this.challenge, participants).then(
       (challenge) => {
           console.log(challenge);

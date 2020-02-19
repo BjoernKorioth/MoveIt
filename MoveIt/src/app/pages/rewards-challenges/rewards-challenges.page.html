@@ -17,16 +17,20 @@
       <h4>Challenge yourself!</h4>
     </ion-row>
 <div *ngIf="(challengesObserve | async) && (challengesActiveObserve | async) && calculatedAll">
-    <ion-item *ngFor="let challenge of challenges">
-      <ng-container *ngIf="challenge.endTime.getTime() > date.getTime() || !challenge.finished">
+  <ng-container *ngFor="let challenge of challenges">
+  <ion-item  *ngIf="challenge.endTime.getTime() > date.getTime() && !challenge.finished">
+
         <ion-icon class="trophy" name="trophy"></ion-icon>
       <ion-label side="start"><h2>{{challenge.title}}</h2>
         <p>Until {{challenge.endTime  | date:'dd. MMM' }}</p>
         <p>Participants: {{challenge.participants.length}}</p>
+        <p>Prize: {{challenge.price}}</p>
       </ion-label>
       <ion-button side="end" color="secondary" size="small" (click)="addToActiveList(challenge)" float-right>I'm in</ion-button>
-    </ng-container>
+    
     </ion-item>
+  </ng-container>
+   
   </div>
 </div>
 
@@ -36,12 +40,13 @@
     </ion-row>
     <div *ngIf="(challengesActiveObserve | async) && (challengesObserve | async) && calculatedActive">
     <ion-item *ngFor="let activeChallenge of activeChallenges">
-      <ng-container *ngIf="activeChallenge.endTime.getTime() > date.getTime() || !activeChallenge.finished">
+      <ng-container *ngIf="activeChallenge.endTime.getTime() > date.getTime() && !activeChallenge.finished">
       <ion-icon class="trophy" name="trophy"></ion-icon>
       <ion-label side="start">
         <h2>{{activeChallenge.title}}</h2>
         <p> Until {{activeChallenge.endTime  | date:'dd. MMM' }} </p>
         <p> Participants: {{activeChallenge.participants.length}}</p>
+        <p>Prize: {{activeChallenge.price}}</p>
       </ion-label>
       <ion-button color="secondary" size="small" (click)= "removeFromActiveList(activeChallenge)" float-right>I'm out</ion-button>
     </ng-container>

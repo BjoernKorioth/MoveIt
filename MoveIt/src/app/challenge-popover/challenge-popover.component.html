@@ -9,11 +9,11 @@
   </ion-item>
   <ion-item>
     <ion-label>Start</ion-label>
-    <ion-datetime [(ngModel)]="challenge.startTime" displayFormat="YYYY-MM-DD" placeholder="Start Time" text-right></ion-datetime>
+    <ion-datetime [(ngModel)]="startTime" placeholder="Start Time" (ionChange)="convertStartDate()" text-right></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>End</ion-label>
-    <ion-datetime [(ngModel)]="challenge.endTime" displayFormat="YYYY-MM-DD" placeholder="End Time" text-right></ion-datetime>
+    <ion-datetime [(ngModel)]="endTime" placeholder="End Time" (ionChange)="convertEndDate()" text-right></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>Prize</ion-label>
@@ -22,4 +22,8 @@
   <ion-item>
     <ion-button (click)="addChallenge()" color="secondary"  slot="end" float-right>Create</ion-button>
   </ion-item>
+    <label *ngIf='(challenge.startTime.getTime() - challenge.endTime.getTime()) > 0' class="error-message">End date has to be after start date</label>
+
+  
+
 </ion-list>

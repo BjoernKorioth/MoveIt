@@ -23,9 +23,9 @@ export class Challenge {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
         this.description = description || '';
-        this.endTime = endTime;
+        this.endTime = endTime || new Date();
         this.price = price || '';
-        this.startTime = startTime;
+        this.startTime = startTime || new Date();
         this.title = title || '';
         this.participants = [];
         //to get the number iterates through the object of participants 
