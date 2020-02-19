@@ -60,10 +60,10 @@ exports.sendNotification = functions.https.onCall((data: any, context: any) => {
     const title = data.title || "You reached your goal!";
     const body = data.body || "Congratulations - you reached your goal!";
     // Authentication / user information is automatically added to the request.
-    const uid = context.auth.uid;
-    const name = context.auth.token.name || null;
-    const picture = context.auth.token.picture || null;
-    const email = context.auth.token.email || null;
+    // const uid = context.auth.uid;
+    // const name = context.auth.token.name || null;
+    // const picture = context.auth.token.picture || null;
+    // const email = context.auth.token.email || null;
 
     const payload = {
         notification: {
