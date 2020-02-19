@@ -17,10 +17,10 @@ admin.initializeApp(functions.config().firebase);
 exports.sendNotificationTrophyWin = functions.database.ref('/wins/{userId}').onWrite((event: any, context: any) => {
 	
     //get the userId of the person receiving the notification because we need to get their token
-    console.log("context: ");
-    console.log(context);
-    console.log("event: ");
-    console.log(event);
+    // console.log("context: ");
+    // console.log(context);
+    // console.log("event: ");
+    // console.log(event);
 	const winnerId = context.params.userId;
 	console.log("winnerId: ", winnerId);
 	
@@ -34,14 +34,14 @@ exports.sendNotificationTrophyWin = functions.database.ref('/wins/{userId}').onW
         console.log("Construction the notification message.");
         const payload = {
             notification:{
-                title:"Cloud Function Message",
-                body:"This notification sent from Cloud Function",
+                title:"You reached your goal!",
+                body:"Congratulations - you reached your goal!",
                 sound:"default",
                 click_action:"FCM_PLUGIN_ACTIVITY"
             },
             data:{
-                landing_page:"second",
-                price:"$3,000.00"
+                header: "Congratulations!",
+                text: "Congratulations! You have reached your goal"
             }
         };   
         return admin.messaging().sendToDevice(token, payload)
