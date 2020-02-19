@@ -47,7 +47,7 @@ export class AppComponent {
         if (data.wasTapped) {
             console.log('Received in background ' + data);
             //this.router.navigate([data.landing_page, data.price]);
-            this.presentAlertConfirm(data.header, data.message);
+            this.presentAlertConfirm(data.header, data.text);
             this.navCtrl.navigateForward('/menu/dashboard');
             
         } else {
@@ -61,10 +61,10 @@ export class AppComponent {
     });
   }
 
-  async presentAlertConfirm(header: string, message: string) {
+  async presentAlertConfirm(header: string, text: string) {
     const alert = await this.alertController.create({
       header: header,
-      message: message,
+      message: text,
       buttons: [
         {
           text: 'Like It!',
