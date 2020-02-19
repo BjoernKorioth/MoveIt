@@ -36,7 +36,7 @@ export class AdminDashboardNotificationsPage implements OnInit {
     sendNotification(uid = 'Iq7dMo8WTNb328iKX9sJyScthko2') {
         const title = 'demo title';
         const body = 'demo body';
-        this.notificationService.sendUserNotification(uid, title, body).then(
+        this.notificationService.sendUserNotification(uid, title, body, 'manualNotification').then(
             res => console.log(res),
             err => console.log(err)
         );

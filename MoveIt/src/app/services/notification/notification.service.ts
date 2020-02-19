@@ -10,7 +10,7 @@ export class NotificationService {
     constructor(private db: AngularFireDatabase) {
     }
 
-    sendUserNotification(uid: string, title: string, body: string) {
+    sendUserNotification(uid: string, title: string, body: string, type: string) {
         return new Promise((reject, resolve) => {
             const sendNotification = firebase.functions().httpsCallable('sendNotification');
 
@@ -20,7 +20,15 @@ export class NotificationService {
                     if (!token) {
                         reject('no token found for user id');
                     }
-                    return sendNotification({token, title, body}).then(
+                    const data = {
+                        token,
+                        title,
+                        body,
+                        type,
+                        uid: firebase.auth().currentUser.uid,
+                        id: (new Date()).getTime().toString()
+                    };
+                    return sendNotification(data).then(
                         (result) => resolve(result),
                         err => reject(err));
                 },
@@ -68,7 +76,7 @@ export class NotificationService {
                                     if (sendNotification) {
                                         if ('token' in users[user]) {
                                             console.log('sending notification to ' + user);
-                                            this.sendUserNotification(user, title, body).then(
+                                            this.sendUserNotification(user, title, body, 'goalReminder').then(
                                                 res => console.log(res),
                                                 err => reject(err)
                                             );
