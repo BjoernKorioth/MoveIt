@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "743283522973",
+    "firebase_url": "https://moveit-2019.firebaseio.com",
+    "project_id": "moveit-2019",
+    "storage_bucket": "moveit-2019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743283522973:android:6414528226a758fb100374",
+        "android_client_info": {
+          "package_name": "com.moveitproject.www"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "743283522973-e3g2b0cnk8bkpgfash7f0ub9ce60at8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgO7jYdUHE97sz7UwJuFRTJh52Pht-jrA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743283522973-e3g2b0cnk8bkpgfash7f0ub9ce60at8g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

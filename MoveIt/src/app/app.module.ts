@@ -22,6 +22,8 @@ import {AngularFireAuthGuardModule} from '@angular/fire/auth-guard';
 import { Health } from '@ionic-native/health/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 
+import { FCM } from '@ionic-native/fcm/ngx';
+
 
 const firebaseConfig = {
     apiKey: 'AIzaSyAeeexHFSp2HevDoOi7MdzCLdgET6QtMg4',
@@ -59,6 +61,7 @@ const firebaseConfig = {
         SplashScreen,
         AuthenticateService,
         Health,
+        FCM,
         {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]
