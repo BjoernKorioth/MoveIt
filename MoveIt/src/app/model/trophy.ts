@@ -39,7 +39,7 @@ export class Trophy {
         this.conditions = conditions || [];
     }
 
-    static conditions1 = [
+    static perfectWeek1 = [
         {
             time: {unit: 'week', number: 1},
             requirements: [
@@ -54,17 +54,24 @@ export class Trophy {
                     expression: 'dailyVigorous',
                     amount: 7,
                     modifier: 'consecutive'
-                },
+                }
+            ]
+        }
+    ];
+    static perfectWeek2 = [
+        {
+            time: {unit: 'week', number: 1},
+            requirements: [
                 {
                     type: 'goal',
                     expression: 'dailyWeight',
                     amount: 7,
                     modifier: 'consecutive'
-                },
+                }
             ]
         }
     ];
-    static conditions2 = [
+    static activityWeek = [
         {
             time: {unit: 'week', number: 1},
             requirements: [{
@@ -75,21 +82,39 @@ export class Trophy {
             }]
         }
     ];
-    static conditions3 = [
+    static moderateStreek = [
         {
-            time: {unit: 'day', number: 1},
+            time: {unit: 'day', number: 10},
             requirements: [{
                 type: 'goal',
-                expression: 'dailyWeight',
-                amount: 2,
+                expression: 'dailyModerate',
+                amount: 1,
+                modifier: ''
+            }]
+        }
+    ];
+    static weightStreek = [
+        {
+            time: {unit: 'week', number: 2},
+            requirements: [{
+                type: 'goal',
+                expression: 'weeklyVigorous',
+                amount: 1,
                 modifier: ''
             }]
         }
     ];
     static defaultTrophies = [
-        new Trophy('perfect-week', 'Win all your daily goals each day for a week', 'Perfect Week', Trophy.conditions1),
-        new Trophy('7-activity-week', 'Complete 7 physical activities in one week', '7 Activity Week', Trophy.conditions2),
-        new Trophy('2-weight-goals', 'Win your weight goal twice', '2 weight goals', Trophy.conditions3)
+        new Trophy('perfect-activity-week', 'Win all your daily activity goals each day for a week',
+            'Perfect Activity Week', Trophy.perfectWeek1),
+        new Trophy('perfect-weight-week', 'Win all your daily weight training goals each day for a week',
+            'Perfect Weight Training Week', Trophy.perfectWeek2),
+        new Trophy('7-activity-week', 'Complete 7 physical activities in one week',
+            '7 Activity Week', Trophy.activityWeek),
+        new Trophy('daily-goal-streek', 'You\'re on a streek of 10 for your daily moderate activity goal',
+            '10 Streek Moderate Activity', Trophy.moderateStreek),
+        new Trophy('weekkly-goal-streek', 'You\'re on a streek of 2 for your weekly vigorous activity goal',
+            '2 Streek Vigorous Activity', Trophy.weightStreek)
     ];
     id: string;
     description: string;
