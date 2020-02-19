@@ -425,32 +425,6 @@ export class ProgressDetailPage implements OnInit {
 
     loadHealthData() {
 
-        /* this.health.requestAuthorization([
-            'activity'
-        ])
-            .then(
-                res => console.log(res))
-            .catch(e => console.log(e));
-        this.health.query({
-            startDate: new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000), // three days ago
-            endDate: new Date(), // now
-            dataType: 'activity',
-        }).then((value: []) => {
-            console.log('Value of Health Dataloaded:', value);
-            // console.log('Before For loop');
-            // tslint:disable-next-line: forin
-            // for (const val in value) {
-            // console.log('HealthData data' + JSON.stringify(value[val].value));
-            // console.log('HealthData data' + JSON.stringify(value[val]));
-            // }
-        }).catch((e: any) => {
-            console.error('HealthData ERROR:---' + e);
-        }); */
-        //var startDate = new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000); // three days ago
-        //var endDate = new Date(); // now
-        var acts = this.activityService.readFitnessApi();
-        console.log('ConvertedData: ' + acts);
-
     }
 
 
