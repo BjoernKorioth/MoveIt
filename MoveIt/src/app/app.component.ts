@@ -8,6 +8,7 @@ import { FCM } from '@ionic-native/fcm/ngx';
 import {NavController} from '@ionic/angular';
 import {UserService} from 'src/app/services/user/user.service';
 import { AlertController } from '@ionic/angular';
+import {TrackingService} from './services/tracking/tracking.service';
 
 
 @Component({
@@ -25,7 +26,8 @@ export class AppComponent {
     private fcm: FCM,
     private navCtrl: NavController,
     private userService: UserService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private trackingService: TrackingService,
   ) {
     this.initializeApp();
   }
@@ -46,24 +48,26 @@ export class AppComponent {
         console.log(data);
         if (data.wasTapped) {
             console.log('Received in background ' + data);
-            //this.router.navigate([data.landing_page, data.price]);
-            this.presentAlertConfirm(data.header, data.text);
+            // this.router.navigate([data.landing_page, data.price]);
+            // this.presentAlertConfirm(data.header, data.text);
+            this.trackingService.setReaction(data.id, data.type, 'positive');
             this.navCtrl.navigateForward('/menu/dashboard');
-            
+
         } else {
             console.log('Received in foreground ' + data);
-            //this.router.navigate([data.landing_page, data.price]);
-            this.presentAlertConfirm(data.header, data.text);
+            // this.router.navigate([data.landing_page, data.price]);
+            this.presentAlertConfirm(data.header, data.text, data.id, data.type);
             this.navCtrl.navigateForward('/menu/dashboard');
         }
+
     });
-          
+
     });
   }
 
-  async presentAlertConfirm(header: string, text: string) {
+  async presentAlertConfirm(header: string, text: string, id: string, type: string) {
     const alert = await this.alertController.create({
-      header: header,
+      header,
       message: text,
       buttons: [
         {
@@ -74,6 +78,7 @@ export class AppComponent {
         }, {
           text: 'Naaah',
           handler: () => {
+            this.trackingService.setReaction(id, type, 'positive');
             console.log('Confirm Okay');
           }
         }

@@ -49,7 +49,7 @@ export class Reaction {
         return {
             notification: this.notification,
             time: this.time.getTime(),
-            object: this.response
+            response: this.response
         };
     }
 }

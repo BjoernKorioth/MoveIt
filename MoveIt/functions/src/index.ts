@@ -57,13 +57,23 @@ exports.sendNotificationTrophyWin = functions.database.ref('/wins/{userId}').onW
 exports.sendNotification = functions.https.onCall((data: any, context: any) => {
     // Message text passed from the client.
     const token = data.token;
+    const uid = data.uid;
     const title = data.title || "You reached your goal!";
     const body = data.body || "Congratulations - you reached your goal!";
+    const id = data.id || (new Date()).getTime();
+    const type = data.type || '';
     // Authentication / user information is automatically added to the request.
     // const uid = context.auth.uid;
     // const name = context.auth.token.name || null;
     // const picture = context.auth.token.picture || null;
     // const email = context.auth.token.email || null;
+
+    const notification = {
+        notification: type,
+        time: id,
+        response: 'negative'
+    };
+    admin.database().ref('/tracking/' + uid + '/reactions/' + id).set(notification);
 
     const payload = {
         notification: {
@@ -74,7 +84,9 @@ exports.sendNotification = functions.https.onCall((data: any, context: any) => {
         },
         data: {
             header: title,
-            text: body
+            text: body,
+            type: type,
+            id: id
         }
     };
 

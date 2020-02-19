@@ -42,4 +42,10 @@ export class TrackingService {
         const reaction = new Reaction(notification, response);
         this.fireDatabase.database.ref('/tracking/' + firebase.auth().currentUser.uid + '/reactions').push(reaction.toFirebaseObject());
     }
+
+    setReaction(id: string, type: string, response: string) {
+        const reaction = new Reaction(type, response);
+        return this.fireDatabase.database.ref('/tracking/' + firebase.auth().currentUser.uid + '/reactions/' + id)
+            .set(reaction.toFirebaseObject());
+    }
 }
