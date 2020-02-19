@@ -7,6 +7,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FCM } from '@ionic-native/fcm/ngx';
 import {NavController} from '@ionic/angular';
 import {UserService} from 'src/app/services/user/user.service';
+import { AlertController } from '@ionic/angular';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class AppComponent {
     private fcm: FCM,
     private navCtrl: NavController,
     private userService: UserService,
+    public alertController: AlertController
   ) {
     this.initializeApp();
   }
@@ -45,15 +47,41 @@ export class AppComponent {
         if (data.wasTapped) {
             console.log('Received in background ' + data);
             //this.router.navigate([data.landing_page, data.price]);
+            this.presentAlertConfirm(data.header, data.message);
             this.navCtrl.navigateForward('/menu/dashboard');
+            
         } else {
             console.log('Received in foreground ' + data);
             //this.router.navigate([data.landing_page, data.price]);
+            this.presentAlertConfirm(data.header, data.text);
             this.navCtrl.navigateForward('/menu/dashboard');
         }
     });
           
     });
   }
+
+  async presentAlertConfirm(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: header,
+      message: message,
+      buttons: [
+        {
+          text: 'Like It!',
+          handler: (blah) => {
+            console.log('Confirm Cancel: blah');
+          }
+        }, {
+          text: 'Naaah',
+          handler: () => {
+            console.log('Confirm Okay');
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
 
 }
