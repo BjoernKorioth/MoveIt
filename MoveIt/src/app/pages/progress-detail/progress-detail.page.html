@@ -244,7 +244,7 @@
         <ion-item *ngFor="let activity of (displayedActivities | async)">
             <ion-label>
                 <!-- {{ activity.startTime != null ? activity.startTime : '20.10.'  }}-->
-                <h3>{{ activity.startTime | date:'dd.MM.' }} {{activity.getDuration()}} minutes</h3>
+                <h3>{{ activity.startTime | date:'dd.MM. HH:mm' }} {{activity.getDuration()}} minutes</h3>
                 <p>{{activity.type}} - {{activity.intensity}}</p>
             </ion-label>
             <ion-icon *ngIf="activity.source === 'moveItApp'" name="create" slot="end" (click)='routeToEditPage(activity)'>
