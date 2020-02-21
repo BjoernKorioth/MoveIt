@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {NotificationService} from '../../services/notification/notification.service';
+import { UserService } from 'src/app/services/user/user.service';
+import { User } from 'src/app/model/user';
 
 
 @Component({
@@ -10,8 +12,11 @@ import {NotificationService} from '../../services/notification/notification.serv
 export class AdminDashboardNotificationsPage implements OnInit {
     notifications: any;
     notification: Notification;
+    users: Array<User>;
 
-    constructor(private notificationService: NotificationService) {
+    constructor(private notificationService: NotificationService, private userService: UserService) {
+
+        this.userService.getUsers().subscribe(data => this.users = data);
         //this.notification = new Notification();
         /* his.notifications = [
             {
@@ -35,10 +40,10 @@ export class AdminDashboardNotificationsPage implements OnInit {
         ];-->*/
     }
 
-    sendNotification(uid = 'Iq7dMo8WTNb328iKX9sJyScthko2') {
-        const title = 'demo title';
-        const body = 'demo body';
-        this.notificationService.sendUserNotification(uid, title, body, 'manualNotification').then(
+    sendNotification(title: any, body: any, userId: string) {
+        console.log(userId);
+
+        this.notificationService.sendUserNotification(userId, title, body, 'manualNotification').then(
             res => console.log(res),
             err => console.log(err)
         );
