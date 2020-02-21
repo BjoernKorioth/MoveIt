@@ -19,23 +19,23 @@
       
     <ion-row>
       <ion-col size="4" *ngFor="let trophy of trophies" margin-top="80">
-        <ion-list>
+        <ion-list class="wrapper">
           <ion-item>
               <img [src]="'./assets/Trophy.png'" (click)="presentPopover(trophy, $event)"/>
           </ion-item>
-          <ion-item class="padding">
-              {{trophy.title}}
+          <ion-item id="text" class="padding">
+             <p>{{trophy.title}}</p> 
           </ion-item>
         </ion-list>
       </ion-col>
 
       <ion-col size="4" *ngFor="let trophy of inactTrophies" margin-top="80">
-        <ion-list>
+        <ion-list class="wrapper">
           <ion-item>
               <img [src]="'./assets/TrophyNotAchieved.png'" (click)="presentPopover(trophy, $event)"/>
           </ion-item>
-          <ion-item class="padding">
-              {{trophy.title}}
+          <ion-item id="text" class="padding">
+             <p> {{trophy.title}}</p>
           </ion-item>
         </ion-list>
       </ion-col>
