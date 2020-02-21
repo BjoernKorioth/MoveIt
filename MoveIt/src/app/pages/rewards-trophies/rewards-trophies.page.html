@@ -23,9 +23,8 @@
           <ion-item>
               <img [src]="'./assets/Trophy.png'" (click)="presentPopover(trophy, $event)"/>
           </ion-item>
-          <ion-item id="text" class="padding">
              <p>{{trophy.title}}</p> 
-          </ion-item>
+
         </ion-list>
       </ion-col>
 
@@ -34,9 +33,7 @@
           <ion-item>
               <img [src]="'./assets/TrophyNotAchieved.png'" (click)="presentPopover(trophy, $event)"/>
           </ion-item>
-          <ion-item id="text" class="padding">
              <p> {{trophy.title}}</p>
-          </ion-item>
         </ion-list>
       </ion-col>
     </ion-row>
