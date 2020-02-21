@@ -9,9 +9,11 @@ import {NotificationService} from '../../services/notification/notification.serv
 })
 export class AdminDashboardNotificationsPage implements OnInit {
     notifications: any;
+    notification: Notification;
 
     constructor(private notificationService: NotificationService) {
-        this.notifications = [
+        //this.notification = new Notification();
+        /* his.notifications = [
             {
                 title: 'Good Weather',
                 trigger: 'Above 18°',
@@ -30,7 +32,7 @@ export class AdminDashboardNotificationsPage implements OnInit {
                 options: ['OK', 'Thumbs up'],
                 groups: ['Group 1', 'Group 2', 'Group 3']
             }
-        ];
+        ];-->*/
     }
 
     sendNotification(uid = 'Iq7dMo8WTNb328iKX9sJyScthko2') {
@@ -42,9 +44,7 @@ export class AdminDashboardNotificationsPage implements OnInit {
         );
     }
 
-    sendGoalNotification() {
-        const title = 'demo title';
-        const body = 'demo body';
+    sendGoalNotification(title: any, body: any) {
         this.notificationService.sendGoalNotification(title, body).then(
             res => console.log(res),
             err => console.log(err)
