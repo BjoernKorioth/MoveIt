@@ -554,6 +554,7 @@ loadOldGoals(){
    that.lastGoalM = 0;
    that.lastGoalV = 0;
    that.lastGoalW = 0;
+   console.log(this.allInfo);
     this.allInfo.forEach(function(changedGoal) {
       
       if(changedGoal.time < lastSunday.getTime()){
@@ -585,6 +586,18 @@ loadOldGoals(){
         that.lastGoalM = 600;
       }
     });
+
+    if(this.allInfo.length == 0){
+        if(that.lastGoalV == 0) {
+            that.lastGoalV = 600;
+          }if(that.lastGoalW == 0) {
+            that.lastGoalW = 600;
+          }if(that.lastGoalM == 0) {
+            that.lastGoalM = 600;
+          }
+    }
+
+
     let oldGoalM:any = {
       name: '',
       intensiy: '',
