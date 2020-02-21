@@ -51,7 +51,7 @@
       <!--<ion-button expand="block">Add activity</ion-button>-->
     </section>
 
-    <div class="error-message" *ngIf='(todayA.getTime() - activity.startTime.getTime()) < 0' class="error-message">
+    <div class="error-message" *ngIf='(todayA.getTime() - activity.endTime.getTime()) < 0' class="error-message">
       <ion-icon class="icon" name="close-circle-outline" size="small"></ion-icon>
       <ion-label> You cannot edit activities for the future </ion-label>
     </div>
