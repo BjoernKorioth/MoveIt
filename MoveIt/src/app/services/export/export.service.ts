@@ -10,6 +10,7 @@ import {Goal} from '../../model/goal';
     providedIn: 'root'
 })
 export class ExportService {
+    fields = [];
 
     constructor(private db: AngularFireDatabase) {
     }
@@ -93,7 +94,7 @@ export class ExportService {
                 break;
             }
             case 'challengeWins': {
-                params = this.exportWonTrophies(user);
+                params = this.exportWonChallenges(user);
                 break;
             }
             case 'viewLogs': {
@@ -190,12 +191,11 @@ export class ExportService {
     }
 
     exportWonChallenges(user: string) {
-
+        return this.db.list<any>('/challengeStatus/' + user + '/won').valueChanges().pipe(first());
     }
 
     exportViewLogs(user: string) {
         return this.db.list<any>('/tracking/' + user + '/viewLogs').valueChanges().pipe(first());
-
     }
 
     exportActionLogs(user: string) {
