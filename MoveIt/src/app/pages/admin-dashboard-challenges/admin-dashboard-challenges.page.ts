@@ -3,7 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {Challenge} from '../../model/challenge';
 import {ChallengeService} from '../../services/challenges/challenge.service';
 import {Observable} from 'rxjs';
-import {PopoverController} from '@ionic/angular';
+import {PopoverController, ToastController} from '@ionic/angular';
 import {ChallengePopoverComponent} from 'src/app/challenge-popover/challenge-popover.component';
 import { UserService } from 'src/app/services/user/user.service';
 import { RewardsService } from 'src/app/services/rewards/rewards.service';
@@ -22,7 +22,7 @@ export class AdminDashboardChallengesPage implements OnInit {
     today: Date = new Date();
 
 
-    constructor(private rewardsService: RewardsService, private challService: ChallengeService, public popoverController: PopoverController, private userService: UserService) {
+    constructor(private rewardsService: RewardsService, private challService: ChallengeService, public popoverController: PopoverController, private userService: UserService, public toastController: ToastController) {
         this.challService.getAllAvailableChallenges().subscribe(data => {
             this.challenges = data;
             console.log(this.challenges);
@@ -39,14 +39,28 @@ export class AdminDashboardChallengesPage implements OnInit {
     editChallenge(challenge: Challenge) {
         console.log(challenge);
         challenge.startTime = new Date(challenge.startTimeIso);                                                       
-        challenge.endTime = new Date(challenge.endTimeIso);  
+        challenge.endTime = new Date(challenge.endTimeIso); 
+        challenge.startTime.setHours(0,0,0,0);
+        challenge.endTime.setHours(23,59,59,999);     
         this.challService.editChallenge(challenge).then(
             res => {
                 console.log(res);
+                this.presentToast();
             },
             err => console.log(err)
         );
     }
+
+    async presentToast() {
+        const controller = await this.toastController.create({
+            color: 'dark',
+            duration: 2000,
+            message: 'Challenge edited successfully!',
+            showCloseButton: true
+        }).then(toast => {
+            toast.present();
+        });
+      }
 
     async presentPopover(event) {
         const popover = await this.popoverController.create({
