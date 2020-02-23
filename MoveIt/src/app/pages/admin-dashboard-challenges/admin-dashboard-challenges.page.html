@@ -57,7 +57,7 @@
 
 <ion-content>
 
-  <h2 padding>All open challenges!</h2>
+  <h2 padding>All open Challenges!</h2>
  
   <ng-container  *ngFor="let challenge of challenges">
   <ion-row class="ion-align-items-end"  *ngIf="!challenge.finished && challenge.endTime.getTime() > today.getTime()">
@@ -81,7 +81,7 @@
  <ion-col size="2">
       <ion-list>
         <ion-item>
-          <ion-datetime  [(ngModel)]="challenge.endTimeIso"></ion-datetime>
+          <ion-datetime  [(ngModel)]="challenge.endTimeIso" [min]="challenge.startTimeIso"></ion-datetime>
         </ion-item>
       </ion-list>
     </ion-col>
