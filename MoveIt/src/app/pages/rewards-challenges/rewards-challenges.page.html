@@ -16,7 +16,7 @@
     <ion-row>
       <h4>Challenge yourself!</h4>
     </ion-row>
-<div *ngIf="(challengesObserve | async) && (challengesActiveObserve | async) && calculatedAll">
+<div *ngIf="challenges">
   <ng-container *ngFor="let challenge of challenges">
   <ion-item  *ngIf="challenge.endTime.getTime() > date.getTime() && !challenge.finished">
 
@@ -38,7 +38,7 @@
     <ion-row>
       <h4>Your Active Challenges</h4>
     </ion-row>
-    <div *ngIf="(challengesActiveObserve | async) && (challengesObserve | async) && calculatedActive">
+    <div *ngIf="activeChallenges">
     <ng-container *ngFor="let activeChallenge of activeChallenges">
       <ion-item *ngIf="activeChallenge.endTime.getTime() > date.getTime() && !activeChallenge.finished">
       <ion-icon class="trophy" name="trophy"></ion-icon>

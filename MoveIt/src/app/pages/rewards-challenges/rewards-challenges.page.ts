@@ -5,7 +5,7 @@ import {Challenge} from '../../model/challenge';
 
 import {ChallengeService} from '../../services/challenges/challenge.service';
 
-import {Observable} from 'rxjs';
+import {combineLatest} from 'rxjs';
 import {TrackingService} from '../../services/tracking/tracking.service';
 import {ViewLog} from '../../model/viewLog';
 
@@ -16,60 +16,43 @@ import {ViewLog} from '../../model/viewLog';
 })
 export class RewardsChallengesPage implements OnInit, OnDestroy {
     trophies: any;
-    challenges: Array<Challenge>;
-    challengesObserve: Observable<Array<Challenge>>;
-    challengesActiveObserve: Observable<Array<string>>;
-    keysOfActiveChallenges: Array<string>;
-    activeChallenges: Array<Challenge>;
-
-    calculatedActive: boolean;
-    calculatedAll: boolean;
+    challenges: Array<Challenge> = [];
+    activeChallenges: Array<Challenge> = [];
 
     date: Date;
     viewLog: ViewLog;
 
 
-    constructor(private challService: ChallengeService, private location: Location, private trackingService: TrackingService) {
-
-
-        /**
-         * gets ALL challenges user participates in
-         *
-         this.challengesActiveObserve.subscribe(result => {
-
-      this.updateAllActiveChallenges(result);
-
-
-    this.identifyInvalidChallenges(this.challenges);
-
-      for(var i = 0; i< this.keysOfActiveChallenges.length; i++){
-      this.identifyChallengeFromAll(this.keysOfActiveChallenges[i]);
-    }
-
-    this.identifyInvalidChallenges(this.activeChallenges);
-
-    this.calculatedAll = true;
-    this.calculatedActive = true;
-  });*/
-
+    constructor(private challengeService: ChallengeService, private location: Location, private trackingService: TrackingService) {
         this.location = location;
-        this.trophies = [
-            {
-                description: 'You get this trophy for winning 10 times a daily goal.',
-                title: '10 Daily Goals',
-                image: './assets/Trophy.png'
-            },
-            {
-                description: 'You get this trophy for winning 10 times a daily goal.',
-                title: '10 Daily Goals',
-                image: './assets/Trophy.png'
-            },
-            {
-                description: 'You get this trophy for winning 10 times a daily goal.',
-                title: '10 Daily Goals',
-                image: './assets/Trophy.png'
-            }
-        ];
+
+        // this.challengeService.getAllChallenges().subscribe(challenges => {
+        //         this.challenges = challenges;
+        //         // this.identifyInvalidChallenges(this.challenges);
+        //         this.calculatedAll = true;
+        //     }
+        // );
+
+        combineLatest([this.challengeService.getAllChallenges(), this.challengeService.getAllUserActiveChallenges()])
+            .subscribe(([challengesList, activeChallengeIds]) => {
+                const activeChallenges = [];
+                const challenges = challengesList.map(x => x);
+                for (const challengeId of activeChallengeIds) {
+                    const challenge = challenges.find(element => element.id === challengeId);
+                    if (challenge instanceof Challenge) {
+                        activeChallenges.push(challenge);
+                    } else {
+                        console.log(challengeId);
+                        console.log(challenges);
+                    }
+                    challenges.splice(challenges.indexOf(challenge), 1);
+                }
+                console.log(activeChallenges);
+                console.log(challenges);
+                this.challenges = challenges;
+                this.activeChallenges = activeChallenges;
+                // this.identifyInvalidChallenges(this.activeChallenges);
+            });
     }
 
 
@@ -77,73 +60,17 @@ export class RewardsChallengesPage implements OnInit, OnDestroy {
         this.trackingService.stopRecordingViewTime(this.viewLog);
     }
 
-    async ngOnInit() {
+    ngOnInit() {
         this.viewLog = this.trackingService.startRecordingViewTime('challenges');
-
         this.date = new Date();
-        
-        this.challengesObserve = this.challService.getAllChallenges();
-
-        /**
-         * gets ALL challenges
-         */
-
-        this.challengesActiveObserve = this.challService.getAllUserActiveChallenges();
-
-        this.challengesObserve.subscribe(result =>
-            {
-            this.updateAllChallenges(result);
-            //this.identifyInvalidChallenges(this.challenges);
-            this.calculatedAll = true;
-             }
-        );
-
-        this.challengesActiveObserve.subscribe(result => {
-
-            this.updateAllActiveChallenges(result);      
-
-            for (let i = 0; i < this.keysOfActiveChallenges.length; i++) {
-                this.identifyChallengeFromAll(this.keysOfActiveChallenges[i]);
-            }
-
-            //this.identifyInvalidChallenges(this.activeChallenges);
-
-            this.calculatedActive = true;
-        });
-
-        this.challengesActiveObserve = this.challService.getAllUserActiveChallenges();
-
-        /**
-         * gets ALL challenges user participates in
-         */
-        
     }
 
     /**
-     * this sets the local challenges & identifies the valid challenges
-     * @param newChallenges income from service call as array
-     */
-    updateAllChallenges(newChallenges: Array<Challenge>) {
-        this.challenges = newChallenges;
-    }
-
-    /**
-     * this is the local list of challenges which the user participates
-     * @param newActive active array
-     */
-
-    updateAllActiveChallenges(newActive: Array<string>) {
-        this.keysOfActiveChallenges = newActive;
-        console.log(this.keysOfActiveChallenges);
-        this.activeChallenges = [];
-    }
-
-    /**this adds an challenge if you want to participate
-     *
+     * this adds an challenge if you want to participate
      */
     addToActiveList(challenge: Challenge) {
-        this.challService.registerOnChallenge(challenge);
-        this.challService.addChallengeToActive(challenge);
+        this.challengeService.registerOnChallenge(challenge);
+        this.challengeService.addChallengeToActive(challenge);
     }
 
     /**
@@ -151,8 +78,9 @@ export class RewardsChallengesPage implements OnInit, OnDestroy {
      * @param activeChallenge activeChallenge array
      */
     removeFromActiveList(activeChallenge: Challenge) {
-        this.challService.deRegisterOnChallenge(activeChallenge);
-        this.challService.removeChallengeFromActive(activeChallenge);
+        this.challenges.push(activeChallenge);
+        this.challengeService.deRegisterOnChallenge(activeChallenge);
+        this.challengeService.removeChallengeFromActive(activeChallenge);
     }
 
     /**

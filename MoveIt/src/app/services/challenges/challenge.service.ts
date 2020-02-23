@@ -6,6 +6,7 @@ import {Challenge} from '../../model/challenge';
 import {ChallengesArray} from '../../model/challengesArray';
 
 import {map} from 'rxjs/operators';
+import {merge, of} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -20,23 +21,23 @@ export class ChallengeService {
      *
      * @param challenge an existing challenge object
      */
-    createChallenge(challenge: Challenge, participants:object) {
+    createChallenge(challenge: Challenge, participants: object) {
         return new Promise<any>((resolve, reject) => {
             const id = firebase.database().ref().child('challenges').push().key;
             challenge.id = id;
 
             this.fireDatabase.database.ref('/challenges/').child(id)
-            .set(challenge.toFirebaseObject()).then(
-            // Returns the information with the new id
-            () => resolve(challenge),
-            err => reject(err)
+                .set(challenge.toFirebaseObject()).then(
+                // Returns the information with the new id
+                () => resolve(challenge),
+                err => reject(err)
             );
 
             this.fireDatabase.database.ref('/challenges/').child(id)
-            .child("participants").set(participants).then(
-            // Returns the information with the new id
-            () => resolve(challenge),
-            err => reject(err)
+                .child('participants').set(participants).then(
+                // Returns the information with the new id
+                () => resolve(challenge),
+                err => reject(err)
             );
 
         });
@@ -65,22 +66,19 @@ export class ChallengeService {
         return ref.snapshotChanges().pipe(map(challenge => challenge.map(
             chalSnapshot => Challenge.fromFirebaseObject(chalSnapshot.key, chalSnapshot.payload.val()))));
     }
-       // return this.fireDatabase.list<Challenge>('challenges').valueChanges();
-    
+
+    // return this.fireDatabase.list<Challenge>('challenges').valueChanges();
+
 
     /**
      * this is necessary in order to get all own active challenges to sort it in the frontend then
      */
-    /**getAllUserActiveChallenges() {
-        return this.fireDatabase.list<Challenge>('/users/' + firebase.auth().currentUser.uid + '/challengesActive').valueChanges();
-    }*/
-
     getAllUserActiveChallenges() {
-        const ref = this.fireDatabase.list<String>('/users/' + firebase.auth().currentUser.uid + '/challengesActive');
+        const ref = this.fireDatabase.list<string>('/users/' + firebase.auth().currentUser.uid + '/challengesActive');
         // Retrieve an array, but with its metadata. This is necesary to have the key available
         // An array of Goals is reconstructed using the fromFirebaseObject method
-        return ref.snapshotChanges().pipe(
-            map(challenges => challenges.map(goalPayload => goalPayload.key)));
+        return merge(of([]), ref.snapshotChanges().pipe(
+            map(challenges => challenges.map(goalPayload => goalPayload.key))));
     }
 
 
@@ -109,19 +107,21 @@ export class ChallengeService {
 
     }
 
-    getListOfAllUserAndTheirWonChallenges(){
+    getListOfAllUserAndTheirWonChallenges() {
         const ref = this.fireDatabase.list<ChallengesArray>('/challengesStatus/');
         // Retrieve an array, but with its metadata. This is necesary to have the key available
         // An array of Goals is reconstructed using the fromFirebaseObject method
         return ref.snapshotChanges().pipe(
-            map(user => user.map(challengepayload => (ChallengesArray.fromFirebaseObject(challengepayload.key, challengepayload.payload.val())))));
-      }
+            map(user => user.map(
+                challengepayload => (ChallengesArray.fromFirebaseObject(challengepayload.key, challengepayload.payload.val())))));
+    }
 
 
     /**
      * this method adds the challenge to the users array which is necessary to determine the participated challenges
      * @param challenge identify the specific challenge which the user wants to participate
      */
+
     /*addChallengeToActive(challenge: Array<Challenge>) {
         return new Promise<any>((resolve, reject) => {
             this.fireDatabase.database.ref('/users/' + firebase.auth().currentUser.uid).child('challengesActive')
@@ -185,7 +185,7 @@ export class ChallengeService {
      * finish the challenge, this method is called from the admin dashboard in order to disable further registration
      * @param challenge identify the challenge
      */
-    finishChallenge(challenge:Challenge){
+    finishChallenge(challenge: Challenge) {
         return new Promise<any>((resolve, reject) => {
             this.fireDatabase.database.ref('/challenges/' + challenge.id).child('finished')
                 .set('true').then(
@@ -200,7 +200,7 @@ export class ChallengeService {
      * @param challenge the challenge to identify
      * @param uid the uid who wins this challenge
      */
-    setWinner(challenge:Challenge, uid: string){
+    setWinner(challenge: Challenge, uid: string) {
         return new Promise<any>((resolve, reject) => {
             this.fireDatabase.database.ref('/challenges/' + challenge.id).child('winner')
                 .set(uid).then(
@@ -209,7 +209,6 @@ export class ChallengeService {
             );
         });
     }
-
 
 
 }
