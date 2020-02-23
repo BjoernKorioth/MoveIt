@@ -31,7 +31,7 @@
         <form>
             <ion-item id="form">
                 <ion-input name="post" type="text" [(ngModel)]="postText"
-                           placeholder="create your own post"></ion-input>
+                           placeholder="Create your own post"></ion-input>
                 <ion-icon name="send" id="icons" (click)="newPost(postText)" float-right></ion-icon>
             </ion-item>
         </form>
@@ -103,7 +103,7 @@
             <form>
                 <ion-item id="form">
                     <ion-input name="comment" type="text" [(ngModel)]="commentText[i]"
-                               placeholder="your comment..."></ion-input>
+                               placeholder="Your comment..."></ion-input>
                     <ion-icon id="icons" name="send" (click)="newComment(post, commentText[i], i)"></ion-icon>
                 </ion-item>
             </form>

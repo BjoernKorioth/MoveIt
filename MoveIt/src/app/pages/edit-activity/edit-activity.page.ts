@@ -93,7 +93,7 @@ export class EditActivityPage implements OnInit {
 
       this.activity.endTime = new Date(newDateObj);
 
-      if((this.todayA.getTime() - this.activity.startTime.getTime()) < 0){
+      if((this.todayA.getTime() - this.activity.endTime.getTime()) < 0){
         return;
       }
 

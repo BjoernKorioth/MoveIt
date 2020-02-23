@@ -76,7 +76,7 @@
               </ion-label>
           </ion-item>
       </ion-list>
-      <ion-button expand="block" color="secondary" (click)="loadMoreActivities()">Read more</ion-button>
+      <ion-button *ngIf="(activities | async)?.length > 5" expand="block" color="secondary" (click)="loadMoreActivities()">Read more</ion-button>
 
   </ion-card>
 </ion-content>

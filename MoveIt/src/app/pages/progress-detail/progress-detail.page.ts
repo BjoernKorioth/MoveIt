@@ -546,6 +546,7 @@ loadOldGoals(){
  for (let weekNumber = 3; weekNumber >= 0; weekNumber--) {
   let lastSunday = new Date();
   lastSunday.setDate(lastSunday.getDate() - (7 * weekNumber) - lastSunday.getDay());
+  lastSunday.setHours(0,0,0,0);
 
 
    latestGoalTimeW = 0;
@@ -554,6 +555,7 @@ loadOldGoals(){
    that.lastGoalM = 0;
    that.lastGoalV = 0;
    that.lastGoalW = 0;
+   console.log(this.allInfo);
     this.allInfo.forEach(function(changedGoal) {
       
       if(changedGoal.time < lastSunday.getTime()){
@@ -585,6 +587,18 @@ loadOldGoals(){
         that.lastGoalM = 600;
       }
     });
+
+    if(this.allInfo.length == 0){
+        if(that.lastGoalV == 0) {
+            that.lastGoalV = 600;
+          }if(that.lastGoalW == 0) {
+            that.lastGoalW = 600;
+          }if(that.lastGoalM == 0) {
+            that.lastGoalM = 600;
+          }
+    }
+
+
     let oldGoalM:any = {
       name: '',
       intensiy: '',
@@ -646,8 +660,9 @@ activitiesFromLastWeek(){
       let lastSunday = new Date();
       let lastSecSunday = new Date();
       lastSunday.setDate(lastSunday.getDate() - (7 * weekNumber) - lastSunday.getDay());
+      lastSunday.setHours(0,0,0,0);
       lastSecSunday.setDate(lastSecSunday.getDate() - (7 * weekNumber ) - lastSecSunday.getDay() - 7);
-
+      lastSecSunday.setHours(0,0,0,0);
 
       lastWekkActivities.push(data.filter(function (activity){
         return activity.startTime.getTime() < lastSunday.getTime() && activity.startTime.getTime() > lastSecSunday.getTime();
