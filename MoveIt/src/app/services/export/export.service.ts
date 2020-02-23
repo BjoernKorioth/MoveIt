@@ -17,7 +17,6 @@ export class ExportService {
 
     export(entity: string, scope?: string, id?: string) {
         let fetchData;
-        console.log(entity + ' ' + scope);
 
         switch (entity) {
             case 'defaultGoals': {
@@ -42,15 +41,12 @@ export class ExportService {
                 // const opts = {fields: params.fields};
                 try {
                     // const csv = parse(params.data, opts);
-                    console.log(params);
                     const csv = parse(params);
-                    // this.download(entity + '_' + scope + '_' + id + '.csv', csv);
-                    console.log(csv);
+                    this.download(entity + '_' + scope + '_' + id + '.csv', csv);
                 } catch (err) {
-                    console.error(err);
                 }
             },
-            err => console.log(err)
+            err => console.error(err)
         );
     }
 
@@ -111,7 +107,7 @@ export class ExportService {
             }
         }
         if (!group) {
-            group = await this.db.database.ref('/users/' + user + '/group').once('value').then(res => res.val(), err => console.log(err));
+            group = await this.db.database.ref('/users/' + user + '/group').once('value').then(res => res.val(), err => console.error(err));
         }
         return this.appendUserDetails(params, user, group);
     }
