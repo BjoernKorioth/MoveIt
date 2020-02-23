@@ -28,9 +28,9 @@ export class Challenge {
         this.startTime = startTime || new Date();
         this.title = title || '';
         this.participants = [];
-        //to get the number iterates through the object of participants 
-        if(participantObject !== undefined){
-            for (var user of Object.keys(participantObject)) {
+        // to get the number iterates through the object of participants
+        if (participantObject !== undefined) {
+            for (const user of Object.keys(participantObject)) {
                 this.participants.push(participantObject[user]);
             }
         }
@@ -85,14 +85,14 @@ export class Challenge {
 
         return {
             description: this.description,
-            endTime: this.endTime.toString(),
+            endTime: this.endTime.getTime(),
             price: this.price,
-            startTime: this.startTime.toString(),
+            startTime: this.startTime.getTime(),
             title: this.title,
             finished: this.finished,
             participants: this.participants,
           //  winner: this.winner
         };
-        
+
     }
 }
