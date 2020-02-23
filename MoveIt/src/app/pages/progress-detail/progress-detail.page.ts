@@ -546,6 +546,7 @@ loadOldGoals(){
  for (let weekNumber = 3; weekNumber >= 0; weekNumber--) {
   let lastSunday = new Date();
   lastSunday.setDate(lastSunday.getDate() - (7 * weekNumber) - lastSunday.getDay());
+  lastSunday.setHours(0,0,0,0);
 
 
    latestGoalTimeW = 0;
@@ -659,8 +660,9 @@ activitiesFromLastWeek(){
       let lastSunday = new Date();
       let lastSecSunday = new Date();
       lastSunday.setDate(lastSunday.getDate() - (7 * weekNumber) - lastSunday.getDay());
+      lastSunday.setHours(0,0,0,0);
       lastSecSunday.setDate(lastSecSunday.getDate() - (7 * weekNumber ) - lastSecSunday.getDay() - 7);
-
+      lastSecSunday.setHours(0,0,0,0);
 
       lastWekkActivities.push(data.filter(function (activity){
         return activity.startTime.getTime() < lastSunday.getTime() && activity.startTime.getTime() > lastSecSunday.getTime();
