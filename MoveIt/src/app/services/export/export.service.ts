@@ -10,6 +10,7 @@ import {Goal} from '../../model/goal';
     providedIn: 'root'
 })
 export class ExportService {
+    fields = [];
 
     constructor(private db: AngularFireDatabase) {
     }
@@ -43,7 +44,7 @@ export class ExportService {
                     // const csv = parse(params.data, opts);
                     console.log(params);
                     const csv = parse(params);
-                    this.download(entity + '_' + scope + '_' + id + '.csv', csv);
+                    // this.download(entity + '_' + scope + '_' + id + '.csv', csv);
                     console.log(csv);
                 } catch (err) {
                     console.error(err);
@@ -93,7 +94,7 @@ export class ExportService {
                 break;
             }
             case 'challengeWins': {
-                params = this.exportWonTrophies(user);
+                params = this.exportWonChallenges(user);
                 break;
             }
             case 'viewLogs': {
@@ -118,7 +119,7 @@ export class ExportService {
     appendUserDetails(dataRef: Observable<any>, user, group) {
         return dataRef.pipe(map(data => {
             return data.map(element => {
-                element.id = user;
+                element.uid = user;
                 element.group = group;
                 return element;
             });
@@ -182,20 +183,32 @@ export class ExportService {
     }
 
     exportWonTrophies(user: string) {
-        return this.db.list<any>('/trophyStatus/' + user).valueChanges().pipe(first());
+        return this.db.list<any>('/trophyStatus/' + user).snapshotChanges().pipe(first(), flatMap(
+            trophiesList => trophiesList.map(trophyCategory => {
+                const trophies = trophyCategory.payload.val();
+                return trophies.map(trophy => ({status: trophyCategory.key, trophyId: trophy}));
+            })
+        ));
     }
 
     exportChallenges() {
-        return this.db.list<any>('/challenges/').valueChanges().pipe(first());
+        return this.db.list<any>('/challenges/').snapshotChanges().pipe(first(), map(
+            challenges => challenges.map(challenge => {
+                const entry = challenge.payload.val();
+                entry.id = challenge.key;
+                return entry;
+            })
+        ));
     }
 
     exportWonChallenges(user: string) {
-
+        return this.db.list<any>('/challengesStatus/' + user + '/won').valueChanges().pipe(first(), map(
+            challenges => challenges.map(challenge => ({challenge}))
+        ));
     }
 
     exportViewLogs(user: string) {
         return this.db.list<any>('/tracking/' + user + '/viewLogs').valueChanges().pipe(first());
-
     }
 
     exportActionLogs(user: string) {

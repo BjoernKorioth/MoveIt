@@ -8,44 +8,52 @@
 </ion-header>
 
 <ion-content>
-  <ion-button (click)="sendNotification()">Send Notification</ion-button>
-  <ion-button (click)="sendGoalNotification()">Send Goal Notification</ion-button>
-  <h2 padding>Manage notifications</h2>
+  <!--<ion-button (click)="sendNotification()">Send Notification</ion-button>
+  <ion-button (click)="sendGoalNotification()">Send Goal Notification</ion-button>-->
+  <h2 padding>Send Goal Push Notification to all Users!</h2>
 
-  <section>
+  <!--<section>
     <ion-button color="secondary" padding>Save</ion-button>
   </section>
-  <br>
+  <br>-->
 
-  <ion-row *ngFor="let notification of notifications">
+  <ion-row>
     <ion-col size="2">
       <ion-list>
         <ion-list-header>
-          <ion-label>Name</ion-label>
+          <ion-label>Title</ion-label>
         </ion-list-header>
-        <ion-item><ion-input [(ngModel)]="notification.title"></ion-input></ion-item>
+        <ion-item><ion-input [(ngModel)]="title"></ion-input></ion-item>
       </ion-list>
     </ion-col>
 
-    <ion-col size="3">
+    <!--<ion-col size="3">
       <ion-list>
         <ion-list-header>
           <ion-label>Trigger</ion-label>
         </ion-list-header>
         <ion-item>{{notification.trigger}}</ion-item>
       </ion-list>
-    </ion-col>
+    </ion-col>-->
 
-    <ion-col size="3">
+    <ion-col size="8">
       <ion-list>
         <ion-list-header>
-          <ion-label>Goal</ion-label>
+          <ion-label>Body</ion-label>
         </ion-list-header>
-        <ion-item><ion-input [(ngModel)]="notification.description"></ion-input></ion-item>
+        <ion-item><ion-input [(ngModel)]="body"></ion-input></ion-item>
+      </ion-list>
+    </ion-col>
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Send</ion-label>
+        </ion-list-header>
+        <ion-item><ion-button (click)="sendGoalNotification(title, body)" color="secondary">Send</ion-button></ion-item>
       </ion-list>
     </ion-col>
 
-    <ion-col size="2">
+    <!--<ion-col size="2">
       <ion-list>
         <ion-list-header>
           <ion-label>Reaction</ion-label>
@@ -57,9 +65,9 @@
           </ion-select>
         </ion-item>
       </ion-list>
-    </ion-col>
+    </ion-col>-->
 
-    <ion-col size="2">
+    <!--<ion-col size="2">
       <ion-list>
         <ion-list-header>
           <ion-label>Group</ion-label>
@@ -72,8 +80,51 @@
           </ion-select>
         </ion-item>
       </ion-list>
-    </ion-col>
+    </ion-col>-->
 
 
   </ion-row>
+
+  <h2 padding>Send Push Notification to a specific user!</h2>
+
+  <ion-row>
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Title</ion-label>
+        </ion-list-header>
+        <ion-item><ion-input [(ngModel)]="title2"></ion-input></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="6">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Body</ion-label>
+        </ion-list-header>
+        <ion-item><ion-input [(ngModel)]="body2"></ion-input></ion-item>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Send</ion-label>
+        </ion-list-header>
+        <ion-select placeholder="Select One" [(ngModel)]="user">
+          <ion-select-option  *ngFor="let user of users" [value]="user.id">{{user.name}}</ion-select-option>
+          </ion-select>
+      </ion-list>
+    </ion-col>
+
+    <ion-col size="2">
+      <ion-list>
+        <ion-list-header>
+          <ion-label>Send</ion-label>
+        </ion-list-header>
+        <ion-item><ion-button (click)="sendNotification(title2, body2, user)" color="secondary">Send</ion-button></ion-item>
+      </ion-list>
+    </ion-col>
+
+    </ion-row>
 </ion-content>
