@@ -39,7 +39,7 @@ export class AppComponent {
       this.splashScreen.hide();
       this.fcm.getToken().then(token => {
         console.log(token);
-        //this.userService.changeUserToken(token);
+        // this.userService.changeUserToken(token);
       });
       this.fcm.onTokenRefresh().subscribe(token => {
         console.log(token);
@@ -51,7 +51,10 @@ export class AppComponent {
             console.log('Received in background ' + data);
             // this.router.navigate([data.landing_page, data.price]);
             // this.presentAlertConfirm(data.header, data.text);
-            this.trackingService.setReaction(data.id, data.type, 'positive');
+            this.trackingService.setReaction(data.id, data.type, 'positive').then(
+                res => console.log(res),
+                err => console.log(err)
+            );
             this.trackingService.logAction(new ActionLog('entered-app-from-notification', data.id));
             this.navCtrl.navigateForward('/menu/dashboard');
 
@@ -80,7 +83,10 @@ export class AppComponent {
         }, {
           text: 'Naaah',
           handler: () => {
-            this.trackingService.setReaction(id, type, 'positive');
+            this.trackingService.setReaction(id, type, 'positive').then(
+                res => console.log(res),
+                err => console.log(err)
+            );
             console.log('Confirm Okay');
           }
         }

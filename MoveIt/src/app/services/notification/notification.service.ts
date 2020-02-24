@@ -25,9 +25,10 @@ export class NotificationService {
                         title,
                         body,
                         type,
-                        uid: firebase.auth().currentUser.uid,
+                        uid,
                         id: (new Date()).getTime().toString()
                     };
+                    console.log(data);
                     return sendNotification(data).then(
                         (result) => resolve(result),
                         err => reject(err));
