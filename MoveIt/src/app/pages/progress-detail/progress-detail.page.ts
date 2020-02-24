@@ -580,21 +580,21 @@ loadOldGoals(){
           } 
         }     
       if(that.lastGoalV == 0) {
-        that.lastGoalV = 600;
+        that.lastGoalV = 150;
       }if(that.lastGoalW == 0) {
-        that.lastGoalW = 600;
+        that.lastGoalW = 75;
       }if(that.lastGoalM == 0) {
-        that.lastGoalM = 600;
+        that.lastGoalM = 120;
       }
     });
 
     if(this.allInfo.length == 0){
         if(that.lastGoalV == 0) {
-            that.lastGoalV = 600;
+            that.lastGoalV = 150;
           }if(that.lastGoalW == 0) {
-            that.lastGoalW = 600;
+            that.lastGoalW = 75;
           }if(that.lastGoalM == 0) {
-            that.lastGoalM = 600;
+            that.lastGoalM = 120;
           }
     }
 
