@@ -9,6 +9,7 @@ import {NavController} from '@ionic/angular';
 import {UserService} from 'src/app/services/user/user.service';
 import { AlertController } from '@ionic/angular';
 import {TrackingService} from './services/tracking/tracking.service';
+import {ActionLog} from './model/actionLog';
 
 
 @Component({
@@ -51,6 +52,7 @@ export class AppComponent {
             // this.router.navigate([data.landing_page, data.price]);
             // this.presentAlertConfirm(data.header, data.text);
             this.trackingService.setReaction(data.id, data.type, 'positive');
+            this.trackingService.logAction(new ActionLog('entered-app-from-notification', data.id));
             this.navCtrl.navigateForward('/menu/dashboard');
 
         } else {
