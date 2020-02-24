@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NotificationService} from '../../services/notification/notification.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { User } from 'src/app/model/user';
+import { ToastController } from '@ionic/angular';
 
 
 @Component({
@@ -13,8 +14,13 @@ export class AdminDashboardNotificationsPage implements OnInit {
     notifications: any;
     notification: Notification;
     users: Array<User>;
+    title: any;
+    body: any;
+    title2: any;
+    body2: any;
+    user: any;
 
-    constructor(private notificationService: NotificationService, private userService: UserService) {
+    constructor(private notificationService: NotificationService, private userService: UserService, public toastController: ToastController) {
 
         this.userService.getUsers().subscribe(data => this.users = data);
         //this.notification = new Notification();
@@ -47,13 +53,36 @@ export class AdminDashboardNotificationsPage implements OnInit {
             res => console.log(res),
             err => console.log(err)
         );
+        this.title2 = "";
+        this.body2 = "";
+        this.user = "";
+
+        this.presentToast();
+        
     }
+
+    async presentToast() {
+        const controller = await this.toastController.create({
+            color: 'dark',
+            duration: 2000,
+            message: 'Notification sent successfully!',
+            showCloseButton: true
+        }).then(toast => {
+            toast.present();
+        });
+      }
 
     sendGoalNotification(title: any, body: any) {
         this.notificationService.sendGoalNotification(title, body).then(
             res => console.log(res),
             err => console.log(err)
         );
+
+        this.title = "";
+        this.body = "";
+
+        
+        this.presentToast();
     }
 
     ngOnInit() {
