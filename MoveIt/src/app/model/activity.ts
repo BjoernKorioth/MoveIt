@@ -123,7 +123,7 @@ export class Activity {
                 '',
                 SingleEntry.startDate,
                 SingleEntry.value,
-                SingleEntry.source,
+                SingleEntry.sourceBundleId,
             );
             ActMulit.push(ActSingle);
         }); 
