@@ -73,7 +73,10 @@ exports.sendNotification = functions.https.onCall((data: any, context: any) => {
         time: id,
         response: 'negative'
     };
-    admin.database().ref('/tracking/' + uid + '/reactions/' + id).set(notification);
+    admin.database().ref('/tracking/' + uid + '/reactions/' + id).set(notification).then(
+        (res: any) => console.log(res),
+        (err: any) => console.log(err)
+    );
 
     const payload = {
         notification: {
