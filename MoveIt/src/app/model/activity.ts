@@ -107,14 +107,18 @@ export class Activity {
         var ActSingle: Activity;
         ApiObject.forEach(function (SingleEntry) {
             console.log('Single Entry of Fitness API: ' + SingleEntry);
-            
+            // still activity will be excluded
             if(SingleEntry.value == "still"){
                 return;
             };
-
+            // activities that are not defined by API will be excluded
+            if(SingleEntry.value == "other"){
+                return;
+            };
+            /*
             if (['basketball', 'biking', 'dancing','handball','football','running', 'swimming', 'volleyball', 'walking'].indexOf(SingleEntry.value) == -1){
                 SingleEntry.value = 'other'
-            };     
+            };  */   
 
             ActSingle = new Activity(
                 '',
