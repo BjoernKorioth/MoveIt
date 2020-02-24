@@ -16,7 +16,7 @@ export class Goal {
      *
      */
 
-    
+
     constructor(name?: string, duration?: string, type?: string, target?: number, current?: number, history?: Array<object>) {
         // Each parameter is optional, if it's not there, set the default value
         this.name = name || '';
@@ -32,11 +32,11 @@ export class Goal {
     static types = ['moderate', 'vigorous', 'weight training'];
     static defaultGoals: Array<Goal> = [
         new Goal('dailyModerate', 'daily',  'moderate',  60,  0),
-        new Goal('weeklyModerate',   'weekly',  'moderate',  600,  0),
-        new Goal('dailyVigorous',    'daily',  'vigorous',  60,  0),
-        new Goal('weeklyVigorous',    'weekly',  'vigorous',  600,  0),
-        new Goal('dailyWeight',    'daily',  'weight training',  60,  0),
-        new Goal('weeklyWeight',    'weekly',  'weight training',  600,  0)
+        new Goal('weeklyModerate',   'weekly',  'moderate',  150,  0),
+        new Goal('dailyVigorous',    'daily',  'vigorous',  20,  0),
+        new Goal('weeklyVigorous',    'weekly',  'vigorous',  75,  0),
+        new Goal('dailyWeight',    'daily',  'weight training',  30,  0),
+        new Goal('weeklyWeight',    'weekly',  'weight training',  120,  0)
     ];
     name: string;
     current: number;
@@ -55,15 +55,15 @@ export class Goal {
      * @param firebaseObject result of the firebase query
      */
     static fromFirebaseObject(name, firebaseObject: FirebaseObject) {
-        //console.log(firebaseObject);
+        // console.log(firebaseObject);
 
         return new Goal(name, firebaseObject.duration,
             firebaseObject.type, firebaseObject.target, firebaseObject.current, firebaseObject.history);
-        
+
     }
 
-    static fromAnyObject(name, firebaseObject: any){
-        //console.log(firebaseObject);
+    static fromAnyObject(name, firebaseObject: any) {
+        // console.log(firebaseObject);
         return new Goal(name, firebaseObject.duration,
             firebaseObject.type, firebaseObject.target, firebaseObject.current, firebaseObject.history);
     }
