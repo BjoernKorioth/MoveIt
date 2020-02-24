@@ -5,7 +5,7 @@ interface FireBaseObject {
     intensity: string;
     startTime: Date;
     type: string;
-    source:string;
+    source: string;
 }
 
 interface ApiObject {
@@ -35,7 +35,7 @@ export class Activity {
      * Each parameter is optional. If it's not present, a default value is used
      *
      */
-    constructor(id?: string, distance?: Distance, endTime?: Date, intensity?: string, startTime?: Date, type?: string, source?:string) {
+    constructor(id?: string, distance?: Distance, endTime?: Date, intensity?: string, startTime?: Date, type?: string, source?: string) {
         // Each parameter is optional, if it's not there, set the default value
         this.id = id || '';
         this.distance = distance || {unit: 'km', value: 0};
@@ -54,7 +54,7 @@ export class Activity {
     intensity: string;
     startTime: Date;
     type: string;
-    source:string;
+    source: string;
 
     /**
      * Creates an Activity object from a firebase query
@@ -107,9 +107,14 @@ export class Activity {
         var ActSingle: Activity;
         ApiObject.forEach(function (SingleEntry) {
             console.log('Single Entry of Fitness API: ' + SingleEntry);
-            if (['basketball', 'biking', 'dancing','handball','football','running', 'swimming', 'volleyball', 'walking', 'other'].indexOf(SingleEntry.value) == -1){
+            
+            if(SingleEntry.value == "still"){
+                return;
+            };
+
+            if (['basketball', 'biking', 'dancing','handball','football','running', 'swimming', 'volleyball', 'walking'].indexOf(SingleEntry.value) == -1){
                 SingleEntry.value = 'other'
-            }     
+            };     
 
             ActSingle = new Activity(
                 '',

@@ -170,7 +170,7 @@ export class ActivityService {
                         startDate = new Date(new Date(lastDate).getTime() + 1); // last time read + 1 ms
                     } else {
                         // three days ago by default if data has not been read yet
-                        startDate = new Date(new Date().getTime() - 3 * 24 * 60 * 60 * 1000);
+                        startDate = new Date(new Date().getTime() - 14 * 24 * 60 * 60 * 1000);
                     }
                     const endDate = new Date(); // now
 
