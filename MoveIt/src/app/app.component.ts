@@ -78,15 +78,15 @@ export class AppComponent {
         {
           text: 'Like It!',
           handler: (blah) => {
+            this.trackingService.setReaction(id, type, 'positive').then(
+                res => console.log(res),
+                err => console.log(err)
+            );
             console.log('Confirm Cancel: blah');
           }
         }, {
           text: 'Naaah',
           handler: () => {
-            this.trackingService.setReaction(id, type, 'positive').then(
-                res => console.log(res),
-                err => console.log(err)
-            );
             console.log('Confirm Okay');
           }
         }
