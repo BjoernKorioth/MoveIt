@@ -39,7 +39,7 @@ export class AppComponent {
       this.splashScreen.hide();
       this.fcm.getToken().then(token => {
         console.log(token);
-        this.userService.changeUserToken(token);
+        //this.userService.changeUserToken(token);
       });
       this.fcm.onTokenRefresh().subscribe(token => {
         console.log(token);
