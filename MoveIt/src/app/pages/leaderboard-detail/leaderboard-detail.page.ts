@@ -147,7 +147,7 @@ export class LeaderboardDetailPage implements OnInit {
             const oneResult = result[i];
             if (oneResult) {
 
-                const entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length, this.userService);
+                const entity1 = await new LeaderboardObject(oneResult.id, oneResult.won.length-1, this.userService);
 
                 console.log(entity1);
 
