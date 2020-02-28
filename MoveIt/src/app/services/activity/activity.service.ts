@@ -20,6 +20,12 @@ export class ActivityService {
                 private rewardsService: RewardsService, private health: Health, private storage: Storage) {
     }
 
+    writeActivitytoFirebase(activity: Activity){
+        const id = firebase.database().ref(this.activityLocation + firebase.auth().currentUser.uid).push().key;
+        activity.id = id;
+        return this.fireDatabase.database.ref('/activities/' + firebase.auth().currentUser.uid).child(id).set(activity.toFirebaseObject());
+    }
+
     /**
      * Creates a new activity in firebase from an activity objects
      *
@@ -27,13 +33,11 @@ export class ActivityService {
      */
     createActivity(activity: Activity) {
         return new Promise<any>((resolve, reject) => {
-            const id = firebase.database().ref(this.activityLocation + firebase.auth().currentUser.uid).push().key;
-            activity.id = id;
+
 
             this.synchronizeApi().then(
                 () => {
-                    this.fireDatabase.database.ref('/activities/' + firebase.auth().currentUser.uid).child(id)
-                        .set(activity.toFirebaseObject()).then(
+                    this.writeActivitytoFirebase(activity).then(
                         // Returns the activity with the new id
                         () => {
                             this.writeFitnessApi(activity);
@@ -75,7 +79,7 @@ export class ActivityService {
         });
     }
 
-    runUpdates(activity: Activity, message?: string) {
+    runUpdates(activity?: Activity, message?: string) {
         return new Promise<any>((resolve, reject) => {
             this.getAllUserActivities().pipe(first()).subscribe(activities => {
                 this.goalService.getGoals().pipe(first()).subscribe(goals => {
@@ -84,6 +88,9 @@ export class ActivityService {
                         () => {
                             this.rewardsService.updateTrophies(activities, goals).then(
                                 () => {
+                                    if(!activity){
+                                        resolve();
+                                    }
                                     const post = new Post();
                                     post.activity = activity.id;
                                     if (message) {
@@ -169,7 +176,7 @@ export class ActivityService {
                     if (lastDate != null) {
                         startDate = new Date(new Date(lastDate).getTime() + 1); // last time read + 1 ms
                     } else {
-                        // three days ago by default if data has not been read yet
+                        // 14 days ago by default if data has not been read yet
                         startDate = new Date(new Date().getTime() - 14 * 24 * 60 * 60 * 1000);
                     }
                     const endDate = new Date(); // now
@@ -199,12 +206,15 @@ export class ActivityService {
         return new Promise<any>((resolve, reject) => {
             this.readFitnessApi().then((activities: Activity[]) => {
                     for (const activity of activities) {
-                        this.createActivity(activity).then(
+                        this.writeActivitytoFirebase(activity).then(
                             () => null,
                             err => reject(err)
                         );
-                    }
-                    resolve();
+                    };
+                    this.runUpdates().then(
+                        () => resolve(),
+                        err => reject(err)
+                    );
                 },
                 err => reject(err));
         });
@@ -214,10 +224,7 @@ export class ActivityService {
         return this.storage.get('lastDate');
     }
 
-    updateLastDate(date
-                       :
-                       Date = new Date()
-    ) {
+    updateLastDate(date: Date = new Date()) {
         return this.storage.set('lastDate', date);
     }
 
@@ -225,10 +232,7 @@ export class ActivityService {
     /**
      * writes an activity to the FitnessAPI
      */
-    writeFitnessApi(activity
-                        :
-                        Activity
-    ) {
+    writeFitnessApi(activity: Activity) {
         this.health.requestAuthorization([
             /* 'distance', 'nutrition', //read and write permissions
             {
