@@ -176,17 +176,20 @@ export class ProgressDetailPage implements OnInit {
     //weekly
     defineChartData() {
         let that = this;
-        let now = new Date();
-        let lastWeek: Date = new Date();
+       
         // lastWeek.setDate(lastWeek.getDate() - 7);
 
         this.activities.subscribe(activities => {
             this.chartLabelsWeekly = [];
             // Daten für die Woche
             let weeklyActivities = [];
+            //let now = new Date();
 
             for (let dayOfWeek = 6; dayOfWeek >= 0; dayOfWeek--) {
-                lastWeek.setDate(now.getDate() - dayOfWeek);
+                
+                let lastWeek: Date = new Date();
+                lastWeek.setDate(new Date().getDate() - dayOfWeek);
+
                 weeklyActivities.push(activities.filter(function (activity) {
                     return activity.startTime.getDate() == lastWeek.getDate();
                 }));
@@ -555,7 +558,7 @@ loadOldGoals(){
    that.lastGoalM = 0;
    that.lastGoalV = 0;
    that.lastGoalW = 0;
-   console.log(this.allInfo);
+ // console.log(this.allInfo);
     this.allInfo.forEach(function(changedGoal) {
       
       if(changedGoal.time < lastSunday.getTime()){
@@ -641,7 +644,7 @@ loadOldGoals(){
     oldGoalW.weekGoal = that.lastGoalW;
     that.oldGoals.push(oldGoalW);
 
-    console.log(that.oldGoals);
+   // console.log(that.oldGoals);
   };
 
     });
@@ -653,7 +656,7 @@ activitiesFromLastWeek(){
     let lastWekkActivities = [];
 
     this.activityService.getAllUserActivities().subscribe( data =>{
-      console.log(data);
+     // console.log(data);
     for (let weekNumber = 3; weekNumber >= 0; weekNumber--) {
       this.activitiesGoals = [];
       lastWekkActivities = [];
@@ -714,7 +717,7 @@ activitiesFromLastWeek(){
       }
 
     });
-    console.log(this.oldGoals);
+    //console.log(this.oldGoals);
 
   }
   })
