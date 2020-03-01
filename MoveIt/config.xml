@@ -111,4 +111,10 @@
         <variable name="HEALTH_WRITE_PERMISSION" value="App needs write access" />
         <variable name="GMS_VERSION" value="16.0.1" />
     </plugin>
+    <config-file parent="NSHealthShareUsageDescription" platform="ios">
+        <string>App needs read access</string>
+    </config-file>
+    <config-file parent="NSHealthUpdateUsageDescription" platform="ios">
+        <string>App needs write access</string>
+    </config-file>
 </widget>
