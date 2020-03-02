@@ -3,8 +3,8 @@ import * as firebase from 'firebase/app';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {User} from '../../model/user';
 import {Group} from '../../model/group';
-import {map} from 'rxjs/operators';
-import {of} from 'rxjs';
+import {flatMap, map} from 'rxjs/operators';
+import {Observable, of} from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -39,12 +39,12 @@ export class UserService {
     }
 
     getUser() {
-        if (firebase.auth().currentUser) {
-            return this.db.object<any>('/users/' + firebase.auth().currentUser.uid).snapshotChanges()
-                .pipe(map(userSnapshot => User.fromFirebaseObject(firebase.auth().currentUser.uid, userSnapshot.payload.val())));
-        } else {
-            return of(new User());
-        }
+        return Observable.create(observer => {
+            firebase.auth().onAuthStateChanged(user => observer.next(user.uid));
+        }).pipe(flatMap((userId: string) => {
+            return this.db.object<any>('/users/' + userId).snapshotChanges()
+                .pipe(map(userSnapshot => User.fromFirebaseObject(userId, userSnapshot.payload.val())));
+        }));
     }
 
     getUserById(userId: string) {
@@ -60,7 +60,7 @@ export class UserService {
         return this.db.database.ref('/users/' + firebase.auth().currentUser.uid + '/profilePictureUrl').once('value');
     }
 
-    getSpecificProfilePictureUrl(uid:any) {
+    getSpecificProfilePictureUrl(uid: any) {
         return this.db.object<string>('/users/' + uid + '/profilePictureUrl').valueChanges();
 
     }
