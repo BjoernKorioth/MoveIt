@@ -212,7 +212,7 @@ export class ActivityService {
                             err => reject(err)
                         );
                     }
-                    
+
                     this.runUpdates().then(
                         () => resolve(),
                         err => reject(err)
