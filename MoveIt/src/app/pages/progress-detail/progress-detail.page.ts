@@ -342,7 +342,7 @@ export class ProgressDetailPage implements OnInit {
                     xAxes: [{
                         scaleLabel: {
                             display: true,
-                            labelString: 'Date'
+                            labelString: 'Day'
                           },
                         /*type: 'time',
                         time: {

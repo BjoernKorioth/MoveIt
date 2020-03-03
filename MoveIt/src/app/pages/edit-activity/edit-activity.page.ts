@@ -81,19 +81,20 @@ export class EditActivityPage implements OnInit {
      */
     editActivity() {
 
-      const t1: any = this.activity.startDateIso.split('T');
-      const t2: any = this.activity.startTimeIso.split('T');
-      const t3: any = t1[0].concat('T', t2);
-      var timezone_offset_min = new Date().getTimezoneOffset();
-      console.log(timezone_offset_min);
-      console.log(this.activity.startTime);
+      console.log(this.activity.startTimeIso);
+      console.log(this.activity.startDateIso);
+
+      const t1: any = this.activity.startDateIso;
+      const t2: any = this.activity.startTimeIso;
+      const t3: any = t1.concat('T', t2);
+      
       
       this.activity.startTime = new Date((new Date(t3).getTime()));
       const newDateObj = new Date(this.activity.startTime.getTime() + this.activity.minutes * 60000);
 
       this.activity.endTime = new Date(newDateObj);
 
-      if((this.todayA.getTime() - this.activity.endTime.getTime()) < 0){
+      if((new Date().getTime() - this.activity.endTime.getTime()) < 0){
         return;
       }
 

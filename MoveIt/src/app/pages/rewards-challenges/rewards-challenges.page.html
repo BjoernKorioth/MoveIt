@@ -21,7 +21,8 @@
   <ion-item  *ngIf="challenge.endTime.getTime() > date.getTime() && !challenge.finished">
 
         <ion-icon class="trophy" name="trophy"></ion-icon>
-      <ion-label side="start"><h2>{{challenge.title}}</h2>
+      <ion-label class="ion-text-wrap" side="start"><h2>{{challenge.title}}</h2>
+        <p>{{challenge.description}}</p>
         <p>Until {{challenge.endTime  | date:'dd. MMM' }}</p>
         <p>Participants: {{challenge.participants.length}}</p>
         <p>Prize: {{challenge.price}}</p>
@@ -42,8 +43,9 @@
     <ng-container *ngFor="let activeChallenge of activeChallenges">
       <ion-item *ngIf="activeChallenge.endTime.getTime() > date.getTime() && !activeChallenge.finished">
       <ion-icon class="trophy" name="trophy"></ion-icon>
-      <ion-label side="start">
-        <h2>{{activeChallenge.title}}</h2>
+      <ion-label class="ion-text-wrap" side="start">
+        <h2>{{activeChallenge.title}}</h2>        
+        <p>{{activeChallenge.description}}</p>
         <p> Until {{activeChallenge.endTime  | date:'dd. MMM' }} </p>
         <p> Participants: {{activeChallenge.participants.length}}</p>
         <p>Prize: {{activeChallenge.price}}</p>
