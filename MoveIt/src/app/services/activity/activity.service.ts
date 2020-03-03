@@ -20,7 +20,7 @@ export class ActivityService {
                 private rewardsService: RewardsService, private health: Health, private storage: Storage) {
     }
 
-    writeActivitytoFirebase(activity: Activity){
+    writeActivitytoFirebase(activity: Activity) {
         const id = firebase.database().ref(this.activityLocation + firebase.auth().currentUser.uid).push().key;
         activity.id = id;
         return this.fireDatabase.database.ref('/activities/' + firebase.auth().currentUser.uid).child(id).set(activity.toFirebaseObject());
@@ -88,20 +88,21 @@ export class ActivityService {
                         () => {
                             this.rewardsService.updateTrophies(activities, goals).then(
                                 () => {
-                                    if(!activity){
+                                    if (!activity) {
                                         resolve();
-                                    }
-                                    const post = new Post();
-                                    post.activity = activity.id;
-                                    if (message) {
-                                        post.content = message;
                                     } else {
-                                        post.content = 'Look, I did ' + activity.getDuration() + ' minutes of ' + activity.type;
+                                        const post = new Post();
+                                        post.activity = activity.id;
+                                        if (message) {
+                                            post.content = message;
+                                        } else {
+                                            post.content = 'Look, I did ' + activity.getDuration() + ' minutes of ' + activity.type;
+                                        }
+                                        this.postService.createPost(post).then(
+                                            () => resolve(activity),
+                                            err => reject(err)
+                                        );
                                     }
-                                    this.postService.createPost(post).then(
-                                        () => resolve(activity),
-                                        err => reject(err)
-                                    );
                                 },
                                 err => reject(err)
                             );
@@ -210,7 +211,8 @@ export class ActivityService {
                             () => null,
                             err => reject(err)
                         );
-                    };
+                    }
+
                     this.runUpdates().then(
                         () => resolve(),
                         err => reject(err)
