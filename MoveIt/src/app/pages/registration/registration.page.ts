@@ -23,7 +23,7 @@ export class RegistrationPage implements OnInit {
         ],
         password: [
             {type: 'required', message: 'Password is required.'},
-            {type: 'minlength', message: 'Password must be at least 5 characters long.'}
+            {type: 'minlength', message: 'Password must be at least 6 characters long.'}
         ],
         name: [
             {type: 'required', message: 'Please enter a name'}
