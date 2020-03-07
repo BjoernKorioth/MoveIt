@@ -115,6 +115,12 @@ export class Activity {
             if(SingleEntry.value == "other"){
                 return;
             };
+            //activities shorter then 10 minutes will be disregarded
+            var duration = Math.round((SingleEntry.endDate.getTime() - SingleEntry.startDate.getTime())/60000);
+            if(duration < 10){
+                return;
+            }
+
             /*
             if (['basketball', 'biking', 'dancing','handball','football','running', 'swimming', 'volleyball', 'walking'].indexOf(SingleEntry.value) == -1){
                 SingleEntry.value = 'other'
