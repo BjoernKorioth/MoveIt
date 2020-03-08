@@ -373,7 +373,7 @@ export class ProgressDetailPage implements OnInit {
     }
 
     ngOnInit() {
-        this.checkPlatformReady();
+        //this.checkPlatformReady();
     }
 
     async checkPlatformReady() {
@@ -388,7 +388,7 @@ export class ProgressDetailPage implements OnInit {
                             read: ['steps'], //read only permission
                             write: ['height', 'weight'] //write only permission
                         } */
-                        'activity'
+                        'activity', 'distance'
                     ]).then(res => {
                         console.log(res);
                         this.loadHealthData();
