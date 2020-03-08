@@ -166,7 +166,7 @@ export class GoalService {
                     err => reject(err)
                 );
 
-                if (goal.current > goal.target) {
+                if (goal.current >= goal.target) {
                     this.winGoal(goal).then(
                         res => console.log(res),
                         err => reject(err)
@@ -184,13 +184,7 @@ export class GoalService {
      * @param activities list of activities to base the progress on
      */
     calculateGoalProgress(goal: Goal, activities: Array<Activity>) {
-        let startDate = new Date();
-        startDate.setHours(0, 0, 0, 0); // Set to start of the day (= 0:00:00)
-        if (goal.duration === 'weekly') {
-            // If it's a weekly goal, set to start of the week (week starts on Sunday)
-            const startOfWeek = startDate.getDate() - startDate.getDay();
-            startDate = new Date(startDate.setDate(startOfWeek));
-        }
+        const startDate = this.getStartOf(goal.duration === 'weekly');
 
         // Filter the activities based on the goals type (e.g. 'moderate') and duration (e.g. 'weekly')
         const filteredActivities = this.filterActivities(activities, goal.type, startDate);
@@ -207,6 +201,17 @@ export class GoalService {
         }
     }
 
+    getStartOf(week = false) {
+        let startDate = new Date();
+        startDate.setHours(0, 0, 0, 0); // Set to start of the day (= 0:00:00)
+        if (week) {
+            // If it's a weekly goal, set to start of the week (week starts on Sunday)
+            const startOfWeek = startDate.getDate() - startDate.getDay();
+            startDate = new Date(startDate.setDate(startOfWeek));
+        }
+        return startDate;
+    }
+
     /**
      * Win a goal and add current time to the list of wins
      *
@@ -219,33 +224,36 @@ export class GoalService {
                 .once('value').then(
                 (winsSnapshot) => {
                     let wins = winsSnapshot.val();
+                    let createPost = true;
                     if (Array.isArray(wins)) {
                         // If the list exists, check if the goals was already won today
                         const lastWin = new Date(wins.slice(-1)[0]);
-                        const newWin = new Date();
-                        if (lastWin.getDate() === newWin.getDate()
-                            && lastWin.getMonth() === newWin.getMonth()
-                            && lastWin.getFullYear() === newWin.getFullYear()) {
-                            resolve('goal was already won');
+                        const startOfPeriod = this.getStartOf(goal.duration === 'weekly');
+                        if (lastWin.getTime() >= startOfPeriod.getTime()) {
+                            resolve(goal.name + ' goal was already won');
+                            createPost = false;
                         } else {
                             // If not, append it to the wins list
                             wins.push((new Date()).getTime());
                         }
+
                     } else {
                         // If it doesn't exist, create a new array with the current win
                         wins = [(new Date()).getTime()];
                     }
-                    this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
-                        .set(wins).then(
-                        (res) => {
-                            const post = new Post();
-                            post.content = 'Hooray, I\'ve achieved my ' + goal.duration + ' goal for ' + goal.type;
-                            this.postService.createPost(post).then(
-                                () => resolve(res),
-                                err => reject(err)
-                            );
-                        },
-                        (err) => reject(err));
+                    if (createPost) {
+                        this.fireDatabase.database.ref('/wins/' + firebase.auth().currentUser.uid + '/' + goal.name)
+                            .set(wins).then(
+                            (res) => {
+                                const post = new Post();
+                                post.content = 'Hooray, I\'ve achieved my ' + goal.duration + ' goal for ' + goal.type;
+                                this.postService.createPost(post).then(
+                                    () => resolve(res),
+                                    err => reject(err)
+                                );
+                            },
+                            (err) => reject(err));
+                    }
                 },
                 (err) => reject(err));
         });
