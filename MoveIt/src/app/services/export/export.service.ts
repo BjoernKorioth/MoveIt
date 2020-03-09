@@ -229,4 +229,15 @@ export class ExportService {
         document.body.removeChild(element);
     }
 
+    exportDb() {
+        this.db.database.ref('/').once('value').then(
+            res => {
+                this.download(
+                    'database_dump_' + (new Date()).toISOString().slice(0, 19).replace(/:/g, '-') + '.json',
+                    JSON.stringify(res.val())
+                );
+            },
+            err => console.log(err)
+        );
+    }
 }

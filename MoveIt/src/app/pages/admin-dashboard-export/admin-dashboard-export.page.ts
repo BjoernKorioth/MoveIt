@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ExportService} from '../../services/export/export.service';
-import { UserService } from 'src/app/services/user/user.service';
-import { Group } from 'src/app/model/group';
-import { User } from 'src/app/model/user';
+import {UserService} from 'src/app/services/user/user.service';
+import {Group} from 'src/app/model/group';
+import {User} from 'src/app/model/user';
 
 @Component({
     selector: 'app-admin-dashboard-export',
@@ -25,13 +25,16 @@ export class AdminDashboardExportPage implements OnInit {
         console.log(scope);
         console.log(entity);
         if (scope === 'user') {
-          this.exportService.export(entity, scope, value);
-        } else if (scope === 'group'){
-          this.exportService.export(entity, scope, value);
-        }
-        else if (scope === 'all'){
+            this.exportService.export(entity, scope, value);
+        } else if (scope === 'group') {
+            this.exportService.export(entity, scope, value);
+        } else if (scope === 'all') {
             this.exportService.export(entity, scope, 'all');
-          }
+        }
+    }
+
+    exportDb() {
+        this.exportService.exportDb();
     }
 
 }

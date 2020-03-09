@@ -76,175 +76,181 @@
     <h2 padding>Download data from all users!</h2>
 
     <ion-row>
-      <ion-col size="4">
-          <ion-list>
-              <ion-list-header>
-                  <ion-label>Data for all Users</ion-label>
-              </ion-list-header>
-              <ion-item>
-                <ion-text>All Users</ion-text>
-              </ion-item>
-          </ion-list>
-      </ion-col>
+        <ion-col size="4">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Data for all Users</ion-label>
+                </ion-list-header>
+                <ion-item>
+                    <ion-text>All Users</ion-text>
+                </ion-item>
+            </ion-list>
+        </ion-col>
 
-      <ion-col size="4">
-          <ion-list>
-              <ion-list-header>
-                  <ion-label>Entity</ion-label>
-              </ion-list-header>
-              <ion-item>
-              <ion-select [(ngModel)]="select" placeholder="Select One">
-                  <ion-select-option value="activities">Activities</ion-select-option>
-                  <ion-select-option value="challengeWins">Won Challenges</ion-select-option>
-                  <ion-select-option value="goals">Goals</ion-select-option>
-                  <ion-select-option value="goalWins">Won Goals</ion-select-option>
-                  <ion-select-option value="trophyWins">Won Trophies</ion-select-option>
-                  <ion-select-option value="viewLogs">View Logs</ion-select-option>
-                  <ion-select-option value="actionLogs">Action Logs</ion-select-option>
-                  <ion-select-option value="reactions">Reactions</ion-select-option>
-              </ion-select>
-            </ion-item>
-          </ion-list>
-      </ion-col>
+        <ion-col size="4">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Entity</ion-label>
+                </ion-list-header>
+                <ion-item>
+                    <ion-select [(ngModel)]="select" placeholder="Select One">
+                        <ion-select-option value="activities">Activities</ion-select-option>
+                        <ion-select-option value="challengeWins">Won Challenges</ion-select-option>
+                        <ion-select-option value="goals">Goals</ion-select-option>
+                        <ion-select-option value="goalWins">Won Goals</ion-select-option>
+                        <ion-select-option value="trophyWins">Won Trophies</ion-select-option>
+                        <ion-select-option value="viewLogs">View Logs</ion-select-option>
+                        <ion-select-option value="actionLogs">Action Logs</ion-select-option>
+                        <ion-select-option value="reactions">Reactions</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-list>
+        </ion-col>
 
-      <ion-col size="4">
-          <ion-list>
-              <ion-list-header>
-                  <ion-label>Data</ion-label>
-              </ion-list-header>
-   
+        <ion-col size="4">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Data</ion-label>
+                </ion-list-header>
+
                 <ion-button color="secondary" (click)="export(select, 'all')" float-rigth>Download</ion-button>
-  
-          </ion-list>
-      </ion-col>
-  </ion-row>
 
-  <h2 padding>Download group data!</h2>
+            </ion-list>
+        </ion-col>
+    </ion-row>
+
+    <h2 padding>Download group data!</h2>
 
 
-<ion-row>
-    <ion-col size="4">
-        <ion-list>
-            <ion-list-header>
-                <ion-label>Data for all Groups</ion-label>
-            </ion-list-header>
-        </ion-list>
-    </ion-col>
+    <ion-row>
+        <ion-col size="4">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Data for all Groups</ion-label>
+                </ion-list-header>
+            </ion-list>
+        </ion-col>
 
-    <ion-col size="4">
-        <ion-list>
-            <ion-list-header>
-                <ion-label>Entity</ion-label>
-            </ion-list-header>
-        </ion-list>
-    </ion-col>
+        <ion-col size="4">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Entity</ion-label>
+                </ion-list-header>
+            </ion-list>
+        </ion-col>
 
-    <ion-col size="4">
-        <ion-list>
-            <ion-list-header>
-                <ion-label>Data</ion-label>
-            </ion-list-header>
-        </ion-list>
-    </ion-col>
-</ion-row>
+        <ion-col size="4">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Data</ion-label>
+                </ion-list-header>
+            </ion-list>
+        </ion-col>
+    </ion-row>
 
     <ion-row class="ion-align-items-center" *ngFor="let group of groups">
 
-    <ion-col size="4">
-      <ion-list>
-          <ion-item>  
-            <ion-text>{{group.name}}</ion-text>
-          </ion-item>
-      </ion-list>
-  </ion-col>
-  
-  <ion-col size="4">
-      <ion-list>
-          <ion-item>
-          <ion-select [(ngModel)]="group.select" placeholder="Select One">
-              <ion-select-option value="activities">Activities</ion-select-option>
-              <ion-select-option value="challengeWins">Won Challenges</ion-select-option>
-              <ion-select-option value="goals">Goals</ion-select-option>
-              <ion-select-option value="goalWins">Won Goals</ion-select-option>
-              <ion-select-option value="trophyWins">Won Trophies</ion-select-option>
-              <ion-select-option value="viewLogs">View Logs</ion-select-option>
-              <ion-select-option value="actionLogs">Action Logs</ion-select-option>
-              <ion-select-option value="reactions">Reactions</ion-select-option>
-          </ion-select>
-        </ion-item>
-      </ion-list>
-  </ion-col>
-  
-  <ion-col size="4">
+        <ion-col size="4">
+            <ion-list>
+                <ion-item>
+                    <ion-text>{{group.name}}</ion-text>
+                </ion-item>
+            </ion-list>
+        </ion-col>
+
+        <ion-col size="4">
+            <ion-list>
+                <ion-item>
+                    <ion-select [(ngModel)]="group.select" placeholder="Select One">
+                        <ion-select-option value="activities">Activities</ion-select-option>
+                        <ion-select-option value="challengeWins">Won Challenges</ion-select-option>
+                        <ion-select-option value="goals">Goals</ion-select-option>
+                        <ion-select-option value="goalWins">Won Goals</ion-select-option>
+                        <ion-select-option value="trophyWins">Won Trophies</ion-select-option>
+                        <ion-select-option value="viewLogs">View Logs</ion-select-option>
+                        <ion-select-option value="actionLogs">Action Logs</ion-select-option>
+                        <ion-select-option value="reactions">Reactions</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-list>
+        </ion-col>
+
+        <ion-col size="4">
 
             <ion-button color="secondary" (click)="export(group.select, 'group', group.id)">Download</ion-button>
 
-  </ion-col>
-  </ion-row>
+        </ion-col>
+    </ion-row>
 
-  <h2 padding>Download user data!</h2>
+    <h2 padding>Download user data!</h2>
 
-  <ion-row>
-    <ion-col size="4">
-        <ion-list>
-            <ion-list-header>
-                <ion-label>Data for Users</ion-label>
-            </ion-list-header>
-        </ion-list>
-    </ion-col>
+    <ion-row>
+        <ion-col size="4">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Data for Users</ion-label>
+                </ion-list-header>
+            </ion-list>
+        </ion-col>
 
-    <ion-col size="4">
-        <ion-list>
-            <ion-list-header>
-                <ion-label>Entity</ion-label>
-            </ion-list-header>
-        </ion-list>
-    </ion-col>
+        <ion-col size="4">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Entity</ion-label>
+                </ion-list-header>
+            </ion-list>
+        </ion-col>
 
-    <ion-col size="4">
-        <ion-list>
-            <ion-list-header>
-                <ion-label>Data</ion-label>
-            </ion-list-header>
-        </ion-list>
-    </ion-col>
-</ion-row>
+        <ion-col size="4">
+            <ion-list>
+                <ion-list-header>
+                    <ion-label>Data</ion-label>
+                </ion-list-header>
+            </ion-list>
+        </ion-col>
+    </ion-row>
 
 
-  <ion-row class="ion-align-items-center" *ngFor="let user of users">
+    <ion-row class="ion-align-items-center" *ngFor="let user of users">
 
-  <ion-col size="4">
-    <ion-list>
-        <ion-item>  
-          <ion-text>{{user.name}}</ion-text>
-        </ion-item>
-    </ion-list>
-</ion-col>
+        <ion-col size="4">
+            <ion-list>
+                <ion-item>
+                    <ion-text>{{user.name}}</ion-text>
+                </ion-item>
+            </ion-list>
+        </ion-col>
 
-<ion-col size="4">
-    <ion-list>
-        <ion-item>
-        <ion-select [(ngModel)]="user.select" placeholder="Select One">
-            <ion-select-option value="activities">Activities</ion-select-option>
-            <ion-select-option value="challengeWins">Won Challenges</ion-select-option>
-            <ion-select-option value="goals">Goals</ion-select-option>
-            <ion-select-option value="goalWins">Won Goals</ion-select-option>
-            <ion-select-option value="trophyWins">Won Trophies</ion-select-option>
-            <ion-select-option value="viewLogs">View Logs</ion-select-option>
-            <ion-select-option value="actionLogs">Action Logs</ion-select-option>
-            <ion-select-option value="reactions">Reactions</ion-select-option>
-        </ion-select>
-    </ion-item>
-    </ion-list>
-</ion-col>
+        <ion-col size="4">
+            <ion-list>
+                <ion-item>
+                    <ion-select [(ngModel)]="user.select" placeholder="Select One">
+                        <ion-select-option value="activities">Activities</ion-select-option>
+                        <ion-select-option value="challengeWins">Won Challenges</ion-select-option>
+                        <ion-select-option value="goals">Goals</ion-select-option>
+                        <ion-select-option value="goalWins">Won Goals</ion-select-option>
+                        <ion-select-option value="trophyWins">Won Trophies</ion-select-option>
+                        <ion-select-option value="viewLogs">View Logs</ion-select-option>
+                        <ion-select-option value="actionLogs">Action Logs</ion-select-option>
+                        <ion-select-option value="reactions">Reactions</ion-select-option>
+                    </ion-select>
+                </ion-item>
+            </ion-list>
+        </ion-col>
 
-<ion-col size="4">
-    <ion-list>
-          <ion-button color="secondary" (click)="export(user.select, 'user', user.id)">Download</ion-button>
-    </ion-list>
-</ion-col>
-</ion-row>
 
+        <ion-col size="4">
+            <ion-list>
+                <ion-button color="secondary" (click)="export(user.select, 'user', user.id)">Download</ion-button>
+            </ion-list>
+        </ion-col>
+    </ion-row>
+
+    <h2 padding>Download the whole database!</h2>
+
+    <ion-row>
+        <ion-button color="secondary" (click)="exportDb()" float-rigth>Download</ion-button>
+    </ion-row>
 
 
 </ion-content>
