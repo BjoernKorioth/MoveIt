@@ -41,7 +41,10 @@ export class ExportService {
                 // const opts = {fields: params.fields};
                 try {
                     // const csv = parse(params.data, opts);
-                    const csv = parse(params);
+                    let csv = '';
+                    if (params) {
+                        csv = parse(params);
+                    }
                     this.download(entity + '_' + scope + '_' + id + '.csv', csv);
                 } catch (err) {
                 }
