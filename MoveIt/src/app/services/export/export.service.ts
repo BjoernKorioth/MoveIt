@@ -167,11 +167,14 @@ export class ExportService {
 
     exportGoalWins(user: string) {
         return this.db.list<any>('/wins/' + user).snapshotChanges().pipe(first(), map(
-            goals => goals.map(goal => {
-                const entry = goal.payload.val();
-                entry.goal = goal.key;
-                return entry;
-            })
+            goals => {
+                // @ts-ignore
+                return goals.flatMap(goal => {
+                    const entry = goal.payload.val();
+                    entry.goal = goal.key;
+                    return entry.map(item => ({time: item, goal: goal.key}));
+                });
+            }
         ));
     }
 
@@ -186,8 +189,6 @@ export class ExportService {
             // @ts-ignore
             trophiesList => trophiesList.flatMap(trophyCategory => {
                     const trophies = trophyCategory.payload.val();
-                    console.log(trophyCategory.key);
-                    console.log(trophies);
                     if (trophyCategory.key === 'won') {
                         return trophies.map(trophy => ({
                             status: trophyCategory.key,
