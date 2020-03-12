@@ -42,7 +42,7 @@ export class ExportService {
                 try {
                     // const csv = parse(params.data, opts);
                     let csv = '';
-                    if (params) {
+                    if (params && Array.isArray(params) && params.length > 0) {
                         csv = parse(params);
                     }
                     this.download(entity + '_' + scope + '_' + id + '.csv', csv);
@@ -182,11 +182,22 @@ export class ExportService {
     }
 
     exportWonTrophies(user: string) {
-        return this.db.list<any>('/trophyStatus/' + user).snapshotChanges().pipe(first(), flatMap(
-            trophiesList => trophiesList.map(trophyCategory => {
-                const trophies = trophyCategory.payload.val();
-                return trophies.map(trophy => ({status: trophyCategory.key, trophyId: trophy}));
-            })
+        return this.db.list<any>('/trophyStatus/' + user).snapshotChanges().pipe(first(), map(
+            // @ts-ignore
+            trophiesList => trophiesList.flatMap(trophyCategory => {
+                    const trophies = trophyCategory.payload.val();
+                    console.log(trophyCategory.key);
+                    console.log(trophies);
+                    if (trophyCategory.key === 'won') {
+                        return trophies.map(trophy => ({
+                            status: trophyCategory.key,
+                            trophyId: trophy.id,
+                            won: trophy.time
+                        }));
+                    } else {
+                        return trophies.map(trophy => ({status: trophyCategory.key, trophyId: trophy, won: null}));
+                    }
+                })
         ));
     }
 
